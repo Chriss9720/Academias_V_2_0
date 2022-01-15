@@ -28,48 +28,61 @@
 
         <p class="display-4 text-white font-weight-bold">Registro de docente</p>
 
-        <div class="row">
-            <div class="col-2 d-flex align-items-center">
-                <img src="img/perfil.png" alt="foto de perfil" class="fotoPerfil rounded-circle img-fluid mx-auto" id="imgPerfil">
-            </div>
-            <div class="col-sm-12 col-md-4 d-flex align-items-center">
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="fotoPerfil" name="fotoPerfil" value="Buscar">
-                    <label class="custom-file-label" for="fotoPerfil" id="nombreImg">Elija una imagen</label>
+        <form action="#" method="post" id="registro">
+
+            <div class="row">
+                <div class="col-2 d-flex align-items-center">
+                    <img src="img/perfil.png" alt="foto de perfil" class="fotoPerfil rounded-circle img-fluid mx-auto" id="imgPerfil">
+                </div>
+                <div class="col-sm-12 col-md-4 d-flex align-items-center">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="fotoPerfil" name="fotoPerfil" value="Buscar">
+                        <label class="custom-file-label" for="fotoPerfil" id="nombreImg">Elija una imagen</label>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col-12 form-inline mt-3">
-            <label class="mr-2 text-white registroLabel" for="Nomina">Nomina:</label>
-            <div>
-                <input type="text" name="Nomina" id="Nomina" class="form-control is-invalid" placeholder="Nomina">
-                <div id="validation-clave" class="invalid-tooltip">Ingrese este campo</div>
+            <div class="col-12 form-inline mt-3">
+                <label class="mr-2 text-white registroLabel" for="Nomina">Nomina:</label>
+                <div>
+                    <input type="text" name="Nomina" id="Nomina" class="form-control" placeholder="Nomina">
+                    <div id="validation-nomina" class="invalid-tooltip">Ingrese este campo</div>
+                </div>
             </div>
-        </div>
 
-        <div class="col-12 form-inline mt-3">
-            <label class="mr-2 text-white registroLabel" for="Correo">Correo:</label>
-            <input type="text" name="Correo" id="Correo" class="form-control" placeholder="Correo">
-            <div class="input-group-append">
-                <span class="input-group-text" id="basic-addon2">@itesca.edu.mx</span>
+            <div class="col-12 form-inline mt-3">
+                <label class="mr-2 text-white registroLabel" for="Correo">Correo:</label>
+                <div>
+                    <input type="text" name="Correo" id="Correo" class="form-control" placeholder="Correo">
+                    <div id="validation-correo" class="invalid-tooltip">Ingrese este campo</div>
+                </div>
+                <div class="input-group-append">
+                    <span class="input-group-text" id="basic-addon2">@itesca.edu.mx</span>
+                </div>
             </div>
-        </div>
 
-        <div class="col-12 form-inline mt-3">
-            <label class="mr-2 text-white registroLabel" for="Telefono">Telefono:</label>
-            <input type="number" name="Telefono" id="Telefono" class="form-control" placeholder="Telefono">
-        </div>
+            <div class="col-12 form-inline mt-3">
+                <label class="mr-2 text-white registroLabel" for="Telefono">Telefono:</label>
+                <div>
+                    <input type="number" name="Telefono" id="Telefono" class="form-control" placeholder="Telefono">
+                    <div id="validation-telefono" class="invalid-tooltip">Ingrese este campo</div>
+                </div>
+            </div>
 
-        <div class="col-12 form-inline mt-3">
-            <label class="mr-2 text-white registroLabel" for="Clave">Clave:</label>
-            <input type="text" name="Clave" id="Clave" class="form-control" placeholder="Clave">
-        </div>
+            <div class="col-12 form-inline mt-3">
+                <label class="mr-2 text-white registroLabel" for="Clave">Clave:</label>
+                <div>
+                    <input type="text" name="Clave" id="Clave" class="form-control" placeholder="Clave">
+                    <div id="validation-clave" class="invalid-tooltip">Ingrese este campo</div>
+                </div>
+            </div>
 
-        <div class="col-6 mt-3 d-flex justify-content-between">
-            <input type="reset" value="Cancelar" class="btn btn-danger">
-            <input type="submit" value="Registrar" class="btn btn-primary">
-        </div>
+            <div class="col-6 mt-3 d-flex justify-content-between">
+                <input id="cancelar" type="reset" value="Cancelar" class="btn btn-danger">
+                <input type="submit" value="Registrar" class="btn btn-primary">
+            </div>
+
+        </form>
 
     </div>
 

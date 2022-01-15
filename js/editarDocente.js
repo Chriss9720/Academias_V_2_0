@@ -31,18 +31,11 @@ $(document).ready(() => {
     const opcionesMostrar = () => {
         let maximo = buscarCookie("cantidadDocente");
         if (maximo == 0) {
-            document.cookie = `cantidadDocente=4;max-age=60*10;`;
+            document.cookie = `cantidadDocente=4;max-age=${60 * 10};`;
             maximo = 4;
         }
-        $("#mostrar")[0].innerHTML = `
-            <option value="1" ${selected(maximo == 1)}>1</option>
-            <option value="2" ${selected(maximo == 2)}>2</option>
-            <option value="3" ${selected(maximo == 3)}>3</option>
-            <option value="4" ${selected(maximo == 4)}>4</option>
-            <option value="5" ${selected(maximo == 5)}>5</option>
-            <option value="6" ${selected(maximo == 6)}>6</option>
-            <option value="7" ${selected(maximo == 7)}>7</option>
-            <option value="8" ${selected(maximo == 8)}>8</option>`;
+        $("#mostrar")[0].innerHTML = ``;
+        for (let i = 1; i < 9; i++) $("#mostrar")[0].innerHTML += `<option value="${i}" ${selected(maximo == i)}>${i}</option>`;
     }
 
     const cargar = () => {
@@ -54,7 +47,7 @@ $(document).ready(() => {
         let maximo = Math.ceil(datos.length / mostrar);
         let pagina = buscarCookie("paginaDocente");
         pagina = maximo > pagina ? pagina : 0;
-        document.cookie = `paginaDocente=${pagina};max-age=60*10;`;
+        document.cookie = `paginaDocente=${pagina};max-age=${60 * 10};`;
 
         $("#datos")[0].innerHTML = "";
 
@@ -79,13 +72,13 @@ $(document).ready(() => {
     cargar();
 
     $("#cantidad").click(() => {
-        document.cookie = `cantidadDocente=${$("#mostrar")[0].value};max-age=60*10;`;
+        document.cookie = `cantidadDocente=${$("#mostrar")[0].value};max-age=${60 * 10};`;
         location.reload();
     });
 
 });
 
 const paginaRapida = (pagina) => {
-    document.cookie = `paginaDocente=${pagina - 1};max-age=60*10;`;
+    document.cookie = `paginaDocente=${pagina - 1};max-age=${60 * 10};`;
     location.reload();
 }
