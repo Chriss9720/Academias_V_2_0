@@ -1,7 +1,6 @@
 $(document).ready(() => {
 
     $("#registroCarrera").submit(() => {
-        console.log("Submit");
         return false;
     });
 
