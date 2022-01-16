@@ -1,6 +1,6 @@
 $(document).ready(() => {
 
-    const getDocentes = () => {
+    const getAcademias = () => {
         datos = [];
         for (let i = 0; i < (4 * 8); i++) {
             datos.push({
@@ -41,7 +41,7 @@ $(document).ready(() => {
 
         let mostrar = parseInt(buscarCookie("cantidadAcademia"));
 
-        let datos = getDocentes();
+        let datos = getAcademias();
 
         let maximo = Math.ceil(datos.length / mostrar);
         let pagina = buscarCookie("paginaAcademia");
@@ -55,7 +55,7 @@ $(document).ready(() => {
                 <div class="col-sm-12 col-md-6 col-xl-3 border">
                     <div class="d-flex flex-column align-items-center">
                         <img src="${datos[i].foto}" alt="foto de perfil no encontrada" class="fotoPerfil rounded-circle img-fluid mt-1">
-                        <label for="Nombre">${datos[i].nombre}_${i}</label>
+                        <label class="mt-2" for="Nombre">${datos[i].nombre}_${i}</label>
                         <label for="Integrantes">${datos[i].integrantes}_${i}</label>
                         <input name=${i} type="button" value="Editar" class="btn btn-success mb-2">
                     </div>

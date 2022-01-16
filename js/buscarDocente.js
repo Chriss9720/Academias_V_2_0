@@ -56,7 +56,7 @@ $(document).ready(() => {
                 <div class="col-sm-12 col-md-6 col-xl-3 border">
                     <div class="d-flex flex-column align-items-center">
                         <img src="${datos[i].foto}" alt="foto de perfil no encontrada" class="fotoPerfil rounded-circle img-fluid mt-1">
-                        <label for="Nomina">${datos[i].nomina}_${i}</label>
+                        <label class="mt-2" for="Nomina">${datos[i].nomina}_${i}</label>
                         <label for="Nombre">${datos[i].nombre}_${i}</label>
                         <label for="Carrera">${datos[i].carrera}_${i}</label>
                         <input name=${i} type="button" value="Editar" class="btn btn-success mb-2">
