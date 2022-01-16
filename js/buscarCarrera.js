@@ -29,9 +29,9 @@ $(document).ready(() => {
     const selected = estado => estado ? "selected" : "";
 
     const opcionesMostrar = () => {
-        let maximo = buscarCookie("cantidadDocente");
+        let maximo = buscarCookie("cantidadCarrera");
         if (maximo == 0) {
-            document.cookie = `cantidadDocente=4;max-age=${60 * 10};`;
+            document.cookie = `cantidadCarrera=4;max-age=${60 * 10};`;
             maximo = 4;
         }
         $("#mostrar")[0].innerHTML = ``;
@@ -40,14 +40,14 @@ $(document).ready(() => {
 
     const cargar = () => {
 
-        let mostrar = parseInt(buscarCookie("cantidadDocente"));
+        let mostrar = parseInt(buscarCookie("cantidadCarrera"));
 
-        let datos = getDocentes();;
+        let datos = getDocentes();
 
         let maximo = Math.ceil(datos.length / mostrar);
-        let pagina = buscarCookie("paginaDocente");
+        let pagina = buscarCookie("paginaCarrera");
         pagina = maximo > pagina ? pagina : 0;
-        document.cookie = `paginaDocente=${pagina};max-age=${60 * 10};`;
+        document.cookie = `paginaCarrera=${pagina};max-age=${60 * 10};`;
 
         $("#datos")[0].innerHTML = "";
 
@@ -72,13 +72,13 @@ $(document).ready(() => {
     cargar();
 
     $("#cantidad").click(() => {
-        document.cookie = `cantidadDocente=${$("#mostrar")[0].value};max-age=${60 * 10};`;
+        document.cookie = `cantidadCarrera=${$("#mostrar")[0].value};max-age=${60 * 10};`;
         location.reload();
     });
 
 });
 
 const paginaRapida = (pagina) => {
-    document.cookie = `paginaDocente=${pagina - 1};max-age=${60 * 10};`;
+    document.cookie = `paginaCarrera=${pagina - 1};max-age=${60 * 10};`;
     location.reload();
 }
