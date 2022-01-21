@@ -1,4 +1,5 @@
-restartphp.bat
-startphp.bat
-stopphp.bat
 plantilla.html
+*.docx
+*.bat
+*.sql
+*.txt
