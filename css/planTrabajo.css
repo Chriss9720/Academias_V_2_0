@@ -1,0 +1,11 @@
+#documento {
+    background: red;
+    min-width: 21.59cm;
+    max-width: 21.59cm;
+    min-height: 27.94cm;
+    max-height: 27.94cm;
+}
+
+#margen {
+    margin: top 2.75cm;
+}
