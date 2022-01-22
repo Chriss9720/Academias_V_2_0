@@ -1,0 +1,148 @@
+.logo_ITESCA {
+    height: 1.22cm;
+    width: 3.84cm;
+}
+
+.area_IMG {
+    height: 1.35cm;
+    width: 4.32cm;
+}
+
+.area_titulo {
+    width: 14.18cm;
+}
+
+.centrar {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-direction: column !important;
+    text-align: center !important;
+}
+
+.texto_derecha {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-direction: column !important;
+    text-align: right !important;
+}
+
+.borde_tabla {
+    border: 1px solid black;
+}
+
+.borde_derecho {
+    border-right: 1px solid black;
+}
+
+.borde_superior {
+    border-top: 1px solid black;
+}
+
+.borde_izquierdo {
+    border-left: 1px solid black;
+}
+
+.borde_inferior {
+    border-bottom: 1px solid black;
+}
+
+.fuente {
+    font-family: "Calibri";
+    font-size: small;
+}
+
+.fondo_contenido {
+    background-color: #D9D9D9;
+}
+
+.en_linea {
+    display: flex !important;
+    flex-direction: row !important;
+}
+
+.academia {
+    width: 4.49cm;
+}
+
+.semestre_d {
+    width: 5.5cm;
+}
+
+.negrita {
+    font-weight: bold;
+}
+
+.semestre {
+    width: 2cm;
+}
+
+.academia_d {
+    width: 6.5cm;
+}
+
+.presiente {
+    width: 4.49cm;
+}
+
+.presiente_d {
+    width: 13.99cm;
+}
+
+.fecha {
+    width: 18.48cm;
+    height: 0.73cm;
+}
+
+.reunion {
+    width: 4.49cm;
+}
+
+.reunion_d {
+    width: 5.15cm;
+}
+
+.columna_1 {
+    width: .9cm;
+}
+
+.columna_2 {
+    width: 4.11cm;
+}
+
+.columna_3 {
+    width: 3.18cm;
+}
+
+.columna_4 {
+    width: 3.12cm;
+}
+
+.columna_5 {
+    width: 2.6cm;
+}
+
+.columna_6 {
+    width: 2.43cm;
+}
+
+.columna_7 {
+    width: 2.16cm;
+}
+
+.justificar {
+    text-align: justify;
+}
+
+.firmas {
+    width: 6.3cm;
+}
+
+.largo {
+    font-size: large !important;
+}
+
+.firma {
+    height: 1.36cm;
+}

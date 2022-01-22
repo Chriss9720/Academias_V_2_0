@@ -23,13 +23,34 @@
         </div>
     </nav>
 
-    <div class="container">
+    <div class="container d-flex d-inline justify-content-center align-items-center" hidden id="ocultar">
         <div class="mt-2 h1 text-white text-center">Crear plan de trabajo</div>
+        <div class="ml-2"><input id="crear" class="btn btn-success" type="button" value="Crear"></div>
     </div>
 
-    <div id="documento" class="container">
-        <section id="margen" class="text-white">
-            soy una seccio
+    <div class="container bg-white">
+        <div>
+            <table class="w-100 borde_tabla">
+                <tbody>
+                    <tr>
+                        <td class="area_IMG borde_tabla_interno">
+                            <img src="img/logo_ITESCA.png" alt="logo itesca" class="img-fluid logo_ITESCA">
+                        </td>
+                        <td class="d-flex flex-column justify-content-center align-items-center w-100">
+                            <label class="nombre_documento font-large">PLAN DE TRABAJO DE ACADEMIAS</label>
+                            <label>F03PSA01.03</label>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <section id="documento" class="mt-5">
+            <div class="row container">
+                <label class="color_campo col-3 text-right" style="background-color: rgba(217, 217, 217)">Nombre de la Academia:</label>
+                <label class="col-4 text-center">Nombre de la academia</label>
+                <label class="color_campo col-2 text-right">Semestre:</label>
+                <label class="col-3 bg-warning text-center">Semestre 2</label>
+            </div>
         </section>
     </div>
 
@@ -38,7 +59,10 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!--Ajax-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <!-- My Script -->
+    <script src="js/PlanTrabajo.js"></script>
 </body>
 
 </html>
