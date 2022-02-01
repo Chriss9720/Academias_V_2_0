@@ -31,7 +31,6 @@
     </table>
     ');
 
-
     $mpdf->WriteHTML('
     <table class="borde_tabla">
         <tbody>

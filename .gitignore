@@ -1,6 +1,4 @@
-plantilla.html
-*.docx
-*.bat
-*.sql
-*.txt
+*.pdf
 pruebasPDF/
+plantilla.html
+php/vendor/
