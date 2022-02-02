@@ -1,0 +1,28 @@
+.text-input {
+    font-size: 1.5rem;
+}
+
+.bg-input {
+    background-color: rgb(204, 204, 204);
+}
+
+.opciones {
+    width: 25%;
+}
+
+.foto-opcional {
+    width: 150px !important;
+    border-radius: 50%;
+}
+
+.ancho {
+    width: 250px !important;
+}
+
+.bg-btn-aplicar {
+    background-color: rgb(153, 153, 153);
+    border-radius: 0.6rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    width: 250px;
+}

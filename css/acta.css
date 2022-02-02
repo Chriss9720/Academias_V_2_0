@@ -1,0 +1,23 @@
+.no {
+    width: 80px !important;
+}
+
+.hora {
+    width: 100px !important;
+}
+
+.acuerdo {
+    margin-top: -8px !important;
+}
+
+.lugar {
+    width: 225px !important;
+}
+
+.agregar {
+    width: 125px;
+}
+
+.hover:hover {
+    color: blue;
+}

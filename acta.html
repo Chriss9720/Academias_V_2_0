@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!--font awesome-->
+    <script src="https://kit.fontawesome.com/0b3284a19f.js" crossorigin="anonymous"></script>
+    <!-- Mi estilo-->
+    <link rel="stylesheet" href="css/banner.css">
+    <link rel="stylesheet" href="css/formulario.css">
+    <link rel="stylesheet" href="css/acta.css">
+    <title>Academias</title>
+</head>
+
+<body>
+
+    <div class="bg-panel-superior">
+        <div class="container d-flex">
+            <div class="w-25">
+                <label class="click iconos-superior">
+                    <span>
+                        <i class="fas fa-home"></i>
+                    </span>
+                    Inicio
+                </label>
+                <label class="click iconos-superior ml-3">
+                    <span>
+                        <i class="fas fa-user"></i>
+                    </span>
+                    Mi perfil
+                </label>
+            </div>
+            <div class="d-flex justify-content-end w-75">
+                <label class="click iconos-superior ml-3">
+                    <span>
+                        <i class="fas fa-sign-out-alt"></i>
+                    </span>
+                    Cerrar sesión
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-menu-principal">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb sin d-flex align-items-center">
+                    <li class="breadcrumb-item">
+                        <a href="#">Inicio</a>
+                    </li>
+                    <li id="accion" class="breadcrumb-item"></li>
+                    <li class="breadcrumb-item active">
+                        <label class="text-menu">Acta</label>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-3 border border-dark">
+                <img src="img/logo_ITESCA.png" class="img-fluid">
+            </div>
+            <div class="col-9 border border-dark d-flex flex-column justify-content-center align-items-center">
+                <div class="h1 text-center">ACTA DE JUNTA DE ACADEMIA</div>
+                <div class="h4 text-center">F01PSA01.02</div>
+            </div>
+        </div>
+        <div class="d-flex mt-2 justify-content-end">
+            <div class="form-inline">
+                <label class="text-input">Acta No.</label>
+                <input type="text" class="form-control no bg-input ml-2" disabled>
+            </div>
+        </div>
+        <div class="mt-2 text-input row ml-2 mr-2">
+            <p>En Ciudad Obregón, Sonora, siendo las</p>
+            <input type="time" class="form-control bg-input hora ml-2 mr-2">
+            <p>horas del día</p>
+            <input type="number" class="form-control bg-input hora ml-2 mr-2">
+            <p>de</p>
+            <input type="text" class="form-control bg-input hora ml-2 mr-2">
+            <p>del año</p>
+            <input type="number" class="form-control bg-input hora ml-2 mr-2">
+            <p>reunidos</p>
+            <input type="text" class="form-control bg-input lugar ml-2 mr-2">
+            <p>Cajeme, los maestros miembros de la academia de</p>
+            <input type="text" class="form-control bg-input ancho ml-2 mr-2" disabled>
+            <p>cuya lista se anexa a la presente acta; se inicia la reunión, bajo </p>
+            <p>la presidencia de</p>
+            <input type="text" class="form-control bg-input ancho ml-2 mr-2" disabled>
+            <p>, auxiliado en la secretaria por</p>
+            <input type="text" class="form-control bg-input ancho ml-2 mr-2" disabled>
+            <p>acuerdo con el siguiente:</p>
+        </div>
+        <div class="mt-2 font-weight-bold text-center h2">Orden del día</div>
+        <textarea class="mb-5" name="orden" id="orden" rows="10" cols="80"></textarea>
+        <div class="mt-5 text-justify text-input">
+            Aprobado el Orden del Día, se procede a la revisión de acuerdos de la minuta anterior bajo el siguiente:
+        </div>
+
+        <div class="mt-2 font-weight-bold text-center h2">SEGUIMIENTO DE ACUERDOS ANTERIORES</div>
+        <div class="ml-2 mr-2 mt-3 mb-3">
+            <div class="row">
+                <div class="col-3 bg-input text-center h4 font-weight-bold border border-dark">
+                    <div class="w-100 h-100 d-flex justify-content-center align-items-center">ACUERDO</div>
+                </div>
+                <div class="col-3 bg-input text-center h4 font-weight-bold border border-dark">
+                    <div class="w-100 h-100 d-flex justify-content-center align-items-center">RESPONSABLE</div>
+                </div>
+                <div class="col-3 bg-input text-center h4 font-weight-bold border border-dark">
+                    <div class="w-100 h-100 d-flex justify-content-center align-items-center">FECHA DE CUMPLIMIENTO</div>
+                </div>
+                <div class="col-3 bg-input text-center h4 font-weight-bold border border-dark">
+                    <div class="w-100 h-100 d-flex justify-content-center align-items-center">AVANCE</div>
+                </div>
+                <div class="col-3 bg-input border border-dark acuerdo">
+                    <div class="text-justify">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate, at vel! Repellat ipsa expedita sed sint facere eos, quia aliquid, voluptatem cum ratione ducimus aspernatur quos perspiciatis, totam ea porro? Ducimus ipsum provident, dolore veniam atque
+                        delectus, illum, vero nemo doloremque quae impedit laudantium necessitatibus aliquam libero sunt veritatis. Ut sit dicta provident nihil dolores, expedita voluptatem quasi fugit dolor? Nemo delectus excepturi quae facilis ex suscipit
+                        commodi nisi consequatur ad! Ipsam voluptatum ratione esse consequuntur laboriosam exercitationem laborum modi eos veniam quae facere provident ut, cumque, porro distinctio! Illum, consectetur ad provident maiores voluptas rerum.
+                        Fugit nam in ut!
+                    </div>
+                </div>
+                <div class="col-3 bg-input border border-dark acuerdo">
+                    <div class="text-justify">
+                        <ul>
+                            <li>Cielo</li>
+                            <li>Yañez</li>
+                            <li>Cristy</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-3 bg-input border border-dark acuerdo">
+                    <div class="text-justify">
+                        10 Enero, 2022
+                    </div>
+                </div>
+                <div class="col-3 bg-input border border-dark acuerdo">
+                    <div class="text-justify">
+                        10%
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-2 ml-2 mr-2 font-weight-bold text-center h2">
+            ACUERDOS DE REUNIÓN
+            <input type="button" value="Agregar" class="btn bg-btn-aplicar agregar">
+        </div>
+        <div class="ml-2 mr-2 mt-3 mb-3">
+            <div class="row">
+                <div class="col-6 bg-input text-center h4 font-weight-bold border border-dark">
+                    <div class="w-100 h-100 d-flex justify-content-center align-items-center">ACUERDO</div>
+                </div>
+                <div class="col-4 bg-input text-center h4 font-weight-bold border border-dark">
+                    <div class="w-100 h-100 d-flex justify-content-center align-items-center">RESPONSABLE</div>
+                </div>
+                <div class="col-2 bg-input text-center h4 font-weight-bold border border-dark">
+                    <div class="w-100 h-100 d-flex justify-content-center align-items-center">FECHA DE CUMPLIMIENTO</div>
+                </div>
+
+                <div class="col-6 acuerdo border border-dark">
+                    <textarea name="acuerdo_1" id="acuerdo_1" rows="10" cols="80"></textarea>
+                </div>
+                <div class="col-4 acuerdo border border-dark">
+                    <div class="form-inline text-input mt-1">
+                        <label for="busqueda_1">Nómina/Nombre</label>
+                        <input type="search" name="busqueda_1" id="busqueda_1" class="ml-2 form-control bg-input" list="busqueda_1_lista">
+                        <datalist id="busqueda_1_lista">
+                            <option value="Camaro">
+                        </datalist>
+                        <span class="click ml-2">
+                            <i class="fas fa-plus-circle"></i>
+                        </span>
+                    </div>
+                    <div id="agregados" class="text-input">
+                        <ul>
+                            <li>
+                                <div class="form-inline d-flex">
+                                    <label>Cielo Luz Elena Llamas Servin</label>
+                                    <span class="click ml-auto"><i class="fas fa-user-minus"></i></span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-2 acuerdo border border-dark">
+                    <input type="datetime-local" class="form-control bg-input mt-2">
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row ml-2 mr-2">
+            <p class="text-input text-justify">
+                El presidente pone a la consideración de los presentes el acta, quienes la aprueban en todas sus partes firman de conformidad al final de la misma.
+            </p>
+            <p class="text-input text-justify">
+                Sin otro asunto que tratar, el presidente da por terminada la reunión, siendo las
+            </p>
+            <input type="time" class="form-control bg-input hora ml-2 mr-2">
+            <p class="text-input text-justify">
+                horas del mismo día.
+            </p>
+        </div>
+
+        <div class="mt-2 font-weight-bold text-center h2">CONSTANCIA DE APROBACIÓN</div>
+        <div class="text-input text-justify">
+            Nombre y firma de los miembros de la academia que asistieron a la reunión y manifiestan su aprobación para la presente acta.
+        </div>
+        <div class="ml-2 mr-2">
+            <div class="row">
+                <div class="col-4 bg-input text-center h4 font-weight-bold border border-dark">
+                    <div class="w-100 h-100 d-flex justify-content-center align-items-center">PROFESOR</div>
+                </div>
+                <div class="col-4 bg-input text-center h4 font-weight-bold border border-dark">
+                    <div class="w-100 h-100 d-flex justify-content-center align-items-center">MATERIA QUE IMPARTE</div>
+                </div>
+                <div class="col-4 bg-input text-center h4 font-weight-bold border border-dark">
+                    <div class="w-100 h-100 d-flex justify-content-center align-items-center">FIRMA</div>
+                </div>
+
+                <div class="col-4 border border-dark acuerdo">
+                    <div class="w-100 h-100">Cielo Luz Elena Llamas Servin</div>
+                </div>
+                <div class="col-4 border border-dark acuerdo">
+                    <ul>
+                        <li>M1</li>
+                        <li>M2</li>
+                        <li>M3</li>
+                    </ul>
+                </div>
+                <div class="col-4 border border-dark acuerdo">
+                    <div class="d-flex flex-column mt-2 mb-2 justify-content-center align-items-center">
+                        <input type="button" value="Asistio" class="bg-input bg-btn-aplicar hover">
+                        <input type="button" value="No asistio" class="bg-input bg-btn-aplicar mt-2 mb-2 hover">
+                        <input type="button" value="Justificado" class="bg-input bg-btn-aplicar hover">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="mt-2 font-weight-bold text-center h2 bg-input border border-dark">Revisión y Aprobación del jefe de División</div>
+        <div class="d-flex flex-column border border-dark acuerdo">
+            <label class="text-input font-weight-bold">Observaciones:</label>
+            <textarea class="mb-5" name="obs" id="obs" rows="10" cols="80"></textarea>
+        </div>
+
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!--Ajax-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- CKEditor -->
+    <script src="//cdn.ckeditor.com/4.17.1/standard/ckeditor.js"></script>
+    <!-- My Script -->
+    <script src="js/acta.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!--font awesome-->
+    <script src="https://kit.fontawesome.com/0b3284a19f.js" crossorigin="anonymous"></script>
+    <!-- Mi estilo-->
+    <link rel="stylesheet" href="css/banner.css">
+    <link rel="stylesheet" href="css/registroDocente.css">
+    <link rel="stylesheet" href="css/formulario.css">
+    <title>Academias</title>
+</head>
+
+<body>
+
+    <div class="bg-panel-superior">
+        <div class="container d-flex">
+            <div class="w-25">
+                <label class="click iconos-superior">
+                    <span>
+                        <i class="fas fa-home"></i>
+                    </span>
+                    Inicio
+                </label>
+                <label class="click iconos-superior ml-3">
+                    <span>
+                        <i class="fas fa-user"></i>
+                    </span>
+                    Mi perfil
+                </label>
+            </div>
+            <div class="d-flex justify-content-end w-75">
+                <label class="click iconos-superior ml-3">
+                    <span>
+                        <i class="fas fa-sign-out-alt"></i>
+                    </span>
+                    Cerrar sesión
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-menu-principal">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb sin d-flex align-items-center">
+                    <li class="breadcrumb-item">
+                        <a href="#">Inicio</a>
+                    </li>
+                    <li id="accion" class="breadcrumb-item"></li>
+                    <li class="breadcrumb-item active">
+                        <label class="text-menu">Docente</label>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div id="alerta" class="container text-center h1">
+
+    </div>
+
+    <div class="container mt-2">
+        <form action="#" id="registroDocente" method="post">
+            <div class="row">
+                <div class="col-3">
+                    <div class="d-flex">
+                        <img id="perfil" src="img/IconLog.png" class="img-fluid">
+                        <label for="foto" class="img-fluid align-self-center">
+                            <img    src="img/IconAgregar.png" class="add"/>
+                        </label>
+                        <input name="foto" id="foto" type="file" accept="image/*" hidden />
+                    </div>
+                </div>
+                <div class="col-9 mt-5">
+
+                    <div class="form-group row">
+                        <label class="col-2 col-form-label text-input">Nombre</label>
+                        <div class="col-10">
+                            <input name="nombre" type="text" class="form-control text-input bg-input rounded-pill">
+                            <div name="nombre" class="invalid-tooltip"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-2 col-form-label text-input">Nómina</label>
+                        <div class="col-10">
+                            <input name="nomina" type="text" class="form-control text-input bg-input rounded-pill">
+                            <div name="nomina" class="invalid-tooltip"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-2 col-form-label text-input">Teléfono</label>
+                        <div class="col-10">
+                            <input name="telefono" type="text" class="form-control text-input bg-input rounded-pill">
+                            <div name="telefono" class="invalid-tooltip"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-2 col-form-label text-input">Correo</label>
+                        <div class="col-10">
+                            <div class="input-group">
+                                <input name="correo" type="text" class="form-control text-input bg-input rounded-pill">
+                                <div name="correo" class="invalid-tooltip"></div>
+                                <div class="input-group-append">
+                                    <div class="input-group-text text-input sin font-weight-bold">@itesca.edu.mx</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-2 col-form-label text-input">Clave</label>
+                        <div class="col-10">
+                            <input name="clave" type="text" class="form-control text-input bg-input rounded-pill">
+                            <div name="clave" class="invalid-tooltip"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="d-flex justify-content-around">
+                <input type="reset" value="Cancelar" class="btn bg-btn-aplicar">
+                <input type="submit" value="Registrar" class="btn bg-btn-aplicar">
+            </div>
+        </form>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!--Ajax-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- My Script -->
+    <script src="js/docente.js"></script>
+</body>
+
+</html>

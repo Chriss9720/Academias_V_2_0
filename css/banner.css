@@ -1,0 +1,33 @@
+.bg-panel-superior {
+    background-color: rgb(230, 230, 230);
+}
+
+.bg-menu-principal {
+    background-color: rgb(204, 204, 204);
+}
+
+.iconos-superior {
+    font-size: 1.5rem;
+}
+
+.click {
+    cursor: pointer;
+}
+
+.iconos-superior:hover {
+    color: blue;
+}
+
+.sin {
+    background-color: transparent;
+    border: none;
+}
+
+.breadcrumb-item+.breadcrumb-item::before {
+    content: ">";
+}
+
+.text-menu {
+    font-size: 2rem;
+    font-weight: bold;
+}

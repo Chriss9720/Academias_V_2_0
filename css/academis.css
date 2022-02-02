@@ -1,0 +1,11 @@
+.portada {
+    margin-top: -15px;
+    width: 100%;
+    height: 230px;
+}
+
+.add {
+    margin-top: -30px;
+    width: 2.5rem;
+    cursor: pointer;
+}

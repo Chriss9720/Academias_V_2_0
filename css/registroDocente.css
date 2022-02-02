@@ -1,0 +1,12 @@
+.add {
+    width: 2.5rem;
+    margin-left: -50px;
+    margin-top: 150px;
+    cursor: pointer;
+}
+
+#perfil {
+    width: 250px !important;
+    height: 250px !important;
+    border-radius: 50%;
+}
