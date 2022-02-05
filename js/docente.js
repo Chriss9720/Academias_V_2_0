@@ -11,7 +11,6 @@ $(document).ready(() => {
         }
     });
 
-
     $("#registroDocente").submit(form => {
         let data = {
             "nombre": form.target.nombre,
