@@ -10,6 +10,15 @@ $(document).ready(() => {
         });
     }
 
+    const evento = (evt, max) => {
+        if (evt.target.nodeName == 'A' && !evt.target.children[0]) {
+            return parseInt(evt.target.innerHTML);
+        } else {
+            let name = (evt.target.children[0]) ? evt.target.children[0].name : evt.target.name;
+            return (name == 'Final') ? parseInt(max) : 1;
+        }
+    };
+
     $("#accion")[0].innerHTML = "Crear";
 
     $("#portada").change(file => {
@@ -22,16 +31,16 @@ $(document).ready(() => {
     });
 
     const contenido = (pagina, i) => `
-    <li class="page-item ${pagina == i ? 'active' :''}">
-        <a name="pagina" class="page-link click">${i}</a>
-    </li>`;
+        <li class="page-item ${pagina == i ? 'active' :''}">
+            <a name="pagina" class="page-link click bg-input text-input ml-2 form-control text-center">${i}</a>
+        </li>`;
 
     const pie = (pagina, max) => {
         let cuerpo = `
         <ul class="pagination justify-content-center">
-            <li class="page-item ${pagina == 1 ? "disabled" : "click"}">
-                <a name="pagina" class="page-link" aria-label="previous">
-                    <span aria-hidden="true">&laquo;</span>
+            <li class="page-item ${pagina == 1 ? "disabled" : "click"} flechaCont">
+                <a name="pagina" class="page-link h-100 w-100 form-control bg-input" aria-label="previous">
+                    <img src='img/FlechaIzq.png' class="img-fluid flecha" name='Inicio'>
                 </a>
             </li>`;
         let entro = max > 0;
@@ -53,21 +62,16 @@ $(document).ready(() => {
             }
         }
         cuerpo += `
-            <li class="page-item ${pagina == max ? "disabled" : "click"}">
-                <a name="pagina" class="page-link" aria-label="next">
-                    <span aria-hidden="true">&raquo;</span>
+            <li class="page-item ${pagina == max ? "disabled" : "click"} flechaCont ml-3">
+                <a name="pagina" class="page-link h-100 w-100 form-control bg-input" aria-label="next">
+                    <img src='img/FlechaDer.png' class="img-fluid flecha" name='Final'>
                 </a>
             </li>
         </ul>`;
 
         if (entro) $("#pie")[0].innerHTML = cuerpo;
 
-        $(`a[name="pagina"]`).click(evt => {
-            let dato = evt.target.innerHTML;
-            if (dato.includes("»")) cargar(parseInt(max));
-            else if (dato.includes("«")) cargar(parseInt(1));
-            else cargar(parseInt(dato));
-        });
+        $(`a[name="pagina"]`).click(evt => cargar(evento(evt, max)));
 
     };
 

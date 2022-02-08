@@ -14,7 +14,8 @@ IF OBJECT_ID('DOCENTE') IS NULL
 		nomina INT PRIMARY KEY NOT NULL,
 		foto varchar(255) DEFAULT 'img/perfil.png',
 		correo varchar(255) DEFAULT '',
-		telefono varchar(255) DEFAULT ''
+		telefono varchar(255) DEFAULT '',
+		nombre varchar(255) DEFAULT '',
 	)
 GO
 IF OBJECT_ID('MATERIAS') IS NULL
@@ -29,7 +30,8 @@ IF OBJECT_ID('CARRERAS') IS NULL
 	CREATE TABLE CARRERAS (
 		clave_carreras VARCHAR(255) PRIMARY KEY NOT NULL,
 		foto_portada VARCHAR(255) NOT NULL DEFAULT 'img/perfil.png',
-		clave VARCHAR(255) NOT NULL DEFAULT ''
+		clave VARCHAR(255) NOT NULL DEFAULT '',
+		nombre VARCHAR(255) NOT NULL
 	)
 GO
 IF OBJECT_ID('AFILIADO') IS NULL
@@ -89,7 +91,8 @@ IF OBJECT_ID('ASISTENCIA') IS NULL
 		id_asistencia INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 		presente BIT default 0,
 		tarde BIT DEFAULT 0,
-		inasistencia BIT DEFAULT 0
+		inasistencia BIT DEFAULT 0,
+		nomina INT
 	)
 GO
 IF OBJECT_ID('ACTAS') IS NULL
