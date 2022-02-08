@@ -83,6 +83,10 @@ $(document).ready(() => {
                         <label class="text-input">${datos[i].nomina}</label>
                         <label>${datos[i].nombre}</label>
                         <label>${datos[i].carrera}</label>
+                        <div class="d-flex d-inline justify-content-center mb-3">
+                            <img src="img/editar.png" class="opciones img-fluid click" title="editar">
+                            <img src="img/ver-detalles.png" class="opciones img-fluid click ml-2" title="ver">
+                        </div>
                     </div>
                 </div>
             `;
