@@ -1,0 +1,28 @@
+.sombra {
+    background: gray;
+    -webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+}
+
+.btn {
+    width: 200px;
+}
+
+.sin {
+    background-color: transparent !important;
+    border: none !important;
+}
+
+.form-control {
+    background-color: transparent !important;
+    border: 50rem !important;
+}
+
+.fondo {
+    background-color: rgb(230, 230, 230);
+}
+
+.click {
+    cursor: pointer;
+}
