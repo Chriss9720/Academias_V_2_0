@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!--font awesome-->
+    <script src="https://kit.fontawesome.com/0b3284a19f.js" crossorigin="anonymous"></script>
+    <!-- Mi estilo-->
+    <link rel="stylesheet" href="css/banner.css">
+    <link rel="stylesheet" href="css/formulario.css">
+    <link rel="stylesheet" href="css/evPresicente.css">
+    <title>Academias</title>
+</head>
+
+<body>
+
+    <div class="bg-panel-superior">
+        <div class="container d-flex">
+            <div class="w-25">
+                <label class="click iconos-superior">
+                    <span>
+                        <i class="fas fa-home"></i>
+                    </span>
+                    Inicio
+                </label>
+                <label class="click iconos-superior ml-3">
+                    <span>
+                        <i class="fas fa-user"></i>
+                    </span>
+                    Mi perfil
+                </label>
+            </div>
+            <div class="d-flex justify-content-end w-75">
+                <label class="click iconos-superior ml-3">
+                    <span>
+                        <i class="fas fa-sign-out-alt"></i>
+                    </span>
+                    Cerrar sesión
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-menu-principal">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb sin d-flex align-items-center">
+                    <li class="breadcrumb-item">
+                        <a href="#">Inicio</a>
+                    </li>
+                    <li id="accion" class="breadcrumb-item"></li>
+                    <li class="breadcrumb-item active">
+                        <label class="text-menu">Evaluación al Docente</label>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="container mb-5">
+
+        <div class="row">
+            <div class="col-3 border border-dark">
+                <img src="img/logo_ITESCA.png" class="img-fluid">
+            </div>
+            <div class="col-9 border border-dark d-flex flex-column justify-content-center align-items-center">
+                <div class="h1 text-center">EVALUACIÓN AL DOCENTE POR EL PRESIDENTE DE ACADEMIAS</div>
+                <div class="h4 text-center">F04PSA01.01</div>
+            </div>
+            <div class="mt-2 bg-dark text-input text-white font-weight-bold w-100 text-center">DATOS GENERALES</div>
+            <div class="col-3 bg-input text-input border border-dark d-flex justify-content-end align-items-center">Fecha de Elaboración:</div>
+            <div class="col-3 text-input border border-dark d-flex justify-content-end align-items-center">
+                <input type="datetime-local" class="form-control text-input">
+            </div>
+            <div class="col-3 bg-input text-input border border-dark d-flex justify-content-end align-items-center">Periodo a evaluar:</div>
+            <div class="col-3 text-input border border-dark d-flex justify-content-end align-items-center">
+                <select class="form-control text-input">
+                    <option value="1">2</option>
+                    <option value="2">1</option>
+                </select>
+            </div>
+            <div class="col-3 bg-input text-input border border-dark d-flex justify-content-end align-items-center">Nombre del profesor</div>
+            <div class="col-9 text-input border border-dark d-flex justify-content-end align-items-center">
+                <input type="text" disabled class="form-control text-input">
+            </div>
+            <div class="col-3 bg-input text-input border border-dark d-flex text-right">Academia de adscripción:</div>
+            <div class="col-3 text-input border border-dark d-flex justify-content-end align-items-center">
+                <input type="text" disabled class="form-control text-input">
+            </div>
+            <div class="col-3 bg-input text-input border border-dark d-flex text-right">Jefatura a la que pertenece:</div>
+            <div class="col-3 text-input border border-dark d-flex justify-content-end align-items-center">
+                <input type="text" disabled class="form-control text-input">
+            </div>
+
+            <div class="mt-2 bg-dark text-input text-white font-weight-bold w-100 text-center ">INDICADORES A EVALUAR</div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-2 border border-dark text-center">
+                <label class="text-input font-weight-bold">INDICADOR</label>
+            </div>
+            <div class="col-6 border border-dark text-center">
+                <label class="text-input font-weight-bold">Respuesta</label>
+            </div>
+            <div class="col-4 border border-dark text-center">
+                <label class="text-input font-weight-bold">EVALUACIÓN</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-2 border border-dark text-center">
+                <label class="text-justify">Asistencia en el periodo (%)</label>
+            </div>
+            <div class="col-6 border border-dark text-center">
+                <div class="row h-100">
+                    <div class="p-2 nivel border border-dark">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                            <label class="form-check-label" for="exampleRadios1">
+                                4 reuniones atendidas
+                            </label>
+                        </div>
+                    </div>
+                    <div class="p-2 nivel border border-dark">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                            <label class="form-check-label" for="exampleRadios1">
+                                3 reuniones atendidas
+                            </label>
+                        </div>
+                    </div>
+                    <div class="p-2 nivel border border-dark">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                            <label class="form-check-label" for="exampleRadios1">
+                                2 reuniones atendidas
+                            </label>
+                        </div>
+                    </div>
+                    <div class="p-2 nivel border border-dark">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                            <label class="form-check-label" for="exampleRadios1">
+                                1 reuniones atendidas
+                            </label>
+                        </div>
+                    </div>
+                    <div class="p-2 nivel border border-dark">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                            <label class="form-check-label" for="exampleRadios1">
+                                0 reuniones atendidas
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 border border-dark click text-justify" name="evaluacion" id="1">
+                click para editar
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-2 border border-dark">
+                <label class="text-justify">Cumplimiento de acuerdos de Academias</label>
+            </div>
+            <div class="col-6 border border-dark text-center">
+                <div class="row h-100">
+                    <div class="p-2 nivel border border-dark">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                            <label class="form-check-label" for="exampleRadios1">
+                                100%
+                            </label>
+                        </div>
+                    </div>
+                    <div class="p-2 nivel border border-dark">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                            <label class="form-check-label" for="exampleRadios1">
+                                Entre 80% y 100%
+                            </label>
+                        </div>
+                    </div>
+                    <div class="p-2 nivel border border-dark">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                            <label class="form-check-label" for="exampleRadios1">
+                                Entre 60% y 40%
+                            </label>
+                        </div>
+                    </div>
+                    <div class="p-2 nivel border border-dark">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                            <label class="form-check-label" for="exampleRadios1">
+                                Entre 40% y 20%
+                            </label>
+                        </div>
+                    </div>
+                    <div class="p-2 nivel border border-dark">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                            <label class="form-check-label" for="exampleRadios1">
+                                Menos de 20%
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 border border-dark click text-justify" name="evaluacion" id="2">
+                click para editar
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-2 border border-dark">
+                <label class="text-justify">Participación proactiva</label>
+            </div>
+            <div class="col-6 border border-dark text-center">
+                <div class="row h-100">
+                    <div class="p-2 nivel border border-dark">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                            <label class="form-check-label" for="exampleRadios1">
+                                Cuatro o más
+                            </label>
+                        </div>
+                    </div>
+                    <div class="p-2 nivel border border-dark">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                            <label class="form-check-label" for="exampleRadios1">
+                                Tres veces
+                            </label>
+                        </div>
+                    </div>
+                    <div class="p-2 nivel border border-dark">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                            <label class="form-check-label" for="exampleRadios1">
+                                Dos veces
+                            </label>
+                        </div>
+                    </div>
+                    <div class="p-2 nivel border border-dark">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                            <label class="form-check-label" for="exampleRadios1">
+                                Una vez
+                            </label>
+                        </div>
+                    </div>
+                    <div class="p-2 nivel border border-dark">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                            <label class="form-check-label" for="exampleRadios1">
+                                Ninguna
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 border border-dark click text-justify" name="evaluacion" id="3">
+                click para editar
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-2 border border-dark">
+                <label class="text-justify">Entrega oportuna de información de reprobación y bajas.</label>
+            </div>
+            <div class="col-6 border border-dark text-center">
+                <div class="row h-100">
+                    <div class="p-2 nivel border border-dark">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                            <label class="form-check-label" for="exampleRadios1">
+                                En tiempo
+                            </label>
+                        </div>
+                    </div>
+                    <div class="p-2 nivel border border-dark">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                            <label class="form-check-label" for="exampleRadios1">
+                                4 días de retraso
+                            </label>
+                        </div>
+                    </div>
+                    <div class="p-2 nivel border border-dark">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                            <label class="form-check-label" for="exampleRadios1">
+                                8 días de retraso
+                            </label>
+                        </div>
+                    </div>
+                    <div class="p-2 nivel border border-dark">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                            <label class="form-check-label" for="exampleRadios1">
+                                12 días de retraso
+                            </label>
+                        </div>
+                    </div>
+                    <div class="p-2 nivel border border-dark">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                            <label class="form-check-label" for="exampleRadios1">
+                                Más de 12 días de retraso
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 border border-dark click text-justify" name="evaluacion" id="4">
+                click para editar
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-2 border border-dark">
+                <label class="text-justify">Entrega de instrumentaciones didácticas</label>
+            </div>
+            <div class="col-6 border border-dark text-center">
+                <div class="row h-100">
+                    <div class="p-2 nivel border border-dark">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                            <label class="form-check-label" for="exampleRadios1">
+                                En tiempo
+                            </label>
+                        </div>
+                    </div>
+                    <div class="p-2 nivel border border-dark">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                            <label class="form-check-label" for="exampleRadios1">
+                                De 1 a 4 días de retraso
+                            </label>
+                        </div>
+                    </div>
+                    <div class="p-2 nivel border border-dark">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                            <label class="form-check-label" for="exampleRadios1">
+                                De 5 a 8 días de retraso
+                            </label>
+                        </div>
+                    </div>
+                    <div class="p-2 nivel border border-dark">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                            <label class="form-check-label" for="exampleRadios1">
+                                De 9 a 12 días de retraso
+                            </label>
+                        </div>
+                    </div>
+                    <div class="p-2 nivel border border-dark">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                            <label class="form-check-label" for="exampleRadios1">
+                                Más de 12 días de retraso
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 border border-dark click text-justify" name="evaluacion" id="4">
+                click para editar
+            </div>
+        </div>
+
+        <div class="row border border-dark mt-5">
+            <div class="col-10 bg-input text-input border border-dark d-flex justify-content-end align-items-center">
+                Calificación final de Indicadores:
+            </div>
+            <div class="col-2 border border-dark">
+                <input type="text" class="bg-input text-input form-control">
+            </div>
+
+            <div class="col-3 border border-dark text-justify">
+                Con base en el promedio obtenido, evalúe su recomendación de que continúe en funciones de presidente de academia
+            </div>
+            <div class="col-3 border border-dark">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                    <label class="form-check-label" for="exampleRadios1">
+                        15 a 20 puntos<br>Sí
+                    </label>
+                </div>
+            </div>
+            <div class="col-3 border border-dark">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                    <label class="form-check-label" for="exampleRadios1">
+                        9 a 14 puntos<br>Condicionado a mejorar el cumplimiento en academias
+                    </label>
+                </div>
+            </div>
+            <div class="col-3 border border-dark">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                    <label class="form-check-label" for="exampleRadios1">
+                        9 o menos<br>Sí
+                    </label>
+                </div>
+            </div>
+            <div class="col-3 border border-dark text-justify d-flex justify-content-end align-items-center">
+                Observaciones y comentarios:
+            </div>
+            <div class="col-9 border border-dark text-justify">
+                <textarea name="obs" id="obs"></textarea>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal fade" id="editor" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Evaluacion para el indicardor No.<span id="tituloModal"></span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <textarea name="ev" id="ev" cols="30" rows="10"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="aplicarEvaluacion">Aplicar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Ajax-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!-- CKEditor -->
+    <script src="//cdn.ckeditor.com/4.17.1/standard/ckeditor.js"></script>
+    <!-- My Script -->
+    <script src="js/evDocenteXPre.js"></script>
+
+</body>
+
+</html>

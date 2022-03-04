@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!--font awesome-->
+    <script src="https://kit.fontawesome.com/0b3284a19f.js" crossorigin="anonymous"></script>
+    <!-- Mi estilo-->
+    <link rel="stylesheet" href="css/banner.css">
+    <link rel="stylesheet" href="css/formulario.css">
+    <link rel="stylesheet" href="css/planTrabajo.css">
+    <title>Academias</title>
+</head>
+
+<body>
+
+    <div class="bg-panel-superior">
+        <div class="container d-flex">
+            <div class="w-25">
+                <label class="click iconos-superior">
+                    <span>
+                        <i class="fas fa-home"></i>
+                    </span>
+                    Inicio
+                </label>
+                <label class="click iconos-superior ml-3">
+                    <span>
+                        <i class="fas fa-user"></i>
+                    </span>
+                    Mi perfil
+                </label>
+            </div>
+            <div class="d-flex justify-content-end w-75">
+                <label class="click iconos-superior ml-3">
+                    <span>
+                        <i class="fas fa-sign-out-alt"></i>
+                    </span>
+                    Cerrar sesión
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-menu-principal">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb sin d-flex align-items-center">
+                    <li class="breadcrumb-item">
+                        <a href="#">Inicio</a>
+                    </li>
+                    <li id="accion" class="breadcrumb-item"></li>
+                    <li class="breadcrumb-item active">
+                        <label class="text-menu">Plan de Trabajo</label>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-3 border border-dark">
+                <img src="img/logo_ITESCA.png" class="img-fluid">
+            </div>
+            <div class="col-9 border border-dark d-flex flex-column justify-content-center align-items-center">
+                <div class="h1 text-center">PLAN DE TRABAJO DE ACADEMIAS</div>
+                <div class="h4 text-center">F03PSA01.03</div>
+            </div>
+        </div>
+
+        <div class="border border-dark mt-3 p-3">
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-inline d-flex justify-content-center">
+                        <label class="ancho justify-content-end">Nombre de la academia</label>
+                        <input type="text" disabled class="form-control bg-input ml-2 ancho">
+                    </div>
+                    <div class="form-inline d-flex justify-content-center mt-2">
+                        <label class="ancho d-flex justify-content-end">Presidente</label>
+                        <input type="text" disabled class="form-control bg-input ml-2 ancho">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-inline d-flex justify-content-center mt-2">
+                        <label class="d-flex justify-content-end">Semestre</label>
+                        <input type="text" disabled class="form-control bg-input ml-2 ancho">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="h4 text-center">FECHA DE REUNIONES</div>
+        <div class="border border-dark mt-3 p-3">
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-inline d-flex justify-content-center">
+                        <label class="ancho justify-content-end">1ra reunión</label>
+                        <input type="datetime-local" class="form-control bg-input ml-2 ancho fecha">
+                    </div>
+                    <div class="form-inline d-flex justify-content-center mt-2">
+                        <label class="ancho justify-content-end">2da reunión</label>
+                        <input type="datetime-local" class="form-control bg-input ml-2 ancho fecha">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-inline d-flex justify-content-center mt-2">
+                        <label class="ancho justify-content-end">3ra reunión</label>
+                        <input type="datetime-local" class="form-control bg-input ml-2 ancho fecha">
+                    </div>
+                    <div class="form-inline d-flex justify-content-center mt-2">
+                        <label class="ancho justify-content-end">4ta reunión</label>
+                        <input type="datetime-local" class="form-control bg-input ml-2 ancho fecha">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="h4 mt-2 text-center">Actividades</div>
+
+
+        <div class="row mb-3" id="actividades">
+            <div class="no font-weight-bold d-flex justify-content-center align-items-center">
+                <label class="text-center">No.</label>
+            </div>
+            <div class="col-1-mio font-weight-bold d-flex justify-content-center align-items-center">
+                <label class="text-center">Actividades</label>
+            </div>
+            <div class="col-2-mio font-weight-bold d-flex justify-content-center align-items-center">
+                <label class="text-center">Acciones específicas para cada actividad</label>
+            </div>
+            <div class="col-1-mio font-weight-bold d-flex justify-content-center align-items-center">
+                <label class="text-center">Asignaturas en las que imparte</label>
+            </div>
+            <div class="col-1-mio font-weight-bold d-flex justify-content-center align-items-center">
+                <label class="text-center">Responsable</label>
+            </div>
+            <div class="col-1-mio font-weight-bold d-flex justify-content-center align-items-center">
+                <label class="text-center">Fecha de cumplimiento</label>
+            </div>
+            <div class="col-2-mio font-weight-bold d-flex justify-content-center align-items-center">
+                <label class="text-center">Evidencia a entregar</label>
+            </div>
+            <div class="no d-flex justify-content-center align-items-center">
+                <label class="text-center">1</label>
+            </div>
+            <div class="col-1-mio d-flex justify-content-center align-items-center">
+                <label>
+                    Mejoras e innovación de procesos de enseñanza y aprendizaje, incluye implementación de casos, semanas académicas, visitas industriales, proyectos de desarrollo comunitario, etc.
+                </label>
+            </div>
+            <div name="evaluacion" class="col-2-mio sin d-flex justify-content-center align-items-center click">
+                <label class="click">click para editar</label>
+            </div>
+            <div name="evaluacion" class="col-1-mio sin d-flex justify-content-center align-items-center click">
+                <label class="click">click para editar</label>
+            </div>
+            <div class="col-1-mio sin d-flex justify-content-center align-items-center click">
+                <label class="click">Responsable</label>
+            </div>
+            <div class="col-1-mio sin d-flex justify-content-center align-items-center click">
+                <input type="datetime-local" class="form-control bg-input ml-2 fecha_2">
+            </div>
+            <div name="evaluacion" class="col-2-mio sin d-flex justify-content-center align-items-center click">
+                <label class="click">click para editar</label>
+            </div>
+            <div class="no d-flex justify-content-center align-items-center">
+                <label class="text-center">2</label>
+            </div>
+            <div class="col-1-mio d-flex justify-content-center align-items-center">
+                <label>
+                    Uniformizar actividades de formación práctica en asignaturas, talleres y laboratorios.
+                </label>
+            </div>
+            <div name="evaluacion" class="col-2-mio sin d-flex justify-content-center align-items-center click">
+                <label class="click">click para editar</label>
+            </div>
+            <div name="evaluacion" class="col-1-mio sin d-flex justify-content-center align-items-center click">
+                <label class="click">click para editar</label>
+            </div>
+            <div class="col-1-mio sin d-flex justify-content-center align-items-center click">
+                <label class="click">Responsable</label>
+            </div>
+            <div class="col-1-mio sin d-flex justify-content-center align-items-center click">
+                <input type="datetime-local" class="form-control bg-input ml-2 fecha_2">
+            </div>
+            <div name="evaluacion" class="col-2-mio sin d-flex justify-content-center align-items-center click">
+                <label class="click">click para editar</label>
+            </div>
+            <div class="no d-flex justify-content-center align-items-center">
+                <label class="text-center">3</label>
+            </div>
+            <div class="col-1-mio d-flex justify-content-center align-items-center">
+                <label>
+                                Programación de viajes académicos y/o actividades de vinculación.
+                            </label>
+            </div>
+            <div name="evaluacion" class="col-2-mio sin d-flex justify-content-center align-items-center click">
+                <label class="click">click para editar</label>
+            </div>
+            <div name="evaluacion" class="col-1-mio sin d-flex justify-content-center align-items-center click">
+                <label class="click">click para editar</label>
+            </div>
+            <div class="col-1-mio sin d-flex justify-content-center align-items-center click">
+                <label class="click">Responsable</label>
+            </div>
+            <div class="col-1-mio sin d-flex justify-content-center align-items-center click">
+                <input type="datetime-local" class="form-control bg-input ml-2 fecha_2">
+            </div>
+            <div name="evaluacion" class="col-2-mio sin d-flex justify-content-center align-items-center click">
+                <label class="click">click para editar</label>
+            </div>
+            <div class="no d-flex justify-content-center align-items-center">
+                <label class="text-center">4</label>
+            </div>
+            <div class="col-1-mio d-flex justify-content-center align-items-center">
+                <label>
+                                Programa de seguimiento y solución estratégica de las materias (PSSEM).
+                            </label>
+            </div>
+            <div name="evaluacion" class="col-2-mio sin d-flex justify-content-center align-items-center click">
+                <label class="click">click para editar</label>
+            </div>
+            <div name="evaluacion" class="col-1-mio sin d-flex justify-content-center align-items-center click">
+                <label class="click">click para editar</label>
+            </div>
+            <div class="col-1-mio sin d-flex justify-content-center align-items-center click">
+                <label class="click">Responsable</label>
+            </div>
+            <div class="col-1-mio sin d-flex justify-content-center align-items-center click">
+                <input type="datetime-local" class="form-control bg-input ml-2 fecha_2">
+            </div>
+            <div name="evaluacion" class="col-2-mio sin d-flex justify-content-center align-items-center click">
+                <label class="click">click para editar</label>
+            </div>
+            <div class="no d-flex justify-content-center align-items-center">
+                <label class="text-center">5</label>
+            </div>
+            <div class="col-1-mio d-flex justify-content-center align-items-center">
+                <label>
+                                Integrar banco de proyectos integradores y de residencias profesionales.
+                            </label>
+            </div>
+            <div name="evaluacion" class="col-2-mio sin d-flex justify-content-center align-items-center click">
+                <label class="click">click para editar</label>
+            </div>
+            <div name="evaluacion" class="col-1-mio sin d-flex justify-content-center align-items-center click">
+                <label class="click">click para editar</label>
+            </div>
+            <div class="col-1-mio sin d-flex justify-content-center align-items-center click">
+                <label class="click">Responsable</label>
+            </div>
+            <div class="col-1-mio sin d-flex justify-content-center align-items-center click">
+                <input type="datetime-local" class="form-control bg-input ml-2 fecha_2">
+            </div>
+            <div name="evaluacion" class="col-2-mio sin d-flex justify-content-center align-items-center click">
+                <label class="click">click para editar</label>
+            </div>
+            <div class="no d-flex justify-content-center align-items-center">
+                <label class="text-center">6</label>
+            </div>
+            <div class="col-1-mio d-flex justify-content-center align-items-center">
+                <label>
+                                Revisión y actualización de requerimientos de bibliografía básica y de consulta de los programas de curso.
+                            </label>
+            </div>
+            <div name="evaluacion" class="col-2-mio sin d-flex justify-content-center align-items-center click">
+                <label class="click">click para editar</label>
+            </div>
+            <div name="evaluacion" class="col-1-mio sin d-flex justify-content-center align-items-center click">
+                <label class="click">click para editar</label>
+            </div>
+            <div class="col-1-mio sin d-flex justify-content-center align-items-center click">
+                <label class="click">Responsable</label>
+            </div>
+            <div class="col-1-mio sin d-flex justify-content-center align-items-center click">
+                <input type="datetime-local" class="form-control bg-input ml-2 fecha_2">
+            </div>
+            <div name="evaluacion" class="col-2-mio sin d-flex justify-content-center align-items-center click">
+                <label class="click">click para editar</label>
+            </div>
+            <div class="no d-flex justify-content-center align-items-center">
+                <label class="text-center">7</label>
+            </div>
+            <div class="col-1-mio d-flex justify-content-center align-items-center">
+                <label>
+                                Desarrollar proyectos de investigación. Publicación de artículos académicos.
+                            </label>
+            </div>
+            <div name="evaluacion" class="col-2-mio sin d-flex justify-content-center align-items-center click">
+                <label class="click">click para editar</label>
+            </div>
+            <div name="evaluacion" class="col-1-mio sin d-flex justify-content-center align-items-center click">
+                <label class="click">click para editar</label>
+            </div>
+            <div class="col-1-mio sin d-flex justify-content-center align-items-center click">
+                <label class="click">Responsable</label>
+            </div>
+            <div class="col-1-mio sin d-flex justify-content-center align-items-center click">
+                <input type="datetime-local" class="form-control bg-input ml-2 fecha_2">
+            </div>
+            <div name="evaluacion" class="col-2-mio sin d-flex justify-content-center align-items-center click">
+                <label class="click">click para editar</label>
+            </div>
+            <div class="no d-flex justify-content-center align-items-center">
+                <label class="text-center">8</label>
+            </div>
+            <div class="col-1-mio d-flex justify-content-center align-items-center">
+                <label>
+                            Diseño, rediseño o actualización y validación de instrumentaciones didácticas.
+                        </label>
+            </div>
+            <div name="evaluacion" class="col-2-mio sin d-flex justify-content-center align-items-center click">
+                <label class="click">click para editar</label>
+            </div>
+            <div name="evaluacion" class="col-1-mio sin d-flex justify-content-center align-items-center click">
+                <label class="click">click para editar</label>
+            </div>
+            <div class="col-1-mio sin d-flex justify-content-center align-items-center click">
+                <label class="click">Responsable</label>
+            </div>
+            <div class="col-1-mio sin d-flex justify-content-center align-items-center click">
+                <input type="datetime-local" class="form-control bg-input ml-2 fecha_2">
+            </div>
+            <div name="evaluacion" class="col-2-mio sin d-flex justify-content-center align-items-center click">
+                <label class="click">click para editar</label>
+            </div>
+            <div class="no d-flex justify-content-center align-items-center">
+                <label class="text-center">9</label>
+            </div>
+            <div class="col-1-mio d-flex justify-content-center align-items-center">
+                <label>
+                        Generar y validar instrumentos de evaluación (rubricas, listas de cotejo) y pruebas departamentales.
+                    </label>
+            </div>
+            <div name="evaluacion" class="col-2-mio sin d-flex justify-content-center align-items-center click">
+                <label class="click">click para editar</label>
+            </div>
+            <div name="evaluacion" class="col-1-mio sin d-flex justify-content-center align-items-center click">
+                <label class="click">click para editar</label>
+            </div>
+            <div class="col-1-mio sin d-flex justify-content-center align-items-center click">
+                <label class="click">Responsable</label>
+            </div>
+            <div class="col-1-mio sin d-flex justify-content-center align-items-center click">
+                <input type="datetime-local" class="form-control bg-input ml-2 fecha_2">
+            </div>
+            <div name="evaluacion" class="col-2-mio sin d-flex justify-content-center align-items-center click">
+                <label class="click">click para editar</label>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal fade" id="editor" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><span id="tituloModal"></span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <textarea name="ev" id="ev" cols="30" rows="10"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="aplicarEvaluacion">Aplicar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Ajax-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!-- CKEditor -->
+    <script src="//cdn.ckeditor.com/4.17.1/standard/ckeditor.js"></script>
+    <!-- My Script -->
+    <script src="js/planTrabajo.js"></script>
+</body>
+
+</html>

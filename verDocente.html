@@ -10,8 +10,10 @@
     <!--font awesome-->
     <script src="https://kit.fontawesome.com/0b3284a19f.js" crossorigin="anonymous"></script>
     <!-- Mi estilo-->
+    <link rel="stylesheet" href="css/panel.css">
     <link rel="stylesheet" href="css/banner.css">
     <link rel="stylesheet" href="css/formulario.css">
+    <link rel="stylesheet" href="css/carrera.css">
     <title>Academias</title>
 </head>
 
@@ -51,7 +53,9 @@
                     <li class="breadcrumb-item">
                         <a href="#">Inicio</a>
                     </li>
-                    <li id="accion" class="breadcrumb-item"></li>
+                    <li class="breadcrumb-item">
+                        ver
+                    </li>
                     <li class="breadcrumb-item active">
                         <label class="text-menu">Docente</label>
                     </li>
@@ -61,34 +65,44 @@
     </div>
 
     <div class="container">
-        <div class="form-inline justify-content-center">
-            <label class="text-input font-weight-bold ancho justify-content-end">Mostrar</label>
-            <select class="form-control ml-2 text-input bg-input" id="mostrar">
-                <option value="">1</option>
-                <option value="">2</option>
-                <option value="" selected>3</option>
-                <option value="">4</option>
-                <option value="">5</option>
-                <option value="">6</option>
-            </select>
-        </div>
-        <div class="form-inline mt-2 justify-content-center">
-            <label class="text-input font-weight-bold ancho justify-content-end">Buscar por nombre</label>
-            <input type="text" name="" id="" class="form-control bg-input text-input ml-2">
-        </div>
-        <div class="form-inline mt-2 justify-content-center">
-            <label class="text-input font-weight-bold ancho justify-content-end">Buscar por nómina</label>
-            <input type="text" name="" id="" class="form-control bg-input text-input ml-2">
-        </div>
-        <div class="d-flex justify-content-center mt-2">
-            <input type="button" value="Aplicar" class="btn bg-input text-input font-weight-bold rounded rounded-pill">
+        <div class="ml-3 form-inline">
+            <img src="img/IconLog.png" class="img-fluid foto-opcional">
+            <div class="d-flex flex-column ml-5">
+                <label class="text-dark h2 font-weight-bold">MAT. Anabel Gutiérrez Espinoza</label>
+                <label class="h3 align-self-start">6443678866</label>
+                <label class="h5 align-self-start">agutierrez@e-itesca.edu.mx</label>
+            </div>
         </div>
     </div>
 
-    <div class="container mt-5">
-        <div class="row" id="docentes">
+    <div class="container mt-3">
+        <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
+            <label class="btn btn-secondary active opciones text-input">
+            <input type="radio" name="options" id="option1" autocomplete="off"> Carrera
+        </label>
+            <label class="btn btn-secondary opciones text-input">
+            <input type="radio" name="options" id="option2" autocomplete="off"> Academias
+        </label>
+            <label class="btn btn-secondary opciones text-input">
+            <input type="radio" name="options" id="option3" autocomplete="off"> Documentos
+        </label>
+            <label class="btn btn-secondary opciones text-input">
+            <input type="radio" name="options" id="option3" autocomplete="off"> Materias
+        </label>
         </div>
-        <div id="pie"></div>
+    </div>
+
+    <div class="mt-5">
+        <div class="container">
+            <img id="img-portada" src="img/portada.png" class="portada img-fluid">
+            <div class="arriba ml-3 form-inline">
+                <img src="img/IconLog.png" class="img-fluid foto-opcional">
+                <div class="d-flex flex-column">
+                    <label class="text-dark h3 font-weight-bold">Ingeniería en sistemas computacioales</label>
+                    <label class="h5">M.C Cesar Leonel Zazueta Villavicencio</label>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!--Ajax-->
@@ -99,7 +113,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <!-- My Script -->
-    <script src="js/buscarDocente.js"></script>
+
 </body>
 
 </html>

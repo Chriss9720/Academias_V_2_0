@@ -11,7 +11,7 @@
 
     $mpdf->SetHTMLFooter('Pag. {PAGENO} de {nb}');
 
-    $miCss = file_get_contents('../css/pdfPlan.css');
+    $miCss = file_get_contents('../css/generacionPdfPlan.css');
     $mpdf->WriteHTML($miCss, \Mpdf\HTMLParserMode::HEADER_CSS);
 
     $mpdf->SetHTMLHeader('

@@ -3,7 +3,7 @@
 }
 
 .bg-input {
-    background-color: rgb(204, 204, 204);
+    background-color: rgb(204, 204, 204) !important;
 }
 
 .opciones {

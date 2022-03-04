@@ -1,0 +1,35 @@
+.no {
+    flex: 0 0 6% !important;
+    max-width: 6% !important;
+    border: 1px solid black;
+    background-color: rgb(204, 204, 204) !important;
+    padding: 0.25rem!important;
+}
+
+.col-1-mio {
+    flex: 0 0 15% !important;
+    max-width: 15% !important;
+    border: 1px solid black;
+    background-color: rgb(204, 204, 204) !important;
+    padding: 0.25rem!important;
+}
+
+.col-2-mio {
+    flex: 0 0 17% !important;
+    max-width: 17% !important;
+    border: 1px solid black;
+    background-color: rgb(204, 204, 204) !important;
+    padding: 0.25rem!important;
+}
+
+.mt-mio {
+    margin-top: -.2px;
+}
+
+.sin {
+    background-color: transparent !important;
+}
+
+.fecha_2 {
+    width: 100% !important;
+}
