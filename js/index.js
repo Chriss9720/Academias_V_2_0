@@ -1,5 +1,11 @@
 $(document).ready(() => {
 
+    $(window).on("load", () => {
+        session()
+            .then(() => window.location = "panel.html")
+            .catch(() => console.log("no hay sesion"));
+    });
+
     $("[name='visible']").click(() => {
         let elemt = $("#clave")[0];
         if (elemt.type == "password") {
@@ -39,10 +45,8 @@ $(document).ready(() => {
                 },
                 dataType: "json",
                 success: s => resolve(s),
-                error: e => {
-                    console.log(e);
-                    reject(e.responseJSON);
-                }
+                error: e => reject(e.responseJSON)
+
             });
         });
     }
@@ -74,6 +78,5 @@ $(document).ready(() => {
         input.className = input.className.replace(' is-invalid', "");
         $(`#${campo}C`)[0].className = $(`#${campo}C`)[0].className.replace(" error", "");
     };
-
 
 });

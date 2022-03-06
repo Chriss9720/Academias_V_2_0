@@ -35,7 +35,7 @@
                 </label>
             </div>
             <div class="d-flex justify-content-end w-75">
-                <label class="click iconos-superior ml-3">
+                <label id="Cerrar" class="click iconos-superior ml-3">
                     <span>
                         <i class="fas fa-sign-out-alt"></i>
                     </span>
@@ -48,38 +48,18 @@
     <div class="bg-menu-principal">
         <div class="d-flex justify-content-around container">
 
-            <input type="button" value="Ver" class="sin text-menu">
+            <div id="verMenu"></div>
 
-            <div class="dropdown">
-                <button class="btn text-menu dropdown-toggle" type="button" id="editar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Editar
-                </button>
-                <div class="dropdown-menu bg-menu-principal" aria-labelledby="editar">
-                    <input type="button" value="Carrera" class="dropdown-item">
-                    <input type="button" value="Docente" class="dropdown-item">
-                    <input type="button" value="Academia" class="dropdown-item">
-                    <input type="button" value="Plan de trabajo" class="dropdown-item">
-                    <input type="button" value="Acta" class="dropdown-item">
-                    <input type="button" value="Ev. docente" class="dropdown-item">
-                    <input type="button" value="Ev. presidente" class="dropdown-item">
-                    <input type="button" value="Ev. secreatario" class="dropdown-item">
-                </div>
-            </div>
+            <div id="editarMenu"></div>
 
-            <input type="button" value="Crear" class="sin text-menu">
-            <input type="button" value="Descargar" class="sin text-menu">
-            <div clasS="d-flex">
-                <input type="button" value="Pendientes" class="sin text-menu">
-                <div class="d-flex justify-content-center align-items-center">
-                    <span class="badge badge-danger text-white">5</span>
-                </div>
-            </div>
-            <div class="d-flex">
-                <input type="button" value="Finalizar Documento" class="sin text-menu">
-                <div class="d-flex justify-content-center align-items-center">
-                    <span class="badge badge-danger text-white">50</span>
-                </div>
-            </div>
+            <div id="CrearMenu"></div>
+
+            <div id="desMenu"></div>
+
+            <div id="liberarMenu"></div>
+
+            <div id="finalizarMenu"></div>
+
         </div>
     </div>
 
@@ -193,30 +173,23 @@
 
             </div>
 
-            <div class="col-4 border-left border-dark d-flex flex-column">
+            <div class="col-4 border-left border-dark d-flex flex-column mb-5">
                 <div class="align-self-center h1">Coordinador</div>
-                <div class="d-flex flex-column align-items-center">
-                    <img src="img/IconLog.png" class="img-fluid foto-opcional">
-                    <label class="text-input">Nomina</label>
-                    <label>Nombre</label>
-                    <label>Correo</label>
-                    <div class="d-flex d-inline justify-content-center mb-3">
-                        <img src="img/ver-detalles.png" class="opciones img-fluid click ml-2" title="ver">
-                    </div>
+                <div class="d-flex flex-column align-items-center" id="datosCoordinador">
                 </div>
             </div>
 
         </div>
     </div>
 
-    <!--Ajax-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin=" anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <!-- My Script -->
+    <script src="js/panel.js"></script>
+
 </body>
 
 </html>
