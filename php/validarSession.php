@@ -44,7 +44,10 @@
         }
 
         public function sesion() {
-            return $_SESSION["autentificado"];
+            if (count($_SESSION) > 0)
+                return $_SESSION["autentificado"];
+            else
+                return false;
         }
 
         public function activo() {
