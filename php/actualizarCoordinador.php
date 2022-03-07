@@ -15,10 +15,11 @@
     $conectar = new Conectar();
     $con = $conectar->conn();
 
-    $call = "{call dbo.SP_GetCoordinador()}";
-
-    $stmt = sqlsrv_query($con, $call);
-
+    $call = "{call dbo.SP_ActualizarCoordinador(?)}";
+    $params = array(
+        array(&$_POST["nomina"], SQLSRV_PARAM_IN)
+    );
+    $stmt = sqlsrv_query($con, $call, $params);
     if ($stmt === false) {
         if (($errors = sqlsrv_errors()) != null) {
             $error = print_r($errors[0]['message'], true);
@@ -27,16 +28,8 @@
             die(json_encode(array("status"=>404, "msg"=>$error)));
         }
     }
-
-    $res;
-
-    while( $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC) ) {
-        $res = $row;
-    }
-
     sqlsrv_free_stmt($stmt);
     sqlsrv_close($con);
-
-    echo json_encode($res);
+    http_response_code(200);
 
 ?>

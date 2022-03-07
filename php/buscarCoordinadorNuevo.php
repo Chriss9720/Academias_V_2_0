@@ -1,11 +1,15 @@
 <?php
     require('./contectar.php');
     require('./validarSession.php');
+    require('./activo.php');
 
     $session = new Session();
-    if (!$session->sesion()) {
-        http_response_code(401);
-        header("Location: /Academias");
+    $Activo = new Activo();
+    $Activo->validar($session);
+
+    if (!$session->activo()) {
+        http_response_code(404);
+        die("Solicitar Reinicio de sesion");
     }
 
     $conectar = new Conectar();
