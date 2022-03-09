@@ -14,7 +14,7 @@
             $conectar = new Conectar();
             $con = $conectar->conn();
 
-            $call = "{call dbo.SP_MisDatos(?)}";
+            $call = "{call dbo.SP_InfoDocente(?)}";
             $params = array(
                 array(&$nomina, SQLSRV_PARAM_IN)
             );
@@ -27,19 +27,31 @@
                     die(json_encode(array("status"=>404, "msg"=>$error)));
                 }
             }
-            $res;
+            $res = [];
             while( $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC) ) {
-                $res = $row;
+                array_push($res, $row);
             }
-
-            $_SESSION['foto'] = $res['foto'];
-            $_SESSION['nombre'] = $res['nombre'];
-            $_SESSION['correo'] = $res['correo'];
-            $_SESSION['telefono'] = $res['telefono'];
-            $_SESSION['nivel'] = $res['nivel'];
 
             sqlsrv_free_stmt($stmt);
             sqlsrv_close($con);
+
+            if(count($res) > 0) {
+                $_SESSION["foto"] = $res[0]["foto"];
+                $_SESSION["nivel"] = $res[0]["nivel"];
+                $_SESSION["ND"] = $res[0]["ND"];
+                $_SESSION["correo"] = $res[0]["correo"];
+                $_SESSION["telefono"] = $res[0]["telefono"];
+            }
+            $jefe = 0;
+            $puestos = [];
+            for ($i = 0; $i < count($res); $i++) {
+                if ($res[$i]["jefe"] == 1) {
+                    $jefe = 1;
+                }
+                array_push($puestos, $res[$i]["puesto"]);
+            }
+            $_SESSION["jefe"] = $jefe;
+            $_SESSION["puesto"] = $puestos;
 
         }
 
@@ -55,7 +67,7 @@
             $ahora = date("Y-n-j H:i:s");
             $tiempo_transcurrido = (strtotime($ahora)-strtotime($fechaGuardada));
             if ($tiempo_transcurrido >= 600) {
-                return False;
+                return false;
             } else {
                 $_SESSION["ultimoAcceso"] = $ahora;
                 return true;
@@ -69,10 +81,12 @@
         public function misDatos() {
             return array(
                     "foto"=>utf8_encode($_SESSION['foto']),
-                    "nombre"=>utf8_encode($_SESSION['nombre']),
+                    "nombre"=>utf8_encode($_SESSION['ND']),
                     "correo"=>utf8_encode($_SESSION['correo']),
                     "nivel"=>utf8_encode($_SESSION['nivel']),
-                    "telefono"=>utf8_encode($_SESSION['telefono'])
+                    "telefono"=>utf8_encode($_SESSION['telefono']),
+                    "jefe"=>utf8_encode($_SESSION['jefe']),
+                    "puesto"=>$_SESSION['puesto']
                 );
         }
 

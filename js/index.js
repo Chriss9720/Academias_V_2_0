@@ -2,7 +2,7 @@ $(document).ready(() => {
 
     $(window).on("load", () => {
         session()
-            .then(() => window.location = "panel.html")
+            .then((t) => window.location = "panel.html")
             .catch(() => console.log("no hay sesion"));
     });
 
@@ -30,7 +30,9 @@ $(document).ready(() => {
         if (!validacionNumerica(nomina)) return error("Datos ingresados erroneamente")
 
         login({ nomina: nomina, clave: clave })
-            .then(t => window.location = t.cambio)
+            .then(t => {
+                window.location = t.cambio
+            })
             .catch(c => error(c.msg))
     });
 
@@ -45,8 +47,10 @@ $(document).ready(() => {
                 },
                 dataType: "json",
                 success: s => resolve(s),
-                error: e => reject(e.responseJSON)
-
+                error: e => {
+                    console.log(e);
+                    reject(e.responseJSON);
+                }
             });
         });
     }
@@ -77,6 +81,16 @@ $(document).ready(() => {
         let input = $(`#${campo}`)[0];
         input.className = input.className.replace(' is-invalid', "");
         $(`#${campo}C`)[0].className = $(`#${campo}C`)[0].className.replace(" error", "");
+    };
+
+    const session = () => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: "php/session.php",
+                success: (s) => resolve(s),
+                error: (e) => reject(e)
+            });
+        });
     };
 
 });

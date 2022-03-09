@@ -3,7 +3,7 @@
     class Activo {
         public function validar($session) {
             if (!$session->sesion()) {
-                header("Location: /Academias");
+                header("Location: /Academias/");
                 exit();
             }
         }

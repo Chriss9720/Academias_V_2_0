@@ -2,6 +2,7 @@ $(document).ready(() => {
 
     var misDatos;
     var docentesCoordinador;
+
     var cerrarM = {
         load: false,
         login: false
@@ -186,17 +187,19 @@ $(document).ready(() => {
                 cerrarM.load = true;
                 cerrarM.login = true;
                 misDatos = t;
-                menu(t.nivel);
+                menu();
                 cargarCoordinador({ u: false });
                 cerrarModal();
             })
             .catch(e => {
+                console.log(e);
                 if (e.responseText == "Solicitar Reinicio de sesion") {
                     cerrarM.load = true;
                     cerrarModal();
                     login();
-                } else
-                    window.location = "/Academias";
+                } else {
+                    //cerrar().then(() => window.location = "/Academias").catch(() => window.location = "/Academias");
+                }
             });
     };
 
@@ -225,16 +228,14 @@ $(document).ready(() => {
         });
     };
 
-    const menu = nivel => {
+    const menu = () => {
         puedeVer();
         puedeDescargar();
-        switch (parseInt(nivel)) {
-            case 0:
-                puedeEditar(nivel);
-                puedeCrear(nivel);
-                puedeLiberar();
-                break;
-        }
+
+        puedeEditar();
+        puedeCrear();
+        puedeLiberar();
+        puedeFinalizar();
     };
 
     const puedeVer = () => {
@@ -257,41 +258,41 @@ $(document).ready(() => {
         `);
     };
 
-    const puedeEditar = nivel => {
+    const puedeEditar = () => {
         $("#editarMenu").html(`
             <div class="dropdown">
                 <button class="btn text-menu dropdown-toggle" type="button" id="editar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Editar
                 </button>
                 <div class="dropdown-menu bg-menu-principal" aria-labelledby="editar">
-                    ${nivel == 0 ? '<input type="button" value="Carrera" class="dropdown-item">' : ''}
-                    ${nivel == 0 ? '<input type="button" value="Docente" class="dropdown-item">' : ''}
-                    ${nivel == 0 ? '<input type="button" value="Academia" class="dropdown-item">' : ''}
-                    ${nivel == 0 ? '<input type="button" value="Plan de trabajo" class="dropdown-item">' : ''}
-                    ${nivel == 0 ? '<input type="button" value="Acta" class="dropdown-item">' : ''}
-                    ${nivel == 1 ? '<input type="button" value="Ev. docente" class="dropdown-item">' : ''}
-                    ${nivel == 0 ? '<input type="button" value="Ev. presidente" class="dropdown-item">' : ''}
-                    ${nivel == 0 ? '<input type="button" value="Ev. secreatario" class="dropdown-item">' : ''}
+                    ${true ? '<input type="button" value="Carrera" class="dropdown-item">' : ''}
+                    ${true ? '<input type="button" value="Docente" class="dropdown-item">' : ''}
+                    ${true ? '<input type="button" value="Academia" class="dropdown-item">' : ''}
+                    ${true ? '<input type="button" value="Plan de trabajo" class="dropdown-item">' : ''}
+                    ${true ? '<input type="button" value="Acta" class="dropdown-item">' : ''}
+                    ${true ? '<input type="button" value="Ev. docente" class="dropdown-item">' : ''}
+                    ${true ? '<input type="button" value="Ev. presidente" class="dropdown-item">' : ''}
+                    ${true ? '<input type="button" value="Ev. secreatario" class="dropdown-item">' : ''}
                 </div>
             </div>
         `);
     };
 
-    const puedeCrear = nivel => {
+    const puedeCrear = () => {
         $("#CrearMenu").html(`
             <div class="dropdown">
                 <button class="btn text-menu dropdown-toggle" type="button" id="editar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Crear
                 </button>
                 <div class="dropdown-menu bg-menu-principal" aria-labelledby="editar">
-                    ${nivel == 0 ? '<input type="button" value="Carrera" class="dropdown-item">' : ''}
-                    ${nivel == 0 ? '<input type="button" value="Docente" class="dropdown-item">' : ''}
-                    ${nivel == 0 ? '<input type="button" value="Academia" class="dropdown-item">' : ''}
-                    ${nivel == 0 ? '<input type="button" value="Plan de trabajo" class="dropdown-item">' : ''}
-                    ${nivel == 0 ? '<input type="button" value="Acta" class="dropdown-item">' : ''}
-                    ${nivel == 1 ? '<input type="button" value="Ev. docente" class="dropdown-item">' : ''}
-                    ${nivel == 0 ? '<input type="button" value="Ev. presidente" class="dropdown-item">' : ''}
-                    ${nivel == 0 ? '<input type="button" value="Ev. secreatario" class="dropdown-item">' : ''}
+                    ${true ? '<input type="button" value="Carrera" class="dropdown-item">' : ''}
+                    ${true ? '<input type="button" value="Docente" class="dropdown-item">' : ''}
+                    ${true ? '<input type="button" value="Academia" class="dropdown-item">' : ''}
+                    ${true ? '<input type="button" value="Plan de trabajo" class="dropdown-item">' : ''}
+                    ${true ? '<input type="button" value="Acta" class="dropdown-item">' : ''}
+                    ${true ? '<input type="button" value="Ev. docente" class="dropdown-item">' : ''}
+                    ${true ? '<input type="button" value="Ev. presidente" class="dropdown-item">' : ''}
+                    ${true ? '<input type="button" value="Ev. secreatario" class="dropdown-item">' : ''}
                 </div>
             </div>
         `);
@@ -318,7 +319,7 @@ $(document).ready(() => {
         $("#liberarMenu").html(`
             <div class="dropdown">
                 <button class="btn text-menu dropdown-toggle" type="button" id="ver" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <input type="button" value="Pendientes" class="sin text-menu">
+                    <input type="button" value="Liberar" class="sin text-menu">
                 </button>
                 <div class="dropdown-menu bg-menu-principal" aria-labelledby="editar">
                     <div class="d-flex d-inline align-items-center">
@@ -334,11 +335,11 @@ $(document).ready(() => {
         `);
     };
 
-    const puedeFinalizar = nivel => {
+    const puedeFinalizar = () => {
         $("#finalizarMenu").html(`
         <div class="dropdown">
             <button class="btn text-menu dropdown-toggle" type="button" id="ver" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <input type="button" value="Pendientes" class="sin text-menu">
+                <input type="button" value="Finalizar" class="sin text-menu">
             </button>
             <div class="dropdown-menu bg-menu-principal" aria-labelledby="editar">
                 <input type="button" value="Plan de trabajo" class="dropdown-item">
