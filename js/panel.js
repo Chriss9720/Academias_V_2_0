@@ -198,7 +198,7 @@ $(document).ready(() => {
                     cerrarModal();
                     login();
                 } else {
-                    //cerrar().then(() => window.location = "/Academias").catch(() => window.location = "/Academias");
+                    cerrar().then(() => window.location = "/Academias").catch(() => window.location = "/Academias");
                 }
             });
     };
@@ -231,11 +231,16 @@ $(document).ready(() => {
     const menu = () => {
         puedeVer();
         puedeDescargar();
+        let presidente = isPresidente();
+        let secretario = isScretario();
+        let jefe = misDatos.jefe;
+        let nivel = misDatos.nivel;
+        puedeEditar({ presidente, secretario, jefe, nivel });
+        puedeCrear({ presidente, secretario, jefe, nivel });
+        puedeLiberar({ nivel });
+        puedeFinalizar({ presidente });
+        subirEvidencia();
 
-        puedeEditar();
-        puedeCrear();
-        puedeLiberar();
-        puedeFinalizar();
     };
 
     const puedeVer = () => {
@@ -258,53 +263,69 @@ $(document).ready(() => {
         `);
     };
 
-    const puedeEditar = () => {
-        $("#editarMenu").html(`
-            <div class="dropdown">
-                <button class="btn text-menu dropdown-toggle" type="button" id="editar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Editar
-                </button>
-                <div class="dropdown-menu bg-menu-principal" aria-labelledby="editar">
-                    ${true ? '<input type="button" value="Carrera" class="dropdown-item">' : ''}
-                    ${true ? '<input type="button" value="Docente" class="dropdown-item">' : ''}
-                    ${true ? '<input type="button" value="Academia" class="dropdown-item">' : ''}
-                    ${true ? '<input type="button" value="Plan de trabajo" class="dropdown-item">' : ''}
-                    ${true ? '<input type="button" value="Acta" class="dropdown-item">' : ''}
-                    ${true ? '<input type="button" value="Ev. docente" class="dropdown-item">' : ''}
-                    ${true ? '<input type="button" value="Ev. presidente" class="dropdown-item">' : ''}
-                    ${true ? '<input type="button" value="Ev. secreatario" class="dropdown-item">' : ''}
+    const puedeEditar = ({ presidente, secretario, jefe, nivel }) => {
+        if (jefe == 1 || nivel == 1 || nivel == 0 || presidente || secretario) {
+            $("#editarMenu").html(`
+                <div class="dropdown">
+                    <button class="btn text-menu dropdown-toggle" type="button" id="editar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Editar
+                    </button>
+                    <div class="dropdown-menu bg-menu-principal" aria-labelledby="editar">
+                        ${ jefe == 1 || nivel == 0 ? '<input type="button" value="Carrera" class="dropdown-item">' : ''}
+                        ${presidente || secretario ||  jefe == 1 || nivel == 0 || nivel == 1 ? '<input type="button" value="Docente" class="dropdown-item">' : ''}
+                        ${presidente || secretario || nivel == 0 || nivel == 1 ? '<input type="button" value="Academia" class="dropdown-item">' : ''}
+                        ${presidente || secretario || nivel == 1 ? '<input type="button" value="Plan de trabajo" class="dropdown-item">' : ''}
+                        ${presidente || secretario || nivel == 1 ? '<input type="button" value="Acta" class="dropdown-item">' : ''}
+                        ${presidente ? '<input type="button" value="Ev. docente" class="dropdown-item">' : ''}
+                        ${nivel == 1 ? '<input type="button" value="Ev. presidente" class="dropdown-item">' : ''}
+                        ${nivel == 1 ? '<input type="button" value="Ev. secreatario" class="dropdown-item">' : ''}
+                    </div>
                 </div>
-            </div>
-        `);
+            `);
+        } else {
+            $("#editarMenu").remove();
+        }
     };
 
-    const puedeCrear = () => {
-        $("#CrearMenu").html(`
-            <div class="dropdown">
-                <button class="btn text-menu dropdown-toggle" type="button" id="editar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Crear
-                </button>
-                <div class="dropdown-menu bg-menu-principal" aria-labelledby="editar">
-                    ${true ? '<input type="button" value="Carrera" class="dropdown-item">' : ''}
-                    ${true ? '<input type="button" value="Docente" class="dropdown-item">' : ''}
-                    ${true ? '<input type="button" value="Academia" class="dropdown-item">' : ''}
-                    ${true ? '<input type="button" value="Plan de trabajo" class="dropdown-item">' : ''}
-                    ${true ? '<input type="button" value="Acta" class="dropdown-item">' : ''}
-                    ${true ? '<input type="button" value="Ev. docente" class="dropdown-item">' : ''}
-                    ${true ? '<input type="button" value="Ev. presidente" class="dropdown-item">' : ''}
-                    ${true ? '<input type="button" value="Ev. secreatario" class="dropdown-item">' : ''}
+    const puedeCrear = ({ presidente, secretario, jefe, nivel }) => {
+        if (jefe == 1 || nivel == 1 || nivel == 0 || presidente || secretario) {
+            $("#CrearMenu").html(`
+                <div class="dropdown">
+                    <button class="btn text-menu dropdown-toggle" type="button" id="Crear" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Crear
+                    </button>
+                    <div class="dropdown-menu bg-menu-principal" aria-labelledby="Crear">
+                        ${nivel == 0 || nivel == 1 ? '<input type="button" value="Carrera" class="dropdown-item">' : ''}
+                        ${presidente || secretario ||  jefe == 1 || nivel == 0 || nivel == 1 ? '<input type="button" value="Docente" class="dropdown-item">' : ''}
+                        ${nivel == 0 || nivel == 1 ? '<input type="button" value="Academia" class="dropdown-item">' : ''}
+                        ${presidente || secretario || nivel == 1 ? '<input type="button" value="Plan de trabajo" class="dropdown-item">' : ''}
+                        ${presidente || secretario || nivel == 1 ? '<input type="button" value="Acta" class="dropdown-item">' : ''}
+                        ${presidente ? '<input type="button" value="Ev. docente" class="dropdown-item">' : ''}
+                        ${nivel == 1 ? '<input type="button" value="Ev. presidente" class="dropdown-item">' : ''}
+                        ${nivel == 1 ? '<input type="button" value="Ev. secreatario" class="dropdown-item">' : ''}
+                    </div>
                 </div>
-            </div>
+            `);
+        } else {
+            $("#CrearMenu").remove();
+        }
+    };
+
+    const subirEvidencia = () => {
+        $("#subirEvidencia").html(`
+            <button class="btn text-menu" type="button" id="Subir">
+                Subir Evidencia
+            </button>
         `);
     };
 
     const puedeDescargar = () => {
         $("#desMenu").html(`
             <div class="dropdown">
-                <button class="btn text-menu dropdown-toggle" type="button" id="ver" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="btn text-menu dropdown-toggle" type="button" id="Descargar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Descargar
                 </button>
-                <div class="dropdown-menu bg-menu-principal" aria-labelledby="editar">
+                <div class="dropdown-menu bg-menu-principal" aria-labelledby="Descargar">
                     <input type="button" value="Plan de trabajo" class="dropdown-item">
                     <input type="button" value="Acta" class="dropdown-item">
                     <input type="button" value="Ev. docente" class="dropdown-item">
@@ -315,41 +336,49 @@ $(document).ready(() => {
         `);
     };
 
-    const puedeLiberar = () => {
-        $("#liberarMenu").html(`
-            <div class="dropdown">
-                <button class="btn text-menu dropdown-toggle" type="button" id="ver" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <input type="button" value="Liberar" class="sin text-menu">
-                </button>
-                <div class="dropdown-menu bg-menu-principal" aria-labelledby="editar">
-                    <div class="d-flex d-inline align-items-center">
-                        <input type="button" value="Plan de trabajo" class="dropdown-item">
-                        <span class="badge badge-danger">4</span>
+    const puedeLiberar = ({ nivel }) => {
+        if (nivel == 1 || nivel == 0) {
+            $("#liberarMenu").html(`
+                <div class="dropdown">
+                    <button class="btn text-menu dropdown-toggle" type="button" id="ver" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Liberar
+                    </button>
+                    <div class="dropdown-menu bg-menu-principal" aria-labelledby="editar">
+                        <div class="d-flex d-inline align-items-center">
+                            <input type="button" value="Plan de trabajo" class="dropdown-item">
+                            <span class="badge badge-danger">4</span>
+                        </div>
+                        <input type="button" value="Acta" class="dropdown-item">
+                        <input type="button" value="Ev. docente" class="dropdown-item">
+                        <input type="button" value="Ev. presidente" class="dropdown-item">
+                        <input type="button" value="Ev. secreatario" class="dropdown-item">
                     </div>
-                    <input type="button" value="Acta" class="dropdown-item">
-                    <input type="button" value="Ev. docente" class="dropdown-item">
-                    <input type="button" value="Ev. presidente" class="dropdown-item">
-                    <input type="button" value="Ev. secreatario" class="dropdown-item">
                 </div>
-            </div>
-        `);
+            `);
+        } else {
+            $("#liberarMenu").remove();
+        }
     };
 
-    const puedeFinalizar = () => {
-        $("#finalizarMenu").html(`
-        <div class="dropdown">
-            <button class="btn text-menu dropdown-toggle" type="button" id="ver" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <input type="button" value="Finalizar" class="sin text-menu">
-            </button>
-            <div class="dropdown-menu bg-menu-principal" aria-labelledby="editar">
-                <input type="button" value="Plan de trabajo" class="dropdown-item">
-                <input type="button" value="Acta" class="dropdown-item">
-                <input type="button" value="Ev. docente" class="dropdown-item">
-                <input type="button" value="Ev. presidente" class="dropdown-item">
-                <input type="button" value="Ev. secreatario" class="dropdown-item">
-            </div>
-        </div>
-    `);
+    const puedeFinalizar = ({ presidente }) => {
+        if (presidente) {
+            $("#finalizarMenu").html(`
+                <div class="dropdown">
+                    <button class="btn text-menu dropdown-toggle" type="button" id="ver" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <input type="button" value="Finalizar" class="sin text-menu">
+                    </button>
+                    <div class="dropdown-menu bg-menu-principal" aria-labelledby="editar">
+                        <input type="button" value="Plan de trabajo" class="dropdown-item">
+                        <input type="button" value="Acta" class="dropdown-item">
+                        <input type="button" value="Ev. docente" class="dropdown-item">
+                        <input type="button" value="Ev. presidente" class="dropdown-item">
+                        <input type="button" value="Ev. secreatario" class="dropdown-item">
+                    </div>
+                </div>
+            `);
+        } else {
+            $("#finalizarMenu").remove();
+        }
     };
 
     const getCoordinador = () => {
@@ -464,8 +493,6 @@ $(document).ready(() => {
         }
     };
 
-    load();
-
     const aplicarCoordinador = () => {
         $("#nuevoCoordinador").click(() => {
             let datos = $("#buscarCoordinador")[0].value.split(" - ");
@@ -497,5 +524,11 @@ $(document).ready(() => {
             }
         });
     };
+
+    const isPresidente = () => misDatos.puesto.find(p => p == "Presidente");
+
+    const isScretario = () => misDatos.puesto.find(s => s == "Secretario");
+
+    load();
 
 });

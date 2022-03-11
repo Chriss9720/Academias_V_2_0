@@ -1,6 +1,6 @@
 
 INSERT INTO DOCENTE ( nomina , nombre , correo , telefono, clave, nivel)
-VALUES 
+VALUES
 (14032201,'Jose Luis Beltran','14032201@itesca.edu.mx','6442345654','EIFJG',0)
 
 INSERT INTO DOCENTE ( nomina , nombre , correo , telefono, clave, nivel)
