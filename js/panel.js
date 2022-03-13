@@ -3,6 +3,47 @@ $(document).ready(() => {
     var misDatos;
     var docentesCoordinador;
 
+    const crearAcciones = () => {
+
+        $('[name="areaMenu"]').click(evt => sessionStorage.setItem('accion', evt.target.innerText.replace(" ", "")));
+
+        $('[name="opcionMenu"]').click(evt => {
+            sessionStorage.setItem('afectar', evt.target.value);
+            cargando(true);
+            $.ajax({
+                url: "php/validarCambio.php",
+                data: {
+                    accion: sessionStorage.getItem('accion'),
+                    afectar: sessionStorage.getItem('afectar')
+                },
+                type: "post",
+                dataType: "json",
+                success: (s) => window.location = s.cambio,
+                error: (e) => {
+                    console.log(e);
+                    cerrarModal();
+                    if (e.status == 404 && e.responseText == "Solicitar Reinicio de sesion") {
+                        cerrarM.load = true;
+                        login();
+                    } else {
+                        $("#errorG").html(`
+                            <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                                <strong class="h1">${e.responseJSON.msg}</strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        `);
+                    }
+                }
+            });
+        });
+
+        $("#Subir").click(() => {
+            console.log("Subir");
+        });
+    };
+
     var cerrarM = {
         load: false,
         login: false
@@ -10,91 +51,91 @@ $(document).ready(() => {
 
     const cerrarModal = () => {
         $("#modal").modal('hide');
+        $(`[class="modal-backdrop show"]`).remove();
     };
 
-    const cargando = () => {
+    const cargando = (cerrar) => {
         cerrarM.load = false;
-        $("#modales").html(
-            `
-                <div class="modal" id="modal">
-                    <div class="modal-dialog modal-sm">
-                        <div class="modal-content">
-                            <div class="modal-body">
-                                <div class="spinner-grow" role="status">
-                                    <span class="sr-only">Cargando...</span>
-                                </div>
-                                <div class="spinner-grow" role="status">
-                                    <span class="sr-only">Cargando...</span>
-                                </div>
-                                <div class="spinner-grow" role="status">
-                                    <span class="sr-only">Cargando...</span>
-                                </div>
-                                <div class="spinner-grow" role="status">
-                                    <span class="sr-only">Cargando...</span>
-                                </div>
-                                <div class="spinner-grow" role="status">
-                                    <span class="sr-only">Cargando...</span>
-                                </div>
-                                <div class="spinner-grow" role="status">
-                                    <span class="sr-only">Cargando...</span>
-                                </div>
-                                <div class="spinner-grow" role="status">
-                                    <span class="sr-only">Cargando...</span>
-                                </div>
+        $("#modales").html(`
+            <div class="modal" id="modal">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="spinner-grow" role="status">
+                                <span class="sr-only">Cargando...</span>
+                            </div>
+                            <div class="spinner-grow" role="status">
+                                <span class="sr-only">Cargando...</span>
+                            </div>
+                            <div class="spinner-grow" role="status">
+                                <span class="sr-only">Cargando...</span>
+                            </div>
+                            <div class="spinner-grow" role="status">
+                                <span class="sr-only">Cargando...</span>
+                            </div>
+                            <div class="spinner-grow" role="status">
+                                <span class="sr-only">Cargando...</span>
+                            </div>
+                            <div class="spinner-grow" role="status">
+                                <span class="sr-only">Cargando...</span>
+                            </div>
+                            <div class="spinner-grow" role="status">
+                                <span class="sr-only">Cargando...</span>
                             </div>
                         </div>
                     </div>
                 </div>
-            `
-        );
+            </div>
+        `);
 
         $("#modal").modal();
 
-        $('#modal').on('hidden.bs.modal', () => {
-            if (!cerrarM.load) $("#modal").modal();
-        });
+        if (!cerrar) {
+            $('#modal').on('hidden.bs.modal', () => {
+                if (!cerrarM.load) $("#modal").modal();
+            });
+        }
+
     };
 
     const login = () => {
         cerrarM.login = false;
-        $("#modales").html(
-            `
-                <div class="modal" id="modal">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header d-flex justify-content-center h4">
-                                <label>Introduzca sus credenciales</label>
-                            </div>
-                            <div class="modal-body">
-                                <div id="nominaC" class="input-group mb-3 border rounded-pill bg-white">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text sin">
-                                            <i class="fas fa-user"></i>
-                                        </span>
-                                    </div>
-                                    <input id="nomina" type="text" class="form-control" placeholder="Nómina">
-                                    <div name="nomina" class="invalid-tooltip"></div>
+        $("#modales").html(`
+            <div class="modal" id="modal">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header d-flex justify-content-center h4">
+                            <label>Se ha cerrado la session por inactividad, por favor ingrese sus credenciales</label>
+                        </div>
+                        <div class="modal-body">
+                            <div id="nominaC" class="input-group mb-3 border rounded-pill bg-white">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text sin">
+                                        <i class="fas fa-user"></i>
+                                    </span>
                                 </div>
-                                <div id="claveC" class="input-group mt-1 mb-3 border rounded-pill bg-white">
-                                    <div class="input-group-prepend">
-                                        <span name="visible" class="input-group-text sin click">
-                                            <i id="icono" class="fas fa-lock"></i>
-                                        </span>
-                                    </div>
-                                    <input id="clave" type="password" class="form-control" placeholder="Contraseña">
-                                    <div name="clave" class="invalid-tooltip"></div>
+                                <input id="nomina" type="text" class="form-control" placeholder="Nómina">
+                                <div name="nomina" class="invalid-tooltip"></div>
+                            </div>
+                            <div id="claveC" class="input-group mt-1 mb-3 border rounded-pill bg-white">
+                                <div class="input-group-prepend">
+                                    <span name="visible" class="input-group-text sin click">
+                                        <i id="icono" class="fas fa-lock"></i>
+                                    </span>
                                 </div>
-                                <div id="Error"></div>
+                                <input id="clave" type="password" class="form-control" placeholder="Contraseña">
+                                <div name="clave" class="invalid-tooltip"></div>
                             </div>
-                            <div class="modal-footer">
-                                <input id="logearme" type="button" value="Entrar" class="btn btn-success">
-                                <input id="Salir" type="button" value="Salir" class="btn btn-secondary">
-                            </div>
+                            <div id="Error"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <input id="logearme" type="button" value="Entrar" class="btn btn-success">
+                            <input id="Salir" type="button" value="Salir" class="btn btn-secondary">
                         </div>
                     </div>
                 </div>
-            `
-        );
+            </div>
+        `);
 
         $("[name='visible']").click(() => {
             let elemt = $("#clave")[0];
@@ -119,12 +160,12 @@ $(document).ready(() => {
 
             if (!validacionNumerica(nomina)) return error("Datos ingresados erroneamente")
 
-            login({ nomina: nomina, clave: clave })
+            login2({ nomina: nomina, clave: clave })
                 .then(t => load())
                 .catch(c => error(c.msg))
         });
 
-        const login = ({ nomina, clave }) => {
+        const login2 = ({ nomina, clave }) => {
             return new Promise((resolve, reject) => {
                 $.ajax({
                     url: "php/logeo.php",
@@ -169,15 +210,14 @@ $(document).ready(() => {
         };
 
 
-        $("#Salir").click(() => {
-            cerrar().then(() => window.location = "/Academias").catch(() => window.location = "/Academias");
-        });
+        $("#Salir").click(() => cerrar().then(() => window.location = "/Academias").catch(() => window.location = "/Academias"));
 
         $("#modal").modal();
 
         $('#modal').on('hidden.bs.modal', () => {
             if (!cerrarM.login) $("#modal").modal();
         });
+
     };
 
     const load = () => {
@@ -192,7 +232,6 @@ $(document).ready(() => {
                 cerrarModal();
             })
             .catch(e => {
-                console.log(e);
                 if (e.responseText == "Solicitar Reinicio de sesion") {
                     cerrarM.load = true;
                     cerrarModal();
@@ -238,26 +277,26 @@ $(document).ready(() => {
         puedeEditar({ presidente, secretario, jefe, nivel });
         puedeCrear({ presidente, secretario, jefe, nivel });
         puedeLiberar({ nivel });
-        puedeFinalizar({ presidente });
+        puedeFinalizar({ presidente, nivel, secretario });
         subirEvidencia();
-
+        crearAcciones();
     };
 
     const puedeVer = () => {
         $("#verMenu").html(`
             <div class="dropdown">
-                <button class="btn text-menu dropdown-toggle" type="button" id="ver" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button name="areaMenu" class="btn text-menu dropdown-toggle" type="button" id="ver" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Ver
                 </button>
                 <div class="dropdown-menu bg-menu-principal" aria-labelledby="editar">
-                    <input type="button" value="Carrera" class="dropdown-item">
-                    <input type="button" value="Docente" class="dropdown-item">
-                    <input type="button" value="Academia" class="dropdown-item">
-                    <input type="button" value="Plan de trabajo" class="dropdown-item">
-                    <input type="button" value="Acta" class="dropdown-item">
-                    <input type="button" value="Ev. docente" class="dropdown-item">
-                    <input type="button" value="Ev. presidente" class="dropdown-item">
-                    <input type="button" value="Ev. secreatario" class="dropdown-item">
+                    <input name="opcionMenu" type="button" value="Carrera" class="dropdown-item">
+                    <input name="opcionMenu" type="button" value="Docente" class="dropdown-item">
+                    <input name="opcionMenu" type="button" value="Academia" class="dropdown-item">
+                    <input name="opcionMenu" type="button" value="Plan de trabajo" class="dropdown-item">
+                    <input name="opcionMenu" type="button" value="Acta" class="dropdown-item">
+                    <input name="opcionMenu" type="button" value="Ev. docente" class="dropdown-item">
+                    <input name="opcionMenu" type="button" value="Ev. presidente" class="dropdown-item">
+                    <input name="opcionMenu" type="button" value="Ev. secreatario" class="dropdown-item">
                 </div>
             </div>
         `);
@@ -267,18 +306,18 @@ $(document).ready(() => {
         if (jefe == 1 || nivel == 1 || nivel == 0 || presidente || secretario) {
             $("#editarMenu").html(`
                 <div class="dropdown">
-                    <button class="btn text-menu dropdown-toggle" type="button" id="editar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button name="areaMenu" class="btn text-menu dropdown-toggle" type="button" id="editar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Editar
                     </button>
                     <div class="dropdown-menu bg-menu-principal" aria-labelledby="editar">
-                        ${ jefe == 1 || nivel == 0 ? '<input type="button" value="Carrera" class="dropdown-item">' : ''}
-                        ${presidente || secretario ||  jefe == 1 || nivel == 0 || nivel == 1 ? '<input type="button" value="Docente" class="dropdown-item">' : ''}
-                        ${presidente || secretario || nivel == 0 || nivel == 1 ? '<input type="button" value="Academia" class="dropdown-item">' : ''}
-                        ${presidente || secretario || nivel == 1 ? '<input type="button" value="Plan de trabajo" class="dropdown-item">' : ''}
-                        ${presidente || secretario || nivel == 1 ? '<input type="button" value="Acta" class="dropdown-item">' : ''}
-                        ${presidente ? '<input type="button" value="Ev. docente" class="dropdown-item">' : ''}
-                        ${nivel == 1 ? '<input type="button" value="Ev. presidente" class="dropdown-item">' : ''}
-                        ${nivel == 1 ? '<input type="button" value="Ev. secreatario" class="dropdown-item">' : ''}
+                        ${ jefe == 1 || nivel == 0 ? '<input name="opcionMenu" type="button"  value="Carrera" class="dropdown-item">' : ''}
+                        ${presidente || secretario ||  jefe == 1 || nivel == 0 || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Docente" class="dropdown-item">' : ''}
+                        ${presidente || secretario || nivel == 0 || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Academia" class="dropdown-item">' : ''}
+                        ${presidente || secretario || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Plan de trabajo" class="dropdown-item">' : ''}
+                        ${presidente || secretario || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Acta" class="dropdown-item">' : ''}
+                        ${presidente ? '<input name="opcionMenu" type="button"  value="Ev. docente" class="dropdown-item">' : ''}
+                        ${nivel == 1 ? '<input name="opcionMenu" type="button"  value="Ev. presidente" class="dropdown-item">' : ''}
+                        ${nivel == 1 ? '<input name="opcionMenu" type="button"  value="Ev. secreatario" class="dropdown-item">' : ''}
                     </div>
                 </div>
             `);
@@ -291,18 +330,18 @@ $(document).ready(() => {
         if (jefe == 1 || nivel == 1 || nivel == 0 || presidente || secretario) {
             $("#CrearMenu").html(`
                 <div class="dropdown">
-                    <button class="btn text-menu dropdown-toggle" type="button" id="Crear" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button name="areaMenu" class="btn text-menu dropdown-toggle" type="button" id="Crear" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Crear
                     </button>
                     <div class="dropdown-menu bg-menu-principal" aria-labelledby="Crear">
-                        ${nivel == 0 || nivel == 1 ? '<input type="button" value="Carrera" class="dropdown-item">' : ''}
-                        ${presidente || secretario ||  jefe == 1 || nivel == 0 || nivel == 1 ? '<input type="button" value="Docente" class="dropdown-item">' : ''}
-                        ${nivel == 0 || nivel == 1 ? '<input type="button" value="Academia" class="dropdown-item">' : ''}
-                        ${presidente || secretario || nivel == 1 ? '<input type="button" value="Plan de trabajo" class="dropdown-item">' : ''}
-                        ${presidente || secretario || nivel == 1 ? '<input type="button" value="Acta" class="dropdown-item">' : ''}
-                        ${presidente ? '<input type="button" value="Ev. docente" class="dropdown-item">' : ''}
-                        ${nivel == 1 ? '<input type="button" value="Ev. presidente" class="dropdown-item">' : ''}
-                        ${nivel == 1 ? '<input type="button" value="Ev. secreatario" class="dropdown-item">' : ''}
+                        ${nivel == 0 || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Carrera" class="dropdown-item">' : ''}
+                        ${presidente || secretario ||  jefe == 1 || nivel == 0 || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Docente" class="dropdown-item">' : ''}
+                        ${nivel == 0 || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Academia" class="dropdown-item">' : ''}
+                        ${presidente || secretario || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Plan de trabajo" class="dropdown-item">' : ''}
+                        ${presidente || secretario || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Acta" class="dropdown-item">' : ''}
+                        ${presidente ? '<input name="opcionMenu" type="button"  value="Ev. docente" class="dropdown-item">' : ''}
+                        ${nivel == 1 ? '<input name="opcionMenu" type="button"  value="Ev. presidente" class="dropdown-item">' : ''}
+                        ${nivel == 1 ? '<input name="opcionMenu" type="button"  value="Ev. secreatario" class="dropdown-item">' : ''}
                     </div>
                 </div>
             `);
@@ -313,7 +352,7 @@ $(document).ready(() => {
 
     const subirEvidencia = () => {
         $("#subirEvidencia").html(`
-            <button class="btn text-menu" type="button" id="Subir">
+            <button name="areaMenu" class="btn text-menu" type="button" id="Subir">
                 Subir Evidencia
             </button>
         `);
@@ -322,15 +361,15 @@ $(document).ready(() => {
     const puedeDescargar = () => {
         $("#desMenu").html(`
             <div class="dropdown">
-                <button class="btn text-menu dropdown-toggle" type="button" id="Descargar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button name="areaMenu" class="btn text-menu dropdown-toggle" type="button" id="Descargar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Descargar
                 </button>
                 <div class="dropdown-menu bg-menu-principal" aria-labelledby="Descargar">
-                    <input type="button" value="Plan de trabajo" class="dropdown-item">
-                    <input type="button" value="Acta" class="dropdown-item">
-                    <input type="button" value="Ev. docente" class="dropdown-item">
-                    <input type="button" value="Ev. presidente" class="dropdown-item">
-                    <input type="button" value="Ev. secreatario" class="dropdown-item">
+                    <input name="opcionMenu" type="button"  value="Plan de trabajo" class="dropdown-item">
+                    <input name="opcionMenu" type="button"  value="Acta" class="dropdown-item">
+                    <input name="opcionMenu" type="button"  value="Ev. docente" class="dropdown-item">
+                    <input name="opcionMenu" type="button"  value="Ev. presidente" class="dropdown-item">
+                    <input name="opcionMenu" type="button"  value="Ev. secreatario" class="dropdown-item">
                 </div>
             </div>
         `);
@@ -340,18 +379,18 @@ $(document).ready(() => {
         if (nivel == 1 || nivel == 0) {
             $("#liberarMenu").html(`
                 <div class="dropdown">
-                    <button class="btn text-menu dropdown-toggle" type="button" id="ver" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button name="areaMenu" class="btn text-menu dropdown-toggle" type="button" id="ver" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Liberar
                     </button>
                     <div class="dropdown-menu bg-menu-principal" aria-labelledby="editar">
                         <div class="d-flex d-inline align-items-center">
-                            <input type="button" value="Plan de trabajo" class="dropdown-item">
+                            <input name="opcionMenu" type="button"  value="Plan de trabajo" class="dropdown-item">
                             <span class="badge badge-danger">4</span>
                         </div>
-                        <input type="button" value="Acta" class="dropdown-item">
-                        <input type="button" value="Ev. docente" class="dropdown-item">
-                        <input type="button" value="Ev. presidente" class="dropdown-item">
-                        <input type="button" value="Ev. secreatario" class="dropdown-item">
+                        <input name="opcionMenu" type="button"  value="Acta" class="dropdown-item">
+                        <input name="opcionMenu" type="button"  value="Ev. docente" class="dropdown-item">
+                        <input name="opcionMenu" type="button"  value="Ev. presidente" class="dropdown-item">
+                        <input name="opcionMenu" type="button"  value="Ev. secreatario" class="dropdown-item">
                     </div>
                 </div>
             `);
@@ -360,19 +399,19 @@ $(document).ready(() => {
         }
     };
 
-    const puedeFinalizar = ({ presidente }) => {
-        if (presidente) {
+    const puedeFinalizar = ({ presidente, nivel, secretario }) => {
+        if (presidente || nivel == 1 || secretario) {
             $("#finalizarMenu").html(`
                 <div class="dropdown">
-                    <button class="btn text-menu dropdown-toggle" type="button" id="ver" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <input type="button" value="Finalizar" class="sin text-menu">
+                    <button name="areaMenu" class="btn text-menu dropdown-toggle" type="button" id="Finalizar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Finalizar
                     </button>
-                    <div class="dropdown-menu bg-menu-principal" aria-labelledby="editar">
-                        <input type="button" value="Plan de trabajo" class="dropdown-item">
-                        <input type="button" value="Acta" class="dropdown-item">
-                        <input type="button" value="Ev. docente" class="dropdown-item">
-                        <input type="button" value="Ev. presidente" class="dropdown-item">
-                        <input type="button" value="Ev. secreatario" class="dropdown-item">
+                    <div class="dropdown-menu bg-menu-principal" aria-labelledby="Finalizar">
+                        ${presidente ? '<input name="opcionMenu" type="button"  value="Plan de trabajo" class="dropdown-item">': ''}
+                        ${presidente ? '<input name="opcionMenu" type="button"  value="Acta" class="dropdown-item">': ''}
+                        ${presidente ? '<input name="opcionMenu" type="button"  value="Ev. docente" class="dropdown-item">': ''}
+                        ${nivel == 1 ? '<input name="opcionMenu" type="button"  value="Ev. presidente" class="dropdown-item">': ''}
+                        ${presidente ? '<input name="opcionMenu" type="button"  value="Ev. secreatario" class="dropdown-item">': ''}
                     </div>
                 </div>
             `);

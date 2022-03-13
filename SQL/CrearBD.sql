@@ -70,7 +70,7 @@ CREATE TABLE MATERIAS (
 GO
 CREATE TABLE CARRERA (
 	clave_carrera VARCHAR(255) PRIMARY KEY NOT NULL,
-	foto_portada VARCHAR(255) NOT NULL DEFAULT 'img/perfil.png',
+	foto_portada VARCHAR(255) NOT NULL DEFAULT 'img/portada.png',
 	nombre VARCHAR(255) NOT NULL
 )
 GO
@@ -85,7 +85,7 @@ CREATE TABLE AFILIADO (
 GO
 CREATE TABLE ACADEMIA (
 	clave_academia VARCHAR(255) PRIMARY KEY NOT NULL,
-	foto_portada VARCHAR(255) NOT NULL DEFAULT 'img/perfil.png',
+	foto_portada VARCHAR(255) NOT NULL DEFAULT 'img/portada.png',
 	nombre VARCHAR(255) NOT NULL
 )
 GO
