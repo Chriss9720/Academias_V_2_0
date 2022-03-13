@@ -554,10 +554,10 @@ $(document).ready(() => {
             } else {
                 $("#alertaCoor").html(`
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>Debe de ser en formato Nomina - Nombre</strong>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                        <strong>Debe de ser en formato Nomina - Nombre</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                 `);
             }

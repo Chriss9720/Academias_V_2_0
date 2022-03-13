@@ -1,5 +1,88 @@
 $(document).ready(() => {
 
+    const Plan = {
+        "datos": {
+            "academia": "",
+            "presidente": "",
+            "semestre": ""
+        },
+        "fechas": {
+            "fecha_1": "",
+            "fecha_2": "",
+            "fecha_3": "",
+            "fecha_4": ""
+        },
+        "1": {
+            "Acciones": "",
+            "Asignaturas": "",
+            "Responsables": [],
+            "fecha": "",
+            "Evidencia": ""
+        },
+        "2": {
+            "Acciones": "",
+            "Asignaturas": "",
+            "Responsables": [],
+            "fecha": "",
+            "Evidencia": ""
+        },
+        "3": {
+            "Acciones": "",
+            "Asignaturas": "",
+            "Responsables": [],
+            "fecha": "",
+            "Evidencia": ""
+        },
+        "4": {
+            "Acciones": "",
+            "Asignaturas": "",
+            "Responsables": [],
+            "fecha": "",
+            "Evidencia": ""
+        },
+        "5": {
+            "Acciones": "",
+            "Asignaturas": "",
+            "Responsables": [],
+            "fecha": "",
+            "Evidencia": ""
+        },
+        "6": {
+            "Acciones": "",
+            "Asignaturas": "",
+            "Responsables": [],
+            "fecha": "",
+            "Evidencia": ""
+        },
+        "7": {
+            "Acciones": "",
+            "Asignaturas": "",
+            "Responsables": [],
+            "fecha": "",
+            "Evidencia": ""
+        },
+        "8": {
+            "Acciones": "",
+            "Asignaturas": "",
+            "Responsables": [],
+            "fecha": "",
+            "Evidencia": ""
+        },
+        "9": {
+            "Acciones": "",
+            "Asignaturas": "",
+            "Responsables": [],
+            "fecha": "",
+            "Evidencia": ""
+        }
+    };
+
+    const miembrosTotal = []
+
+    let responsableAux = [];
+
+    let idText;
+
     const cerrar = () => {
         return new Promise((resolve, reject) => {
             $.ajax({
@@ -142,7 +225,6 @@ $(document).ready(() => {
             $(`#${campo}C`)[0].className = $(`#${campo}C`)[0].className.replace(" error", "");
         };
 
-
         $("#Salir").click(() => cerrar().then(() => window.location = "/Academias").catch(() => window.location = "/Academias"));
 
         $("#modal").modal();
@@ -232,9 +314,50 @@ $(document).ready(() => {
             </li>
 
             <li class="breadcrumb-item active">
-                <label class="text-menu">Academia</label>
+                <label class="text-menu">
+                    ${sessionStorage.getItem("Academia")}
+                </label>
             </li>
         `);
+    };
+
+    const datosAcademias = () => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: "php/datosAcademias.php",
+                data: {
+                    academia: sessionStorage.getItem('Academia')
+                },
+                type: "post",
+                dataType: "json",
+                success: s => resolve(s),
+                error: e => reject(e)
+            });
+        });
+    };
+
+    const miembrosAcademia = () => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: "php/miembrosAcademia.php",
+                type: "POST",
+                data: {
+                    "Academia": sessionStorage.getItem('Academia')
+                },
+                dataType: "json",
+                success: s => resolve(s),
+                error: e => reject(e)
+            })
+        });
+    };
+
+    const cargarMiembros = data => {
+        let final = "";
+        data.forEach(d => {
+            miembrosTotal.push(d);
+            final += `<option value="${d.nomina} - ${d.nombre}">`;
+        });
+        $("#busqueda_1_lista").html(final);
     };
 
     const load = () => {
@@ -244,30 +367,48 @@ $(document).ready(() => {
                 validarPagina()
                     .then(() => {
                         crearMigaja();
+                        datosAcademias()
+                            .then(t => {
+                                miembrosAcademia()
+                                    .then(s => {
+                                        cargarMiembros(s);
+                                        $("#nameAcademia")[0].value = t.Academia;
+                                        $("#namePresidente")[0].value = t.nombre;
+                                        Plan["datos"]["academia"] = t.Academia;
+                                        Plan["datos"]["presidente"] = t.nombre;
+                                        Plan["datos"]["semestre"] = calcularSemestre();
+                                    })
+                                    .catch(c => {
+                                        if (e.responseText == "Solicitar Reinicio de sesion") {
+                                            cerrarM.load = true;
+                                            cerrarModal();
+                                            login();
+                                        }
+                                        console.log(c);
+                                    })
+                            })
+                            .catch(e => {
+                                if (e.responseText == "Solicitar Reinicio de sesion") {
+                                    cerrarM.load = true;
+                                    cerrarModal();
+                                    login();
+                                } else {
+                                    window.location = "/Academias/Panel.html";
+                                }
+                            });
                         cerrarM.load = true;
                         cerrarM.login = true;
-                        getMisAcademias().then(a => {
-                            for (let i = 0; i < a.length; i++) {
-                                datos.push({
-                                    "fondo": a[i]["foto_portada"],
-                                    "foto": a[i]["foto"],
-                                    "nomina": a[i]["clave_academia"],
-                                    "nombre": a[i]["nombre"],
-                                    "total": a[i]["T"]
-                                });
-                            }
-                            cargar(1);
-                            generarAcciones();
-                            cerrarModal();
-                        }).catch(e => {
-                            cerrarModal();
-                            if (e.responseText == "Solicitar Reinicio de sesion") {
-                                cerrarM.load = true;
-                                login();
-                            }
-                        });
+                        cerrarModal();
                     })
-                    .catch(() => window.location = "/Academias/Panel.html");
+                    .catch((e) => {
+                        if (e.responseText == "Solicitar Reinicio de sesion") {
+                            cerrarM.load = true;
+                            cerrarModal();
+                            login();
+                        } else {
+                            window.location = "/Academias/Panel.html";
+                        }
+                    });
             })
             .catch(e => {
                 if (e.responseText == "Solicitar Reinicio de sesion") {
@@ -280,13 +421,152 @@ $(document).ready(() => {
             });
     };
 
-    load();
+    const calcularSemestre = () => {
+        let date = new Date();
+        if (date.getMonth() >= 0 && date.getMonth() < 6)
+            return `Ene - May ${date.getFullYear()}`;
+        else
+            return `Ago - Dic ${date.getFullYear()}`;
+    };
+
+    const aplicarFiltro = () => {
+        let final = "";
+        miembrosTotal.forEach(m => {
+            let e = responsableAux.find(a => parseInt(a.nomina) == parseInt(m.nomina));
+            if (!e) final += `<option value="${m.nomina} - ${m.nombre}">`;
+        });
+        $("#busqueda_1_lista").html(final);
+        actualizarLista();
+    };
+
+    const actualizarLista = () => {
+        let final = $("#agregados")[0];
+        final.innerHTML = "";
+        responsableAux.forEach(m => {
+            final.innerHTML += `<li>
+                <div class="row">
+                    <div class="col-8">
+                        ${m.nomina} - ${m.nombre}
+                    </div>
+                    <div class="col-4 align-self-center">
+                        <span class="ml-auto">
+                            <i name="remover" id="remover-${m.nomina}" class="click fas fa-user-minus"></i>
+                        </span>
+                    </div>
+                </div>
+            </li>`
+        });
+        $(`i[name="remover"]`).click(evt => {
+            let id = parseInt(evt.target.attributes.id.value.split('-')[1]);
+            let f = false;
+            for (let i = 0; i < responsableAux.length && !f; i++) {
+                if (id == parseInt(responsableAux[i].nomina)) {
+                    f = true;
+                    let j = responsableAux.indexOf(responsableAux[i]);
+                    if (j !== -1) responsableAux.splice(j, 1);
+                }
+            }
+            aplicarFiltro();
+        });
+    };
+
+    $("i[name='pasarALista']").click(evt => {
+        let busqueda = $("#busqueda_1")[0];
+        let nuevo = busqueda.value.split(" - ");
+        if (nuevo.length > 1) {
+            responsableAux.push({
+                "nomina": nuevo[0],
+                "nombre": nuevo[1]
+            });
+            busqueda.value = "";
+            aplicarFiltro();
+        } else {
+            $("#alerResponsable").html(`
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Debe de ser en formato Nomina - Nombre</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            `);
+        }
+
+    });
+
+    $("#nameSemestre")[0].value = calcularSemestre();
 
     $('div[name="evaluacion"]').click(evt => {
-        $("#tituloModal")[0].innerText = "titulo pendiente";
+        let text = "";
+        if (evt.target.nodeName != "DIV" || !evt.target.attributes.id) {
+            idText = evt.delegateTarget.attributes.id.value;
+            text = evt.delegateTarget.innerHTML;
+        }
+        if (evt.target.nodeName == "DIV" && evt.target.attributes.id) {
+            text = evt.target.innerHTML;
+            idText = evt.target.attributes.id.value;
+        }
+        CKEDITOR.instances.ev.setData(text);
+        $("#tituloModal")[0].innerText = `${idText}`;
         $("#editor").modal('show');
     });
 
+    $("#cancelarEvaluacion").click(evt => {
+        idText = undefined;
+        CKEDITOR.instances.ev.setData("");
+    });
+
+    $("#aplicarEvaluacion").click(evt => {
+        let value = CKEDITOR.instances.ev.getData();
+        let act = idText.split("_");
+        let campo = $(`#${idText}`)[0];
+        campo.innerHTML = value;
+        campo.className = campo.className.replace("d-flex justify-content-center align-items-center", "text-justify");
+        Plan[act[1]][act[0]] = value;
+        $("#editor").modal('hide');
+    });
+
+    $('div[name="ResponsablesA"]').click(evt => {
+        if (evt.target.nodeName != "DIV" || !evt.target.attributes.id) {
+            idText = evt.delegateTarget.attributes.id.value;
+        }
+        if (evt.target.nodeName == "DIV" && evt.target.attributes.id) {
+            idText = evt.target.attributes.id.value;
+        }
+        $("#tituloModalR")[0].innerText = `${idText}`;
+        $("#agregados").html("");
+        let act = idText.split("_");
+        responsableAux = Plan[act[1]][act[0]];
+        aplicarFiltro();
+        $("#responsablesModal").modal('show');
+    });
+
+    $("#aplicarResponsables").click(() => {
+        let act = idText.split("_");
+        let campo = $(`#${idText}`)[0];
+        let value = `<ul>${$("#agregados").html()}</ul>`;
+        campo.innerHTML = value;
+        campo.className = campo.className.replace("d-flex justify-content-center align-items-center", "");
+        Plan[act[1]][act[0]] = responsableAux;
+        $("#responsablesModal").modal('hide');
+    });
+
     CKEDITOR.replace('ev');
+
+    $('input[name="fecha"]').change(evt => {
+        let act = evt.target.attributes.id.value.split("_");
+        Plan[act[1]][act[0]] = evt.target.value;
+    });
+
+    $('[name="fechas"]').change(evt => {
+        let id = evt.target.attributes.id.value;
+        let data = evt.target.value;
+        Plan["fechas"][id] = data;
+    });
+
+    $("input[name='Crear']").click(() => {
+        console.log(Plan);
+    });
+
+    load();
 
 });

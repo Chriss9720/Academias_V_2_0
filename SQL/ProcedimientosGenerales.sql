@@ -55,3 +55,28 @@ CREATE PROC SP_DondeCrearPlanAcademia @Nomina INT, @nivel INT AS
 		WHERE C.puesto LIKE '%Presidente' OR C.puesto IS NULL
 	END
 GO
+
+IF OBJECT_ID('SP_InfoAcademiaPlanTrabajo') IS NOT NULL DROP PROC SP_InfoAcademiaPlanTrabajo
+GO
+CREATE PROC SP_InfoAcademiaPlanTrabajo @Clave VARCHAR(255) AS
+	SELECT A.clave_academia, A.nombre, C.puesto
+	FROM ACADEMIA AS A
+	JOIN CARGO AS C
+	ON C.clave_academia = A.clave_academia
+	JOIN DOCENTE AS D
+	ON D.nomina = C.nomina
+	WHERE TRIM(A.clave_academia) LIKE '%'+TRIM(@Clave)+'%'
+	AND C.puesto LIKE '%Presidente%'
+GO
+
+IF OBJECT_ID('SP_MiembrosAcademia') IS NOT NULL DROP PROC SP_MiembrosAcademia
+GO
+CREATE PROC SP_MiembrosAcademia @Clave VARCHAR(255) AS
+	SELECT D.nomina, D.nombre
+	FROM ACADEMIA AS A
+	JOIN CARGO AS C
+	ON C.clave_academia = A.clave_academia
+	JOIN DOCENTE AS D
+	ON D.nomina = C.nomina
+	WHERE A.clave_academia = @Clave
+GO
