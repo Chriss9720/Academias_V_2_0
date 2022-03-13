@@ -420,6 +420,7 @@ $(document).ready(() => {
                 }
             });
     };
+    git
 
     const calcularSemestre = () => {
         let date = new Date();
@@ -535,7 +536,8 @@ $(document).ready(() => {
         $("#tituloModalR")[0].innerText = `${idText}`;
         $("#agregados").html("");
         let act = idText.split("_");
-        responsableAux = Plan[act[1]][act[0]];
+        responsableAux = [];
+        Plan[act[1]][act[0]].forEach(p => responsableAux.push(p));
         aplicarFiltro();
         $("#responsablesModal").modal('show');
     });
