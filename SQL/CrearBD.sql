@@ -92,7 +92,7 @@ GO
 CREATE TABLE EVALUACION (
 	id_evaluacion INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 	localizacion VARCHAR(255) NOT NULL,
-	localizacionXML VARCHAR(255) NOT NULL
+	localizacionJson VARCHAR(255) NOT NULL
 )
 GO
 CREATE TABLE CARGO (
@@ -109,9 +109,9 @@ GO
 CREATE TABLE PLANTRABAJO (
 	id_planTrabajo INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 	fecha DATETIME NOT NULL,
-	subido INT NOT NULL,
+	subido INT NOT NULL DEFAULT 0,
 	localizacion VARCHAR(255) NOT NULL,
-	localizacionXML VARCHAR(255) NOT NULL
+	localizacionJson VARCHAR(255) NOT NULL
 )
 GO
 CREATE TABLE PLANES (
@@ -122,30 +122,31 @@ CREATE TABLE PLANES (
 	FOREIGN KEY (clave_academia) REFERENCES ACADEMIA(clave_academia)
 )
 GO
-CREATE TABLE ASISTENCIA (
-	id_asistencia INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
-	presente BIT default 0,
-	tarde BIT DEFAULT 0,
-	inasistencia BIT DEFAULT 0,
-	nomina INT
-)
-GO
 CREATE TABLE ACTA (
 	id_acta INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 	localizacion VARCHAR(255) NOT NULL,
 	subido INT,
 	finalizada BIT DEFAULT 0,
 	liberada BIT DEFAULT 0,
-	localizacionXML VARCHAR(255) NOT NULL
+	localizacionJson VARCHAR(255) NOT NULL
+)
+GO
+CREATE TABLE ASISTENCIA (
+	id_asistencia INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	id_acta INT NOT NULL,
+	presente BIT default 0,
+	tarde BIT DEFAULT 0,
+	inasistencia BIT DEFAULT 0,
+	nomina INT,
+	FOREIGN KEY (id_acta) REFERENCES ACTA(id_acta)
 )
 GO
 CREATE TABLE AGENDA (
-	id_asistencia INT IDENTITY(1,1) NOT NULL,
+	idAgenda INT IDENTITY(1,1) NOT NULL,
 	id_planTrabajo INT NOT NULL,
-	id_acta INT NOT NULL,
+	id_acta INT NULL,
 	fecha DATETIME DEFAULT NULL,
-	PRIMARY KEY (id_asistencia, id_planTrabajo, id_acta),
-	FOREIGN KEY (id_asistencia) REFERENCES ASISTENCIA(id_asistencia),
+	PRIMARY KEY (idAgenda),
 	FOREIGN KEY (id_acta) REFERENCES ACTA(id_acta),
 	FOREIGN KEY (id_planTrabajo) REFERENCES PLANTRABAJO(id_planTrabajo)
 )

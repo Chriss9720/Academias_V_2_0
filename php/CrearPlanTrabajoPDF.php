@@ -1,8 +1,21 @@
 <?php
 
     require_once 'vendor/autoload.php';
+    require('./contectar.php');
+    require('./validarSession.php');
+    require('./activo.php');
 
-    function getResponsables($responsables, $in, $clave) {
+    $session = new Session();
+    $Activo = new Activo();
+    $Activo->validar($session);
+
+    if (!$session->activo()) {
+        http_response_code(404);
+        die("Solicitar Reinicio de sesion");
+    }
+
+    function getResponsables($responsables, $in, $clave)
+    {
         $ret = "<ul>";
         for ($i = 0; $i < count($responsables); $i++) {
             $nombre = $responsables[$i]["nombre"];
@@ -13,12 +26,73 @@
         return $in;
     }
 
+    function salvarPlan($ruta, $academia, $hoy)
+    {
+        $conectar = new Conectar();
+        $con = $conectar->conn();
+
+        $call = "{call dbo.SP_RegistrarPlan(?,?,?)}";
+        $params = array(
+            array(&$academia, SQLSRV_PARAM_IN),
+            array(&$ruta, SQLSRV_PARAM_IN),
+            array(&$hoy, SQLSRV_PARAM_IN)
+        );
+        $stmt = sqlsrv_query($con, $call, $params);
+        if ($stmt === false) {
+            if (($errors = sqlsrv_errors()) != null) {
+                $error = print_r($errors[0]['message'], true);
+                $error = str_replace("[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]", "", $error);
+                http_response_code(401);
+                die(json_encode(array("status"=>404, "msg"=>$error)));
+            }
+        }
+        sqlsrv_free_stmt($stmt);
+        sqlsrv_close($con);
+    }
+
+    function fechaFormat($date)
+    {
+        $split = explode(' ', $date);
+        $fecha = explode('-', $split[0]);
+        $hora = $split[1];
+        return $fecha[2]."/".$fecha[1]."/".$fecha[0];
+    }
+
+    function salvarFecha($ruta, $fecha)
+    {
+        if (strlen($fecha) > 0) {
+            $fecha = fechaFormat($fecha);
+            $conectar = new Conectar();
+            $con = $conectar->conn();
+
+            $call = "{call dbo.SP_AgendarFecha(?,?)}";
+            $params = array(
+                array(&$ruta, SQLSRV_PARAM_IN),
+                array(&$fecha, SQLSRV_PARAM_IN)
+            );
+            $stmt = sqlsrv_query($con, $call, $params);
+            if ($stmt === false) {
+                if (($errors = sqlsrv_errors()) != null) {
+                    $error = print_r($errors[0]['message'], true);
+                    $error = str_replace("[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]", "", $error);
+                    http_response_code(402);
+                    die(json_encode(array("status"=>402, "msg"=>$error)));
+                }
+            }
+            sqlsrv_free_stmt($stmt);
+            sqlsrv_close($con);
+        }
+    }
+
     $datos = json_decode(json_encode($_POST['data']), true);
     $academia = $datos['datos']['academia'];
+    $preview = $datos['preview'];
+    $claveAcademia = $datos['datos']['claveAcademia'];
     $semestre = $datos['datos']['semestre'];
     $presidente = $datos['datos']['presidente'];
     $jefe = $datos['datos']['jefe'];
     $coordinador = $datos['datos']['coordinador'];
+    $fecha = $datos['fecha'];
     $fechas = $datos['fechas'];
     $fecha_1 = $datos['fechas']['fecha_1'];
     $fecha_2 = $datos['fechas']['fecha_2'];
@@ -42,7 +116,7 @@
         $responsables[1] = "";
     }
     if (array_key_exists('Responsables', $actividad2)) {
-    $responsables = getResponsables($actividad2["Responsables"], $responsables, 2);
+        $responsables = getResponsables($actividad2["Responsables"], $responsables, 2);
     } else {
         $responsables[2] = "";
     }
@@ -52,7 +126,7 @@
         $responsables[3] = "";
     }
     if (array_key_exists('Responsables', $actividad4)) {
-    $responsables = getResponsables($actividad4["Responsables"], $responsables, 4);
+        $responsables = getResponsables($actividad4["Responsables"], $responsables, 4);
     } else {
         $responsables[4] = "";
     }
@@ -459,12 +533,23 @@
         </table>
     ");
 
-    $carpeta = 'pruebasPDF';
+    if ($preview == 0) {
+        $carpeta = 'pruebasPDF';
+    } else {
+        $carpeta = 'pruebasPDF/temp';
+    }
     $nombre = $datos['fechaG'];
-    $nombreArchivo = "../$carpeta/$nombre.pdf";
+    $ruta = "$carpeta/$nombre";
+    $nombreArchivo = "../$ruta.pdf";
 
     $mpdf -> Output($nombreArchivo, 'F');
 
-    echo json_encode(array('ruta'=>"$carpeta/$nombre.pdf"));
+    if ($preview == 0) {
+        salvarPlan($ruta, $claveAcademia, $fecha);
+        salvarFecha($ruta, $fecha_1);
+        salvarFecha($ruta, $fecha_2);
+        salvarFecha($ruta, $fecha_3);
+        salvarFecha($ruta, $fecha_4);
+    }
 
-?>
+    echo json_encode(array('ruta'=>"$ruta.pdf"));

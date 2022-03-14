@@ -1,8 +1,11 @@
 $(document).ready(() => {
 
     const Plan = {
+        "preview": true,
+        "fecha": "",
         "fechaG": "",
         "datos": {
+            "claveAcademia": "",
             "academia": "",
             "presidente": "",
             "semestre": "",
@@ -375,13 +378,14 @@ $(document).ready(() => {
                                         cargarMiembros(s);
                                         $("#nameAcademia")[0].value = t.Academia;
                                         $("#namePresidente")[0].value = t.nombre;
+                                        Plan["datos"]["claveAcademia"] = t.clave_academia;
                                         Plan["datos"]["academia"] = t.Academia;
                                         Plan["datos"]["presidente"] = t.nombre;
                                         Plan["datos"]["coordinador"] = t.Coordinador;
                                         Plan["datos"]["jefe"] = t.Coordinador;
                                         Plan["datos"]["semestre"] = calcularSemestre();
                                     })
-                                    .catch(c => {
+                                    .catch(e => {
                                         if (e.responseText == "Solicitar Reinicio de sesion") {
                                             cerrarM.load = true;
                                             cerrarModal();
@@ -579,24 +583,53 @@ $(document).ready(() => {
         });
     };
 
-    const getFecha = () => {
-        let date = new Date();
-        return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()} ${date.getHours()}-${date.getMinutes()}-${date.getSeconds()} ${Plan["datos"]["academia"]} ${Plan["datos"]["semestre"]}`;
-    };
+    const getFecha = date => `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()} ${date.getHours()}-${date.getMinutes()}-${date.getSeconds()} ${Plan["datos"]["academia"]} ${Plan["datos"]["semestre"]}`;
 
     $("input[name='Crear']").click(() => {
         cargando();
-        Plan["fechaG"] = getFecha();
+        let date = new Date();
+        Plan["fechaG"] = getFecha(date);
+        Plan["fecha"] = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+        Plan["preview"] = 0;
         crearPDF()
             .then(t => {
                 cerrarM.load = true;
                 cerrarModal();
                 window.open(t.ruta);
             })
-            .catch(c => {
+            .catch(e => {
+                console.log(e);
                 cerrarM.load = true;
                 cerrarModal();
-                console.log(c);
+                if (e.responseText == "Solicitar Reinicio de sesion") {
+                    cerrarM.load = true;
+                    cerrarModal();
+                    login();
+                }
+            });
+    });
+
+    $("input[name='preview']").click(() => {
+        cargando();
+        let date = new Date();
+        Plan["fechaG"] = getFecha(date);
+        Plan["fecha"] = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+        Plan["preview"] = 1;
+        crearPDF()
+            .then(t => {
+                cerrarM.load = true;
+                cerrarModal();
+                window.open(t.ruta);
+            })
+            .catch(e => {
+                console.log(e);
+                cerrarM.load = true;
+                cerrarModal();
+                if (e.responseText == "Solicitar Reinicio de sesion") {
+                    cerrarM.load = true;
+                    cerrarModal();
+                    login();
+                }
             });
     });
 
