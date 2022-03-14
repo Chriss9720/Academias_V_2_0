@@ -15,20 +15,20 @@
     $mpdf->WriteHTML($miCss, \Mpdf\HTMLParserMode::HEADER_CSS);
 
     $mpdf->SetHTMLHeader('
-    <table class="borde_tabla">
-        <tbody>
-            <tr>
-                <td class="area_IMG borde_derecho">
-                    <img src="../img/logo_ITESCA.png" alt="logo itesca" class="logo_ITESCA">
-                </td>
-                <td class="area_titulo centrar">
-                    <label class="nombre_documento"><b>PLAN DE TRABAJO DE ACADEMIAS</b></label>
-                    <br>
-                    <label class="subtitulo">F03PSA01.03</label>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+        <table class="borde_tabla">
+            <tbody>
+                <tr>
+                    <td class="area_IMG borde_derecho">
+                        <img src="../img/logo_ITESCA.png" alt="logo itesca" class="logo_ITESCA">
+                    </td>
+                    <td class="area_titulo centrar">
+                        <label class="nombre_documento"><b>PLAN DE TRABAJO DE ACADEMIAS</b></label>
+                        <br>
+                        <label class="subtitulo">F03PSA01.03</label>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     ');
 
     $mpdf->WriteHTML('
@@ -332,7 +332,7 @@
     ');
 
     $carpeta = "pruebasPDF/";
-    $nombreArchivo = "../".$carpeta.$_POST["nombreArchivo"].".pdf";
+    $nombreArchivo = "../$carpeta/archivo.pdf";
 
     $mpdf -> Output($nombreArchivo, 'F');
 

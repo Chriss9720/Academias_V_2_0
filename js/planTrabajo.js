@@ -1,10 +1,13 @@
 $(document).ready(() => {
 
     const Plan = {
+        "fechaG": "",
         "datos": {
             "academia": "",
             "presidente": "",
-            "semestre": ""
+            "semestre": "",
+            "jefe": "",
+            "coordinador": ""
         },
         "fechas": {
             "fecha_1": "",
@@ -235,7 +238,7 @@ $(document).ready(() => {
 
     };
 
-    const cargando = (cerrar) => {
+    const cargando = () => {
         cerrarM.load = false;
         $("#modales").html(`
             <div class="modal" id="modal">
@@ -271,11 +274,9 @@ $(document).ready(() => {
 
         $("#modal").modal();
 
-        if (!cerrar) {
-            $('#modal').on('hidden.bs.modal', () => {
-                if (!cerrarM.load) $("#modal").modal();
-            });
-        }
+        $('#modal').on('hidden.bs.modal', () => {
+            if (!cerrarM.load) $("#modal").modal();
+        });
 
     };
 
@@ -376,6 +377,8 @@ $(document).ready(() => {
                                         $("#namePresidente")[0].value = t.nombre;
                                         Plan["datos"]["academia"] = t.Academia;
                                         Plan["datos"]["presidente"] = t.nombre;
+                                        Plan["datos"]["coordinador"] = t.Coordinador;
+                                        Plan["datos"]["jefe"] = t.Coordinador;
                                         Plan["datos"]["semestre"] = calcularSemestre();
                                     })
                                     .catch(c => {
@@ -384,7 +387,6 @@ $(document).ready(() => {
                                             cerrarModal();
                                             login();
                                         }
-                                        console.log(c);
                                     })
                             })
                             .catch(e => {
@@ -420,7 +422,6 @@ $(document).ready(() => {
                 }
             });
     };
-    git
 
     const calcularSemestre = () => {
         let date = new Date();
@@ -556,17 +557,47 @@ $(document).ready(() => {
 
     $('input[name="fecha"]').change(evt => {
         let act = evt.target.attributes.id.value.split("_");
-        Plan[act[1]][act[0]] = evt.target.value;
+        Plan[act[1]][act[0]] = evt.target.value.replace("T", " ");
     });
 
     $('[name="fechas"]').change(evt => {
         let id = evt.target.attributes.id.value;
         let data = evt.target.value;
-        Plan["fechas"][id] = data;
+        Plan["fechas"][id] = data.replace("T", " ");
     });
 
+    const crearPDF = () => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: "php/CrearPlanTrabajoPDF.php",
+                type: "post",
+                data: { data: Plan },
+                dataType: "json",
+                success: s => resolve(s),
+                error: e => reject(e)
+            });
+        });
+    };
+
+    const getFecha = () => {
+        let date = new Date();
+        return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()} ${date.getHours()}-${date.getMinutes()}-${date.getSeconds()} ${Plan["datos"]["academia"]} ${Plan["datos"]["semestre"]}`;
+    };
+
     $("input[name='Crear']").click(() => {
-        console.log(Plan);
+        cargando();
+        Plan["fechaG"] = getFecha();
+        crearPDF()
+            .then(t => {
+                cerrarM.load = true;
+                cerrarModal();
+                window.open(t.ruta);
+            })
+            .catch(c => {
+                cerrarM.load = true;
+                cerrarModal();
+                console.log(c);
+            });
     });
 
     load();
