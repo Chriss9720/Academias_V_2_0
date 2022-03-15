@@ -116,3 +116,14 @@ CREATE PROC SP_AgendarFecha @Ruta VARCHAR(255), @Fecha DATETIME AS
 	INSERT INTO AGENDA (id_planTrabajo, fecha)
 	VALUES (@ID, @Fecha)
 GO
+
+IF OBJECT_ID('SP_ActualizarCoordinador') IS NOT NULL DROP PROC SP_ActualizarCoordinador
+GO
+CREATE PROC SP_ActualizarCoordinador @nue INT AS
+	UPDATE DOCENTE
+	SET NIVEL = 6
+	WHERE NIVEL = 1
+	UPDATE DOCENTE
+	SET NIVEL = 1
+	WHERE nomina = @nue
+GO

@@ -542,6 +542,7 @@ $(document).ready(() => {
                         cargarCoordinador({ u: true });
                     })
                     .catch(c => {
+                        console.log(c);
                         $("#alertaCoor").html(`
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                             <strong>${c}</strong>
