@@ -14,6 +14,17 @@
         die("Solicitar Reinicio de sesion");
     }
 
+    function eliminar($data, $ruta)
+    {
+        for ($i = 0; $i < count($data); $i++) {
+            $dato = $data[$i];
+            $path = "$ruta/$dato.pdf";
+            if (file_exists($path)) {
+                unlink($path);
+            }
+        }
+    }
+
     function getResponsables($responsables, $in, $clave)
     {
         $ret = "<ul>";
@@ -84,7 +95,19 @@
         }
     }
 
+    function crearCapera($ruta)
+    {
+        if (!file_exists($ruta)) {
+            mkdir($ruta, 0777, true);
+        }
+    }
+
     $datos = json_decode(json_encode($_POST['data']), true);
+    $del = false;
+    if (array_key_exists('temp', json_decode(json_encode($_POST)))) {
+        $del = true;
+        $temp = json_decode(json_encode($_POST['temp']), true);
+    }
     $academia = $datos['datos']['academia'];
     $preview = $datos['preview'];
     $claveAcademia = $datos['datos']['claveAcademia'];
@@ -534,22 +557,33 @@
     ");
 
     if ($preview == 0) {
-        $carpeta = 'pruebasPDF';
+        $carpeta = "../Docs/Planes/$claveAcademia";
     } else {
-        $carpeta = 'pruebasPDF/temp';
+        $carpeta = "../Docs/Planes/$claveAcademia/temp";
     }
+
+    crearCapera("$carpeta");
+
     $nombre = $datos['fechaG'];
     $ruta = "$carpeta/$nombre";
-    $nombreArchivo = "../$ruta.pdf";
+    $nombreArchivo = "$ruta.pdf";
+    $nombreJson = "$ruta.json";
 
-    $mpdf -> Output($nombreArchivo, 'F');
+    $mpdf -> Output("$nombreArchivo", 'F');
 
     if ($preview == 0) {
+        if ($del) {
+            eliminar($temp, "$carpeta/temp");
+        }
         salvarPlan($ruta, $claveAcademia, $fecha);
         salvarFecha($ruta, $fecha_1);
         salvarFecha($ruta, $fecha_2);
         salvarFecha($ruta, $fecha_3);
         salvarFecha($ruta, $fecha_4);
+        $json = json_encode($datos);
+        $bytes = file_put_contents($nombreJson, $json);
     }
 
-    echo json_encode(array('ruta'=>"$ruta.pdf"));
+    echo json_encode(array('ruta'=>"Acacemias/$ruta.pdf"));
+
+?>

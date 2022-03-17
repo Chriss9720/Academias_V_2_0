@@ -83,6 +83,8 @@ $(document).ready(() => {
         }
     };
 
+    const preview = [];
+
     const miembrosTotal = []
 
     let responsableAux = [];
@@ -570,12 +572,24 @@ $(document).ready(() => {
         Plan["fechas"][id] = data.replace("T", " ");
     });
 
+    $("#TodosLosDocentes").click(() => {
+        responsableAux = miembrosTotal;
+        aplicarFiltro();
+        let act = idText.split("_");
+        let campo = $(`#${idText}`)[0];
+        let value = `<ul>${$("#agregados").html()}</ul>`;
+        campo.innerHTML = value;
+        campo.className = campo.className.replace("d-flex justify-content-center align-items-center", "");
+        Plan[act[1]][act[0]] = responsableAux;
+        $("#responsablesModal").modal('hide');
+    });
+
     const crearPDF = () => {
         return new Promise((resolve, reject) => {
             $.ajax({
                 url: "php/CrearPlanTrabajoPDF.php",
                 type: "post",
-                data: { data: Plan },
+                data: { data: Plan, temp: preview },
                 dataType: "json",
                 success: s => resolve(s),
                 error: e => reject(e)
@@ -615,6 +629,7 @@ $(document).ready(() => {
         Plan["fechaG"] = getFecha(date);
         Plan["fecha"] = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
         Plan["preview"] = 1;
+        preview.push(Plan["fechaG"]);
         crearPDF()
             .then(t => {
                 cerrarM.load = true;
@@ -632,6 +647,8 @@ $(document).ready(() => {
                 }
             });
     });
+
+    $("#inicio").click(() => window.location = "/academias/panel.html");
 
     load();
 

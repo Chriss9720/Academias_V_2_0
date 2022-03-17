@@ -21,7 +21,7 @@
     <div class="bg-panel-superior">
         <div class="container d-flex">
             <div class="w-25">
-                <label class="click iconos-superior">
+                <label class="click iconos-superior" id="inicio">
                     <span>
                         <i class="fas fa-home"></i>
                     </span>
@@ -423,12 +423,17 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                        Cancelar
-                    </button>
-                    <button type="button" class="btn btn-primary" id="aplicarResponsables">
-                        Aplicar
-                    </button>
+                    <div class="d-flex justify-content-around w-100">
+                        <input type="button" value="Todos" class="btn btn-success" id="TodosLosDocentes">
+                        <div>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                Cancelar
+                            </button>
+                            <button type="button" class="btn btn-primary" id="aplicarResponsables">
+                                Aplicar
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

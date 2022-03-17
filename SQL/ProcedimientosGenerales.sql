@@ -127,3 +127,17 @@ CREATE PROC SP_ActualizarCoordinador @nue INT AS
 	SET NIVEL = 1
 	WHERE nomina = @nue
 GO
+
+IF OBJECT_ID('SP_RegistrarDocente') IS NOT NULL DROP PROC SP_RegistrarDocente
+GO
+CREATE PROC SP_RegistrarDocente @Nomina INT, @Nombre VARCHAR(255),
+	@Telefono VARCHAR(255), @Correo VARCHAR(255), @Clave VARCHAR(255),
+	@Foto VARCHAR(255) AS
+	IF EXISTS(SELECT * FROM DOCENTE WHERE nomina = @Nomina) BEGIN
+		RAISERROR(50002, 11, 1)
+	END
+	ELSE BEGIN
+		INSERT INTO DOCENTE (nomina, foto, nombre, correo, telefono, clave)
+		VALUES(@Nomina, @Foto, @Nombre, @Correo, @Telefono,	@Clave)
+	END
+GO

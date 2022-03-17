@@ -21,7 +21,7 @@
     <div class="bg-panel-superior">
         <div class="container d-flex">
             <div class="w-25">
-                <label class="click iconos-superior">
+                <label class="click iconos-superior" id="inicio">
                     <span>
                         <i class="fas fa-home"></i>
                     </span>
@@ -35,7 +35,7 @@
                 </label>
             </div>
             <div class="d-flex justify-content-end w-75">
-                <label class="click iconos-superior ml-3">
+                <label class="click iconos-superior ml-3" id="Cerrar">
                     <span>
                         <i class="fas fa-sign-out-alt"></i>
                     </span>
@@ -50,7 +50,7 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb sin d-flex align-items-center">
                     <li class="breadcrumb-item">
-                        <a href="#">Inicio</a>
+                        <a href="panel.html">Inicio</a>
                     </li>
                     <li id="accion" class="breadcrumb-item"></li>
                     <li class="breadcrumb-item active">
@@ -66,81 +66,84 @@
     </div>
 
     <div class="container mt-2">
-        <form action="#" id="registroDocente" method="post">
-            <div class="row">
-                <div class="col-3">
-                    <div class="d-flex">
-                        <img id="perfil" src="img/IconLog.png" class="img-fluid">
-                        <label for="foto" class="img-fluid align-self-center">
+        <div class="row">
+            <div class="col-3">
+                <div class="d-flex">
+                    <img id="perfil" src="img/IconLog.png" class="img-fluid">
+                    <label for="foto" class="img-fluid align-self-center">
                             <img    src="img/IconAgregar.png" class="add"/>
                         </label>
-                        <input name="foto" id="foto" type="file" accept="image/*" hidden />
+                    <input name="foto" id="foto" type="file" accept="image/*" hidden />
+                </div>
+            </div>
+            <div class="col-9 mt-5">
+
+                <div class="form-group row">
+                    <label class="col-2 col-form-label text-input" for="nombre">Nombre</label>
+                    <div class="col-10">
+                        <input name="nombre" id="nombre" type="text" class="form-control text-input bg-input rounded-pill">
+                        <div name="nombre" class="invalid-tooltip"></div>
                     </div>
                 </div>
-                <div class="col-9 mt-5">
 
-                    <div class="form-group row">
-                        <label class="col-2 col-form-label text-input">Nombre</label>
-                        <div class="col-10">
-                            <input name="nombre" type="text" class="form-control text-input bg-input rounded-pill">
-                            <div name="nombre" class="invalid-tooltip"></div>
-                        </div>
+                <div class="form-group row">
+                    <label class="col-2 col-form-label text-input" for="nominaR">Nómina</label>
+                    <div class="col-10">
+                        <input name="nominaR" id="nominaR" type="text" class="form-control text-input bg-input rounded-pill">
+                        <div name="nominaR" class="invalid-tooltip"></div>
                     </div>
+                </div>
 
-                    <div class="form-group row">
-                        <label class="col-2 col-form-label text-input">Nómina</label>
-                        <div class="col-10">
-                            <input name="nomina" type="text" class="form-control text-input bg-input rounded-pill">
-                            <div name="nomina" class="invalid-tooltip"></div>
-                        </div>
+                <div class="form-group row">
+                    <label class="col-2 col-form-label text-input" for="telefono">Teléfono</label>
+                    <div class="col-10">
+                        <input name="telefono" id="telefono" type="text" class="form-control text-input bg-input rounded-pill">
+                        <div name="telefono" class="invalid-tooltip"></div>
                     </div>
+                </div>
 
-                    <div class="form-group row">
-                        <label class="col-2 col-form-label text-input">Teléfono</label>
-                        <div class="col-10">
-                            <input name="telefono" type="text" class="form-control text-input bg-input rounded-pill">
-                            <div name="telefono" class="invalid-tooltip"></div>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="col-2 col-form-label text-input">Correo</label>
-                        <div class="col-10">
-                            <div class="input-group">
-                                <input name="correo" type="text" class="form-control text-input bg-input rounded-pill">
-                                <div name="correo" class="invalid-tooltip"></div>
-                                <div class="input-group-append">
-                                    <div class="input-group-text text-input sin font-weight-bold">@itesca.edu.mx</div>
+                <div class="form-group row">
+                    <label class="col-2 col-form-label text-input" for="correo">Correo</label>
+                    <div class="col-10">
+                        <div class="input-group">
+                            <input name="correo" id="correo" type="text" class="form-control text-input bg-input rounded-pill">
+                            <div name="correo" class="invalid-tooltip" style="margin-top: -10px;"></div>
+                            <div class="input-group-append">
+                                <div class="input-group-text sin">
+                                    <select class="custom-select text-input font-weight-bold" id="extension">
+                                        <option value="@itesca.edu.mx" selected>@itesca.edu.mx</option>
+                                        <option value="@cajeme.tecnm.mx">@cajeme.tecnm.mx</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="form-group row">
-                        <label class="col-2 col-form-label text-input">Clave</label>
-                        <div class="col-10">
-                            <input name="clave" type="text" class="form-control text-input bg-input rounded-pill">
-                            <div name="clave" class="invalid-tooltip"></div>
-                        </div>
-                    </div>
-
                 </div>
+                <div class="form-group row">
+                    <label class="col-2 col-form-label text-input" for="claveR">Clave</label>
+                    <div class="col-10">
+                        <input name="claveR" id="claveR" type="text" class="form-control text-input bg-input rounded-pill">
+                        <div name="claveR" class="invalid-tooltip"></div>
+                    </div>
+                </div>
+
             </div>
-            <div class="d-flex justify-content-around">
-                <input type="reset" value="Cancelar" class="btn bg-btn-aplicar">
-                <input type="submit" value="Registrar" class="btn bg-btn-aplicar">
-            </div>
-        </form>
+        </div>
+        <div class="d-flex justify-content-around">
+            <input value="Cancelar" type="button" class="btn bg-btn-aplicar">
+            <input id="registrar" type="button" value="Registrar" class="btn btn-primary-r">
+        </div>
     </div>
 
-    <!--Ajax-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <div id="modales"></div>
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin=" anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <!-- My Script -->
+    <script src="js/validaciones.js"></script>
     <script src="js/docente.js"></script>
 </body>
 

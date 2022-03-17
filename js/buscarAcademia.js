@@ -398,6 +398,8 @@ $(document).ready(() => {
 
     });
 
+    $("#inicio").click(() => window.location = "/academias/panel.html");
+
     load();
 
 });
