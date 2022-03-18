@@ -1,0 +1,59 @@
+Administrador:
+-----------------------------------------------
+14032202 , EIFJG
+
+Coordinador:
+-----------------------------------------------
+14032202 , EIFJG
+-----------------------------------------------
+Jefes
+-----------------------------------------------
+Jefe de Carrera ISC:
+14032201 , ZXP7Y
+
+Jefe de Carrera ARC:
+14032202 , EIFJG
+
+Jefe de Carrera IM:
+14032203 ,  GDKTD
+-----------------------------------------------
+Academias:
+-----------------------------------------------
+Academia base 1
+Presidente:
+14032201 , ZXP7Y
+Secretario:
+14032202 , EIFJG
+
+Academia base 2
+Presidente:
+14032211 , HFDGT
+Secretario:
+14032212 , SGEGD
+
+Academia base 3
+Presidente:
+14032205 , ROTEV
+Secretario:
+14032206 , TNXAF
+
+Academia Base 4
+Presidente:
+14032203 , GDKTD
+Secretario:
+14032204 , RKGSO
+
+Academia Base 5
+Presidente:
+14032210 , HRXSE
+Secretario:
+14032214 , SFGET
+-----------------------------------------------
+Docentes
+-----------------------------------------------
+14032207 , YRVSR
+14032208 , ADHRF
+14032209 , DGMED
+14032213 , EGDVN
+14032215 , HKSFG
+-----------------------------------------------

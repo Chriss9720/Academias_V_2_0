@@ -8,6 +8,12 @@ CREATE PROC SP_Login
 	@Clave VARCHAR(255) AS
 	IF NOT EXISTS (SELECT * FROM DOCENTE WHERE nomina = @NOMINA AND clave = TRIM(@Clave))
 		RAISERROR(50001, 11, 1)
+	ELSE BEGIN
+		DECLARE @BAJA BIT
+		SELECT @BAJA = baja FROM DOCENTE WHERE nomina = @NOMINA AND clave = TRIM(@Clave)
+		IF @BAJA = 1
+			RAISERROR(50003, 11, 1)
+	END
 GO
 
 IF OBJECT_ID('SP_GetCoordinador') IS NOT NULL DROP PROC SP_GetCoordinador
@@ -21,13 +27,13 @@ IF OBJECT_ID('SP_BuscarCoordinadorNuevo') IS NOT NULL DROP PROC SP_BuscarCoordin
 GO
 CREATE PROC SP_BuscarCoordinadorNuevo AS
 	SELECT nomina, TRIM(foto) AS foto, TRIM(nombre) AS nombre, TRIM(correo) AS correo, TRIM(telefono) AS telefono, nivel
-	FROM DOCENTE WHERE Nivel != 1 AND Nivel != 0
+	FROM DOCENTE WHERE Nivel != 1 AND Nivel != 0 AND baja != 1
 GO
 
 IF OBJECT_ID('SP_InfoDocente') IS NOT NULL DROP PROC SP_InfoDocente
 GO
 CREATE PROC SP_InfoDocente @DOC INT AS
-	SELECT * FROM VW_InfoDocente WHERE nomina = @DOC
+	SELECT * FROM VW_InfoDocente WHERE nomina = @DOC AND baja != 1
 GO
 
 IF OBJECT_ID('SP_DondeCrearPlanAcademia') IS NOT NULL DROP PROC SP_DondeCrearPlanAcademia
@@ -39,7 +45,7 @@ CREATE PROC SP_DondeCrearPlanAcademia @Nomina INT, @nivel INT AS
 		JOIN CARGO AS C
 		ON C.clave_academia = A.clave_academia
 		JOIN DOCENTE AS D
-		ON D.nomina = @Nomina AND C.nomina = @Nomina AND (C.puesto LIKE '%Presidente%' OR C.puesto IS NULL)
+		ON D.nomina = @Nomina AND C.nomina = @Nomina AND (C.puesto LIKE '%Presidente%' OR C.puesto IS NULL) AND D.baja != 1
 		JOIN (
 			SELECT COUNT(*) AS T, C.clave_academia FROM CARGO AS C GROUP BY(clave_academia)
 		) AS T
@@ -51,7 +57,7 @@ CREATE PROC SP_DondeCrearPlanAcademia @Nomina INT, @nivel INT AS
 		JOIN CARGO AS C
 		ON C.clave_academia = A.clave_academia
 		JOIN DOCENTE AS D
-		ON C.nomina = D.nomina
+		ON C.nomina = D.nomina AND D.baja != 1
 		WHERE C.puesto LIKE '%Presidente' OR C.puesto IS NULL
 	END
 GO
@@ -95,7 +101,7 @@ CREATE PROC SP_MiembrosAcademia @Clave VARCHAR(255) AS
 	JOIN CARGO AS C
 	ON C.clave_academia = A.clave_academia
 	JOIN DOCENTE AS D
-	ON D.nomina = C.nomina
+	ON D.nomina = C.nomina AND D.baja != 1
 	WHERE A.clave_academia = @Clave
 GO
 
@@ -140,4 +146,54 @@ CREATE PROC SP_RegistrarDocente @Nomina INT, @Nombre VARCHAR(255),
 		INSERT INTO DOCENTE (nomina, foto, nombre, correo, telefono, clave)
 		VALUES(@Nomina, @Foto, @Nombre, @Correo, @Telefono,	@Clave)
 	END
+GO
+
+IF OBJECT_ID('SP_EditarDocente') IS NOT NULL DROP PROC SP_EditarDocente
+GO
+CREATE PROC SP_EditarDocente @Nivel INT, @Nomina INT AS
+	IF @Nivel = 1 OR @Nivel = 0 BEGIN
+		SELECT * FROM DOCENTE WHERE nivel != 0 AND nivel != 1
+	END
+	ELSE BEGIN
+		SELECT DISTINCT D.nomina, D.nombre
+		FROM CARGO AS C
+		JOIN DOCENTE AS D
+		ON D.nomina = C.nomina
+		WHERE clave_academia LIKE (
+			SELECT clave_academia FROM CARGO AS C
+			WHERE C.nomina = @Nomina
+			AND ( C.puesto LIKE '%Presidente%' OR C.puesto LIKE '%Secretario%')
+		)
+		AND C.nomina != @Nomina
+	END
+GO
+
+IF OBJECT_ID('SP_ActualizarDocente') IS NOT NULL DROP PROC SP_ActualizarDocente
+GO
+CREATE PROC SP_ActualizarDocente @Nomina INT, @Nombre VARCHAR(255),
+	@Telefono VARCHAR(255), @Correo VARCHAR(255), @Clave VARCHAR(255),
+	@Foto VARCHAR(255) AS
+	UPDATE DOCENTE
+	SET nombre = @Nombre,
+		telefono = @Telefono,
+		correo = @Correo,
+		clave = @Clave,
+		foto = @Foto
+	WHERE nomina = @Nomina
+GO
+
+IF OBJECT_ID('SP_BajaDocente') IS NOT NULL DROP PROC SP_BajaDocente
+GO
+CREATE PROC SP_BajaDocente @Nomina INT AS
+	UPDATE DOCENTE
+	SET baja = 1
+	WHERE nomina = @Nomina AND nivel != 0 AND nivel != 1
+GO
+
+IF OBJECT_ID('SP_AltaDocente') IS NOT NULL DROP PROC SP_AltaDocente
+GO
+CREATE PROC SP_AltaDocente @Nomina INT AS
+	UPDATE DOCENTE
+	SET baja = 0
+	WHERE nomina = @Nomina AND nivel != 0 AND nivel != 1
 GO

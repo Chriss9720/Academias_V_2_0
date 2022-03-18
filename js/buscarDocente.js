@@ -1,6 +1,8 @@
 $(document).ready(() => {
 
-    $("#accion")[0].innerText = "Buscar";
+    $("#accion")[0].innerText = sessionStorage.getItem("accion");
+
+    $("#inicio").click(() => window.location = "/academias/panel.html");
 
     let datos = [];
 

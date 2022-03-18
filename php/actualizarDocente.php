@@ -1,5 +1,4 @@
 <?php
-
     require('./contectar.php');
     require('./validarSession.php');
     require('./activo.php');
@@ -24,7 +23,7 @@
     $conectar = new Conectar();
     $con = $conectar->conn();
 
-    $call = "{call dbo.SP_RegistrarDocente(?,?,?,?,?,?)}";
+    $call = "{call dbo.SP_ActualizarDocente(?,?,?,?,?,?)}";
     $params = array(
         array(&$nomina, SQLSRV_PARAM_IN),
         array(&$nombre, SQLSRV_PARAM_IN),
@@ -45,6 +44,5 @@
     sqlsrv_free_stmt($stmt);
     sqlsrv_close($con);
 
-    echo json_encode(array("status"=>"200", "msg"=>"Registro exitoso"));
-
+    echo json_encode(array("status"=>"200", "msg"=>"Actualización exitosa"));
 ?>
