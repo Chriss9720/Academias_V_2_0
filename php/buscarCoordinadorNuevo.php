@@ -31,7 +31,13 @@
     $res = [];
 
     while( $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC) ) {
-        array_push($res, $row);
+        $nomina = utf8_encode($row["nomina"]);
+        $foto = utf8_encode($row["foto"]);
+        $nombre = utf8_encode($row["nombre"]);
+        $correo = utf8_encode($row["correo"]);
+        $nivel = utf8_encode($row["nivel"]);
+        $data = array("nomina"=>$nomina, "foto"=>$foto, "nombre"=>$nombre, "correo"=>$correo, "nivel"=>$nivel);
+        array_push($res, $data);
     }
 
     sqlsrv_free_stmt($stmt);

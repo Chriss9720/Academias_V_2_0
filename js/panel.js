@@ -20,7 +20,6 @@ $(document).ready(() => {
                 dataType: "json",
                 success: (s) => window.location = s.cambio,
                 error: (e) => {
-                    console.log(e);
                     cerrarModal();
                     if (e.status == 404 && e.responseText == "Solicitar Reinicio de sesion") {
                         cerrarM.load = true;
@@ -232,12 +231,13 @@ $(document).ready(() => {
                 cerrarModal();
             })
             .catch(e => {
+                console.log(e);
                 if (e.responseText == "Solicitar Reinicio de sesion") {
                     cerrarM.load = true;
                     cerrarModal();
                     login();
                 } else {
-                    cerrar().then(() => window.location = "/Academias").catch(() => window.location = "/Academias");
+                    //cerrar().then(() => window.location = "/Academias").catch(() => window.location = "/Academias");
                 }
             });
     };
@@ -542,7 +542,6 @@ $(document).ready(() => {
                         cargarCoordinador({ u: true });
                     })
                     .catch(c => {
-                        console.log(c);
                         $("#alertaCoor").html(`
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                             <strong>${c}</strong>

@@ -7,6 +7,8 @@ $(document).ready(() => {
 
     var docentesEdit = [];
 
+    var misDatos;
+
     $("#inicio").click(() => (window.location = "/academias/panel.html"));
 
     const cerrar = () => {
@@ -238,10 +240,16 @@ $(document).ready(() => {
         $("#telefono")[0].value = data.telefono;
         $("#claveR")[0].value = data.clave;
         $("#perfil")[0].src = data.foto;
+
         $("#correo")[0].value = data.correo.replace("@cajeme.tecnm.mx", "").replace("@itesca.edu.mx", "");
     };
 
     const editar = () => {
+        $("#Edicion").html(`
+            <input name="cancelar" value="Cancelar" type="button" class="btn bg-btn-aplicar btn-primary-r">
+            ${(misDatos['nivel'] == 0 || misDatos['nivel'] == 1)?'<input id="aplicarBaja" value="Inhabilitar" type="button" class="btn btn-primary-r bg-danger">':''}
+            <input id="editar" type="button" value="Editar" class="btn btn-primary-r">
+        `);
         $("#nominaR").attr("disabled", "");
         $("#soloEdit").html(`
             <div class="form-inline mt-1 mx-auto">
@@ -312,6 +320,7 @@ $(document).ready(() => {
             .then((t) => {
                 validarPagina()
                     .then((p) => {
+                        misDatos = t;
                         if (sessionStorage.getItem("accion").includes("Editar")) {
                             $("#Creacion").remove();
                             cargarDocentes();
@@ -604,7 +613,6 @@ $(document).ready(() => {
     };
 
     const darBaja = (data, evt) => {
-        console.log(evt);
         return new Promise((resolve, reject) => {
             $.ajax({
                 url: (evt.includes("Habilitar")) ? "php/aplicarAlta.php" : "php/aplicarBaja.php",

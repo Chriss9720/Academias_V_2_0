@@ -6,12 +6,12 @@ CREATE VIEW VW_InfoDocente AS
 	SELECT D.nomina, D.nivel, D.foto, D.nombre AS [ND], D.correo, D.telefono, D.baja,
 	C.clave_carrera, C.nombre AS [NC], F.jefe, A.clave_academia, A.nombre, CA.puesto
 	FROM DOCENTE AS D
-	JOIN AFILIADO AS F
+	LEFT JOIN AFILIADO AS F
 	ON F.nomina = D.nomina
-	JOIN CARRERA AS C
+	LEFT JOIN CARRERA AS C
 	ON C.clave_carrera = F.clave_carrera
-	JOIN CARGO AS CA
+	LEFT JOIN CARGO AS CA
 	ON CA.nomina = D.nomina
-	JOIN ACADEMIA AS A
+	LEFT JOIN ACADEMIA AS A
 	ON A.clave_academia = CA.clave_academia
 GO

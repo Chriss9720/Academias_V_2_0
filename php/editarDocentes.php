@@ -37,11 +37,14 @@
 
         while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
             $nombre = utf8_encode($row['nombre']);
-            $foto = utf8_decode($row["foto"]);
-            $correo = utf8_decode($row["correo"]);
-            $telefono = utf8_decode($row["telefono"]);
-            $clave = utf8_decode($row["clave"]);
-            $baja = utf8_decode($row["baja"]);
+            $foto = utf8_encode($row["foto"]);
+            if (!file_exists("../$foto")){
+                $foto = "img/IconLog.png";
+            }
+            $correo = utf8_encode($row["correo"]);
+            $telefono = utf8_encode($row["telefono"]);
+            $clave = utf8_encode($row["clave"]);
+            $baja = utf8_encode($row["baja"]);
             $data = array("nomina"=>$row["nomina"], "nombre"=>$nombre, "foto"=>$foto, "correo"=>$correo, "telefono"=>$telefono, "clave"=>$clave, "baja"=>$baja);
             array_push($res, $data);
         }

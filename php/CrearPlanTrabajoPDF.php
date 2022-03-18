@@ -17,7 +17,7 @@
     function eliminar($data, $ruta)
     {
         for ($i = 0; $i < count($data); $i++) {
-            $dato = $data[$i];
+            $dato = utf8_encode($data[$i]);
             $path = "$ruta/$dato.pdf";
             if (file_exists($path)) {
                 unlink($path);
@@ -29,7 +29,7 @@
     {
         $ret = "<ul>";
         for ($i = 0; $i < count($responsables); $i++) {
-            $nombre = $responsables[$i]["nombre"];
+            $nombre = utf8_encode($responsables[$i]["nombre"]);
             $ret .= "<li>$nombre</li>";
         }
         $ret .= "</ul>";
@@ -108,19 +108,19 @@
         $del = true;
         $temp = json_decode(json_encode($_POST['temp']), true);
     }
-    $academia = $datos['datos']['academia'];
+    $academia = utf8_encode($datos['datos']['academia']);
     $preview = $datos['preview'];
-    $claveAcademia = $datos['datos']['claveAcademia'];
-    $semestre = $datos['datos']['semestre'];
-    $presidente = $datos['datos']['presidente'];
-    $jefe = $datos['datos']['jefe'];
-    $coordinador = $datos['datos']['coordinador'];
-    $fecha = $datos['fecha'];
+    $claveAcademia = utf8_encode($datos['datos']['claveAcademia']);
+    $semestre = utf8_encode($datos['datos']['semestre']);
+    $presidente = utf8_encode($datos['datos']['presidente']);
+    $jefe = utf8_encode($datos['datos']['jefe']);
+    $coordinador = utf8_encode($datos['datos']['coordinador']);
+    $fecha = utf8_encode($datos['fecha']);
     $fechas = $datos['fechas'];
-    $fecha_1 = $datos['fechas']['fecha_1'];
-    $fecha_2 = $datos['fechas']['fecha_2'];
-    $fecha_3 = $datos['fechas']['fecha_3'];
-    $fecha_4 = $datos['fechas']['fecha_4'];
+    $fecha_1 = utf8_encode($datos['fechas']['fecha_1']);
+    $fecha_2 = utf8_encode($datos['fechas']['fecha_2']);
+    $fecha_3 = utf8_encode($datos['fechas']['fecha_3']);
+    $fecha_4 = utf8_encode($datos['fechas']['fecha_4']);
     $actividad1 = $datos['1'];
     $actividad2 = $datos['2'];
     $actividad3 = $datos['3'];
@@ -207,6 +207,79 @@
             </tbody>
         </table>
     ");
+
+    $actividad_1 = array(
+        "Acciones"=>utf8_encode($actividad1['Acciones']),
+        "Asignaturas"=>utf8_encode($actividad1['Asignaturas']),
+        "Responsables"=>utf8_encode($responsables[1]),
+        "fecha"=>utf8_encode($actividad1['fecha']),
+        "Evidencia"=>utf8_encode($actividad1['Evidencia'])
+    );
+
+    $actividad_2 = array(
+        "Acciones"=>utf8_encode($actividad2['Acciones']),
+        "Asignaturas"=>utf8_encode($actividad2['Asignaturas']),
+        "Responsables"=>utf8_encode($responsables[2]),
+        "fecha"=>utf8_encode($actividad2['fecha']),
+        "Evidencia"=>utf8_encode($actividad2['Evidencia'])
+    );
+
+    $actividad_3 = array(
+        "Acciones"=>utf8_encode($actividad3['Acciones']),
+        "Asignaturas"=>utf8_encode($actividad3['Asignaturas']),
+        "Responsables"=>utf8_encode($responsables[3]),
+        "fecha"=>utf8_encode($actividad3['fecha']),
+        "Evidencia"=>utf8_encode($actividad3['Evidencia'])
+    );
+
+    $actividad_4 = array(
+        "Acciones"=>utf8_encode($actividad4['Acciones']),
+        "Asignaturas"=>utf8_encode($actividad4['Asignaturas']),
+        "Responsables"=>utf8_encode($responsables[4]),
+        "fecha"=>utf8_encode($actividad4['fecha']),
+        "Evidencia"=>utf8_encode($actividad4['Evidencia'])
+    );
+
+    $actividad_5 = array(
+        "Acciones"=>utf8_encode($actividad5['Acciones']),
+        "Asignaturas"=>utf8_encode($actividad5['Asignaturas']),
+        "Responsables"=>utf8_encode($responsables[5]),
+        "fecha"=>utf8_encode($actividad5['fecha']),
+        "Evidencia"=>utf8_encode($actividad5['Evidencia'])
+    );
+
+    $actividad_6 = array(
+        "Acciones"=>utf8_encode($actividad6['Acciones']),
+        "Asignaturas"=>utf8_encode($actividad6['Asignaturas']),
+        "Responsables"=>utf8_encode($responsables[6]),
+        "fecha"=>utf8_encode($actividad6['fecha']),
+        "Evidencia"=>utf8_encode($actividad6['Evidencia'])
+    );
+
+    $actividad_7 = array(
+        "Acciones"=>utf8_encode($actividad7['Acciones']),
+        "Asignaturas"=>utf8_encode($actividad7['Asignaturas']),
+        "Responsables"=>utf8_encode($responsables[7]),
+        "fecha"=>utf8_encode($actividad7['fecha']),
+        "Evidencia"=>utf8_encode($actividad7['Evidencia'])
+    );
+
+    $actividad_8 = array(
+        "Acciones"=>utf8_encode($actividad8['Acciones']),
+        "Asignaturas"=>utf8_encode($actividad8['Asignaturas']),
+        "Responsables"=>utf8_encode($responsables[8]),
+        "fecha"=>utf8_encode($actividad8['fecha']),
+        "Evidencia"=>utf8_encode($actividad8['Evidencia'])
+    );
+
+    $actividad_9 = array(
+        "Acciones"=>utf8_encode($actividad9['Acciones']),
+        "Asignaturas"=>utf8_encode($actividad9['Asignaturas']),
+        "Responsables"=>utf8_encode($responsables[9]),
+        "fecha"=>utf8_encode($actividad9['fecha']),
+        "Evidencia"=>utf8_encode($actividad9['Evidencia'])
+    );
+
 
     $mpdf->WriteHTML("
         <table class='borde_tabla'>
@@ -313,19 +386,19 @@
                         Mejoras e innovación de procesos de enseñanza y aprendizaje, incluye implementación de casos, semanas académicas, visitas industriales, proyectos de desarrollo comunitario, etc.
                     </td>
                     <td class='columna_3 borde_superior borde_derecho fuente'>
-                        ${actividad1['Acciones']}
+                        ${actividad_1['Acciones']}
                     </td>
                     <td class='columna_4 borde_superior borde_derecho fuente'>
-                        ${actividad1['Asignaturas']}
+                        ${actividad_1['Asignaturas']}
                     </td>
                     <td class='columna_5 borde_superior borde_derecho fuente'>
-                        ${responsables[1]}
+                        ${actividad_1['Responsables']}
                     </td>
                     <td class='columna_6 borde_superior borde_derecho fuente'>
-                        ${actividad1['fecha']}
+                        ${actividad_1['fecha']}
                     </td>
                     <td class='columna_7 borde_superior fuente'>
-                        ${actividad1['Evidencia']}
+                        ${actividad_1['Evidencia']}
                     </td>
                 </tr>
                 <tr>
@@ -336,19 +409,19 @@
                         Uniformizar actividades de formación práctica en asignaturas, talleres y laboratorios.
                     </td>
                     <td class='columna_3 borde_superior borde_derecho fuente'>
-                        ${actividad2['Acciones']}
+                        ${actividad_2['Acciones']}
                     </td>
                     <td class='columna_4 borde_superior borde_derecho fuente'>
-                        ${actividad2['Asignaturas']}
+                        ${actividad_2['Asignaturas']}
                     </td>
                     <td class='columna_5 borde_superior borde_derecho fuente'>
-                        ${responsables[2]}
+                        ${actividad_2['Responsables']}
                     </td>
                     <td class='columna_6 borde_superior borde_derecho fuente'>
-                        ${actividad2['fecha']}
+                        ${actividad_2['fecha']}
                     </td>
                     <td class='columna_7 borde_superior fuente'>
-                        ${actividad2['Evidencia']}
+                        ${actividad_2['Evidencia']}
                     </td>
                 </tr>
                 <tr>
@@ -359,19 +432,19 @@
                         Programación de viajes académicos y/o actividades de vinculación.
                     </td>
                     <td class='columna_3 borde_superior borde_derecho fuente'>
-                        ${actividad3['Acciones']}
+                        ${actividad_3['Acciones']}
                     </td>
                     <td class='columna_4 borde_superior borde_derecho fuente'>
-                        ${actividad3['Asignaturas']}
+                        ${actividad_3['Asignaturas']}
                     </td>
                     <td class='columna_5 borde_superior borde_derecho fuente'>
-                        ${responsables[3]}
+                        ${actividad_3['Responsables']}
                     </td>
                     <td class='columna_6 borde_superior borde_derecho fuente'>
-                        ${actividad3['fecha']}
+                        ${actividad_3['fecha']}
                     </td>
                     <td class='columna_7 borde_superior fuente'>
-                        ${actividad3['Evidencia']}
+                        ${actividad_3['Evidencia']}
                     </td>
                 </tr>
                 <tr>
@@ -382,19 +455,19 @@
                         Programa de seguimiento y solución estratégica de las materias (PSSEM).
                     </td>
                     <td class='columna_3 borde_superior borde_derecho fuente'>
-                        ${actividad4['Acciones']}
+                        ${actividad_4['Acciones']}
                     </td>
                     <td class='columna_4 borde_superior borde_derecho fuente'>
-                        ${actividad4['Asignaturas']}
+                        ${actividad_4['Asignaturas']}
                     </td>
                     <td class='columna_5 borde_superior borde_derecho fuente'>
-                        ${responsables[4]}
+                        ${actividad_4['Responsables']}
                     </td>
                     <td class='columna_6 borde_superior borde_derecho fuente'>
-                        ${actividad4['fecha']}
+                        ${actividad_4['fecha']}
                     </td>
                     <td class='columna_7 borde_superior fuente'>
-                        ${actividad4['Evidencia']}
+                        ${actividad_4['Evidencia']}
                     </td>
                 </tr>
                 <tr>
@@ -405,19 +478,19 @@
                         Integrar banco de proyectos integradores y de residencias profesionales.
                     </td>
                     <td class='columna_3 borde_superior borde_derecho fuente'>
-                        ${actividad5['Acciones']}
+                        ${actividad_5['Acciones']}
                     </td>
                     <td class='columna_4 borde_superior borde_derecho fuente'>
-                        ${actividad5['Asignaturas']}
+                        ${actividad_5['Asignaturas']}
                     </td>
                     <td class='columna_5 borde_superior borde_derecho fuente'>
-                        ${responsables[5]}
+                        ${actividad_5['Responsables']}
                     </td>
                     <td class='columna_6 borde_superior borde_derecho fuente'>
-                        ${actividad5['fecha']}
+                        ${actividad_5['fecha']}
                     </td>
                     <td class='columna_7 borde_superior fuente'>
-                        ${actividad5['Evidencia']}
+                        ${actividad_5['Evidencia']}
                     </td>
                 </tr>
                 <tr>
@@ -428,19 +501,19 @@
                         Revisión y actualización de requerimientos de bibliografía básica y de consulta de los programas de curso.
                     </td>
                     <td class='columna_3 borde_superior borde_derecho fuente'>
-                        ${actividad6['Acciones']}
+                        ${actividad_6['Acciones']}
                     </td>
                     <td class='columna_4 borde_superior borde_derecho fuente'>
-                        ${actividad6['Asignaturas']}
+                        ${actividad_6['Asignaturas']}
                     </td>
                     <td class='columna_5 borde_superior borde_derecho fuente'>
-                        ${responsables[6]}
+                        ${actividad_6['Responsables']}
                     </td>
                     <td class='columna_6 borde_superior borde_derecho fuente'>
-                        ${actividad6['fecha']}
+                        ${actividad_6['fecha']}
                     </td>
                     <td class='columna_7 borde_superior fuente'>
-                        ${actividad6['Evidencia']}
+                        ${actividad_6['Evidencia']}
                     </td>
                 </tr>
                 <tr>
@@ -451,19 +524,19 @@
                         Desarrollar proyectos de investigación. Publicación de artículos académicos.
                     </td>
                     <td class='columna_3 borde_superior borde_derecho fuente'>
-                        ${actividad7['Acciones']}
+                        ${actividad_7['Acciones']}
                     </td>
                     <td class='columna_4 borde_superior borde_derecho fuente'>
-                        ${actividad7['Asignaturas']}
+                        ${actividad_7['Asignaturas']}
                     </td>
                     <td class='columna_5 borde_superior borde_derecho fuente'>
-                        ${responsables[7]}
+                        ${actividad_7['Responsables']}
                     </td>
                     <td class='columna_6 borde_superior borde_derecho fuente'>
-                        ${actividad7['fecha']}
+                        ${actividad_7['fecha']}
                     </td>
                     <td class='columna_7 borde_superior fuente'>
-                        ${actividad7['Evidencia']}
+                        ${actividad_7['Evidencia']}
                     </td>
                 </tr>
                 <tr>
@@ -474,19 +547,19 @@
                         Diseño, rediseño o actualización y validación de instrumentaciones didácticas.
                     </td>
                     <td class='columna_3 borde_superior borde_derecho fuente'>
-                        ${actividad8['Acciones']}
+                        ${actividad_8['Acciones']}
                     </td>
                     <td class='columna_4 borde_superior borde_derecho fuente'>
-                        ${actividad8['Asignaturas']}
+                        ${actividad_8['Asignaturas']}
                     </td>
                     <td class='columna_5 borde_superior borde_derecho fuente'>
-                        ${responsables[8]}
+                        ${actividad_8['Responsables']}
                     </td>
                     <td class='columna_6 borde_superior borde_derecho fuente'>
-                        ${actividad8['fecha']}
+                        ${actividad_8['fecha']}
                     </td>
                     <td class='columna_7 borde_superior fuente'>
-                        ${actividad8['Evidencia']}
+                        ${actividad_8['Evidencia']}
                     </td>
                 </tr>
                 <tr>
@@ -497,19 +570,19 @@
                         Generar y validar instrumentos de evaluación (rubricas, listas de cotejo) y pruebas departamentales
                     </td>
                     <td class='columna_3 borde_superior borde_derecho fuente'>
-                        ${actividad9['Acciones']}
+                        ${actividad_9['Acciones']}
                     </td>
                     <td class='columna_4 borde_superior borde_derecho fuente'>
-                        ${actividad9['Asignaturas']}
+                        ${actividad_9['Asignaturas']}
                     </td>
                     <td class='columna_5 borde_superior borde_derecho fuente'>
-                        ${responsables[9]}
+                        ${actividad_9['Responsables']}
                     </td>
                     <td class='columna_6 borde_superior borde_derecho fuente'>
-                        ${actividad9['fecha']}
+                        ${actividad_9['fecha']}
                     </td>
                     <td class='columna_7 borde_superior fuente'>
-                        ${actividad9['Evidencia']}
+                        ${actividad_9['Evidencia']}
                     </td>
                 </tr>
             </tbody>
@@ -564,7 +637,7 @@
 
     crearCapera("$carpeta");
 
-    $nombre = $datos['fechaG'];
+    $nombre = utf8_encode($datos['fechaG']);
     $ruta = "$carpeta/$nombre";
     $nombreArchivo = "$ruta.pdf";
     $nombreJson = "$ruta.json";
@@ -580,7 +653,34 @@
         salvarFecha($ruta, $fecha_2);
         salvarFecha($ruta, $fecha_3);
         salvarFecha($ruta, $fecha_4);
-        $json = json_encode($datos);
+
+        $json = json_encode(array(
+            "1"=>$actividad_1,
+            "2"=>$actividad_2,
+            "3"=>$actividad_3,
+            "4"=>$actividad_4,
+            "5"=>$actividad_5,
+            "6"=>$actividad_6,
+            "7"=>$actividad_7,
+            "8"=>$actividad_8,
+            "9"=>$actividad_9,
+            "fecha"=>$fecha,
+            "fechaG"=>$nombre,
+            "datos"=>array(
+                "claveAcademia"=> $claveAcademia,
+                "academia"=> $academia,
+                "presidente"=> $presidente,
+                "semestre"=>  $semestre,
+                "jefe"=> $jefe,
+                "coordinador"=> $coordinador
+            ),
+            "fechas"=>array(
+                "fecha_1"=>$fecha_1,
+                "fecha_2"=>$fecha_2,
+                "fecha_3"=>$fecha_3,
+                "fecha_4"=>$fecha_4
+            )
+        ));
         $bytes = file_put_contents($nombreJson, $json);
     }
 

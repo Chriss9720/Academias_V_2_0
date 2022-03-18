@@ -29,7 +29,22 @@
             }
             $res = [];
             while( $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC) ) {
-                array_push($res, $row);
+                $dato = array(
+                    "nomina"=>utf8_encode($row["nomina"]),
+                    "nivel"=>utf8_encode($row["nivel"]),
+                    "foto"=>utf8_encode($row["foto"]),
+                    "ND"=>utf8_encode($row["ND"]),
+                    "correo"=>utf8_encode($row["correo"]),
+                    "telefono"=>utf8_encode($row["telefono"]),
+                    "baja"=>utf8_encode($row["baja"]),
+                    "clave_carrera"=>utf8_encode($row["clave_carrera"]),
+                    "NC"=>utf8_encode($row["NC"]),
+                    "jefe"=>utf8_encode($row["jefe"]),
+                    "clave_academia"=>utf8_encode($row["clave_academia"]),
+                    "nombre"=>utf8_encode($row["nombre"]),
+                    "puesto"=>utf8_encode($row["puesto"])
+                );
+                array_push($res, $dato);
             }
 
             sqlsrv_free_stmt($stmt);

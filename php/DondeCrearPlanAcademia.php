@@ -36,6 +36,13 @@
             $res = [];
 
             while( $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC) ) {
+                $data = array(
+                    "clave_academia"=>utf8_encode($row["clave_academia"]),
+                    "foto_portada"=>utf8_encode($row["foto_portada"]),
+                    "nombre"=>utf8_encode($row["nombre"]),
+                    "foto"=>utf8_encode($row["foto"]),
+                    "T"=>utf8_encode($row["T"])
+                );
                 array_push($res, $row);
             }
 

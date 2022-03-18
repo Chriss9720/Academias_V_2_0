@@ -32,5 +32,4 @@
     sqlsrv_free_stmt($stmt);
     sqlsrv_close($con);
     http_response_code(200);
-
 ?>
