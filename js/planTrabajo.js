@@ -87,9 +87,13 @@ $(document).ready(() => {
 
     const miembrosTotal = []
 
-    let responsableAux = [];
+    var responsableAux = [];
 
-    let idText;
+    var idText;
+
+    var academias = [];
+
+    var seleccionada = false;
 
     const cerrar = () => {
         return new Promise((resolve, reject) => {
@@ -310,29 +314,21 @@ $(document).ready(() => {
             <li class="breadcrumb-item">
                 <a href="/Academias/panel.html">Inicio</a>
             </li>
-
             <li class="breadcrumb-item">
                 ${sessionStorage.getItem("accion")}
             </li>
-
             <li class="breadcrumb-item">
                 ${sessionStorage.getItem("afectar")}
-            </li>
-
-            <li class="breadcrumb-item active">
-                <label class="text-menu">
-                    ${sessionStorage.getItem("Academia")}
-                </label>
             </li>
         `);
     };
 
-    const datosAcademias = () => {
+    const datosAcademias = clave => {
         return new Promise((resolve, reject) => {
             $.ajax({
                 url: "php/datosAcademias.php",
                 data: {
-                    academia: sessionStorage.getItem('Academia')
+                    academia: clave
                 },
                 type: "post",
                 dataType: "json",
@@ -342,13 +338,13 @@ $(document).ready(() => {
         });
     };
 
-    const miembrosAcademia = () => {
+    const miembrosAcademia = clave => {
         return new Promise((resolve, reject) => {
             $.ajax({
                 url: "php/miembrosAcademia.php",
                 type: "POST",
                 data: {
-                    "Academia": sessionStorage.getItem('Academia')
+                    "Academia": clave
                 },
                 dataType: "json",
                 success: s => resolve(s),
@@ -366,6 +362,90 @@ $(document).ready(() => {
         $("#busqueda_1_lista").html(final);
     };
 
+    const getMisAcademias = () => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: "php/DondeCrearPlanAcademia.php",
+                dataType: "json",
+                success: s => resolve(s),
+                error: e => reject(e)
+            });
+        });
+    };
+
+    const construirBusqueda = () => {
+        let r = "";
+        for (let i = 0; i < academias.length; i++) {
+            r += `<option value="${academias[i].clave_academia} - ${academias[i].nombre}">`;
+        }
+        $("#listaAcademias").html(r);
+    };
+
+    $("#academiaSeleccionada").keypress(k => {
+        if (k.which == 13) {
+            let dato = k.target.value.split(" - ");
+            if (dato.length < 2) {
+                $("#alertBusqueda").html(`
+                    <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                        <strong class="h1">Debe de ser en formato Clave - Nombre</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                `);
+            } else {
+                let clave = academias.find(f => f.clave_academia == dato[0] && f.nombre == dato[1]);
+                if (clave) {
+                    $("#alertBusqueda").html(``);
+                    cargando();
+                    datosAcademias(clave.clave_academia)
+                        .then(t => {
+                            miembrosAcademia(clave.clave_academia)
+                                .then(s => {
+                                    cargarMiembros(s);
+                                    $("#nameAcademia")[0].value = t.Academia;
+                                    $("#namePresidente")[0].value = t.nombre;
+                                    Plan["datos"]["claveAcademia"] = t.clave_academia;
+                                    Plan["datos"]["academia"] = t.Academia;
+                                    Plan["datos"]["presidente"] = t.nombre;
+                                    Plan["datos"]["coordinador"] = t.Coordinador;
+                                    Plan["datos"]["jefe"] = t.Coordinador;
+                                    Plan["datos"]["semestre"] = calcularSemestre();
+                                    cerrarM.load = true;
+                                    cerrarModal();
+                                    seleccionada = true;
+                                })
+                                .catch(e => {
+                                    if (e.responseText == "Solicitar Reinicio de sesion") {
+                                        cerrarM.load = true;
+                                        cerrarModal();
+                                        login();
+                                    }
+                                })
+                        })
+                        .catch(e => {
+                            if (e.responseText == "Solicitar Reinicio de sesion") {
+                                cerrarM.load = true;
+                                cerrarModal();
+                                login();
+                            } else {
+                                window.location = "/Academias/Panel.html";
+                            }
+                        });
+                } else {
+                    $("#alertBusqueda").html(`
+                        <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                            <strong class="h1">No se encontro la academia seleccioanda</strong>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    `);
+                }
+            }
+        }
+    });
+
     const load = () => {
         cargando();
         getMisDatos()
@@ -373,40 +453,24 @@ $(document).ready(() => {
                 validarPagina()
                     .then(() => {
                         crearMigaja();
-                        datosAcademias()
-                            .then(t => {
-                                miembrosAcademia()
-                                    .then(s => {
-                                        cargarMiembros(s);
-                                        $("#nameAcademia")[0].value = t.Academia;
-                                        $("#namePresidente")[0].value = t.nombre;
-                                        Plan["datos"]["claveAcademia"] = t.clave_academia;
-                                        Plan["datos"]["academia"] = t.Academia;
-                                        Plan["datos"]["presidente"] = t.nombre;
-                                        Plan["datos"]["coordinador"] = t.Coordinador;
-                                        Plan["datos"]["jefe"] = t.Coordinador;
-                                        Plan["datos"]["semestre"] = calcularSemestre();
-                                    })
-                                    .catch(e => {
-                                        if (e.responseText == "Solicitar Reinicio de sesion") {
-                                            cerrarM.load = true;
-                                            cerrarModal();
-                                            login();
-                                        }
-                                    })
-                            })
-                            .catch(e => {
+                        getMisAcademias()
+                            .then(A => {
+                                academias = A;
+                                construirBusqueda();
+                                cerrarM.load = true;
+                                cerrarM.login = true;
+                                cerrarModal();
+                            }).catch(e => {
                                 if (e.responseText == "Solicitar Reinicio de sesion") {
                                     cerrarM.load = true;
                                     cerrarModal();
                                     login();
                                 } else {
-                                    window.location = "/Academias/Panel.html";
+                                    cerrarM.load = true;
+                                    cerrarM.login = true;
+                                    cerrarModal();
                                 }
-                            });
-                        cerrarM.load = true;
-                        cerrarM.login = true;
-                        cerrarModal();
+                            })
                     })
                     .catch((e) => {
                         if (e.responseText == "Solicitar Reinicio de sesion") {
@@ -479,108 +543,125 @@ $(document).ready(() => {
     };
 
     $("i[name='pasarALista']").click(evt => {
-        let busqueda = $("#busqueda_1")[0];
-        let nuevo = busqueda.value.split(" - ");
-        if (nuevo.length > 1) {
-            responsableAux.push({
-                "nomina": nuevo[0],
-                "nombre": nuevo[1]
-            });
-            busqueda.value = "";
-            aplicarFiltro();
-        } else {
-            $("#alerResponsable").html(`
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>Debe de ser en formato Nomina - Nombre</strong>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            `);
+        if (seleccionada) {
+            let busqueda = $("#busqueda_1")[0];
+            let nuevo = busqueda.value.split(" - ");
+            if (nuevo.length > 1) {
+                responsableAux.push({
+                    "nomina": nuevo[0],
+                    "nombre": nuevo[1]
+                });
+                busqueda.value = "";
+                aplicarFiltro();
+            } else {
+                $("#alerResponsable").html(`
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Debe de ser en formato Nomina - Nombre</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                `);
+            }
         }
-
     });
 
     $("#nameSemestre")[0].value = calcularSemestre();
 
     $('div[name="evaluacion"]').click(evt => {
-        let text = "";
-        if (evt.target.nodeName != "DIV" || !evt.target.attributes.id) {
-            idText = evt.delegateTarget.attributes.id.value;
-            text = evt.delegateTarget.innerHTML;
+        if (seleccionada) {
+            let text = "";
+            if (evt.target.nodeName != "DIV" || !evt.target.attributes.id) {
+                idText = evt.delegateTarget.attributes.id.value;
+                text = evt.delegateTarget.innerHTML;
+            }
+            if (evt.target.nodeName == "DIV" && evt.target.attributes.id) {
+                text = evt.target.innerHTML;
+                idText = evt.target.attributes.id.value;
+            }
+            CKEDITOR.instances.ev.setData(text);
+            $("#tituloModal")[0].innerText = `${idText}`;
+            $("#editor").modal('show');
         }
-        if (evt.target.nodeName == "DIV" && evt.target.attributes.id) {
-            text = evt.target.innerHTML;
-            idText = evt.target.attributes.id.value;
-        }
-        CKEDITOR.instances.ev.setData(text);
-        $("#tituloModal")[0].innerText = `${idText}`;
-        $("#editor").modal('show');
     });
 
     $("#cancelarEvaluacion").click(evt => {
-        idText = undefined;
-        CKEDITOR.instances.ev.setData("");
+        if (seleccionada) {
+            idText = undefined;
+            CKEDITOR.instances.ev.setData("");
+        }
     });
 
     $("#aplicarEvaluacion").click(evt => {
-        let value = CKEDITOR.instances.ev.getData();
-        let act = idText.split("_");
-        let campo = $(`#${idText}`)[0];
-        campo.innerHTML = value;
-        campo.className = campo.className.replace("d-flex justify-content-center align-items-center", "text-justify");
-        Plan[act[1]][act[0]] = value;
+        if (seleccionada) {
+            let value = CKEDITOR.instances.ev.getData();
+            let act = idText.split("_");
+            let campo = $(`#${idText}`)[0];
+            campo.innerHTML = value;
+            campo.className = campo.className.replace("d-flex justify-content-center align-items-center", "text-justify");
+            Plan[act[1]][act[0]] = value;
+        }
         $("#editor").modal('hide');
     });
 
     $('div[name="ResponsablesA"]').click(evt => {
-        if (evt.target.nodeName != "DIV" || !evt.target.attributes.id) {
-            idText = evt.delegateTarget.attributes.id.value;
+        if (seleccionada) {
+            if (evt.target.nodeName != "DIV" || !evt.target.attributes.id) {
+                idText = evt.delegateTarget.attributes.id.value;
+            }
+            if (evt.target.nodeName == "DIV" && evt.target.attributes.id) {
+                idText = evt.target.attributes.id.value;
+            }
+            $("#tituloModalR")[0].innerText = `${idText}`;
+            $("#agregados").html("");
+            let act = idText.split("_");
+            responsableAux = [];
+            Plan[act[1]][act[0]].forEach(p => responsableAux.push(p));
+            aplicarFiltro();
+            $("#responsablesModal").modal('show');
         }
-        if (evt.target.nodeName == "DIV" && evt.target.attributes.id) {
-            idText = evt.target.attributes.id.value;
-        }
-        $("#tituloModalR")[0].innerText = `${idText}`;
-        $("#agregados").html("");
-        let act = idText.split("_");
-        responsableAux = [];
-        Plan[act[1]][act[0]].forEach(p => responsableAux.push(p));
-        aplicarFiltro();
-        $("#responsablesModal").modal('show');
     });
 
     $("#aplicarResponsables").click(() => {
-        let act = idText.split("_");
-        let campo = $(`#${idText}`)[0];
-        let value = `<ul>${$("#agregados").html()}</ul>`;
-        campo.innerHTML = value;
-        campo.className = campo.className.replace("d-flex justify-content-center align-items-center", "");
-        Plan[act[1]][act[0]] = responsableAux;
+        if (seleccionada) {
+            let act = idText.split("_");
+            let campo = $(`#${idText}`)[0];
+            let value = `<ul>${$("#agregados").html()}</ul>`;
+            campo.innerHTML = value;
+            campo.className = campo.className.replace("d-flex justify-content-center align-items-center", "");
+            Plan[act[1]][act[0]] = responsableAux;
+        }
         $("#responsablesModal").modal('hide');
     });
 
     CKEDITOR.replace('ev');
 
     $('input[name="fecha"]').change(evt => {
-        let act = evt.target.attributes.id.value.split("_");
-        Plan[act[1]][act[0]] = evt.target.value.replace("T", " ");
+        if (seleccionada) {
+            let act = evt.target.attributes.id.value.split("_");
+            Plan[act[1]][act[0]] = evt.target.value.replace("T", " ");
+        }
     });
 
     $('[name="fechas"]').change(evt => {
-        let id = evt.target.attributes.id.value;
-        let data = evt.target.value;
-        Plan["fechas"][id] = data.replace("T", " ");
+        if (seleccionada) {
+            let id = evt.target.attributes.id.value;
+            let data = evt.target.value;
+            Plan["fechas"][id] = data.replace("T", " ");
+        }
     });
 
     $("#TodosLosDocentes").click(() => {
-        responsableAux = miembrosTotal;
-        aplicarFiltro();
-        let act = idText.split("_");
-        let campo = $(`#${idText}`)[0];
-        let value = `<ul>${$("#agregados").html()}</ul>`;
-        campo.innerHTML = value;
-        campo.className = campo.className.replace("d-flex justify-content-center align-items-center", "");
-        Plan[act[1]][act[0]] = responsableAux;
+        if (seleccionada) {
+            responsableAux = miembrosTotal;
+            aplicarFiltro();
+            let act = idText.split("_");
+            let campo = $(`#${idText}`)[0];
+            let value = `<ul>${$("#agregados").html()}</ul>`;
+            campo.innerHTML = value;
+            campo.className = campo.className.replace("d-flex justify-content-center align-items-center", "");
+            Plan[act[1]][act[0]] = responsableAux;
+        }
         $("#responsablesModal").modal('hide');
     });
 
@@ -600,52 +681,72 @@ $(document).ready(() => {
     const getFecha = date => `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()} ${date.getHours()}-${date.getMinutes()}-${date.getSeconds()} ${Plan["datos"]["academia"]} ${Plan["datos"]["semestre"]}`;
 
     $("input[name='Crear']").click(() => {
-        cargando();
-        let date = new Date();
-        Plan["fechaG"] = getFecha(date);
-        Plan["fecha"] = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
-        Plan["preview"] = 0;
-        crearPDF()
-            .then(t => {
-                cerrarM.load = true;
-                cerrarModal();
-                window.open(t.ruta);
-            })
-            .catch(e => {
-                console.log(e);
-                cerrarM.load = true;
-                cerrarModal();
-                if (e.responseText == "Solicitar Reinicio de sesion") {
+        if (seleccionada) {
+            cargando();
+            let date = new Date();
+            Plan["fechaG"] = getFecha(date);
+            Plan["fecha"] = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+            Plan["preview"] = 0;
+            crearPDF()
+                .then(t => {
                     cerrarM.load = true;
                     cerrarModal();
-                    login();
-                }
-            });
+                    window.open(t.ruta);
+                })
+                .catch(e => {
+                    cerrarM.load = true;
+                    cerrarModal();
+                    if (e.responseText == "Solicitar Reinicio de sesion") {
+                        cerrarM.load = true;
+                        cerrarModal();
+                        login();
+                    }
+                });
+        } else {
+            $("#alertBusqueda").html(`
+                <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                    <strong class="h1">Seleccione una academia</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            `);
+        }
     });
 
     $("input[name='preview']").click(() => {
-        cargando();
-        let date = new Date();
-        Plan["fechaG"] = getFecha(date);
-        Plan["fecha"] = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
-        Plan["preview"] = 1;
-        preview.push(Plan["fechaG"]);
-        crearPDF()
-            .then(t => {
-                cerrarM.load = true;
-                cerrarModal();
-                window.open(t.ruta);
-            })
-            .catch(e => {
-                console.log(e);
-                cerrarM.load = true;
-                cerrarModal();
-                if (e.responseText == "Solicitar Reinicio de sesion") {
+        if (seleccionada) {
+            cargando();
+            let date = new Date();
+            Plan["fechaG"] = getFecha(date);
+            Plan["fecha"] = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+            Plan["preview"] = 1;
+            preview.push(Plan["fechaG"]);
+            crearPDF()
+                .then(t => {
                     cerrarM.load = true;
                     cerrarModal();
-                    login();
-                }
-            });
+                    window.open(t.ruta);
+                })
+                .catch(e => {
+                    cerrarM.load = true;
+                    cerrarModal();
+                    if (e.responseText == "Solicitar Reinicio de sesion") {
+                        cerrarM.load = true;
+                        cerrarModal();
+                        login();
+                    }
+                });
+        } else {
+            $("#alertBusqueda").html(`
+                <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                    <strong class="h1">Seleccione una academia</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            `);
+        }
     });
 
     $("#inicio").click(() => window.location = "/academias/panel.html");

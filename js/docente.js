@@ -254,15 +254,15 @@ $(document).ready(() => {
         $("#soloEdit").html(`
             <div class="form-inline mt-1 mx-auto">
                 <label class="form-label text-input mr-3">Busqueda por nombre/nomina</label>
-                <input id="editar" type="search" class="form-control text-input bg-input rounded-pill mx-auto" list="listaEdit">
+                <input id="editarS" type="search" class="form-control text-input bg-input rounded-pill mx-auto" list="listaEdit">
                 <datalist id="listaEdit">
                     ${docentes()}
                 </datalist>
             </div>
         `);
-        $("#editar").keypress(k => {
+        $("#editarS").keypress(k => {
             if (k.which == 13) {
-                let componente = $("#editar")[0];
+                let componente = $("#editarS")[0];
                 let editar = componente.value.split(" - ");
                 let find = docentesEdit.find(f => f.nomina == editar[0] && f.nombre == editar[1]);
                 if (find) {
@@ -282,6 +282,142 @@ $(document).ready(() => {
                 }
             }
         });
+        $("#editar").click(() => {
+            cargando();
+            let data = {
+                nombre: $("#nombre")[0],
+                nominaR: $("#nominaR")[0],
+                telefono: $("#telefono")[0],
+                correo: $("#correo")[0],
+                claveR: $("#claveR")[0],
+                foto: "img/IconLog.png",
+            };
+
+            let extension = $("#extension")[0].value;
+
+            let valid = camposRequeridos(data, ["nombre", "nominaR", "claveR"]);
+            valid = validarNombre(data, "nombre") && valid;
+            valid = validarNomina(data, "nominaR") && valid;
+            valid = validarClave(data, "claveR") && valid;
+            valid = validarTelefono(data, "telefono") && valid;
+            valid = validarCorreo(data, "correo", extension) && valid;
+
+            let foto = $("#foto")[0].files[0];
+            var formData = new FormData();
+            if (foto) {
+                let nombre = `${data["nominaR"]}.${foto["name"].split(".")[foto["name"].split(".").length - 1]}`;
+                var file = new File([], nombre);
+                formData.append("file", foto);
+                formData.append("name", file);
+                data["foto"] = formData;
+            }
+
+            if (!valid) {
+                cerrarM.load = true;
+                cerrarModal();
+                return
+            };
+            salvarImg(formData, foto)
+                .then((t) => {
+                    data["foto"] = t.path;
+                    actualizarDocente(data)
+                        .then((r) => {
+                            cargarDocentes();
+                            $("#alerta").html(`
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <strong>${r.msg}</strong>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            `);
+                            editar();
+                            reset();
+                            cerrarM.load = true;
+                            cerrarModal();
+                        })
+                        .catch((e) => {
+                            if (e.responseText == "Solicitar Reinicio de sesion") {
+                                cerrarM.load = true;
+                                cerrarModal();
+                                login();
+                            } else {
+                                $("#alerta").html(`
+                                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                        <strong>${(e.responseJSON) ? e.responseJSON.msg : e.responseText}</strong>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                `);
+                            }
+                            cerrarM.load = true;
+                            cerrarModal();
+                        });
+                })
+                .catch((e) => {
+                    if (e.responseText == "Solicitar Reinicio de sesion") {
+                        cerrarM.load = true;
+                        cerrarModal();
+                        login();
+                    } else {
+                        $("#alerta").html(`
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                <strong>${e.responseJSON.msg}</strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        `);
+                        cerrarM.load = true;
+                        cerrarModal();
+                    }
+                });
+        });
+        $("#aplicarBaja").click(evt => {
+            cargando();
+            let data = { nominaR: $("#nominaR")[0] };
+            let valid = camposRequeridos(data, ["nominaR"]);
+            valid = validarNomina(data, "nominaR") && valid;
+            if (!valid) {
+                cerrarM.load = true;
+                cerrarModal();
+                return
+            };
+            darBaja(data, evt.target.value)
+                .then(r => {
+                    cargarDocentes();
+                    $("#alerta").html(`
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>${r.msg}</strong>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    `);
+                    editar();
+                    reset();
+                    cerrarM.load = true;
+                    cerrarModal();
+                })
+                .catch(e => {
+                    cerrarM.load = true;
+                    cerrarModal();
+                    if (e.responseText == "Solicitar Reinicio de sesion") {
+                        login();
+                    } else {
+                        $("#alerta").html(`
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                <strong>${e.responseJSON.msg}</strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        `);
+                    }
+                });
+        });
+        $('input[name="cancelar"]').click(() => reset());
     };
 
     const docentes = () => {
@@ -400,102 +536,7 @@ $(document).ready(() => {
                 error: (e) => reject(e),
             });
         });
-    }
-
-    $("#editar").click(() => {
-        cargando();
-        let data = {
-            nombre: $("#nombre")[0],
-            nominaR: $("#nominaR")[0],
-            telefono: $("#telefono")[0],
-            correo: $("#correo")[0],
-            claveR: $("#claveR")[0],
-            foto: "img/IconLog.png",
-        };
-
-        let extension = $("#extension")[0].value;
-
-        let valid = camposRequeridos(data, ["nombre", "nominaR", "claveR"]);
-        valid = validarNombre(data, "nombre") && valid;
-        valid = validarNomina(data, "nominaR") && valid;
-        valid = validarClave(data, "claveR") && valid;
-        valid = validarTelefono(data, "telefono") && valid;
-        valid = validarCorreo(data, "correo", extension) && valid;
-
-        let foto = $("#foto")[0].files[0];
-        var formData = new FormData();
-        if (foto) {
-            let nombre = `${data["nominaR"]}.${foto["name"].split(".")[foto["name"].split(".").length - 1]}`;
-            var file = new File([], nombre);
-            formData.append("file", foto);
-            formData.append("name", file);
-            data["foto"] = formData;
-        }
-
-        if (!valid) {
-            cerrarM.load = true;
-            cerrarModal();
-            return
-        };
-        salvarImg(formData, foto)
-            .then((t) => {
-                data["foto"] = t.path;
-                actualizarDocente(data)
-                    .then((r) => {
-                        cargarDocentes();
-                        $("#alerta").html(`
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <strong>${r.msg}</strong>
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        `);
-                        editar();
-                        reset();
-                        cerrarM.load = true;
-                        cerrarModal();
-                    })
-                    .catch((e) => {
-                        if (e.responseText == "Solicitar Reinicio de sesion") {
-                            cerrarM.load = true;
-                            cerrarModal();
-                            login();
-                        } else {
-                            $("#alerta").html(`
-                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                    <strong>${(e.responseJSON) ? e.responseJSON.msg : e.responseText}</strong>
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            `);
-                        }
-                        cerrarM.load = true;
-                        cerrarModal();
-                    });
-            })
-            .catch((e) => {
-                if (e.responseText == "Solicitar Reinicio de sesion") {
-                    cerrarM.load = true;
-                    cerrarModal();
-                    login();
-                } else {
-                    $("#alerta").html(`
-                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                            <strong>${e.responseJSON.msg}</strong>
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    `);
-                    cerrarM.load = true;
-                    cerrarModal();
-                }
-            });
-    });
-
-    $('input[name="cancelar"]').click(() => reset());
+    };
 
     $("#registrar").click(() => {
         cargando();
@@ -623,50 +664,6 @@ $(document).ready(() => {
                 error: e => reject(e)
             })
         });
-    }
-
-    $("#aplicarBaja").click(evt => {
-        cargando();
-        let data = { nominaR: $("#nominaR")[0] };
-        let valid = camposRequeridos(data, ["nominaR"]);
-        valid = validarNomina(data, "nominaR") && valid;
-        if (!valid) {
-            cerrarM.load = true;
-            cerrarModal();
-            return
-        };
-        darBaja(data, evt.target.value)
-            .then(r => {
-                cargarDocentes();
-                $("#alerta").html(`
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <strong>${r.msg}</strong>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                `);
-                editar();
-                reset();
-                cerrarM.load = true;
-                cerrarModal();
-            })
-            .catch(e => {
-                cerrarM.load = true;
-                cerrarModal();
-                if (e.responseText == "Solicitar Reinicio de sesion") {
-                    login();
-                } else {
-                    $("#alerta").html(`
-                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                            <strong>${e.responseJSON.msg}</strong>
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    `);
-                }
-            });
-    });
+    };
 
 });

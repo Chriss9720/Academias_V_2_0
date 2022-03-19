@@ -55,6 +55,17 @@
 
     <div class="container">
 
+        <div class="d-flex justify-content-center align-items-center">
+            <div class="form-inline mb-2">
+                <label class="form-label text-input mr-3">Busqueda por nombre/clave</label>
+                <input id="academiaSeleccionada" type="search" class="form-control text-input bg-input rounded-pill mx-auto" list="listaAcademias">
+                <datalist id="listaAcademias">
+                </datalist>
+            </div>
+        </div>
+
+        <div id="alertBusqueda"></div>
+
         <div class="mb-3 d-flex justify-content-around">
             <input name="preview" type="button" value="Vista Previa" class="btn btn-secondary btn-lg">
             <input name="Crear" type="button" value="Generar PDF" class="btn btn-success btn-lg">

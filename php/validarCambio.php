@@ -35,7 +35,7 @@
                 switch ($afectar) {
                     case "Plan de trabajo":
                             if (validarPuesto(array("Presidente", "Secretario")) || $_SESSION["nivel"] == 1) {
-                                echo json_encode(array("cambio" => "/Academias/buscarAcademia.html"));
+                                echo json_encode(array("cambio" => "/Academias/planTrabajo.html"));
                             } else {
                                 http_response_code(401);
                                 echo json_encode(array("msg" => "Acceso invalido"));
