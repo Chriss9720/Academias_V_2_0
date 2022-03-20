@@ -3,6 +3,55 @@ $(document).ready(() => {
     var misDatos;
     var docentesCoordinador;
 
+    $("#ayudaPanel").click(() => {
+
+        $("#modales").html(`
+                <div class="modal" id="modal">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header d-flex justify-content-center h4">
+                                <label>Información de ayuda en el contenido del panel </label>
+                            </div>
+                            <div class="modal-body">
+                            <ul>
+                                <li>
+                                    <b>Filtro para organizar las reuniones en la agenda:</b>
+                                    <ul>
+                                        <li>
+                                        La fecha inicial debe ser menor a la fecha final.
+                                        </li>
+                                        <li>
+                                        Puede seleccionar “Ver juntas pasadas” y ver las reuniones que ya ocurrieron.
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <b>Cambiar coordinador:</b>
+                                    <ul>
+                                        <li>
+                                        Búsqueda en el formato: nómina – nombre. 
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            </div>
+                            <div class="modal-footer">
+                                <input id="cerrarAyuda" type="button" value="Salir" class="btn btn-secondary">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `);
+
+        $("#modal").modal();
+
+        $("#cerrarAyuda").click(() => {
+            $("#modal").modal("hide");
+            $(`[class="modal-backdrop show"]`).remove();
+        });
+
+    });
+
     const crearAcciones = () => {
 
         $('[name="areaMenu"]').click(evt => sessionStorage.setItem('accion', evt.target.innerText.replace(" ", "")));
@@ -237,7 +286,7 @@ $(document).ready(() => {
                     cerrarModal();
                     login();
                 } else {
-                    //cerrar().then(() => window.location = "/Academias").catch(() => window.location = "/Academias");
+                    cerrar().then(() => window.location = "/Academias").catch(() => window.location = "/Academias");
                 }
             });
     };

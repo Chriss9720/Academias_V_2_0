@@ -1,5 +1,227 @@
 $(document).ready(() => {
 
+    $("#ayudaDocente").click(() => {
+
+        if (sessionStorage.getItem('accion') == "Crear") {
+
+            $("#modales").html(`
+                <div class="modal" id="modal">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header d-flex justify-content-center h4">
+                                <label>Información de ayuda para el registro de un nuevo docente.</label>
+                            </div>
+                            <div class="modal-body">
+                                <ul>
+                                    <li>
+                                        <b>Los datos que son requeridos obligatoriamente son:</b>
+                                        <ul>
+                                            <li>Nombre:
+                                                <ul>
+                                                    <li>
+                                                        Únicamente puede contener letras y espacios.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>Nómina:
+                                                <ul>
+                                                    <li>
+                                                        Debe contener 8 dígitos.
+                                                    </li>
+                                                    <li>
+                                                        Únicamente puede contener números.
+                                                    </li>
+                                                    <li>
+                                                        No usar espacios entre los números.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>Clave:
+                                                <ul>
+                                                    <li>
+                                                        Debe contener al menos 3 cifras.
+                                                    </li>
+                                                    <li>
+                                                        Puede contener números, letras y caracteres especiales.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <b>Los datos que no son obligatorios son los siguientes:</b>
+                                        <ul>
+                                            <li>Teléfono:
+                                                <ul>
+                                                    <li>
+                                                        Debe contener 10 dígitos.
+                                                    </li>
+                                                    <li>
+                                                        Únicamente puede contener números.
+                                                    </li>
+                                                    <li>
+                                                        No usar espacios entre los números.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>Correo:
+                                                <ul>
+                                                    <li>
+                                                        Debe tener un formato coherente.
+                                                    </li>
+                                                    <li>
+                                                        Se proporcionan las dos opciones de correo validas.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>Foto:
+                                                <ul>
+                                                    <li>
+                                                        Dar click en el icono: <img src="img/IconAgregar.png" style="width: 30px;"> y subir la foto del docente.
+                                                    </li>
+                                                    <li>
+                                                        Se aceptan todos los formatos de imagen.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="modal-footer">
+                                <input id="cerrarAyuda" type="button" value="Salir" class="btn btn-secondary">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `);
+
+        } else {
+            $("#modales").html(`
+                <div class="modal" id="modal">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header d-flex justify-content-center h4">
+                                <label>Información de ayuda para editar un docente.</label>
+                            </div>
+                            <div class="modal-body">
+                                <ul>
+                                    <li>
+                                        <b>Los datos que son requeridos obligatoriamente son los siguientes:</b>
+                                        <ul>
+                                            <li>Nombre:
+                                                <ul>
+                                                    <li>
+                                                        Únicamente puede contener letras y espacios.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>Nómina:
+                                                <ul>
+                                                    <li>
+                                                        No es modificable.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>Clave:
+                                                <ul>
+                                                    <li>
+                                                        Debe contener al menos 3 cifras.
+                                                    </li>
+                                                    <li>
+                                                        Puede contener números, letras y caracteres especiales.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <b>Los datos que no son obligatorios son los siguientes:</b>
+                                        <ul>
+                                            <li>Teléfono:
+                                                <ul>
+                                                    <li>
+                                                        Debe contener 10 dígitos.
+                                                    </li>
+                                                    <li>
+                                                        Únicamente puede contener números.
+                                                    </li>
+                                                    <li>
+                                                        No usar espacios entre los números.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>Correo:
+                                                <ul>
+                                                    <li>
+                                                        Debe tener un formato coherente.
+                                                    </li>
+                                                    <li>
+                                                        Se proporcionan las dos opciones de correo validas.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>Foto:
+                                                <ul>
+                                                    <li>
+                                                        Dar click en el icono: <img src="img/IconAgregar.png" style="width: 30px;"> y subir la foto del docente.
+                                                    </li>
+                                                    <li>
+                                                        Se aceptan todos los formatos de imagen.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <b>Acciones de editar:</b>
+                                        <ul>
+                                            <li>Buscar:
+                                                <ul>
+                                                    <li>
+                                                        Proporcionar búsqueda en el formato: nómina – nombre.
+                                                    </li>
+                                                    <li>
+                                                        Al seleccionar un docente, dar <b>enter</b> para visualizar la información del docente.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>Inhabilitar:
+                                                <ul>
+                                                    <li>
+                                                        Se da de baja al docente y no podrá acceder al sistema hasta ser dado de alta.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>Habilitar:
+                                                <ul>
+                                                    <li>
+                                                        Si ese docente fue dado de baja, se muestra esta opción para darlo de alta nuevamente.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="modal-footer">
+                                <input id="cerrarAyuda" type="button" value="Salir" class="btn btn-secondary">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `);
+        }
+
+        $("#modal").modal();
+
+        $("#cerrarAyuda").click(() => {
+            $("#modal").modal("hide");
+            $(`[class="modal-backdrop show"]`).remove();
+        });
+
+    });
+
     var cerrarM = {
         load: false,
         login: false,

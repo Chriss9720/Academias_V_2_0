@@ -18,6 +18,11 @@
     color: blue;
 }
 
+.marca-awa {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
 .sin {
     background-color: transparent;
     border: none;
@@ -30,4 +35,14 @@
 .text-menu {
     font-size: 2rem;
     font-weight: bold;
+}
+
+.link>label {
+    color: black;
+    cursor: pointer;
+}
+
+.link>label:hover {
+    color: blue;
+    cursor: pointer;
 }

@@ -1,0 +1,17 @@
+1.	Panel--> Ver--> Ev.secre"t"ario
+2.	Panel--> Descargar--> Ev.secre"t"ario
+3.	Panel--> Liberar --> Ev.secre"t"ario
+4.	Panel--> Finalizar --> Ev.secre"t"ario
+5.	Panel--> Coordinador --> B"ú"squeda por n"ó"mina
+6.	Panel--> Coordinador --> Mensaje de error "Debe de ser en formato Nomina - Nombre" falta acento a "nómina".
+7.	Panel--> Coordinador --> Mensaje de error "Ocurrio un error, puede que no se tenga establecido a un coordinador" falta acento "Ocurrió
+8.	Panel--> Coordinador --> Salen mal las dimensiones de la foto cuando se selecciona coordinador.
+9.	Panel--> Editar --> Docente --> B"ú"squeda por n"ó"mina
+10.	Panel--> Editar --> Docente --> Mensaje de error de teléfono," El telefono debe tener 10 digitos" le falta acento a la palabra "teléfono" y a la palabra "dígito"
+11.	Panel --> Crear--> Docente --> Mensaje de error "La nomina debe de contener 8 digitos" falta acento a "nómina" y "dígitos".
+12.	Panel --> Crear--> Docente --> Mensaje de error "La nomina ya se encuentra registrada" falta acento a "nómina".
+13.	Panel --> Crear-->Plan de trabajo --> responsables, mensaje de error "Debe de ser en formato Nomina - Nombre" falta acento a "nómina".
+14.	Panel --> Crear-->Plan de trabajo --> seleccionas academia que no esté registrada, mensaje de error "No se encontro la academia seleccioanda" falta acento en "encontró" y está mal escrita la palabra.
+15.	Panel --> Crear-->Plan de trabajo --> actividades , "Asignaturas en las que imparte" cambia a "Asignaturas en las que impacta"
+16.	Panel --> Crear-->Plan de trabajo --> Dejar espacio al final para las firmas
+17.	Panel --> Crear-->Acta --> Dejar espacio al final para las firmas

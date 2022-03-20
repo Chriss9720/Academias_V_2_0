@@ -1,5 +1,152 @@
 $(document).ready(() => {
 
+    $("#ayudaPlan").click(() => {
+        $("#modales").html(`
+                <div class="modal" id="modal">
+                    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header d-flex justify-content-center h4">
+                                <label>Ayuda para la creación del docente</label>
+                            </div>
+                            <div class="modal-body">
+                                <ul class="text-justify p-3">
+                                    <li>
+                                        Para la búsqueda de academias:
+                                        <ul>
+                                            <li>
+                                                Debe de ser en formato <b>Clave - Nombre</b>.
+                                            </li>
+                                            <li>
+                                                Si se ingresa la información de forma distinta al formato, aparecerá el mensaje de error <b> "Debe
+                                                    de ser en formato Clave - Nombre"</b>.
+                                            </li>
+                                            <li>
+                                                Si no se ingresa ninguna academia, aparecerá el mensaje de error <b>"Seleccione una academia"</b> al
+                                                seleccionar otros botones.
+                                            </li>
+                                            <li>
+                                                Al ingresarse correctamente el formato de academias se debe presionar el botón <b>enter</b> para cargar los
+                                                datos.
+                                            </li>
+                                            <li>
+                                                Automáticamente se cargarán los datos de los campos "Nombre de accademia", "Presidente" y
+                                                "Semestre".
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        Para seleccionar fechas:
+                                        <ul>
+                                            <li>
+                                                En caso de no aparecer no se recomienda el uso del navegador actual.
+                                            </li>
+                                            <li>
+                                                Al seleccionar el icono <img src="img/iconocalen.JPG"> en el apartado de reunión aparecerá el
+                                                siguiente recuadro: <img src="img/calendario.png">
+                                            </li>
+                                            <li>
+                                                Escoja el día y hora deseada seleccionando los números correspondientes.
+                                            </li>
+                                            <li>
+                                                Si desea borrar la fecha seleccionada presione el botón <b>"borrar"</b>.
+                                            </li>
+                                            <li>
+                                                Si desea obtener la fecha actual exacta seleccione el botón <b>"hoy"</b>.
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        Para ingresar datos en actividades:
+                                        <ul>
+                                            <li>
+                                                En las secciones
+                                                <b>"Acciones específicas para cada actividad",
+                                                    "Asignaturas en las que imparte" y
+                                                    "Evidencia a entregar", </b> seleccione el texto <b>"click para editar"</b> y aparecerá el
+                                                siguiente formato:
+                                            </li>
+                                            <img src="img/formatollenable.png" style="width: 300px;">
+                                            <li>
+                                                Escriba los datos correspondientes en el recuadro donde aparece el mensaje <b>"click para
+                                                    editar"</b>.
+                                            </li>
+                                            <li>
+                                                Para más personalización puede seleccionar los iconos de la parte superior del recuadro.
+                                            </li>
+                                            <li>
+                                                Si desea cancelar el tecleado de información seleccione el botón <b>"cancelar"</b>.
+                                            </li>
+                                            <li>
+                                                Si desea guardar la información tecleada seleccione el botón <b>"aplicar"</b>.
+                                            </li>
+                                            <li>
+                                                En la sección <b>"responsable"</b> seleccione el texto <b>"click para editar"</b> y aparecerá el
+                                                siguiente recuadro:
+                                            </li>
+                                            <img src="img/cuadroresp.JPG" style="width: 300px;">
+                                            <li>
+                                                Para agregar a un responsable, dé click en la sección "Nómina/Nombre" y elija una de las opciones o
+                                                ingrese los datos con el formato solicidado, después presione el botón
+                                                <i class="fas fa-plus-circle click" aria-hidden="true"></i> o pulse <b>enter</b>.
+                                            </li>
+                                            <li>
+                                                Si se ingresa la información de forma distinta al formato o no se selecciona a ningún responsable y
+                                                se presiona el botón
+                                                <i class="fas fa-plus-circle click" aria-hidden="true"></i> a
+                                                parecerá el mensaje de error
+                                                <b> "Debe de ser en formato Nomina - Nombre" </b>.
+                                            </li>
+                                            <li>
+                                                Si se quiere eliminar a uno de los responsables seleccionados, dé click al icono <i
+                                                    class="click fas fa-user-minus" aria-hidden="true"></i>.
+                                            </li>
+                                            <li>
+                                                Si se quiere agregar a todos los miembros que están registrados seleccione el botón <b>"todos"</b>.
+                                            </li>
+                                            <li>
+                                                Para guardar a todos los responsables agregados seleccione el botón <b>"aplicar"</b>.
+                                            </li>
+                                            <li>
+                                                Si se desea cancelar toda la elección de responsables, seleccione el botón <b>"cancelar"</b>.
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        Para la opción vista previa:
+                                        <ul>
+                                            <li>
+                                                Dede de estar seleccionada una academia para que se pueda mostrar la vista previa o generar el PDF ,
+                                                en caso de no ser así , se mostrará el mensaje de error <b>"Seleccione una academia"</b>.
+                                            </li>
+                                            <li>
+                                                Al seleccionar la opción <b>"Vista previa"</b> no se guardará el documento , solo se mostrará el
+                                                plan de trabajo en formato PDF con la información que se haya ingresado.
+                                            </li>
+                                            <li>
+                                                Al seleccionar la opción <b>"Generar PDF"</b> se guardará el documento en la base de datos y se
+                                                mostrará el plan de trabajo en formato PDF con la información que se haya ingresado.
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="modal-footer">
+                                <input id="cerrarAyuda" type="button" value="Salir" class="btn btn-secondary">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `);
+
+        $("#modal").modal();
+
+        $("#cerrarAyuda").click(() => {
+            $("#modal").modal("hide");
+            $(`[class="modal-backdrop show"]`).remove();
+        });
+
+    });
+
     const Plan = {
         "preview": true,
         "fecha": "",
@@ -566,6 +713,32 @@ $(document).ready(() => {
         }
     });
 
+    $("#busqueda_1").keypress(key => {
+        if (key.which == 13) {
+            if (seleccionada) {
+                let busqueda = $("#busqueda_1")[0];
+                let nuevo = busqueda.value.split(" - ");
+                if (nuevo.length > 1) {
+                    responsableAux.push({
+                        "nomina": nuevo[0],
+                        "nombre": nuevo[1]
+                    });
+                    busqueda.value = "";
+                    aplicarFiltro();
+                } else {
+                    $("#alerResponsable").html(`
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Debe de ser en formato Nomina - Nombre</strong>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    `);
+                }
+            }
+        }
+    });
+
     $("#nameSemestre")[0].value = calcularSemestre();
 
     $('div[name="evaluacion"]').click(evt => {
@@ -582,6 +755,15 @@ $(document).ready(() => {
             CKEDITOR.instances.ev.setData(text);
             $("#tituloModal")[0].innerText = `${idText}`;
             $("#editor").modal('show');
+        } else {
+            $("#alertBusqueda").html(`
+                <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                    <strong class="h1">Seleccione una academia</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            `);
         }
     });
 
@@ -619,6 +801,15 @@ $(document).ready(() => {
             Plan[act[1]][act[0]].forEach(p => responsableAux.push(p));
             aplicarFiltro();
             $("#responsablesModal").modal('show');
+        } else {
+            $("#alertBusqueda").html(`
+                <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                    <strong class="h1">Seleccione una academia</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            `);
         }
     });
 
@@ -678,14 +869,14 @@ $(document).ready(() => {
         });
     };
 
-    const getFecha = date => `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()} ${date.getHours()}-${date.getMinutes()}-${date.getSeconds()} ${Plan["datos"]["academia"]} ${Plan["datos"]["semestre"]}`;
+    const getFecha = date => `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()} ${date.getHours()}-${date.getMinutes()}-${date.getSeconds()} ${Plan["datos"]["academia"]} ${Plan["datos"]["semestre"]}`;
 
     $("input[name='Crear']").click(() => {
         if (seleccionada) {
             cargando();
             let date = new Date();
             Plan["fechaG"] = getFecha(date);
-            Plan["fecha"] = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+            Plan["fecha"] = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
             Plan["preview"] = 0;
             crearPDF()
                 .then(t => {
@@ -719,7 +910,7 @@ $(document).ready(() => {
             cargando();
             let date = new Date();
             Plan["fechaG"] = getFecha(date);
-            Plan["fecha"] = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+            Plan["fecha"] = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
             Plan["preview"] = 1;
             preview.push(Plan["fechaG"]);
             crearPDF()
