@@ -695,7 +695,7 @@
         if ($del) {
             eliminar($temp, "$carpeta/temp");
         }
-        if ($$editar == 0) {
+        if ($editar == 0) {
             salvarPlan($ruta, $claveAcademia, $fecha);
             salvarFecha($ruta, $fecha_1);
             salvarFecha($ruta, $fecha_2);

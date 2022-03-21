@@ -787,7 +787,18 @@ $(document).ready(() => {
                             cargarInfo();
                             cerrarM.load = true;
                             cerrarModal();
-                        }).catch(e => console.log(e))
+                        }).catch(e => {
+                            cerrarM.load = true;
+                            cerrarModal();
+                            $("#alertBusqueda").html(`
+                            <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                                <strong class="h1">No se encontro el plan, puede que se alla borrado del servidor</strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        `);
+                        })
                 } else {
                     $("#alertBusqueda").html(`
                         <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
@@ -815,6 +826,11 @@ $(document).ready(() => {
                     </div>
                 `);
             } else {
+                if (dato.length > 2) {
+                    for (let i = 2; i < dato.length; i++) {
+                        dato[1] += ` - ${dato[i]}`;
+                    }
+                }
                 let clave = academias.find(f => f.clave_academia == dato[0] && f.nombre == dato[1]);
                 if (clave) {
                     $("#alertBusqueda").html(``);
@@ -825,6 +841,7 @@ $(document).ready(() => {
                                 cargarMiembros(m);
                                 getPlanesEdit(clave.clave_academia)
                                     .then(t => {
+                                        reset();
                                         listaPlanes = t;
                                         construirPlanes();
                                         cerrarM.load = true;
@@ -1309,5 +1326,29 @@ $(document).ready(() => {
     $("#inicio").click(() => window.location = "/academias/panel.html");
 
     load();
+
+    const reset = () => {
+        seleccionada = false;
+        $("#planSeleccionado")[0].value = "";
+        $("#nameAcademia")[0].value = "";
+        $("#namePresidente")[0].value = "";
+        $("#nameSemestre")[0].value = "";
+
+        let camposFechas = ["fecha_1", "fecha_2", "fecha_3", "fecha_4"];
+        for (let i = 0; i < camposFechas.length; i++) {
+            $(`#${camposFechas[i]}`)[0].value = "";
+        }
+
+        let campos = ["Acciones", "Asignaturas", "Evidencia"];
+        for (let i = 1; i < 10; i++) {
+            for (let j = 0; j < campos.length; j++) {
+                $(`#${campos[j]}_${i}`).html("");
+            }
+        }
+
+        for (let i = 1; i < 10; i++) {
+            $(`#Responsables_${i}`).html("");
+        }
+    };
 
 });
