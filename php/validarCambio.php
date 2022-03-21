@@ -64,6 +64,14 @@
                             echo json_encode(array("msg" => "Acceso invalido"));
                         }
                         break;
+                        case "Plan de trabajo":
+                            if (validarPuesto(array("Presidente", "Secretario")) || $_SESSION["nivel"] == 1) {
+                                echo json_encode(array("cambio" => "/Academias/planTrabajo.html"));
+                            } else {
+                                http_response_code(401);
+                                echo json_encode(array("msg" => "Acceso invalido"));
+                            }
+                        break;
                         default:
                             http_response_code(400);
                             echo json_encode(array("msg"=>"Caso desconocido (Editar) '$afectar'"));

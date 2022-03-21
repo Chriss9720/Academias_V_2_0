@@ -197,3 +197,15 @@ CREATE PROC SP_AltaDocente @Nomina INT AS
 	SET baja = 0
 	WHERE nomina = @Nomina AND nivel != 0 AND nivel != 1
 GO
+
+IF OBJECT_ID('SP_EditarPlan') IS NOT NULL DROP PROC SP_EditarPlan
+GO
+CREATE PROC SP_EditarPlan @Clave VARCHAR(255) AS
+	SELECT PT.*
+	FROM PLANTRABAJO AS PT
+	JOIN PLANES AS P
+	ON P.id_planTrabajo = PT.id_planTrabajo
+	JOIN ACADEMIA AS A
+	ON A.clave_academia = P.clave_academia
+	WHERE SUBIDO = 1 AND A.clave_academia LIKE @Clave
+GO

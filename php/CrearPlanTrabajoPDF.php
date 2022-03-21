@@ -110,6 +110,7 @@
     }
     $academia = utf8_encode($datos['datos']['academia']);
     $preview = $datos['preview'];
+    $editar = $datos['editar'];
     $claveAcademia = utf8_encode($datos['datos']['claveAcademia']);
     $semestre = utf8_encode($datos['datos']['semestre']);
     $presidente = utf8_encode($datos['datos']['presidente']);
@@ -635,6 +636,52 @@
         $carpeta = "../Docs/Planes/$claveAcademia/temp";
     }
 
+    if (array_key_exists('Responsables', $actividad1)) {
+        $actividad_1["Responsables"] = $actividad1["Responsables"];
+    } else{
+        $actividad_1["Responsables"] = array();
+    }
+    if (array_key_exists('Responsables', $actividad2)) {
+        $actividad_2["Responsables"] = $actividad2["Responsables"];
+    } else{
+        $actividad_2["Responsables"] = array();
+    }
+    if (array_key_exists('Responsables', $actividad3)) {
+        $actividad_3["Responsables"] = $actividad3["Responsables"];
+    } else{
+        $actividad_3["Responsables"] = array();
+    }
+    if (array_key_exists('Responsables', $actividad4)) {
+        $actividad_4["Responsables"] = $actividad4["Responsables"];
+    } else{
+        $actividad_4["Responsables"] = array();
+    }
+    if (array_key_exists('Responsables', $actividad5)) {
+        $actividad_5["Responsables"] = $actividad5["Responsables"];
+    } else{
+        $actividad_5["Responsables"] = array();
+    }
+    if (array_key_exists('Responsables', $actividad6)) {
+        $actividad_6["Responsables"] = $actividad6["Responsables"];
+    } else{
+        $actividad_6["Responsables"] = array();
+    }
+    if (array_key_exists('Responsables', $actividad7)) {
+        $actividad_7["Responsables"] = $actividad7["Responsables"];
+    } else{
+        $actividad_7["Responsables"] = array();
+    }
+    if (array_key_exists('Responsables', $actividad8)) {
+        $actividad_8["Responsables"] = $actividad8["Responsables"];
+    } else{
+        $actividad_8["Responsables"] = array();
+    }
+    if (array_key_exists('Responsables', $actividad9)) {
+        $actividad_9["Responsables"] = $actividad9["Responsables"];
+    } else{
+        $actividad_9["Responsables"] = array();
+    }
+
     crearCapera("$carpeta");
 
     $nombre = utf8_encode($datos['fechaG']);
@@ -648,12 +695,13 @@
         if ($del) {
             eliminar($temp, "$carpeta/temp");
         }
-        salvarPlan($ruta, $claveAcademia, $fecha);
-        salvarFecha($ruta, $fecha_1);
-        salvarFecha($ruta, $fecha_2);
-        salvarFecha($ruta, $fecha_3);
-        salvarFecha($ruta, $fecha_4);
-
+        if ($$editar == 0) {
+            salvarPlan($ruta, $claveAcademia, $fecha);
+            salvarFecha($ruta, $fecha_1);
+            salvarFecha($ruta, $fecha_2);
+            salvarFecha($ruta, $fecha_3);
+            salvarFecha($ruta, $fecha_4);
+        }
         $json = json_encode(array(
             "1"=>$actividad_1,
             "2"=>$actividad_2,
@@ -681,6 +729,7 @@
                 "fecha_4"=>$fecha_4
             )
         ));
+
         $bytes = file_put_contents($nombreJson, $json);
     }
 

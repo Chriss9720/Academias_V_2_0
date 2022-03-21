@@ -5,43 +5,95 @@ $(document).ready(() => {
 
     $("#ayudaPanel").click(() => {
 
+        let coorInst = `
+            <li>
+                <b>Cambiar coordinador:</b>
+                <ul>
+                    <li>
+                        Búsqueda en el formato: nómina – nombre.
+                    </li>
+                    <li>
+                        Si se selecciona un docente existente, se le asigna como coordinador y se visualizan sus datos.
+                    </li>
+                    <li>
+                        En caso de no encontrar al docente, se indicará con el mensaje “No se encontro el docente”
+                    </li>
+                </ul>
+            </li>`;
+
         $("#modales").html(`
-                <div class="modal" id="modal">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header d-flex justify-content-center h4">
-                                <label>Información de ayuda en el contenido del panel </label>
-                            </div>
-                            <div class="modal-body">
-                            <ul>
+            <div class="modal" id="modal">
+                <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header d-flex justify-content-center h4">
+                            <label>Información de ayuda en el contenido del panel </label>
+                        </div>
+                        <div class="modal-body">
+                            <ul class="text-justify p-3">
                                 <li>
-                                    <b>Filtro para organizar las reuniones en la agenda:</b>
+                                    <b>Opciones del panel:</b>
                                     <ul>
                                         <li>
-                                        La fecha inicial debe ser menor a la fecha final.
+                                            Liberar:
+                                            <ul>
+                                                <li>
+                                                    Se aprueban como correctos y no se podrán modificar. Los documentos que se pueden liberar son los siguientes: Plan de trabajo, Acta, Ev. Docente, Ev. Presidente o Ev. Secretario
+                                                </li>
+                                            </ul>
                                         </li>
                                         <li>
-                                        Puede seleccionar “Ver juntas pasadas” y ver las reuniones que ya ocurrieron.
+                                            Finalizar:
+                                            <ul>
+                                                <li>
+                                                    Se deja de aceptar nuevos documentos correspondientes a la selección y se mandan a revisión del coordinador, los cuales pueden ser: Plan de trabajo, Acta, Ev. Docente o Ev. Secretario.
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            Subir evidencia:
+                                            <ul>
+                                                <li>
+                                                    Apartado para subir los entregables de cada docente/presidente/secretario según el plan de trabajo o acta.
+                                                </li>
+                                            </ul>
                                         </li>
                                     </ul>
                                 </li>
                                 <li>
-                                    <b>Cambiar coordinador:</b>
+                                    <b>Para seleccionar fechas:</b>
                                     <ul>
                                         <li>
-                                        Búsqueda en el formato: nómina – nombre. 
+                                            Al seleccionar el apartado de fecha, aparecerá el siguiente recuadro: 
+                                            <br>
+                                            <img src="img/calendario.png">
+                                        </li>
+                                        <li>
+                                            Escoja el día y hora deseada seleccionando los números correspondientes.
+                                        </li>
+                                        <li>
+                                            Si desea borrar la fecha seleccionada presione el botón <b>"borrar"</b>.
+                                        </li>
+                                        <li>
+                                            Si desea obtener la fecha actual exacta seleccione el botón <b>"hoy"</b>.
+                                        </li>
+                                        <li>
+                                            La fecha inicial debe ser menor a la fecha final.
+                                        </li>
+                                        <li>
+                                            Puede seleccionar “Ver juntas pasadas” y ver las reuniones que ya ocurrieron.
                                         </li>
                                     </ul>
                                 </li>
+                                ${misDatos['nivel'] == 1 || misDatos['nivel'] == 0 ? coorInst : ''}
                             </ul>
-                            </div>
-                            <div class="modal-footer">
-                                <input id="cerrarAyuda" type="button" value="Salir" class="btn btn-secondary">
-                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input id="cerrarAyuda" type="button" value="Salir" class="btn btn-secondary">
                         </div>
                     </div>
                 </div>
-            `);
+            </div>
+        `);
 
         $("#modal").modal();
 
@@ -280,7 +332,6 @@ $(document).ready(() => {
                 cerrarModal();
             })
             .catch(e => {
-                console.log(e);
                 if (e.responseText == "Solicitar Reinicio de sesion") {
                     cerrarM.load = true;
                     cerrarModal();
@@ -585,21 +636,32 @@ $(document).ready(() => {
         $("#nuevoCoordinador").click(() => {
             let datos = $("#buscarCoordinador")[0].value.split(" - ");
             if (datos.length > 1) {
-                let nuevo = docentesCoordinador.find(f => f.nomina == datos[0]);
-                actualizarCoordinador({ n: nuevo })
-                    .then(t => {
-                        cargarCoordinador({ u: true });
-                    })
-                    .catch(c => {
-                        $("#alertaCoor").html(`
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>${c}</strong>
+                let nuevo = docentesCoordinador.find(f => f.nomina == datos[0] && f.nombre == datos[1]);
+                if (nuevo) {
+                    actualizarCoordinador({ n: nuevo })
+                        .then(t => {
+                            cargarCoordinador({ u: true });
+                        })
+                        .catch(c => {
+                            $("#alertaCoor").html(`
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>${c}</strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                            `);
+                        });
+                } else {
+                    $("#alertaCoor").html(`
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>No se encontro el docente</strong>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
-                            </div>
-                        `);
-                    });
+                        </div>
+                    `);
+                }
             } else {
                 $("#alertaCoor").html(`
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">

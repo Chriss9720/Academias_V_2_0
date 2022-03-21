@@ -1,7 +1,8 @@
 $(document).ready(() => {
 
     $("#ayudaPlan").click(() => {
-        $("#modales").html(`
+        if (sessionStorage.getItem("accion").includes("Editar")) {
+            $("#modales").html(`
                 <div class="modal" id="modal">
                     <div class="modal-dialog modal-lg modal-dialog-scrollable">
                         <div class="modal-content">
@@ -137,6 +138,144 @@ $(document).ready(() => {
                     </div>
                 </div>
             `);
+        } else {
+            $("#modales").html(`
+                <div class="modal" id="modal">
+                    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header d-flex justify-content-center h4">
+                                <label>Ayuda para la creación del docente</label>
+                            </div>
+                            <div class="modal-body">
+                                <ul class="text-justify p-3">
+                                    <li>
+                                        Para la búsqueda de academias:
+                                        <ul>
+                                            <li>
+                                                Debe de ser en formato <b>Clave - Nombre</b>.
+                                            </li>
+                                            <li>
+                                                Si se ingresa la información de forma distinta al formato, aparecerá el mensaje de error <b> "Debe
+                                                    de ser en formato Clave - Nombre"</b>.
+                                            </li>
+                                            <li>
+                                                Si no se ingresa ninguna academia, aparecerá el mensaje de error <b>"Seleccione una academia"</b> al
+                                                seleccionar otros botones.
+                                            </li>
+                                            <li>
+                                                Al ingresarse correctamente el formato de academias se debe presionar el botón <b>enter</b> para cargar los
+                                                datos.
+                                            </li>
+                                            <li>
+                                                Automáticamente se cargarán los datos de los campos "Nombre de accademia", "Presidente" y
+                                                "Semestre".
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        Para seleccionar fechas:
+                                        <ul>
+                                            <li>
+                                                En caso de no aparecer no se recomienda el uso del navegador actual.
+                                            </li>
+                                            <li>
+                                                Al seleccionar el icono <img src="img/iconocalen.JPG"> en el apartado de reunión aparecerá el
+                                                siguiente recuadro: <img src="img/calendario.png">
+                                            </li>
+                                            <li>
+                                                Escoja el día y hora deseada seleccionando los números correspondientes.
+                                            </li>
+                                            <li>
+                                                Si desea borrar la fecha seleccionada presione el botón <b>"borrar"</b>.
+                                            </li>
+                                            <li>
+                                                Si desea obtener la fecha actual exacta seleccione el botón <b>"hoy"</b>.
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        Para ingresar datos en actividades:
+                                        <ul>
+                                            <li>
+                                                En las secciones
+                                                <b>"Acciones específicas para cada actividad",
+                                                    "Asignaturas en las que imparte" y
+                                                    "Evidencia a entregar", </b> seleccione el texto <b>"click para editar"</b> y aparecerá el
+                                                siguiente formato:
+                                            </li>
+                                            <img src="img/formatollenable.png" style="width: 300px;">
+                                            <li>
+                                                Escriba los datos correspondientes en el recuadro donde aparece el mensaje <b>"click para
+                                                    editar"</b>.
+                                            </li>
+                                            <li>
+                                                Para más personalización puede seleccionar los iconos de la parte superior del recuadro.
+                                            </li>
+                                            <li>
+                                                Si desea cancelar el tecleado de información seleccione el botón <b>"cancelar"</b>.
+                                            </li>
+                                            <li>
+                                                Si desea guardar la información tecleada seleccione el botón <b>"aplicar"</b>.
+                                            </li>
+                                            <li>
+                                                En la sección <b>"responsable"</b> seleccione el texto <b>"click para editar"</b> y aparecerá el
+                                                siguiente recuadro:
+                                            </li>
+                                            <img src="img/cuadroresp.JPG" style="width: 300px;">
+                                            <li>
+                                                Para agregar a un responsable, dé click en la sección "Nómina/Nombre" y elija una de las opciones o
+                                                ingrese los datos con el formato solicidado, después presione el botón
+                                                <i class="fas fa-plus-circle click" aria-hidden="true"></i> o pulse <b>enter</b>.
+                                            </li>
+                                            <li>
+                                                Si se ingresa la información de forma distinta al formato o no se selecciona a ningún responsable y
+                                                se presiona el botón
+                                                <i class="fas fa-plus-circle click" aria-hidden="true"></i> a
+                                                parecerá el mensaje de error
+                                                <b> "Debe de ser en formato Nomina - Nombre" </b>.
+                                            </li>
+                                            <li>
+                                                Si se quiere eliminar a uno de los responsables seleccionados, dé click al icono <i
+                                                    class="click fas fa-user-minus" aria-hidden="true"></i>.
+                                            </li>
+                                            <li>
+                                                Si se quiere agregar a todos los miembros que están registrados seleccione el botón <b>"todos"</b>.
+                                            </li>
+                                            <li>
+                                                Para guardar a todos los responsables agregados seleccione el botón <b>"aplicar"</b>.
+                                            </li>
+                                            <li>
+                                                Si se desea cancelar toda la elección de responsables, seleccione el botón <b>"cancelar"</b>.
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        Para la opción vista previa:
+                                        <ul>
+                                            <li>
+                                                Dede de estar seleccionada una academia para que se pueda mostrar la vista previa o generar el PDF ,
+                                                en caso de no ser así , se mostrará el mensaje de error <b>"Seleccione una academia"</b>.
+                                            </li>
+                                            <li>
+                                                Al seleccionar la opción <b>"Vista previa"</b> no se guardará el documento , solo se mostrará el
+                                                plan de trabajo en formato PDF con la información que se haya ingresado.
+                                            </li>
+                                            <li>
+                                                Al seleccionar la opción <b>"Generar PDF"</b> se guardará el documento en la base de datos y se
+                                                mostrará el plan de trabajo en formato PDF con la información que se haya ingresado.
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="modal-footer">
+                                <input id="cerrarAyuda" type="button" value="Salir" class="btn btn-secondary">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `);
+        }
 
         $("#modal").modal();
 
@@ -151,6 +290,7 @@ $(document).ready(() => {
         "preview": true,
         "fecha": "",
         "fechaG": "",
+        "editar": 0,
         "datos": {
             "claveAcademia": "",
             "academia": "",
@@ -230,6 +370,10 @@ $(document).ready(() => {
         }
     };
 
+    var planEdit;
+
+    var listaPlanes;
+
     const preview = [];
 
     const miembrosTotal = []
@@ -241,6 +385,11 @@ $(document).ready(() => {
     var academias = [];
 
     var seleccionada = false;
+
+    var cerrarM = {
+        load: false,
+        login: false
+    };
 
     const cerrar = () => {
         return new Promise((resolve, reject) => {
@@ -261,11 +410,6 @@ $(document).ready(() => {
                 error: e => reject(e)
             });
         });
-    };
-
-    var cerrarM = {
-        load: false,
-        login: false
     };
 
     const cerrarModal = () => {
@@ -528,6 +672,138 @@ $(document).ready(() => {
         $("#listaAcademias").html(r);
     };
 
+    const construirPlanes = () => {
+        let r = "";
+        for (let i = 0; i < listaPlanes.length; i++) {
+            r += `<option value="${listaPlanes[i].id_planTrabajo} - ${listaPlanes[i].fecha.date}">`;
+        }
+        $("#listaDePlanes").html(r);
+    };
+
+    const getPlanesEdit = clave => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: "php/editarPlan.php",
+                data: {
+                    academia: clave
+                },
+                type: "post",
+                dataType: "json",
+                success: s => resolve(s),
+                error: e => reject(e)
+            });
+        });
+    };
+
+    const leerPlan = ruta => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: "php/leerPlan.php",
+                data: { ruta: ruta },
+                type: "POST",
+                dataType: "json",
+                success: s => resolve(s),
+                error: e => reject(e)
+            });
+        });
+    };
+
+    const cargarInfo = () => {
+
+        $("#nameAcademia")[0].value = planEdit.datos.academia;
+        $("#namePresidente")[0].value = planEdit.datos.presidente;
+        $("#nameSemestre")[0].value = planEdit.datos.semestre;
+
+        Plan["datos"]["academia"] = planEdit.datos.academia;
+        Plan["datos"]["presidente"] = planEdit.datos.presidente;
+        Plan["datos"]["semestre"] = planEdit.datos.semestre;
+
+        let fechas = planEdit.fechas;
+        let camposFechas = ["fecha_1", "fecha_2", "fecha_3", "fecha_4"];
+        for (let i = 0; i < camposFechas.length; i++) {
+            $(`#${camposFechas[i]}`)[0].value = fechas[camposFechas[i]].replace(" ", "T");
+            planEdit[camposFechas[i]] = fechas[camposFechas[i]];
+        }
+
+        let campos = ["Acciones", "Asignaturas", "Evidencia"];
+        for (let i = 1; i < 10; i++) {
+            for (let j = 0; j < campos.length; j++) {
+                let campo = $(`#${campos[j]}_${i}`);
+                campo[0].className = campo[0].className.replace("d-flex justify-content-center align-items-center", "text-justify");
+                campo.html(planEdit[i][campos[j]]);
+                Plan[i][campos[j]] = planEdit[i][campos[j]];
+            }
+        }
+
+        for (let i = 1; i < 10; i++) {
+            let text = "";
+            let responsables = planEdit[i]["Responsables"];
+            for (let j = 0; j < responsables.length; j++) {
+                text += `<li>
+                    <div class="row">
+                        <div class="col-8">
+                            ${responsables[i].nomina} - ${responsables[i].nombre}
+                        </div>
+                        <div class="col-4 align-self-center">
+                            <span class="ml-auto">
+                                <i name="remover" id="remover-${responsables[i].nomina}" class="click fas fa-user-minus"></i>
+                            </span>
+                        </div>
+                    </div>
+                </li>`;
+            }
+            let campo = $(`#Responsables_${i}`)[0];
+            let value = `<ul>${text}</ul>`;
+            campo.innerHTML = value;
+            campo.className = campo.className.replace("d-flex justify-content-center align-items-center", "");
+            Plan[i][`Responsables`] = planEdit[i]["Responsables"];
+        }
+    };
+
+    $("#planSeleccionado").keypress(k => {
+        if (k.which == 13) {
+            let dato = k.target.value.split(" - ");
+            if (dato.length < 2) {
+                $("#alertBusqueda").html(`
+                    <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                        <strong class="h1">Debe de ser en formato Clave - Fecha</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                `);
+            } else {
+                let datos = listaPlanes.find(f => f.id_planTrabajo == dato[0]);
+                if (datos) {
+                    cargando();
+                    $("#alertBusqueda").html(``);
+                    leerPlan(datos.localizacionJson)
+                        .then(plan => {
+                            seleccionada = true;
+                            Plan["datos"]["claveAcademia"] = plan.datos.claveAcademia;
+                            Plan["datos"]["jefe"] = plan.datos.jefe;
+                            Plan["datos"]["coordinador"] = plan.datos.coordinador;
+                            console.log(plan.datos.jefe);
+                            console.log(plan.datos.coordinador);
+                            planEdit = plan;
+                            cargarInfo();
+                            cerrarM.load = true;
+                            cerrarModal();
+                        }).catch(e => console.log(e))
+                } else {
+                    $("#alertBusqueda").html(`
+                        <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                            <strong class="h1">No se encontro el plan</strong>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    `);
+                }
+            }
+        }
+    });
+
     $("#academiaSeleccionada").keypress(k => {
         if (k.which == 13) {
             let dato = k.target.value.split(" - ");
@@ -545,40 +821,69 @@ $(document).ready(() => {
                 if (clave) {
                     $("#alertBusqueda").html(``);
                     cargando();
-                    datosAcademias(clave.clave_academia)
-                        .then(t => {
-                            miembrosAcademia(clave.clave_academia)
-                                .then(s => {
-                                    cargarMiembros(s);
-                                    $("#nameAcademia")[0].value = t.Academia;
-                                    $("#namePresidente")[0].value = t.nombre;
-                                    Plan["datos"]["claveAcademia"] = t.clave_academia;
-                                    Plan["datos"]["academia"] = t.Academia;
-                                    Plan["datos"]["presidente"] = t.nombre;
-                                    Plan["datos"]["coordinador"] = t.Coordinador;
-                                    Plan["datos"]["jefe"] = t.Coordinador;
-                                    Plan["datos"]["semestre"] = calcularSemestre();
-                                    cerrarM.load = true;
-                                    cerrarModal();
-                                    seleccionada = true;
-                                })
-                                .catch(e => {
-                                    if (e.responseText == "Solicitar Reinicio de sesion") {
+                    if (sessionStorage.getItem("accion").includes("Editar")) {
+                        miembrosAcademia(clave.clave_academia)
+                            .then(m => {
+                                cargarMiembros(m);
+                                getPlanesEdit(clave.clave_academia)
+                                    .then(t => {
+                                        listaPlanes = t;
+                                        construirPlanes();
                                         cerrarM.load = true;
                                         cerrarModal();
-                                        login();
-                                    }
-                                })
-                        })
-                        .catch(e => {
-                            if (e.responseText == "Solicitar Reinicio de sesion") {
-                                cerrarM.load = true;
-                                cerrarModal();
-                                login();
-                            } else {
-                                window.location = "/Academias/Panel.html";
-                            }
-                        });
+                                    })
+                                    .catch(e => {
+                                        if (e.responseText == "Solicitar Reinicio de sesion") {
+                                            cerrarM.load = true;
+                                            cerrarModal();
+                                            login();
+                                        }
+                                        console.log(e);
+                                    })
+                            })
+                            .catch(e => {
+                                if (e.responseText == "Solicitar Reinicio de sesion") {
+                                    cerrarM.load = true;
+                                    cerrarModal();
+                                    login();
+                                }
+                            })
+                    } else {
+                        datosAcademias(clave.clave_academia)
+                            .then(t => {
+                                miembrosAcademia(clave.clave_academia)
+                                    .then(s => {
+                                        cargarMiembros(s);
+                                        $("#nameAcademia")[0].value = t.Academia;
+                                        $("#namePresidente")[0].value = t.nombre;
+                                        Plan["datos"]["claveAcademia"] = t.clave_academia;
+                                        Plan["datos"]["academia"] = t.Academia;
+                                        Plan["datos"]["presidente"] = t.nombre;
+                                        Plan["datos"]["coordinador"] = t.Coordinador;
+                                        Plan["datos"]["jefe"] = t.Coordinador;
+                                        Plan["datos"]["semestre"] = calcularSemestre();
+                                        cerrarM.load = true;
+                                        cerrarModal();
+                                        seleccionada = true;
+                                    })
+                                    .catch(e => {
+                                        if (e.responseText == "Solicitar Reinicio de sesion") {
+                                            cerrarM.load = true;
+                                            cerrarModal();
+                                            login();
+                                        }
+                                    })
+                            })
+                            .catch(e => {
+                                if (e.responseText == "Solicitar Reinicio de sesion") {
+                                    cerrarM.load = true;
+                                    cerrarModal();
+                                    login();
+                                } else {
+                                    window.location = "/Academias/Panel.html";
+                                }
+                            });
+                    }
                 } else {
                     $("#alertBusqueda").html(`
                         <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
@@ -604,9 +909,16 @@ $(document).ready(() => {
                             .then(A => {
                                 academias = A;
                                 construirBusqueda();
-                                cerrarM.load = true;
-                                cerrarM.login = true;
-                                cerrarModal();
+                                if (sessionStorage.getItem("accion").includes("Editar")) {
+                                    cerrarM.load = true;
+                                    cerrarM.login = true;
+                                    cerrarModal();
+                                } else {
+                                    $("#buscarPlan").remove();
+                                    cerrarM.load = true;
+                                    cerrarM.login = true;
+                                    cerrarModal();
+                                }
                             }).catch(e => {
                                 if (e.responseText == "Solicitar Reinicio de sesion") {
                                     cerrarM.load = true;
@@ -756,14 +1068,25 @@ $(document).ready(() => {
             $("#tituloModal")[0].innerText = `${idText}`;
             $("#editor").modal('show');
         } else {
-            $("#alertBusqueda").html(`
-                <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
-                    <strong class="h1">Seleccione una academia</strong>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            `);
+            if (sessionStorage.getItem("accion").includes("Editar")) {
+                $("#alertBusqueda").html(`
+                    <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                        <strong class="h1">Seleccione un plan a modificar</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                `);
+            } else {
+                $("#alertBusqueda").html(`
+                    <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                        <strong class="h1">Seleccione una academia</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                `);
+            }
         }
     });
 
@@ -802,14 +1125,25 @@ $(document).ready(() => {
             aplicarFiltro();
             $("#responsablesModal").modal('show');
         } else {
-            $("#alertBusqueda").html(`
-                <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
-                    <strong class="h1">Seleccione una academia</strong>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            `);
+            if (sessionStorage.getItem("accion").includes("Editar")) {
+                $("#alertBusqueda").html(`
+                    <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                        <strong class="h1">Seleccione un plan a modificar</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                `);
+            } else {
+                $("#alertBusqueda").html(`
+                    <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                        <strong class="h1">Seleccione una academia</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                `);
+            }
         }
     });
 
@@ -874,9 +1208,16 @@ $(document).ready(() => {
     $("input[name='Crear']").click(() => {
         if (seleccionada) {
             cargando();
-            let date = new Date();
-            Plan["fechaG"] = getFecha(date);
-            Plan["fecha"] = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+            if (sessionStorage.getItem("accion").includes("Editar")) {
+                Plan["fechaG"] = planEdit["fechaG"];
+                Plan["fecha"] = planEdit["fecha"];
+                Plan["editar"] = 1;
+            } else {
+                let date = new Date();
+                Plan["fechaG"] = getFecha(date);
+                Plan["fecha"] = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+                Plan["editar"] = 0;
+            }
             Plan["preview"] = 0;
             crearPDF()
                 .then(t => {
@@ -894,23 +1235,39 @@ $(document).ready(() => {
                     }
                 });
         } else {
-            $("#alertBusqueda").html(`
-                <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
-                    <strong class="h1">Seleccione una academia</strong>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            `);
+            if (sessionStorage.getItem("accion").includes("Editar")) {
+                $("#alertBusqueda").html(`
+                    <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                        <strong class="h1">Seleccione el plan a modificar</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                `);
+            } else {
+                $("#alertBusqueda").html(`
+                    <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                        <strong class="h1">Seleccione una academia</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                `);
+            }
         }
     });
 
     $("input[name='preview']").click(() => {
         if (seleccionada) {
             cargando();
-            let date = new Date();
-            Plan["fechaG"] = getFecha(date);
-            Plan["fecha"] = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+            if (sessionStorage.getItem("accion").includes("Editar")) {
+                Plan["fechaG"] = planEdit["fechaG"];
+                Plan["fecha"] = planEdit["fecha"];
+            } else {
+                let date = new Date();
+                Plan["fechaG"] = getFecha(date);
+                Plan["fecha"] = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+            }
             Plan["preview"] = 1;
             preview.push(Plan["fechaG"]);
             crearPDF()
@@ -929,14 +1286,25 @@ $(document).ready(() => {
                     }
                 });
         } else {
-            $("#alertBusqueda").html(`
-                <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
-                    <strong class="h1">Seleccione una academia</strong>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            `);
+            if (sessionStorage.getItem("accion").includes("Editar")) {
+                $("#alertBusqueda").html(`
+                    <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                        <strong class="h1">Seleccione el plan a modificar</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                `);
+            } else {
+                $("#alertBusqueda").html(`
+                    <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                        <strong class="h1">Seleccione una academia</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                `);
+            }
         }
     });
 
