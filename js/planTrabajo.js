@@ -773,7 +773,7 @@ $(document).ready(() => {
                     </div>
                 `);
             } else {
-                let datos = listaPlanes.find(f => f.id_planTrabajo == dato[0]);
+                let datos = listaPlanes.find(f => f.id_planTrabajo == dato[0] && f.fecha.date == dato[1]);
                 if (datos) {
                     cargando();
                     $("#alertBusqueda").html(``);
@@ -783,8 +783,6 @@ $(document).ready(() => {
                             Plan["datos"]["claveAcademia"] = plan.datos.claveAcademia;
                             Plan["datos"]["jefe"] = plan.datos.jefe;
                             Plan["datos"]["coordinador"] = plan.datos.coordinador;
-                            console.log(plan.datos.jefe);
-                            console.log(plan.datos.coordinador);
                             planEdit = plan;
                             cargarInfo();
                             cerrarM.load = true;
