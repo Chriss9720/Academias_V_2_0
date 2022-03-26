@@ -605,13 +605,13 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class='firma centrar borde_superior borde_izquierdo borde_derecho borde_inferior borde_derecho fuente firmas'>
+                    <td class='firma bajar borde_superior borde_izquierdo borde_derecho borde_inferior borde_derecho fuente firmas'>
                         $presidente
                     </td>
-                    <td class='firma centrar borde_superior borde_derecho borde_inferior borde_izquierdo borde_derecho fuente  firmas'>
+                    <td class='firma bajar borde_superior borde_derecho borde_inferior borde_izquierdo borde_derecho fuente  firmas'>
                         $jefe
                     </td>
-                    <td class='firma centrar borde_superior borde_izquierdo borde_derecho borde_inferior firmas'>
+                    <td class='firma bajar borde_superior borde_izquierdo borde_derecho borde_inferior firmas'>
                         $coordinador
                     </td>
                 </tr>

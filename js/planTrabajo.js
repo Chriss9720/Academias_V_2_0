@@ -7,7 +7,7 @@ $(document).ready(() => {
                     <div class="modal-dialog modal-lg modal-dialog-scrollable">
                         <div class="modal-content">
                             <div class="modal-header d-flex justify-content-center h4">
-                                <label>Ayuda para la creación del docente</label>
+                                <label>Ayuda para editar plan de trabajo</label>
                             </div>
                             <div class="modal-body">
                                 <ul class="text-justify p-3">
@@ -15,7 +15,7 @@ $(document).ready(() => {
                                         Para la búsqueda de academias:
                                         <ul>
                                             <li>
-                                                Debe de ser en formato <b>Clave - Nombre</b>.
+                                                Academia debe de ser en formato <b>Clave - Nombre</b>.
                                             </li>
                                             <li>
                                                 Si se ingresa la información de forma distinta al formato, aparecerá el mensaje de error <b> "Debe
@@ -26,12 +26,28 @@ $(document).ready(() => {
                                                 seleccionar otros botones.
                                             </li>
                                             <li>
-                                                Al ingresarse correctamente el formato de academias se debe presionar el botón <b>enter</b> para cargar los
-                                                datos.
+                                                Ingresada la información presione el botón <b>enter</b>, se cargarán los planes de trabajos posibles a una modificación.
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        Para la búsqueda de plan:
+                                        <ul>
+                                            <li>
+                                                Plan debe de ser en formato <b>Clave - Fecha</b>.
                                             </li>
                                             <li>
-                                                Automáticamente se cargarán los datos de los campos "Nombre de accademia", "Presidente" y
-                                                "Semestre".
+                                                Si se ingresa la información de forma distinta al formato, aparecerá el mensaje de error <b> "Debe
+                                                de ser en formato Clave - Fecha"</b>.
+                                            </li>
+                                            <li>
+                                                Si se ingresan los datos de un plan que no esté registrado aparecerá el mensaje de error <b>"No se encontró plan"</b>
+                                            </li>
+                                            <li>
+                                                Si no se ingresan datos en la sección "búsqueda de plan" aparecerá el mensaje de error  <b>"Seleccione plan a modicar"</b>.
+                                            </li>
+                                            <li>
+                                                Ingresada la información, presione el botón <b>enter</b>, se cargará la información guardada del plan seleccionado.
                                             </li>
                                         </ul>
                                     </li>
@@ -62,7 +78,7 @@ $(document).ready(() => {
                                             <li>
                                                 En las secciones
                                                 <b>"Acciones específicas para cada actividad",
-                                                    "Asignaturas en las que imparte" y
+                                                    "Asignaturas en las que impacta" y
                                                     "Evidencia a entregar", </b> seleccione el texto <b>"click para editar"</b> y aparecerá el
                                                 siguiente formato:
                                             </li>
@@ -95,7 +111,7 @@ $(document).ready(() => {
                                                 se presiona el botón
                                                 <i class="fas fa-plus-circle click" aria-hidden="true"></i> a
                                                 parecerá el mensaje de error
-                                                <b> "Debe de ser en formato Nomina - Nombre" </b>.
+                                                <b> "Debe de ser en formato Nómina - Nombre" </b>.
                                             </li>
                                             <li>
                                                 Si se quiere eliminar a uno de los responsables seleccionados, dé click al icono <i
@@ -116,7 +132,7 @@ $(document).ready(() => {
                                         Para la opción vista previa:
                                         <ul>
                                             <li>
-                                                Dede de estar seleccionada una academia para que se pueda mostrar la vista previa o generar el PDF ,
+                                                Debe de estar seleccionada una academia para que se pueda mostrar la vista previa o generar el PDF ,
                                                 en caso de no ser así , se mostrará el mensaje de error <b>"Seleccione una academia"</b>.
                                             </li>
                                             <li>
@@ -232,7 +248,7 @@ $(document).ready(() => {
                                                 se presiona el botón
                                                 <i class="fas fa-plus-circle click" aria-hidden="true"></i> a
                                                 parecerá el mensaje de error
-                                                <b> "Debe de ser en formato Nomina - Nombre" </b>.
+                                                <b> "Debe de ser en formato Nómina - Nombre" </b>.
                                             </li>
                                             <li>
                                                 Si se quiere eliminar a uno de los responsables seleccionados, dé click al icono <i
@@ -471,7 +487,7 @@ $(document).ready(() => {
             let nomina = getValue("nomina");
             let clave = getValue("clave");
 
-            if (!validacionDeNoVacio(nomina)) return errorExacto({ campo: "nomina", desc: "Ingrese su nomina" });
+            if (!validacionDeNoVacio(nomina)) return errorExacto({ campo: "nomina", desc: "Ingrese su nómina" });
             else quitarError({ campo: "nomina" })
 
             if (!validacionDeNoVacio(clave)) return errorExacto({ campo: "clave", desc: "Ingrese su clave" });
@@ -1030,7 +1046,7 @@ $(document).ready(() => {
             } else {
                 $("#alerResponsable").html(`
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <strong>Debe de ser en formato Nomina - Nombre</strong>
+                        <strong>Debe de ser en formato Nómina - Nombre</strong>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -1055,7 +1071,7 @@ $(document).ready(() => {
                 } else {
                     $("#alerResponsable").html(`
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>Debe de ser en formato Nomina - Nombre</strong>
+                            <strong>Debe de ser en formato Nómina - Nombre</strong>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>

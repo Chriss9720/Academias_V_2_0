@@ -209,3 +209,15 @@ CREATE PROC SP_EditarPlan @Clave VARCHAR(255) AS
 	ON A.clave_academia = P.clave_academia
 	WHERE SUBIDO = 1 AND A.clave_academia LIKE @Clave
 GO
+
+IF OBJECT_ID('SP_DocenteSinCarrera') IS NOT NULL DROP PROC SP_DocenteSinCarrera
+GO
+CREATE PROC SP_DocenteSinCarrera AS
+	SELECT *
+	FROM DOCENTE AS DO
+	WHERE DO.baja = 0 AND
+	DO.nomina NOT IN (
+		SELECT nomina FROM AFILIADO WHERE Activo = 1
+	)
+	AND DO.nivel != 0
+GO

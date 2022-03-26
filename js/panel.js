@@ -252,7 +252,7 @@ $(document).ready(() => {
             let nomina = getValue("nomina");
             let clave = getValue("clave");
 
-            if (!validacionDeNoVacio(nomina)) return errorExacto({ campo: "nomina", desc: "Ingrese su nomina" });
+            if (!validacionDeNoVacio(nomina)) return errorExacto({ campo: "nomina", desc: "Ingrese su nómina" });
             else quitarError({ campo: "nomina" })
 
             if (!validacionDeNoVacio(clave)) return errorExacto({ campo: "clave", desc: "Ingrese su clave" });
@@ -396,7 +396,7 @@ $(document).ready(() => {
                     <input name="opcionMenu" type="button" value="Acta" class="dropdown-item">
                     <input name="opcionMenu" type="button" value="Ev. docente" class="dropdown-item">
                     <input name="opcionMenu" type="button" value="Ev. presidente" class="dropdown-item">
-                    <input name="opcionMenu" type="button" value="Ev. secreatario" class="dropdown-item">
+                    <input name="opcionMenu" type="button" value="Ev. secretario" class="dropdown-item">
                 </div>
             </div>
         `);
@@ -417,7 +417,7 @@ $(document).ready(() => {
                         ${presidente || secretario || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Acta" class="dropdown-item">' : ''}
                         ${presidente ? '<input name="opcionMenu" type="button"  value="Ev. docente" class="dropdown-item">' : ''}
                         ${nivel == 1 ? '<input name="opcionMenu" type="button"  value="Ev. presidente" class="dropdown-item">' : ''}
-                        ${nivel == 1 ? '<input name="opcionMenu" type="button"  value="Ev. secreatario" class="dropdown-item">' : ''}
+                        ${nivel == 1 ? '<input name="opcionMenu" type="button"  value="Ev. secretario" class="dropdown-item">' : ''}
                     </div>
                 </div>
             `);
@@ -441,7 +441,7 @@ $(document).ready(() => {
                         ${presidente || secretario || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Acta" class="dropdown-item">' : ''}
                         ${presidente ? '<input name="opcionMenu" type="button"  value="Ev. docente" class="dropdown-item">' : ''}
                         ${nivel == 1 ? '<input name="opcionMenu" type="button"  value="Ev. presidente" class="dropdown-item">' : ''}
-                        ${nivel == 1 ? '<input name="opcionMenu" type="button"  value="Ev. secreatario" class="dropdown-item">' : ''}
+                        ${nivel == 1 ? '<input name="opcionMenu" type="button"  value="Ev. secretario" class="dropdown-item">' : ''}
                     </div>
                 </div>
             `);
@@ -469,7 +469,7 @@ $(document).ready(() => {
                     <input name="opcionMenu" type="button"  value="Acta" class="dropdown-item">
                     <input name="opcionMenu" type="button"  value="Ev. docente" class="dropdown-item">
                     <input name="opcionMenu" type="button"  value="Ev. presidente" class="dropdown-item">
-                    <input name="opcionMenu" type="button"  value="Ev. secreatario" class="dropdown-item">
+                    <input name="opcionMenu" type="button"  value="Ev. secretario" class="dropdown-item">
                 </div>
             </div>
         `);
@@ -490,7 +490,7 @@ $(document).ready(() => {
                         <input name="opcionMenu" type="button"  value="Acta" class="dropdown-item">
                         <input name="opcionMenu" type="button"  value="Ev. docente" class="dropdown-item">
                         <input name="opcionMenu" type="button"  value="Ev. presidente" class="dropdown-item">
-                        <input name="opcionMenu" type="button"  value="Ev. secreatario" class="dropdown-item">
+                        <input name="opcionMenu" type="button"  value="Ev. secretario" class="dropdown-item">
                     </div>
                 </div>
             `);
@@ -511,7 +511,7 @@ $(document).ready(() => {
                         ${presidente ? '<input name="opcionMenu" type="button"  value="Acta" class="dropdown-item">': ''}
                         ${presidente ? '<input name="opcionMenu" type="button"  value="Ev. docente" class="dropdown-item">': ''}
                         ${nivel == 1 ? '<input name="opcionMenu" type="button"  value="Ev. presidente" class="dropdown-item">': ''}
-                        ${presidente ? '<input name="opcionMenu" type="button"  value="Ev. secreatario" class="dropdown-item">': ''}
+                        ${presidente ? '<input name="opcionMenu" type="button"  value="Ev. secretario" class="dropdown-item">': ''}
                     </div>
                 </div>
             `);
@@ -541,7 +541,7 @@ $(document).ready(() => {
             })
             .catch(async(c) => {
                 $("#datosCoordinador").html(`
-                    <h3>Ocurrio un error, puede que no se tenga establecido a un coordinador</h3>
+                    <h3>Ocurrió un error, puede que no se tenga esta    lecido a un coordinador</h3>
                     ${misDatos['nivel'] == 0 ? await cambiarCoordinador(): ""}
                 `);
                 if (misDatos['nivel'] == 0) {
@@ -556,7 +556,7 @@ $(document).ready(() => {
             .then(t => {
                 return `
                     <div class="form-inline mt-1">
-                        <label class="form-label text-input">Busqueda por nombre/nomina</label>
+                        <label class="form-label text-input">Búsqueda por nombre/nómina</label>
                         <input id="buscarCoordinador" type="search" class="form-control text-input bg-input rounded-pill mx-auto" list="listaDocentes">
                         <datalist id="listaDocentes">
                             ${getOpcionesCoordinador(t)}
@@ -665,7 +665,7 @@ $(document).ready(() => {
             } else {
                 $("#alertaCoor").html(`
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <strong>Debe de ser en formato Nomina - Nombre</strong>
+                        <strong>Debe de ser en formato Nómina - Nombre</strong>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>

@@ -475,7 +475,7 @@ $(document).ready(() => {
         $("#nominaR").attr("disabled", "");
         $("#soloEdit").html(`
             <div class="form-inline mt-1 mx-auto">
-                <label class="form-label text-input mr-3">Busqueda por nombre/nomina</label>
+                <label class="form-label text-input mr-3">Búsqueda por nombre/nómina</label>
                 <input id="editarS" type="search" class="form-control text-input bg-input rounded-pill mx-auto" list="listaEdit">
                 <datalist id="listaEdit">
                     ${docentes()}
@@ -495,7 +495,7 @@ $(document).ready(() => {
                 } else {
                     $("#alerta").html(`
                         <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                            <strong>${editar.length != 2 ? 'Busqueda del formato nomina - nombre' : 'No se encontro el docente'}</strong>
+                            <strong>${editar.length != 2 ? 'Búsqueda del formato nómina - nombre' : 'No se encontro el docente'}</strong>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -768,7 +768,7 @@ $(document).ready(() => {
             telefono: $("#telefono")[0],
             correo: $("#correo")[0],
             claveR: $("#claveR")[0],
-            foto: "img/IconLog.png",
+            foto: "img/IconLog.png"
         };
 
         let extension = $("#extension")[0].value;

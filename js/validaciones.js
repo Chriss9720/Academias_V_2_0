@@ -19,7 +19,7 @@ const camposRequeridos = (data, keys) => {
             valor = false;
         } else {
             if (typeof(data[k]) !== "string") {
-                data[k].className = data[k].className.replace(" is-invalid", "");
+                data[k].className = data[k].className.replace(" is-invalid", " is-valid");
             }
         }
     });
@@ -55,7 +55,7 @@ const validarNomina = (data, key) => {
         } else {
             seccion2(data, key);
             let element = $(`div[name="${key}"]`)[0];
-            element.innerHTML = "La nomina debe de contener 8 digitos";
+            element.innerHTML = "La nómina debe de contener 8 digitos";
             valor = false;
         }
     }
@@ -73,7 +73,7 @@ const validarClave = (data, key) => {
         } else {
             seccion2(data, key);
             let element = $(`div[name="${key}"]`)[0];
-            element.innerHTML = "El minimo de la clave son 3 cifras";
+            element.innerHTML = "El minimo son 3 cifras";
             valor = false;
         }
     }
@@ -91,7 +91,7 @@ const validarTelefono = (data, key) => {
         } else {
             seccion2(data, key);
             let element = $(`div[name="${key}"]`)[0];
-            element.innerHTML = "El telefono debe de tener 10 digitos";
+            element.innerHTML = "El teléfono debe de tener 10 digitos";
             valor = false;
         }
     } else {

@@ -79,6 +79,7 @@ CREATE TABLE AFILIADO (
 	clave_carrera VARCHAR(255),
 	nomina INT,
 	jefe BIT DEFAULT 0,
+	Activo DEFAULT 1,
 	PRIMARY KEY (clave_carrera, nomina),
 	FOREIGN KEY (clave_carrera) REFERENCES carrera(clave_carrera),
 	FOREIGN KEY (nomina) REFERENCES DOCENTE(nomina)
