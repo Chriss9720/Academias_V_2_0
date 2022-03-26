@@ -221,3 +221,33 @@ CREATE PROC SP_DocenteSinCarrera AS
 	)
 	AND DO.nivel != 0
 GO
+
+IF OBJECT_ID('SP_CrearCarrera') IS NOT NULL DROP PROC SP_CrearCarrera
+GO
+CREATE PROC SP_CrearCarrera
+	@Clave VARCHAR(255),
+	@Foto VARCHAR(255),
+	@Nombre VARCHAR(255)
+	AS
+	IF EXISTS (SELECT * FROM CARRERA WHERE clave_carrera LIKE @Clave)
+		RAISERROR(50004, 11, 1)
+	ELSE
+		INSERT INTO CARRERA (clave_carrera, foto_portada, nombre)
+		VALUES (@Clave, @Foto, @Nombre)
+GO
+
+IF OBJECT_ID('SP_Afiliar') IS NOT NULL DROP PROC SP_Afiliar
+GO
+CREATE PROC SP_Afiliar
+	@Clave VARCHAR(255),
+	@Nomina VARCHAR(255),
+	@Jefe BIT
+	AS
+	IF @Jefe = 1 BEGIN
+		UPDATE AFILIADO
+		SET jefe = 0
+		WHERE clave_carrera LIKE @Clave
+	END
+	INSERT INTO AFILIADO (clave_carrera, nomina, jefe)
+	VALUES (@Clave, @Nomina, @Jefe)
+GO

@@ -204,10 +204,11 @@ $(document).ready(() => {
                     .then(t => {
                         docentes = t;
                         panelOpciones();
-                        accionesJefe();
                     })
                     .catch(e => {
-                        if (e.responseText == "Solicitar Reinicio de sesio") {
+                        console.log(e);
+                        ""
+                        if (e.responseText == "Solicitar Reinicio de sesion") {
                             cerrarM.load = true;
                             cerrarModal();
                             login();
@@ -217,7 +218,7 @@ $(document).ready(() => {
                     })
             })
             .catch(e => {
-                if (e.responseText == "Solicitar Reinicio de sesio") {
+                if (e.responseText == "Solicitar Reinicio de sesion") {
                     cerrarM.load = true;
                     cerrarModal();
                     login();
@@ -562,6 +563,19 @@ $(document).ready(() => {
         });
     };
 
+    const salvarCarrera = data => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: "php/salvarCarrera.php",
+                data: { data: data },
+                dataType: "json",
+                type: "POST",
+                success: s => resolve(s),
+                error: e => reject(e)
+            })
+        });
+    }
+
     $("#salvarCarrera").click(() => {
         if (sessionStorage.getItem("accion").includes("Crear")) {
             let data = {
@@ -587,7 +601,39 @@ $(document).ready(() => {
 
             if (valid) {
                 salvarImg(formData, foto)
-                    .then((t) => {})
+                    .then((t) => {
+                        data["foto"] = t.path;
+                        salvarCarrera(data)
+                            .then(cs => {
+                                console.log(cs);
+                                reset();
+                            })
+                            .catch((e) => {
+                                cerrarM.load = true;
+                                cerrarModal();
+                                if (e.responseText == "Solicitar Reinicio de sesion") {
+                                    login();
+                                } else {
+                                    console.log(e);
+                                    $("#alerta").html(`
+                                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                            <strong>${e.responseJSON.msg}</strong>
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    `);
+                                }
+                            });
+                        $("#alerta").html(`
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <strong>Registro exitoso</strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        `);
+                    })
                     .catch((e) => {
                         cerrarM.load = true;
                         cerrarModal();
@@ -604,12 +650,25 @@ $(document).ready(() => {
                             `);
                         }
                     });
-                console.log(data);
             }
         }
     });
 
-    $("#cancelar").click(() => location.reload());
+    $("#cancelar").click(() => reset());
+
+    const reset = () => {
+        $("#nombreC")[0].value = "";
+        $("#claveC")[0].value = "";
+        $("#nombreC")[0].className = $("#nombreC")[0].className.replace(" is-valid", "");
+        $("#claveC")[0].className = $("#claveC")[0].className.replace(" is-valid", "")
+        docentes.forEach(d => {
+            d.seleccionado = false;
+            d.jefe = 0;
+        });
+        $("#img-portada")[0].src = "img/portada.png";
+        panelOpciones();
+        cargar(1);
+    };
 
 });
 
