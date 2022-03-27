@@ -14,7 +14,8 @@
 
     if (($_FILES["file"]["type"] == "image/pjpeg")
         || ($_FILES["file"]["type"] == "image/jpeg")
-        || ($_FILES["file"]["type"] == "image/png")) {
+        || ($_FILES["file"]["type"] == "image/png")
+        || ($_FILES["file"]["type"] == "image/gif")) {
         if (move_uploaded_file($_FILES["file"]["tmp_name"], "../img/".$_FILES['name']['name'])) {
             http_response_code(200);
             echo json_encode(array("path" => "img/".$_FILES['name']['name']));
@@ -24,6 +25,6 @@
         }
     } else {
         http_response_code(401);
-        die(json_encode(array("msg"=>"Seleccione un archivo valido")));
+        die(json_encode(array("msg"=>"Seleccione un archivo valido para la imagen")));
     }
 ?>

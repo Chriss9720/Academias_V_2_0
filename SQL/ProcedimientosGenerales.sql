@@ -251,3 +251,61 @@ CREATE PROC SP_Afiliar
 	INSERT INTO AFILIADO (clave_carrera, nomina, jefe)
 	VALUES (@Clave, @Nomina, @Jefe)
 GO
+
+IF OBJECT_ID('SP_DocentesEnCarrera') IS NOT NULL DROP PROC SP_DocentesEnCarrera
+GO
+CREATE PROC SP_DocentesEnCarrera @Clave VARCHAR(255) AS
+	SELECT AF.nomina, AF.clave_carrera, AF.jefe, AF.Activo, DO.nombre, DO.foto
+	FROM AFILIADO AS AF
+	JOIN CARRERA AS CA
+	ON CA.clave_carrera LIKE AF.clave_carrera
+	JOIN DOCENTE AS DO
+	ON DO.nomina = AF.nomina
+	WHERE AF.clave_carrera LIKE @Clave
+GO
+
+IF OBJECT_ID('SP_GetCarreras') IS NOT NULL DROP PROC SP_GetCarreras
+GO
+CREATE PROC SP_GetCarreras @Nivel INT, @Nomina VARCHAR(255) AS
+	IF @Nivel = 0 OR @Nivel = 1
+		SELECT * FROM CARRERA
+	ELSE
+		SELECT * FROM CARRERA WHERE clave_carrera IN (
+			SELECT clave_carrera FROM AFILIADO WHERE jefe = 1 AND nomina LIKE @Nomina
+		) AND Activo = 1
+GO
+
+IF OBJECT_ID('SP_BajaCarrera') IS NOT NULL DROP PROC SP_BajaCarrera
+GO
+CREATE PROC SP_BajaCarrera @Clave VARCHAR(255), @Nomina VARCHAR(255) AS
+	UPDATE AFILIADO
+	SET Activo = 0
+	WHERE clave_carrera LIKE @Clave AND nomina LIKE @Nomina
+GO
+
+IF OBJECT_ID('SP_NuevoJefe') IS NOT NULL DROP PROC SP_NuevoJefe
+GO
+CREATE PROC SP_NuevoJefe @Clave VARCHAR(255), @Nomina VARCHAR(255) AS
+	UPDATE AFILIADO
+	SET jefe = 0
+	WHERE clave_carrera LIKE @Clave
+	UPDATE AFILIADO
+	SET jefe = 1, Activo = 1
+	WHERE clave_carrera LIKE @Clave AND nomina LIKE @Nomina
+GO
+
+IF OBJECT_ID('SP_AltaCarrera') IS NOT NULL DROP PROC SP_AltaCarrera
+GO
+CREATE PROC SP_AltaCarrera @Clave VARCHAR(255), @Nomina VARCHAR(255) AS
+	UPDATE AFILIADO
+	SET Activo = 1
+	WHERE clave_carrera LIKE @Clave AND nomina LIKE @Nomina
+GO
+
+IF OBJECT_ID('SP_ActualizarFoto') IS NOT NULL DROP PROC SP_ActualizarFoto
+GO
+CREATE PROC SP_ActualizarFoto @Clave VARCHAR(255), @Foto VARCHAR(255) AS
+	UPDATE CARRERA
+	SET foto_portada = @Foto
+	WHERE clave_carrera LIKE @Clave
+GO

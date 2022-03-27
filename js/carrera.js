@@ -4,10 +4,18 @@ $(document).ready(() => {
 
     let docentes = [];
 
+    let = [];
+
     var cerrarM = {
         load: false,
         login: false
     };
+
+    let misDatos;
+
+    let edit;
+
+    let carreras;
 
     $("#inicio").click(() => (window.location = "/academias/panel.html"));
 
@@ -50,13 +58,13 @@ $(document).ready(() => {
             </div>
         `);
 
-        $("#modal").modal();
-
         if (!cerrar) {
             $('#modal').on('hidden.bs.modal', () => {
                 if (!cerrarM.load) $("#modal").modal();
             });
         }
+
+        $("#modal").modal();
 
     };
 
@@ -197,23 +205,30 @@ $(document).ready(() => {
         cargando();
         getMisDatos()
             .then(t => {
+                misDatos = t;
                 cerrarM.load = true;
                 cerrarM.login = true;
-                cerrarModal();
                 docentesSinCarrera()
                     .then(t => {
                         docentes = t;
+                        docentes.forEach(d => d["miembro"] = false);
                         panelOpciones();
                     })
                     .catch(e => {
-                        console.log(e);
-                        ""
                         if (e.responseText == "Solicitar Reinicio de sesion") {
                             cerrarM.load = true;
                             cerrarModal();
                             login();
                         } else {
-                            cerrar().then(() => window.location = "/Academias").catch(() => window.location = "/Academias");
+                            cerrarModal();
+                            $("#alerta").html(`
+                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                    <strong>${e.responseJSON.msg}</strong>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            `);
                         }
                     })
             })
@@ -228,9 +243,7 @@ $(document).ready(() => {
             });
     };
 
-    $("#Cerrar").click(() => {
-        cerrar().then(() => window.location = "/Academias").catch(() => window.location = "/Academias");
-    });
+    $("#Cerrar").click(() => cerrar().then(() => window.location = "/Academias").catch(() => window.location = "/Academias"));
 
     const cerrar = () => {
         return new Promise((resolve, reject) => {
@@ -274,7 +287,7 @@ $(document).ready(() => {
     });
 
     const contenido = (pagina, i) => `
-        <li class="page-item ${pagina == i ? 'active' :''}">
+        <li class="page-item ${pagina == i ? 'active' : ''}">
             <a name="pagina" class="page-link click bg-input text-input ml-2 form-control text-center">${i}</a>
         </li>`;
 
@@ -319,7 +332,14 @@ $(document).ready(() => {
     };
 
     const cargar = (pagina) => {
-        datos = docentes.filter(doc => doc.seleccionado);
+        datos = [];
+        docentes.forEach(doc => {
+            if (doc.seleccionado && !doc.miembro) {
+                datos.push(doc);
+            } else if (doc.miembro && doc.Activo === 1) {
+                datos.push(doc);
+            }
+        })
         let contenido = $("#contenido")[0];
         let max = Math.ceil(datos.length / 3);
         let total = 3 * pagina;
@@ -332,7 +352,7 @@ $(document).ready(() => {
                         <img src="${datos[i].foto}" class="img-fluid foto-opcional">
                         <label class="text-input">${datos[i].nomina}</label>
                         <label>${datos[i].nombre}</label>
-                        <label>${datos[i].jefe == 1 ? 'Jefe': 'Integrante'}</label>
+                        <label>${datos[i].jefe == 1 ? 'Jefe' : 'Integrante'}</label>
                     </div>
                 </div>
             `;
@@ -353,6 +373,16 @@ $(document).ready(() => {
         return lista;
     };
 
+    const listaParaJefe = () => {
+        let lista = '';
+        docentes.forEach(d => {
+            if (d.jefe != 1) {
+                lista += `<option value="${d.nomina} - ${d.nombre}">`;
+            }
+        })
+        return lista;
+    };
+
     const listaSeleecionados = () => {
         let lista = '';
         for (let i = 0; i < docentes.length; i++) {
@@ -367,7 +397,7 @@ $(document).ready(() => {
     const accionesJefe = () => {
         $("#Opciones").html(`
             <div class="form-inline mt-2">
-                <label class="form-label text-input ancho">Busqueda por nombre/nomina</label>
+                <label class="form-label text-input ancho">Busqueda por nomina/nombre</label>
                 <input id="SalvarJefe" type="search" class="form-control text-input bg-input rounded-pill" list="listamodelos">
                 <datalist id="listamodelos">
                     ${listaDocentes()}
@@ -400,12 +430,13 @@ $(document).ready(() => {
                         accionesJefe();
                     } else {
                         $("#erroresJefe").html(`
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>No se encontro el docente, para mas informacion revise la ayuda</strong>
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>`);
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>No se encontro el docente, para mas informacion revise la ayuda</strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        `);
                     }
                 } else {
                     $("#erroresJefe").html(`
@@ -423,7 +454,7 @@ $(document).ready(() => {
     const accionesAdd = () => {
         $("#Opciones").html(`
             <div class="form-inline mt-2">
-                <label class="form-label text-input ancho">Busqueda por nombre/nomina</label>
+                <label class="form-label text-input ancho">Busqueda por nomina/nombre</label>
                 <input id="salvarM" type="search" class="form-control text-input bg-input rounded-pill" list="listamodelos">
                 <datalist id="listamodelos">
                     ${listaDocentes()}
@@ -438,7 +469,13 @@ $(document).ready(() => {
                 if (jefe.length > 1) {
                     let find = docentes.filter(f => f.nomina === jefe[0] && f.nombre === jefe[1]);
                     if (find) {
-                        $("#erroresJefe").html(``);
+                        $("#erroresJefe").html(`
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>Agregado</strong>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>`);
                         find = find[0];
                         docentes[find.pos].seleccionado = true;
                         cargar(1);
@@ -468,7 +505,7 @@ $(document).ready(() => {
     const accionesDEL = () => {
         $("#Opciones").html(`
             <div class="form-inline mt-2">
-                <label class="form-label text-input ancho">Busqueda por nombre/nomina</label>
+                <label class="form-label text-input ancho">Busqueda por nomina/nombre</label>
                 <input id="salvarM" type="search" class="form-control text-input bg-input rounded-pill" list="listamodelos">
                 <datalist id="listamodelos">
                     ${listaSeleecionados()}
@@ -511,9 +548,66 @@ $(document).ready(() => {
         });
     };
 
+    const leerCarreras = () => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: "php/leerCarreras.php",
+                type: "POST",
+                dataType: "json",
+                success: s => resolve(s),
+                error: e => reject(e)
+            });
+        })
+    };
+
+    const listaCarreras = () => {
+        let lista = '';
+        carreras.forEach(e => {
+            lista += `<option value='${e.clave_carrera} - ${e.nombre}'>`;
+        });
+        return lista;
+    };
+
+    const getDocentesCarrera = clave => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: "php/docentesDeCarrera.php",
+                dataType: "json",
+                data: { clave: clave },
+                type: "post",
+                success: s => resolve(s),
+                error: e => reject(e)
+            })
+        });
+    };
+
+    const listaDocentesNoM = () => {
+        let lista = '';
+        docentes.forEach(d => {
+            if (d.jefe != 1 && !d.miembro && !d.seleccionado) {
+                lista += `<option value="${d.nomina} - ${d.nombre}">`;
+            } else if (d.miembro && d.Activo != 1) {
+                lista += `<option value="${d.nomina} - ${d.nombre}">`;
+            }
+        })
+        return lista;
+    };
+
+    const listaTodosM = () => {
+        let lista = '';
+        docentes.forEach(d => {
+            if ((d.miembro && d.Activo === 1) || d.seleccionado) {
+                lista += `<option value="${d.nomina} - ${d.nombre}">`;
+            }
+        })
+        return lista;
+    };
+
     const panelOpciones = () => {
+        let armado;
         if (sessionStorage.getItem("accion").includes("Crear")) {
-            $("#MenuOpciones").html(`
+            $("#busquedaCarreras").remove();
+            armado = `
                 <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
                 <label name="options" class="btn btn-secondary active opciones text-input">
                     <input type="radio" name="options" id="option1" autocomplete="off"> Jefe
@@ -527,22 +621,397 @@ $(document).ready(() => {
                 </div>
                 <div id="Opciones" class="mt-3 d-flex flex-column justify-content-center align-items-center">
                 </div>
-            `);
+            `;
+            accionesMenu(armado);
+        } else {
+            leerCarreras()
+                .then(data => {
+                    carreras = data;
+                    $("#nombreC").attr("disabled", "");
+                    $("#claveC").attr("disabled", "");
+                    $("#busquedaCarreras").html(`
+                        <div class="form-inline mx-auto">
+                            <label class="form-label text-input mr-2">Busqueda por clave/nombre</label>
+                            <input id="posiblesCarrerasEdit" type="search" class="form-control text-input bg-input rounded-pill w-auto" list="listaCarrerasEdit">
+                            <datalist id="listaCarrerasEdit">
+                                ${listaCarreras()}
+                            </datalist>
+                        </div>
+                    `);
+                    $("#posiblesCarrerasEdit").keypress(k => {
+                        if (k.which == 13) {
+                            cargando();
+                            let dato = k.target.value.split(" - ");
+                            if (dato.length < 2) {
+                                $("#alerta").html(`
+                                    <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                                        <strong class="h1">Debe de ser en formato Clave - Nombre</strong>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                `);
+                            } else {
+                                if (dato.length > 2) {
+                                    for (let i = 2; i < dato.length; i++) {
+                                        dato[1] += ` - ${dato[i]}`;
+                                    }
+                                }
+                                let find = carreras.find(f => f.clave_carrera === dato[0] && f.nombre === dato[1]);
+                                if (find) {
+                                    $("#alerta").html(``);
+                                    getDocentesCarrera(find.clave_carrera)
+                                        .then(docGe => {
+                                            docentesSinCarrera()
+                                                .then(doc => {
+                                                    docentes = doc;
+                                                    docentes.forEach(d => d["miembro"] = false);
+                                                    docGe.forEach(m => {
+                                                        m["miembro"] = true;
+                                                        docentes.push(m);
+                                                    });
+                                                    for (let i = 0; i < docentes.length; i++) {
+                                                        docentes[i]["pos"] = i;
+                                                    }
+                                                    $("#nombreC")[0].value = find.nombre;
+                                                    $("#claveC")[0].value = find.clave_carrera;
+                                                    $("#img-portada")[0].src = find.foto_portada;
+                                                    $("#posiblesCarrerasEdit")[0].value = "";
+                                                    cargar(1);
+                                                    cerrarM.load = true;
+                                                    cerrarModal();
+                                                    edit = true;
+                                                });
+                                        })
+                                        .catch(e => {
+                                            cerrarM.load = true;
+                                            if (e.responseText == "Solicitar Reinicio de sesion") {
+                                                cerrarModal();
+                                                login();
+                                            } else {
+                                                cerrarModal();
+                                                $("#alerta").html(`
+                                                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                        <strong>${e.responseJSON.msg}</strong>
+                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                `);
+                                            }
+                                        })
+                                } else {
+                                    cerrarM.load = true;
+                                    cerrarModal();
+                                    $("#alerta").html(`
+                                        <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                                            <strong class="h1">No se encontro la carrera</strong>
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    `);
+                                }
+                            }
+                        }
+                    })
+                    let jefe = `
+                        <label name="options" class="btn btn-secondary active opciones text-input">
+                            <input type="radio" name="options" id="option1" autocomplete="off"> Jefe
+                        </label>`;
+                    armado = `
+                        <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
+                        ${misDatos["nivel"] == 0 || misDatos["nivel"] == 1 ? jefe : ''}
+                        <label name="options" class="btn btn-secondary opciones text-input">
+                            <input type="radio" name="options" id="option3" autocomplete="off"> Agregar miembro
+                        </label>
+                        <label name="options" class="btn btn-secondary opciones text-input">
+                            <input type="radio" name="options" id="option3" autocomplete="off"> Eliminar miembro
+                        </label>
+                        </div>
+                        <div id="Opciones" class="mt-3 d-flex flex-column justify-content-center align-items-center">
+                        </div>
+                    `;
+                    accionesMenu(armado);
+                }).catch(e => {
+                    if (e.responseText == "Solicitar Reinicio de sesion") {
+                        cerrarM.load = true;
+                        cerrarModal();
+                        login();
+                    } else {
+                        cerrarModal();
+                        $("#alerta").html(`
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                <strong>${e.responseJSON.msg}</strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        `);
+                    }
+                });
         }
-        $('[name="options"]').click(evt => {
-            switch (evt.target.innerText) {
-                case "Jefe":
-                    accionesJefe();
-                    break;
-                case "Agregar miembro":
-                    accionesAdd();
-                    break;
-                case "Eliminar miembro":
-                    accionesDEL();
-                    break;
+    };
+
+    const getJefe = () => docentes.filter(m => m.jefe == 1);
+
+    const jefeEdit = () => {
+        let jefe = getJefe();
+        if (jefe.length > 0) {
+            jefe = jefe[0];
+        } else {
+            jefe = {
+                "foto": "img/IconLog.png",
+                "nombre": "",
+                "nomina": ""
+            }
+        }
+        $("#Opciones").html(`
+            <img name="DatosJ" src="${jefe["foto"]}" class="img-fluid foto-opcional">
+            <div class="form-inline mt-2">
+                <label class="form-label text-input ancho">Nomina</label>
+                <input name="DatosJ" type="text" value="${jefe["nomina"]}" class="form-control text-input bg-input rounded-pill" disabled>
+            </div>
+            <div class="form-inline mt-2">
+                <label class="form-label text-input ancho">Nombre</label>
+                <input name="DatosJ" type="text" value="${jefe["nombre"]}" class="form-control text-input bg-input rounded-pill" disabled>
+            </div>
+            <div class="form-inline mt-2">
+                <label class="form-label text-input ancho">Busqueda por nomina/nombre</label>
+                <input id="salvarM" type="search" class="form-control text-input bg-input rounded-pill" list="listamodelos">
+                <datalist id="listamodelos">
+                    ${listaParaJefe()}
+                </datalist>
+            </div>
+            <div class="d-flex justify-content-center mb-4 mt-3">
+                <input id="cancelarJefe" type="button" value="Cancelar" class="btn bg-btn-aplicar mr-3">
+                <input id="cambiarJefe" type="button" value="Aplicar" class="btn btn-primary-c">
+            </div>
+            <div id="erroresJefe">
+            </div>
+        `);
+        $("#salvarM").keypress(k => {
+            if (k.which == 13) {
+                let jefe = k.target.value.split(" - ");
+                if (jefe.length > 1) {
+                    let find = docentes.filter(f => parseInt(f.nomina) == parseInt(jefe[0]) && (f.nombre) == (jefe[1]));
+                    if (find && find.length > 0) {
+                        find = find[0];
+                        $("[name='DatosJ']")[0].src = find.foto;
+                        $("[name='DatosJ']")[1].value = find.nomina;
+                        $("[name='DatosJ']")[2].value = find.nombre;
+                        $("#salvarM")[0].value = "";
+                        $("#erroresJefe").html(``);
+                    } else {
+                        $("#erroresJefe").html(`
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>No se encontro el docente, para mas informacion revise la ayuda</strong>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>`);
+                    }
+                } else {
+                    $("#erroresJefe").html(`
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Debe de ser en formato Nómina - Nombre</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>`);
+                }
+            }
+        });
+        $("#cambiarJefe").click(evt => {
+            let nomina = $("[name='DatosJ']")[1].value;
+            docentes.forEach(d => {
+                if (parseInt(d.nomina) == parseInt(nomina)) {
+                    d.jefe = 1;
+                    d.seleccionado = true;
+                    $("#erroresJefe").html(`
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>Cambio exitoso</strong>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    `);
+                }
+                if (d.jefe == 1 && parseInt(d.nomina) != parseInt(nomina)) {
+                    d.jefe = 0;
+                }
+            });
+            cargar(1);
+            $("#listamodelos").html(listaParaJefe());
+        });
+        $("#cancelarJefe").click(() => jefeEdit());
+    };
+
+    const miembrosEdit = () => {
+        $("#Opciones").html(`
+            <div class="form-inline mt-2">
+                <label class="form-label text-input ancho">Busqueda por nomina/nombre</label>
+                <input id="salvarM" type="search" class="form-control text-input bg-input rounded-pill" list="listamodelos">
+                <datalist id="listamodelos">
+                    ${listaDocentesNoM()}
+                </datalist>
+            </div>
+            <div id="erroresJefe">
+            </div>
+        `);
+        $("#salvarM").keypress(k => {
+            if (k.which == 13) {
+                let jefe = k.target.value.split(" - ");
+                if (jefe.length > 1) {
+                    let find = docentes.filter(f => parseInt(f.nomina) == parseInt(jefe[0]) && f.nombre === jefe[1]);
+                    if (find) {
+                        let msg;
+                        find = find[0];
+                        docentes[find.pos].seleccionado = true;
+                        if (docentes[find.pos].miembro) {
+                            msg = "El docente se reactivo";
+                            docentes[find.pos].Activo = 1;
+                        } else {
+                            msg = "Agregado";
+                        }
+                        $("#erroresJefe").html(`
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <strong>${msg}</strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        `);
+                        cargar(1);
+                        $("#salvarM")[0].value = "";
+                        $("#listamodelos").html(listaDocentesNoM());
+                    } else {
+                        $("#erroresJefe").html(`
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>No se encontro el docente, para mas informacion revise la ayuda</strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        `);
+                    }
+                } else {
+                    $("#erroresJefe").html(`
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Debe de ser en formato Nómina - Nombre</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>`);
+                }
             }
         });
     };
+
+    const delEdit = () => {
+        $("#Opciones").html(`
+            <div class="form-inline mt-2">
+                <label class="form-label text-input ancho">Busqueda por nomina/nombre</label>
+                <input id="salvarM" type="search" class="form-control text-input bg-input rounded-pill" list="listamodelos">
+                <datalist id="listamodelos">
+                    ${listaTodosM()}
+                </datalist>
+            </div>
+            <div id="erroresJefe">
+            </div>
+        `);
+        $("#salvarM").keypress(k => {
+            if (k.which == 13) {
+                let jefe = k.target.value.split(" - ");
+                if (jefe.length > 1) {
+                    let find = docentes.filter(f => parseInt(f.nomina) == parseInt(jefe[0]) && f.nombre === jefe[1]);
+                    if (find) {
+                        let msg;
+                        find = find[0];
+                        docentes[find.pos].jefe = 0;
+                        if (docentes[find.pos].miembro) {
+                            docentes[find.pos].Activo = 0;
+                            msg = "Al ser miembro, se desactivo";
+                        } else {
+                            msg = "Al no ser miembro, no se almacenara";
+                        }
+                        docentes[find.pos].seleccionado = false;
+                        $("#salvarM")[0].value = "";
+                        $("#listamodelos").html(listaTodosM());
+                        cargar(1);
+                        $("#erroresJefe").html(`
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <strong>${msg}</strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        `);
+                    } else {
+                        $("#erroresJefe").html(`
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>No se encontro el docente, para mas informacion revise la ayuda</strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        `);
+                    }
+                } else {
+                    $("#erroresJefe").html(`
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Debe de ser en formato Nómina - Nombre</strong>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    `);
+                }
+            }
+        });
+    };
+
+    const accionesMenu = menu => {
+        cerrarModal();
+        $("#MenuOpciones").html(menu);
+        $('[name="options"]').click(evt => {
+            if (sessionStorage.getItem("accion").includes("Crear")) {
+                switch (evt.target.innerText) {
+                    case "Jefe":
+                        accionesJefe();
+                        break;
+                    case "Agregar miembro":
+                        accionesAdd();
+                        break;
+                    case "Eliminar miembro":
+                        accionesDEL();
+                        break;
+                }
+            } else if (edit) {
+                $("#alerta").html(``);
+                switch (evt.target.innerText) {
+                    case "Jefe":
+                        jefeEdit();
+                        break;
+                    case "Agregar miembro":
+                        miembrosEdit();
+                        break;
+                    case "Eliminar miembro":
+                        delEdit();
+                        break;
+                }
+            } else {
+                $("#alerta").html(`
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>Seleccione una carrera a editar</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                `);
+            }
+        });
+    }
 
     const salvarImg = (file, foto) => {
         return new Promise((resolve, reject) => {
@@ -574,7 +1043,20 @@ $(document).ready(() => {
                 error: e => reject(e)
             })
         });
-    }
+    };
+
+    const actualizarCarrera = (miembros, nuevos, foto) => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: "php/actualizarCarrera.php",
+                dataType: "json",
+                type: "POST",
+                data: { miembros: miembros, nuevos: nuevos, clave: $("#claveC")[0].value, foto: foto },
+                success: s => resolve(s),
+                error: e => reject(e)
+            });
+        });
+    };
 
     $("#salvarCarrera").click(() => {
         if (sessionStorage.getItem("accion").includes("Crear")) {
@@ -605,7 +1087,6 @@ $(document).ready(() => {
                         data["foto"] = t.path;
                         salvarCarrera(data)
                             .then(cs => {
-                                console.log(cs);
                                 reset();
                             })
                             .catch((e) => {
@@ -614,7 +1095,6 @@ $(document).ready(() => {
                                 if (e.responseText == "Solicitar Reinicio de sesion") {
                                     login();
                                 } else {
-                                    console.log(e);
                                     $("#alerta").html(`
                                         <div class="alert alert-warning alert-dismissible fade show" role="alert">
                                             <strong>${e.responseJSON.msg}</strong>
@@ -651,49 +1131,97 @@ $(document).ready(() => {
                         }
                     });
             }
+        } else if (edit) {
+            cargando();
+            $("#alerta").html(``);
+            let miembros = docentes.filter(d => d.miembro);
+            let nuevos = docentes.filter(d => d.seleccionado);
+            let foto = $("#foto")[0].files[0];
+            var formData = new FormData();
+            if (foto) {
+                let nombre = `${$("#claveC")[0].value}.${foto["name"].split(".")[foto["name"].split(".").length - 1]}`;
+                var file = new File([], nombre);
+                formData.append("file", foto);
+                formData.append("name", file);
+            }
+
+            salvarImg(formData, foto)
+                .then((t) => {
+                    actualizarCarrera(miembros, nuevos, t.path)
+                        .then(update => {
+                            cerrarM.load = true;
+                            cerrarModal();
+                            $("#alerta").html(`
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <strong>Actualizacion exitosa</strong>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">gtimes;</span>
+                                    </button>
+                                </div>
+                            `);
+                            reset();
+                        })
+                        .catch(e => {
+                            cerrarM.load = true;
+                            if (e.responseText == "Solicitar Reinicio de sesion") {
+                                cerrarModal();
+                                login();
+                            } else {
+                                cerrarModal();
+                                $("#alerta").html(`
+                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                    <strong>${e.responseJSON.msg}</strong>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            `);
+                            }
+                        });
+                })
+                .catch((e) => {
+                    cerrarM.load = true;
+                    cerrarModal();
+                    if (e.responseText == "Solicitar Reinicio de sesion") {
+                        login();
+                    } else {
+                        $("#alerta").html(`
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <strong>${e.responseJSON.msg}</strong>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    `);
+                    }
+                });
+        } else {
+            $("#alerta").html(`
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>Seleccione una carrera a editar</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            `);
         }
     });
 
     $("#cancelar").click(() => reset());
 
     const reset = () => {
+        docentesSinCarrera()
+            .then(doc => {
+                docentes = doc;
+                docentes.forEach(d => d["miembro"] = false);
+                cargar(1);
+            });
         $("#nombreC")[0].value = "";
         $("#claveC")[0].value = "";
         $("#nombreC")[0].className = $("#nombreC")[0].className.replace(" is-valid", "");
         $("#claveC")[0].className = $("#claveC")[0].className.replace(" is-valid", "")
-        docentes.forEach(d => {
-            d.seleccionado = false;
-            d.jefe = 0;
-        });
         $("#img-portada")[0].src = "img/portada.png";
         panelOpciones();
-        cargar(1);
     };
 
 });
-
-/**
- * $("#Opciones").html(`
-                    <img src="img/IconLog.png" class="img-fluid foto-opcional">
-                    <div class="form-inline mt-2 d-flex justify-content-around">
-                        <label class="form-label text-input ancho">Actual</label>
-                        <input type="text" class="form-control text-input bg-input rounded-pill" disabled>
-                    </div>
-                    <div class="form-inline mt-2">
-                        <label class="form-label text-input ancho">Nuevo</label>
-                        <input type="text" class="form-control text-input bg-input rounded-pill" disabled>
-                    </div>
-                    <div class="form-inline mt-2">
-                        <label class="form-label text-input ancho">Nomina</label>
-                        <input type="text" class="form-control text-input bg-input rounded-pill" disabled>
-                    </div>
-                    <div class="form-inline mt-2">
-                        <label class="form-label text-input ancho">Busqueda por nombre/nomina</label>
-                        <input type="search" class="form-control text-input bg-input rounded-pill" list="listamodelos">
-                        <datalist id="listamodelos">
-                            <option value="Cielo">
-                            <option value="Yañez">
-                            <option value="Cristy">
-                        </datalist>
-                    </div>`);
- */
