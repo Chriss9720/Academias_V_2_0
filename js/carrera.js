@@ -336,15 +336,16 @@ $(document).ready(() => {
         docentes.forEach(doc => {
             if (doc.seleccionado && !doc.miembro) {
                 datos.push(doc);
-            } else if (doc.miembro && doc.Activo === 1) {
+            } else if (doc.miembro && parseInt(doc.activo) === 1) {
                 datos.push(doc);
             }
-        })
+        });
         let contenido = $("#contenido")[0];
         let max = Math.ceil(datos.length / 3);
         let total = 3 * pagina;
         let inicio = (pagina - 1) * 3;
         contenido.innerHTML = "";
+        console.log(datos.length);
         for (let i = inicio; i < total && i < datos.length; i++) {
             contenido.innerHTML += `
                 <div class="col-4">
@@ -586,7 +587,7 @@ $(document).ready(() => {
         docentes.forEach(d => {
             if (d.jefe != 1 && !d.miembro && !d.seleccionado) {
                 lista += `<option value="${d.nomina} - ${d.nombre}">`;
-            } else if (d.miembro && d.Activo != 1) {
+            } else if (d.miembro && parseInt(d.activo) != 1) {
                 lista += `<option value="${d.nomina} - ${d.nombre}">`;
             }
         })
@@ -596,7 +597,7 @@ $(document).ready(() => {
     const listaTodosM = () => {
         let lista = '';
         docentes.forEach(d => {
-            if ((d.miembro && d.Activo === 1) || d.seleccionado) {
+            if ((d.miembro && parseInt(d.activo) == 1) || d.seleccionado) {
                 lista += `<option value="${d.nomina} - ${d.nombre}">`;
             }
         })
@@ -681,9 +682,12 @@ $(document).ready(() => {
                                                     cerrarM.load = true;
                                                     cerrarModal();
                                                     edit = true;
-                                                });
+                                                }).catch(e => {
+                                                    console.log(e);
+                                                })
                                         })
                                         .catch(e => {
+                                            console.log(e);
                                             cerrarM.load = true;
                                             if (e.responseText == "Solicitar Reinicio de sesion") {
                                                 cerrarModal();
@@ -827,6 +831,7 @@ $(document).ready(() => {
             docentes.forEach(d => {
                 if (parseInt(d.nomina) == parseInt(nomina)) {
                     d.jefe = 1;
+                    console.log(d);
                     d.seleccionado = true;
                     $("#erroresJefe").html(`
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -870,7 +875,7 @@ $(document).ready(() => {
                         docentes[find.pos].seleccionado = true;
                         if (docentes[find.pos].miembro) {
                             msg = "El docente se reactivo";
-                            docentes[find.pos].Activo = 1;
+                            docentes[find.pos].activo = 1;
                         } else {
                             msg = "Agregado";
                         }
@@ -930,8 +935,8 @@ $(document).ready(() => {
                         find = find[0];
                         docentes[find.pos].jefe = 0;
                         if (docentes[find.pos].miembro) {
-                            docentes[find.pos].Activo = 0;
-                            msg = "Al ser miembro, se desactivo";
+                            docentes[find.pos].activo = 0;
+                            msg = "Al ser miembro, se desactivara";
                         } else {
                             msg = "Al no ser miembro, no se almacenara";
                         }
@@ -1090,6 +1095,7 @@ $(document).ready(() => {
                                 reset();
                             })
                             .catch((e) => {
+                                console.log(e);
                                 cerrarM.load = true;
                                 cerrarModal();
                                 if (e.responseText == "Solicitar Reinicio de sesion") {
@@ -1147,21 +1153,24 @@ $(document).ready(() => {
 
             salvarImg(formData, foto)
                 .then((t) => {
+                    console.log(nuevos);
                     actualizarCarrera(miembros, nuevos, t.path)
                         .then(update => {
                             cerrarM.load = true;
                             cerrarModal();
+                            edit = false;
                             $("#alerta").html(`
                                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                                     <strong>Actualizacion exitosa</strong>
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">gtimes;</span>
+                                    <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                             `);
                             reset();
                         })
                         .catch(e => {
+                            console.log(e);
                             cerrarM.load = true;
                             if (e.responseText == "Solicitar Reinicio de sesion") {
                                 cerrarModal();

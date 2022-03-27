@@ -126,7 +126,7 @@
 
         for ($i = 0; $i < count($miembros); $i++) {
             $nomina = $miembros[$i]["nomina"];
-            if ($miembros[$i]["Activo"] == 1) {
+            if ($miembros[$i]["activo"] == 1) {
                 if ($miembros[$i]["jefe"] == 1) {
                     $con = $conectar->conn();
                     nuevoJefe($clave, $con, $nomina);

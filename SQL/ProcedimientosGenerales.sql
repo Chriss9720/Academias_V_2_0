@@ -248,8 +248,13 @@ CREATE PROC SP_Afiliar
 		SET jefe = 0
 		WHERE clave_carrera LIKE @Clave
 	END
-	INSERT INTO AFILIADO (clave_carrera, nomina, jefe)
-	VALUES (@Clave, @Nomina, @Jefe)
+	IF NOT EXISTS(SELECT * FROM AFILIADO WHERE nomina LIKE @Nomina)
+		INSERT INTO AFILIADO (clave_carrera, nomina, jefe)
+		VALUES (@Clave, @Nomina, @Jefe)
+	ELSE
+		UPDATE AFILIADO
+		SET jefe = @Jefe, Activo = 1
+		WHERE clave_carrera LIKE @Clave AND nomina LIKE @Nomina
 GO
 
 IF OBJECT_ID('SP_DocentesEnCarrera') IS NOT NULL DROP PROC SP_DocentesEnCarrera
@@ -261,7 +266,7 @@ CREATE PROC SP_DocentesEnCarrera @Clave VARCHAR(255) AS
 	ON CA.clave_carrera LIKE AF.clave_carrera
 	JOIN DOCENTE AS DO
 	ON DO.nomina = AF.nomina
-	WHERE AF.clave_carrera LIKE @Clave
+	WHERE AF.clave_carrera LIKE @Clave AND AF.Activo = 1
 GO
 
 IF OBJECT_ID('SP_GetCarreras') IS NOT NULL DROP PROC SP_GetCarreras
@@ -279,7 +284,7 @@ IF OBJECT_ID('SP_BajaCarrera') IS NOT NULL DROP PROC SP_BajaCarrera
 GO
 CREATE PROC SP_BajaCarrera @Clave VARCHAR(255), @Nomina VARCHAR(255) AS
 	UPDATE AFILIADO
-	SET Activo = 0
+	SET Activo = 0, jefe = 0
 	WHERE clave_carrera LIKE @Clave AND nomina LIKE @Nomina
 GO
 
