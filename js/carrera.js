@@ -1,5 +1,211 @@
 $(document).ready(() => {
 
+    $("#ayudaCarrera").click(() => {
+
+        if (sessionStorage.getItem('accion') == "Crear") {
+
+            $("#modales").html(`
+                <div class="modal" id="modal">
+                    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header d-flex justify-content-center h4">
+                                <label>Información de ayuda para el registro de una carrera</label>
+                            </div>
+                            <div class="modal-body">
+                                <ul class="text-justify p-3">
+                                    <li>
+                                        <b>Los datos que son requeridos obligatoriamente:</b>
+                                        <ul>
+                                            <li>Nombre:
+                                                <ul>
+                                                    <li>
+                                                        Puede contener letras, números y espacios.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>Clave:
+                                                <ul>
+                                                    <li>
+                                                        Debe contener al menos 3 cifras.
+                                                    </li>
+                                                    <li>
+                                                        Puede contener letras, números y caracteres especiales.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <b>Los datos que no son obligatorios:</b>
+                                        <ul>
+                                            <li>Foto:
+                                                <ul>
+                                                    <li>
+                                                        Dar click en el icono: <img src="img/IconAgregar.png" style="width: 30px;"> y subir la foto del docente.
+                                                    </li>
+                                                    <li>
+                                                        Se aceptan todos los formatos de imagen.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>Jefe:
+                                                <ul>
+                                                    <li>
+                                                        Se realiza una busqueda por Nómina - Nombre
+                                                    </li>
+                                                    <li>
+                                                        Para agregar el Jefe a la carrera se presiona la tecla <b>enter</b>.
+                                                    </li>
+                                                    <li>
+                                                        Si se agregó, visualizará su información en el apartado de "Miembros" que se encuentra abajo.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>Agregar Miembro:
+                                                <ul>
+                                                    <li>
+                                                        Se realiza una busqueda por Nómina - Nombre
+                                                    </li>
+                                                    <li>
+                                                        Para agregar el miembro a la carrera se presiona la tecla <b>enter</b>.
+                                                    </li>
+                                                    <li>
+                                                        Si se agregó, visualizará su información en el apartado de "Miembros" que se encuentra abajo.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>Eliminar Miembro:
+                                                <ul>
+                                                    <li>
+                                                        Se realiza una busqueda por Nómina - Nombre
+                                                    </li>
+                                                    <li>
+                                                        Para eliminar el miembro a la carrera se presiona la tecla <b>enter</b>.
+                                                    </li>
+                                                    <li>
+                                                        Si se eliminó, ya no visualizará su información en el apartado de "Miembros" que se encuentra abajo.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="modal-footer">
+                                <input id="cerrarAyuda" type="button" value="Salir" class="btn btn-secondary">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `);
+        } else {
+            $("#modales").html(`
+                <div class="modal" id="modal">
+                    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header d-flex justify-content-center h4">
+                                <label>Información de ayuda para editar una carrera.</label>
+                            </div>
+                            <div class="modal-body">
+                                <ul class="text-justify p-3">
+                                    <li>
+                                        <b>Selección de carrera:</b>
+                                        <ul>
+                                            <li>Después del panel podrá visualizar un buscador de carrera, mismo que funciona con una búsqueda por clave – nombre. Al momento de dar click en el recuadro usted visualizará las carreras disponibles hasta ese momento puede seleccionar la
+                                                que desea modificar y dar <b>enter</b>. Una vez hecho lo anterior le aparecerán los datos de la carrera seleccionada.
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <b>Los datos no son modificables:</b>
+                                        <ul>
+                                            <li>Nombre de la carrera
+                                            </li>
+                                            <li>Clave de la carrera
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <b>Los datos que son modificables:</b>
+                                        <ul>
+                                            <li>Foto:
+                                                <ul>
+                                                    <li>
+                                                        Dar click en el icono: <img src="img/IconAgregar.png" style="width: 30px;"> y subir la foto del docente.
+                                                    </li>
+                                                    <li>
+                                                        Se aceptan todos los formatos de imagen.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>Jefe:
+                                                <ul>
+                                                    <li>
+                                                        Si ya existe un jefe asignado para la carrera, usted verá su información en ese apartado. Abajo hay un buscador por nómina – nombre, ahí es donde se realizará la búsqueda del nuevo Jefe.
+                                                    </li>
+                                                    <li>
+                                                        Para visualizar la información del docente a asignar como jefe se presiona la tecla <b>enter</b>. Una vez comprobado que es la persona que desea asignar como jefe, dar click en el botón “Aplicar.”
+                                                    </li>
+                                                    <li>
+                                                        Si se agregó, visualizará su información en el apartado de "Miembros" que se encuentra abajo.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>Agregar Miembro:
+                                                <ul>
+                                                    <li>
+                                                        Se realiza una busqueda por Nómina - Nombre
+                                                    </li>
+                                                    <li>
+                                                        Para agregar el miembro a la carrera se presiona la tecla <b>enter</b>.
+                                                    </li>
+                                                    <li>
+                                                        Si se agregó, visualizará su información en el apartado de "Miembros" que se encuentra abajo.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>Eliminar Miembro:
+                                                <ul>
+                                                    <li>
+                                                        Se realiza una busqueda por Nómina - Nombre
+                                                    </li>
+                                                    <li>
+                                                        Para eliminar el miembro a la carrera se presiona la tecla <b>enter</b>.
+                                                    </li>
+                                                    <li>
+                                                        Si se eliminó, ya no visualizará su información en el apartado de "Miembros" que se encuentra abajo.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>Finalizar cambios:
+                                                <ul>
+                                                    <li>
+                                                        Para finalizar todo se da click en el botón “Guardar”, si desea no guardar nada, da click en “Cancelar”. Los botones mencionados se encuentran al final de la página.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="modal-footer">
+                                <input id="cerrarAyuda" type="button" value="Salir" class="btn btn-secondary">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `);
+        }
+
+        $("#modal").modal();
+
+        $("#cerrarAyuda").click(() => {
+            $("#modal").modal("hide");
+            $(`[class="modal-backdrop show"]`).remove();
+        });
+
+    });
+
     let datos = [];
 
     let docentes = [];

@@ -160,7 +160,7 @@ $(document).ready(() => {
                     <div class="modal-dialog modal-lg modal-dialog-scrollable">
                         <div class="modal-content">
                             <div class="modal-header d-flex justify-content-center h4">
-                                <label>Ayuda para la creación del docente</label>
+                                <label>Ayuda para la creación del plan de trabajo</label>
                             </div>
                             <div class="modal-body">
                                 <ul class="text-justify p-3">

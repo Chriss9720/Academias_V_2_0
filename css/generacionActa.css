@@ -1,0 +1,64 @@
+.area_IMG {
+    width: 4.cm;
+}
+
+.area_titulo {
+    width: 13.38cm;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    width: 17.57cm;
+}
+
+.centrar {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-direction: column !important;
+    text-align: center !important;
+}
+
+.logo_ITESCA {
+    height: 1.22cm;
+    width: 3.84cm;
+}
+
+.bordes {
+    border: 1px solid black;
+}
+
+.m-0 {
+    margin: 0px;
+}
+
+.p-0 {
+    padding: 0px;
+}
+
+.mt-1 {
+    margin-top: 1rem;
+}
+
+.p-1 {
+    padding: .5em;
+}
+
+.borde-derecho {
+    padding: 0px;
+    margin: 0px;
+    border-right: 1px solid black;
+}
+
+.justificar {
+    text-align: justify;
+}
+
+.align-right {
+    justify-content: right;
+}
+
+.text-padding-1-5 {
+    line-height: 1.5em;
+}
