@@ -850,6 +850,8 @@ $(document).ready(() => {
                             cargando();
                             let dato = k.target.value.split(" - ");
                             if (dato.length < 2) {
+                                cerrarM.load = true;
+                                cerrarModal();
                                 $("#alerta").html(`
                                     <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
                                         <strong class="h1">Debe de ser en formato Clave - Nombre</strong>
@@ -1238,7 +1240,7 @@ $(document).ready(() => {
                     error: (e) => reject(e),
                 });
             } else {
-                resolve({ path: "img/iconLog.png" });
+                resolve({ path: "img/portada.png" });
             }
         });
     };

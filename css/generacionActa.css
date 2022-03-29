@@ -41,6 +41,10 @@
     margin-top: 1rem;
 }
 
+.mt-3 {
+    margin-top: 2rem;
+}
+
 .p-1 {
     padding: .5em;
 }
@@ -61,4 +65,78 @@
 
 .text-padding-1-5 {
     line-height: 1.5em;
+}
+
+.relleno {
+    background-color: rgb(191, 191, 191);
+    font-weight: bold;
+}
+
+.acuerdo {
+    padding: .5em;
+    width: 27%;
+}
+
+.responsable {
+    padding: .5em;
+    width: 5.93cm;
+}
+
+.fecha {
+    padding: .5em;
+    width: 18%;
+}
+
+.avance {
+    padding: .5em;
+    width: 10%;
+}
+
+.acuerdo_2 {
+    padding: .5em;
+    width: 40%;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.firmas {
+    width: 40%;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.around {
+    justify-content: space-around;
+}
+
+.area_firma {
+    width: 40%;
+    font-weight: bold;
+    font-size: 1.2em;
+    background-color: white;
+    height: 1.75cm;
+}
+
+.w-100 {
+    width: 100%;
+    font-size: 1.5em;
+}
+
+.obs {
+    width: 100%;
+    font-size: 1em;
+}
+
+.border-sup {
+    border-top: 1px solid black;
+}
+
+.firma-jefe {
+    width: 35%;
 }
