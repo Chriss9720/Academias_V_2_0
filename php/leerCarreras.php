@@ -36,9 +36,13 @@
             $res = [];
 
             while( $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC) ) {
+                $foto = utf8_encode($row["foto_portada"]);
+                if (!file_exists("../$foto")){
+                    $foto = "img/portada.png";
+                }
                 $data = array(
                     "clave_carrera"=>utf8_encode($row["clave_carrera"]),
-                    "foto_portada"=>utf8_encode($row["foto_portada"]),
+                    "foto_portada"=>foto,
                     "nombre"=>utf8_encode($row["nombre"]),
                     "activo"=>utf8_encode($row["Activo"])
                 );
