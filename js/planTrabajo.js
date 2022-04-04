@@ -1209,7 +1209,9 @@ $(document).ready(() => {
 
     $("#TodosLosDocentes").click(() => {
         if (seleccionada) {
-            responsableAux = miembrosTotal;
+            miembrosTotal.forEach(mt => {
+                responsableAux.push(mt);
+            });
             aplicarFiltro();
             let act = idText.split("_");
             let campo = $(`#${idText}`)[0];
