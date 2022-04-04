@@ -237,6 +237,34 @@ $(document).ready(() => {
         `);
     };
 
+    const asistencia = () => {
+        let f = "";
+        for (let i = 0; i < miembrosTotal.length; i++) {
+            f += `
+                <div class="row mb-2">
+                    <div class="col-4 border border-dark acuerdo">
+                        <div class="w-100 h-100">${miembrosTotal[i].nombre}</div>
+                    </div>
+                    <div class="col-4 border border-dark acuerdo">
+                        <ul>
+                            <li>M1</li>
+                            <li>M2</li>
+                            <li>M3</li>
+                        </ul>
+                    </div>
+                    <div class="col-4 border border-dark acuerdo">
+                        <div class="d-flex flex-column mt-2 mb-2 justify-content-center align-items-center">
+                            <input type="button" value="Asistio" class="bg-input bg-btn-aplicar hover">
+                            <input type="button" value="No asistio" class="bg-input bg-btn-aplicar mt-2 mb-2 hover">
+                            <input type="button" value="Justificado" class="bg-input bg-btn-aplicar hover">
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        $("#asistencia").html(f);
+    }
+
     const load = () => {
         cargando();
         getMisDatos()
@@ -369,6 +397,7 @@ $(document).ready(() => {
             miembrosTotal.push(d);
             final += `<option value="${d.nomina} - ${d.nombre}">`;
         });
+        asistencia();
         $("#busqueda_1_lista").html(final);
     };
 
