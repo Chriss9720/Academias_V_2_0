@@ -951,6 +951,7 @@ $(document).ready(() => {
                         cerrarModal();
                         login();
                     } else {
+                        console.log(e);
                         cerrarModal();
                         $("#alerta").html(`
                             <div class="alert alert-warning alert-dismissible fade show" role="alert">

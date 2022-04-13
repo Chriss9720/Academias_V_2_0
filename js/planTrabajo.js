@@ -326,63 +326,72 @@ $(document).ready(() => {
             "Asignaturas": "",
             "Responsables": [],
             "fecha": "",
-            "Evidencia": ""
+            "Evidencia": "",
+            "tareas": []
         },
         "2": {
             "Acciones": "",
             "Asignaturas": "",
             "Responsables": [],
             "fecha": "",
-            "Evidencia": ""
+            "Evidencia": "",
+            "tareas": []
         },
         "3": {
             "Acciones": "",
             "Asignaturas": "",
             "Responsables": [],
             "fecha": "",
-            "Evidencia": ""
+            "Evidencia": "",
+            "tareas": []
         },
         "4": {
             "Acciones": "",
             "Asignaturas": "",
             "Responsables": [],
             "fecha": "",
-            "Evidencia": ""
+            "Evidencia": "",
+            "tareas": []
         },
         "5": {
             "Acciones": "",
             "Asignaturas": "",
             "Responsables": [],
             "fecha": "",
-            "Evidencia": ""
+            "Evidencia": "",
+            "tareas": []
         },
         "6": {
             "Acciones": "",
             "Asignaturas": "",
             "Responsables": [],
             "fecha": "",
-            "Evidencia": ""
+            "Evidencia": "",
+            "tareas": []
         },
         "7": {
             "Acciones": "",
             "Asignaturas": "",
             "Responsables": [],
             "fecha": "",
-            "Evidencia": ""
+            "Evidencia": "",
+            "tareas": []
         },
         "8": {
             "Acciones": "",
             "Asignaturas": "",
             "Responsables": [],
             "fecha": "",
-            "Evidencia": ""
+            "Evidencia": "",
+            "tareas": []
         },
         "9": {
             "Acciones": "",
             "Asignaturas": "",
             "Responsables": [],
             "fecha": "",
-            "Evidencia": ""
+            "Evidencia": "",
+            "tareas": []
         }
     };
 
@@ -392,7 +401,7 @@ $(document).ready(() => {
 
     const preview = [];
 
-    const miembrosTotal = []
+    var miembrosTotal = []
 
     var responsableAux = [];
 
@@ -661,6 +670,7 @@ $(document).ready(() => {
     };
 
     const cargarMiembros = data => {
+        miembrosTotal = [];
         let final = "";
         data.forEach(d => {
             miembrosTotal.push(d);
@@ -1238,13 +1248,32 @@ $(document).ready(() => {
 
     const getFecha = date => `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()} ${date.getHours()}-${date.getMinutes()}-${date.getSeconds()} ${Plan["datos"]["academia"]} ${Plan["datos"]["semestre"]}`;
 
+    const getPuntos = () => {
+        for (let i = 1; i < 10; i++) {
+            let text = Plan[i].Evidencia;
+            Plan[i].tareas = [];
+            text = text.replace("<ul>", "").replace("</ul>\n", "");
+            let re = new RegExp('<li>');
+            let lista = text.split(re);
+            for (let j = 0; j < lista.length; j++) {
+                let dato = lista[j];
+                if (dato.includes('</li>')) {
+                    dato = dato.replace('</li>\n', '').replace('</li>', '');
+                    dato = dato.replace("</ol>\n", "").replace("\t", "");
+                    Plan[i].tareas.push(dato);
+                }
+            }
+        }
+    };
+
     $("input[name='Crear']").click(() => {
         if (seleccionada) {
-            cargando();
+            //cargando();
             if (sessionStorage.getItem("accion").includes("Editar")) {
                 Plan["fechaG"] = planEdit["fechaG"];
                 Plan["fecha"] = planEdit["fecha"];
                 Plan["editar"] = 1;
+                Plan["id"] = $("#planSeleccionado").val().split(" - ")[0];
             } else {
                 let date = new Date();
                 Plan["fechaG"] = getFecha(date);
@@ -1252,13 +1281,16 @@ $(document).ready(() => {
                 Plan["editar"] = 0;
             }
             Plan["preview"] = 0;
+            getPuntos();
             crearPDF()
                 .then(t => {
                     cerrarM.load = true;
                     cerrarModal();
-                    window.open(t.ruta);
+                    console.log(t);
+                    //window.open(t.ruta);
                 })
                 .catch(e => {
+                    console.log(e);
                     cerrarM.load = true;
                     cerrarModal();
                     if (e.responseText == "Solicitar Reinicio de sesion") {

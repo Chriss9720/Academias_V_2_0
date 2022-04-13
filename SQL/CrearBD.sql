@@ -110,7 +110,7 @@ CREATE TABLE CARGO (
 )
 GO
 CREATE TABLE PLANTRABAJO (
-	id_planTrabajo INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	id_planTrabajo INT PRIMARY KEY NOT NULL,
 	fecha DATETIME NOT NULL,
 	subido INT NOT NULL DEFAULT 0,
 	localizacion VARCHAR(255) NOT NULL,
@@ -166,6 +166,9 @@ CREATE TABLE SUBIR (
 	id_planTrabajo INT,
 	id_evidencia INT,
 	no_tarea INT,
+	punto INT,
+	fecha DATETIME DEFAULT NULL,
+	limite BIT DEFAULT 0,
 	FOREIGN KEY (id_planTrabajo) REFERENCES PLANTRABAJO(id_planTrabajo),
 	FOREIGN KEY (id_evidencia) REFERENCES EVIDENCIA(id_evidencia)
 )

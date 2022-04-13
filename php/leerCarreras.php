@@ -42,7 +42,7 @@
                 }
                 $data = array(
                     "clave_carrera"=>utf8_encode($row["clave_carrera"]),
-                    "foto_portada"=>foto,
+                    "foto_portada"=>$foto,
                     "nombre"=>utf8_encode($row["nombre"]),
                     "activo"=>utf8_encode($row["Activo"])
                 );

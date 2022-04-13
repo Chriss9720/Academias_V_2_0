@@ -25,6 +25,75 @@
         }
     }
 
+    function limpiar($id) {
+        $conectar = new Conectar();
+        $con = $conectar->conn();
+        $call = "{call dbo.SP_BorrarEvidenciaPlan(?)}";
+        $params = array(
+            array(&$id, SQLSRV_PARAM_IN)
+        );
+        $stmt = sqlsrv_query($con, $call, $params);
+        if ($stmt === false) {
+            if (($errors = sqlsrv_errors()) != null) {
+                $error = print_r($errors[0]['message'], true);
+                $error = str_replace("[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]", "", $error);
+                $error = str_replace("[Microsoft][ODBC Driver 17 for SQL Server]", "", $error);
+                http_response_code(401);
+                die(json_encode(array("status"=>404, "msg"=>utf8_decode($error))));
+            }
+        }
+        sqlsrv_free_stmt($stmt);
+        sqlsrv_close($con);
+    }
+
+    function salvarLigado($id, $nomina, $tarea, $punto, $fecha) {
+        $punto = $punto + 1;
+        if (strlen($fecha) > 0) {
+            $l = 1;
+        } else {
+            $l = 0;
+        }
+        $conectar = new Conectar();
+        $con = $conectar->conn();
+        $call = "{call dbo.SP_EvidenciaPlan(?,?,?,?,?,?)}";
+        $params = array(
+            array(&$id, SQLSRV_PARAM_IN),
+            array(&$nomina, SQLSRV_PARAM_IN),
+            array(&$tarea, SQLSRV_PARAM_IN),
+            array(&$punto, SQLSRV_PARAM_IN),
+            array(&$fecha, SQLSRV_PARAM_IN),
+            array(&$l, SQLSRV_PARAM_IN)
+        );
+        $stmt = sqlsrv_query($con, $call, $params);
+        if ($stmt === false) {
+            if (($errors = sqlsrv_errors()) != null) {
+                $error = print_r($errors[0]['message'], true);
+                $error = str_replace("[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]", "", $error);
+                $error = str_replace("[Microsoft][ODBC Driver 17 for SQL Server]", "", $error);
+                http_response_code(401);
+                die(json_encode(array("status"=>404, "msg"=>utf8_decode($error))));
+            }
+        }
+        sqlsrv_free_stmt($stmt);
+        sqlsrv_close($con);
+    }
+
+    function ligarResponsables($id, $data) {
+        limpiar($id);
+        $data = json_decode($data, true);
+        for($i = 1; $i < 10; $i++) {
+            $act = $data[$i];
+            for ($j = 0; $j < count($act["Responsables"]); $j++){
+                $nomina = $act["Responsables"][$j]["nomina"];
+                $fecha = $act["fecha"];
+                for ($k = 0; $k < count($act["tareas"]); $k++){
+                    $t = $act["tareas"][$k];
+                    salvarLigado($id, $nomina, $i, $k, $fecha);
+                }
+            }
+        }
+    }
+
     function getResponsables($responsables, $in, $clave)
     {
         $ret = "<ul>";
@@ -37,28 +106,54 @@
         return $in;
     }
 
-    function salvarPlan($ruta, $academia, $hoy)
-    {
+    function getIDPLan() {
         $conectar = new Conectar();
         $con = $conectar->conn();
-
-        $call = "{call dbo.SP_RegistrarPlan(?,?,?)}";
+        $id = intval(-2);
+        $call = "{call dbo.SP_GetIDPlan(?)}";
         $params = array(
-            array(&$academia, SQLSRV_PARAM_IN),
-            array(&$ruta, SQLSRV_PARAM_IN),
-            array(&$hoy, SQLSRV_PARAM_IN)
+            array(&$id, SQLSRV_PARAM_OUT)
         );
         $stmt = sqlsrv_query($con, $call, $params);
         if ($stmt === false) {
             if (($errors = sqlsrv_errors()) != null) {
                 $error = print_r($errors[0]['message'], true);
                 $error = str_replace("[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]", "", $error);
+                $error = str_replace("[Microsoft][ODBC Driver 17 for SQL Server]", "", $error);
                 http_response_code(401);
-                die(json_encode(array("status"=>404, "msg"=>$error)));
+                die(json_encode(array("status"=>404, "msg"=>utf8_decode($error))));
             }
         }
         sqlsrv_free_stmt($stmt);
         sqlsrv_close($con);
+        return $id;
+    }
+
+    function salvarPlan($ruta, $academia, $hoy)
+    {
+        $id = getIDPLan();
+        $conectar = new Conectar();
+        $con = $conectar->conn();
+        $call = "{call dbo.SP_RegistrarPlan(?,?,?,?)}";
+        $params = array(
+            array($academia, SQLSRV_PARAM_IN),
+            array($ruta, SQLSRV_PARAM_IN),
+            array($hoy, SQLSRV_PARAM_IN),
+            array(&$id, SQLSRV_PARAM_IN)
+        );
+        $stmt = sqlsrv_query($con, $call, $params);
+        if ($stmt === false) {
+            if (($errors = sqlsrv_errors()) != null) {
+                $error = print_r($errors[0]['message'], true);
+                $error = str_replace("[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]", "", $error);
+                $error = str_replace("[Microsoft][ODBC Driver 17 for SQL Server]", "", $error);
+                http_response_code(401);
+                die(json_encode(array("status"=>404, "msg"=>utf8_decode($error))));
+            }
+        }
+        sqlsrv_free_stmt($stmt);
+        sqlsrv_close($con);
+        return $id;
     }
 
     function fechaFormat($date)
@@ -131,6 +226,9 @@
     $actividad7 = $datos['7'];
     $actividad8 = $datos['8'];
     $actividad9 = $datos['9'];
+    if ($editar == 1) {
+        $id = $datos["id"];
+    }
 
     $responsables = [];
 
@@ -209,12 +307,21 @@
         </table>
     ");
 
+    function getTareas($act) {
+        if (array_key_exists('tareas', $act)) {
+            return $act['tareas'];
+        } else{
+            return [];
+        }
+    }
+
     $actividad_1 = array(
         "Acciones"=>utf8_encode($actividad1['Acciones']),
         "Asignaturas"=>utf8_encode($actividad1['Asignaturas']),
         "Responsables"=>utf8_encode($responsables[1]),
         "fecha"=>utf8_encode($actividad1['fecha']),
-        "Evidencia"=>utf8_encode($actividad1['Evidencia'])
+        "Evidencia"=>utf8_encode($actividad1['Evidencia']),
+        "tareas"=>getTareas($actividad1)
     );
 
     $actividad_2 = array(
@@ -222,7 +329,8 @@
         "Asignaturas"=>utf8_encode($actividad2['Asignaturas']),
         "Responsables"=>utf8_encode($responsables[2]),
         "fecha"=>utf8_encode($actividad2['fecha']),
-        "Evidencia"=>utf8_encode($actividad2['Evidencia'])
+        "Evidencia"=>utf8_encode($actividad2['Evidencia']),
+        "tareas"=>getTareas($actividad2)
     );
 
     $actividad_3 = array(
@@ -230,7 +338,8 @@
         "Asignaturas"=>utf8_encode($actividad3['Asignaturas']),
         "Responsables"=>utf8_encode($responsables[3]),
         "fecha"=>utf8_encode($actividad3['fecha']),
-        "Evidencia"=>utf8_encode($actividad3['Evidencia'])
+        "Evidencia"=>utf8_encode($actividad3['Evidencia']),
+        "tareas"=>getTareas($actividad3)
     );
 
     $actividad_4 = array(
@@ -238,7 +347,8 @@
         "Asignaturas"=>utf8_encode($actividad4['Asignaturas']),
         "Responsables"=>utf8_encode($responsables[4]),
         "fecha"=>utf8_encode($actividad4['fecha']),
-        "Evidencia"=>utf8_encode($actividad4['Evidencia'])
+        "Evidencia"=>utf8_encode($actividad4['Evidencia']),
+        "tareas"=>getTareas($actividad4)
     );
 
     $actividad_5 = array(
@@ -246,7 +356,8 @@
         "Asignaturas"=>utf8_encode($actividad5['Asignaturas']),
         "Responsables"=>utf8_encode($responsables[5]),
         "fecha"=>utf8_encode($actividad5['fecha']),
-        "Evidencia"=>utf8_encode($actividad5['Evidencia'])
+        "Evidencia"=>utf8_encode($actividad5['Evidencia']),
+        "tareas"=>getTareas($actividad5)
     );
 
     $actividad_6 = array(
@@ -254,7 +365,8 @@
         "Asignaturas"=>utf8_encode($actividad6['Asignaturas']),
         "Responsables"=>utf8_encode($responsables[6]),
         "fecha"=>utf8_encode($actividad6['fecha']),
-        "Evidencia"=>utf8_encode($actividad6['Evidencia'])
+        "Evidencia"=>utf8_encode($actividad6['Evidencia']),
+        "tareas"=>getTareas($actividad6)
     );
 
     $actividad_7 = array(
@@ -262,7 +374,8 @@
         "Asignaturas"=>utf8_encode($actividad7['Asignaturas']),
         "Responsables"=>utf8_encode($responsables[7]),
         "fecha"=>utf8_encode($actividad7['fecha']),
-        "Evidencia"=>utf8_encode($actividad7['Evidencia'])
+        "Evidencia"=>utf8_encode($actividad7['Evidencia']),
+        "tareas"=>getTareas($actividad7)
     );
 
     $actividad_8 = array(
@@ -270,7 +383,8 @@
         "Asignaturas"=>utf8_encode($actividad8['Asignaturas']),
         "Responsables"=>utf8_encode($responsables[8]),
         "fecha"=>utf8_encode($actividad8['fecha']),
-        "Evidencia"=>utf8_encode($actividad8['Evidencia'])
+        "Evidencia"=>utf8_encode($actividad8['Evidencia']),
+        "tareas"=>getTareas($actividad8)
     );
 
     $actividad_9 = array(
@@ -278,7 +392,8 @@
         "Asignaturas"=>utf8_encode($actividad9['Asignaturas']),
         "Responsables"=>utf8_encode($responsables[9]),
         "fecha"=>utf8_encode($actividad9['fecha']),
-        "Evidencia"=>utf8_encode($actividad9['Evidencia'])
+        "Evidencia"=>utf8_encode($actividad9['Evidencia']),
+        "tareas"=>getTareas($actividad9)
     );
 
 
@@ -696,7 +811,7 @@
             eliminar($temp, "$carpeta/temp");
         }
         if ($editar == 0) {
-            salvarPlan($ruta, $claveAcademia, $fecha);
+            $id = salvarPlan($ruta, $claveAcademia, $fecha);
             salvarFecha($ruta, $fecha_1);
             salvarFecha($ruta, $fecha_2);
             salvarFecha($ruta, $fecha_3);
@@ -729,8 +844,8 @@
                 "fecha_4"=>$fecha_4
             )
         ));
-
         $bytes = file_put_contents($nombreJson, $json);
+        ligarResponsables($id, $json);
     }
 
     echo json_encode(array('ruta'=>"Acacemias/$ruta.pdf"));

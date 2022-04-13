@@ -1,0 +1,7 @@
+INSERT INTO MATERIAS (materia, nomina) VALUES ('Español', 14032218)
+INSERT INTO MATERIAS (materia, nomina) VALUES ('Ingles', 14032216)
+INSERT INTO MATERIAS (materia, nomina) VALUES ('Matematicas', 14032217)
+INSERT INTO MATERIAS (materia, nomina) VALUES ('Ciencias', 14032219)
+INSERT INTO MATERIAS (materia, nomina) VALUES ('Etica', 14032220)
+INSERT INTO MATERIAS (materia, nomina) VALUES ('Valores', 14032221)
+INSERT INTO MATERIAS (materia, nomina) VALUES ('Algebra', 14032222)

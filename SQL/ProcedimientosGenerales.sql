@@ -66,31 +66,31 @@ IF OBJECT_ID('SP_InfoAcademiaPlanTrabajo') IS NOT NULL DROP PROC SP_InfoAcademia
 GO
 CREATE PROC SP_InfoAcademiaPlanTrabajo @Clave VARCHAR(255) AS
 	SELECT A.clave_academia, A.nombre AS Academia,
-	C.puesto, D.nombre, COR.nombre AS Coordinador,
-	JC.nombre AS Jefe
-	FROM ACADEMIA AS A
-	JOIN CARGO AS C
-	ON C.clave_academia = A.clave_academia
-	JOIN DOCENTE AS D
-	ON D.nomina = C.nomina
-	JOIN (
-		SELECT * FROM DOCENTE WHERE nivel = 1
-	) AS COR
-	ON COR.nivel = 1
-	JOIN AFILIADO AS AF
-	ON AF.nomina = D.nomina
-	JOIN CARRERA AS CA
-	ON CA.clave_carrera = AF.clave_carrera
-	JOIN (
-		SELECT * FROM AFILIADO WHERE jefe = 1
-	) AS J
-	ON J.clave_carrera = CA.clave_carrera
-	JOIN (
-		SELECT * FROM DOCENTE
-	) AS JC
-	ON JC.nomina = J.nomina
-	WHERE TRIM(A.clave_academia) LIKE '%'+TRIM(@Clave)+'%'
-		AND C.puesto LIKE '%Presidente%'
+		C.puesto, D.nombre, COR.nombre AS Coordinador,
+		JC.nombre AS Jefe
+		FROM ACADEMIA AS A
+		LEFT JOIN CARGO AS C
+		ON C.clave_academia = A.clave_academia
+		LEFT JOIN DOCENTE AS D
+		ON D.nomina = C.nomina
+		LEFT JOIN (
+			SELECT * FROM DOCENTE WHERE nivel = 1
+		) AS COR
+		ON COR.nivel = 1
+		LEFT JOIN AFILIADO AS AF
+		ON AF.nomina = D.nomina
+		LEFT JOIN CARRERA AS CA
+		ON CA.clave_carrera = AF.clave_carrera
+		LEFT JOIN (
+			SELECT * FROM AFILIADO WHERE jefe = 1
+		) AS J
+		ON J.clave_carrera = CA.clave_carrera
+		LEFT JOIN (
+			SELECT * FROM DOCENTE
+		) AS JC
+		ON JC.nomina = J.nomina
+		WHERE TRIM(A.clave_academia) LIKE '%'+TRIM(@Clave)+'%'
+			AND C.puesto LIKE '%Presidente%'
 GO
 
 IF OBJECT_ID('SP_MiembrosAcademia') IS NOT NULL DROP PROC SP_MiembrosAcademia
@@ -107,11 +107,27 @@ GO
 
 IF OBJECT_ID('SP_RegistrarPlan') IS NOT NULL DROP PROC SP_RegistrarPlan
 GO
-CREATE PROC SP_RegistrarPlan @Clave VARCHAR(255), @Ruta VARCHAR(255), @Fecha DATETIME AS
-	INSERT INTO PLANTRABAJO (fecha, subido, localizacion, localizacionJson)
-	VALUES (@Fecha, 1, @Ruta+'.pdf', @Ruta+'.json')
+CREATE PROC SP_RegistrarPlan @Clave VARCHAR(255), @Ruta VARCHAR(255),
+	@Fecha DATETIME, @ID INT AS
+	UPDATE PLANTRABAJO
+		SET fecha = @Fecha,
+			subido = 1,
+			localizacion =  @Ruta+'.pdf',
+			localizacionJson =  @Ruta+'.json'
+	WHERE id_planTrabajo = @ID
 	INSERT INTO PLANES (id_planTrabajo, clave_academia)
-	VALUES ((SELECT @@IDENTITY), @Clave)
+	VALUES (@ID, @Clave)
+GO
+
+IF OBJECT_ID('SP_GetIDPlan') IS NOT NULL DROP PROC SP_GetIDPlan
+GO
+CREATE PROC SP_GetIDPlan @ID INT OUTPUT AS
+	IF (SELECT MAX(id_planTrabajo) FROM PLANTRABAJO) IS NOT NULL
+		SELECT @ID = (MAX(id_planTrabajo) + 1) FROM PLANTRABAJO
+	ELSE
+		SELECT @ID = 1
+	INSERT INTO PLANTRABAJO (id_planTrabajo, fecha, subido, localizacion, localizacionJson)
+	VALUES (@ID, GETDATE(), 0, '', '')
 GO
 
 IF OBJECT_ID('SP_AgendarFecha') IS NOT NULL DROP PROC SP_AgendarFecha
@@ -313,4 +329,45 @@ CREATE PROC SP_ActualizarFoto @Clave VARCHAR(255), @Foto VARCHAR(255) AS
 	UPDATE CARRERA
 	SET foto_portada = @Foto
 	WHERE clave_carrera LIKE @Clave
+GO
+
+IF OBJECT_ID('SP_LigarMateria') IS NOT NULL DROP PROC SP_LigarMateria
+GO
+CREATE PROC SP_LigarMateria @Materia VARCHAR(255), @Nomina INT AS
+	INSERT INTO MATERIAS (materia, nomina) VALUES (@Materia, @Nomina)
+GO
+
+IF OBJECT_ID('SP_LeerMaterias') IS NOT NULL DROP PROC SP_LeerMaterias
+GO
+CREATE PROC SP_LeerMaterias @Nomina INT AS
+	SELECT * FROM MATERIAS WHERE nomina LIKE @Nomina
+GO
+
+IF OBJECT_ID ('SP_EvidenciaPlan') IS NOT NULL DROP PROC SP_EvidenciaPlan
+GO
+CREATE PROC SP_EvidenciaPlan @idPlan INT, @nomina INT,
+	@noTarea INT, @punto INT, @fecha DATETIME, @Limite BIT AS
+	INSERT INTO EVIDENCIA (localizacion, descripcion, nomina)
+	VALUES (NULL, NULL, @nomina)
+	DECLARE @IDEvidencia INT
+	SELECT @IDEvidencia = @@IDENTITY
+	INSERT INTO SUBIR (id_planTrabajo, id_evidencia, no_tarea, punto, fecha, limite)
+	VALUES(@idPlan, @IDEvidencia, @noTarea, @punto, @fecha, @Limite)
+GO
+
+IF OBJECT_ID ('SP_BorrarEvidenciaPlan') IS NOT NULL DROP PROC SP_BorrarEvidenciaPlan
+GO
+CREATE PROC SP_BorrarEvidenciaPlan @idPlan INT AS
+	DELETE FROM EVIDENCIA WHERE id_evidencia IN (
+		SELECT id_evidencia FROM SUBIR WHERE id_planTrabajo = @idPlan
+	)
+	DELETE FROM SUBIR WHERE id_planTrabajo = @idPlan
+GO
+
+IF OBJECT_ID ('SP_GetRutasEvidenciaPlan') IS NOT NULL DROP PROC SP_GetRutasEvidenciaPlan
+GO
+CREATE PROC SP_GetRutasEvidenciaPlan @idPlan INT AS
+	SELECT localizacion FROM EVIDENCIA WHERE id_evidencia IN (
+		SELECT id_evidencia FROM SUBIR WHERE id_planTrabajo = @idPlan
+	)
 GO

@@ -121,6 +121,7 @@ $(document).ready(() => {
                 dataType: "json",
                 success: (s) => window.location = s.cambio,
                 error: (e) => {
+                    console.log(e);
                     cerrarModal();
                     if (e.status == 404 && e.responseText == "Solicitar Reinicio de sesion") {
                         cerrarM.load = true;

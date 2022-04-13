@@ -2,6 +2,200 @@ $(document).ready(() => {
 
     $("#inicio").click(() => (window.location = "/academias/panel.html"));
 
+    $("#ayudaActa").click(() => {
+        $("#modales").html(`
+        <div class="modal" id="modal">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header d-flex justify-content-center h4">
+                        <label>Ayuda para editar plan de trabajo</label>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="text-justify p-3">
+                            <li>
+                                Para la búsqueda de actas:
+                                <ul>
+                                    <li>
+                                       Se debe seleccionar su academia correspondiente en formato <b>Clave - Nombre</b>.
+                                    </li>
+                                    <li>
+                                        Si se ingresa la información de forma distinta al formato, aparecerá el mensaje de error <b> "Debe
+                                            de ser en formato Clave - Nombre"</b>.
+                                    </li>
+                                    <li>
+                                        Si no se ingresa ninguna academia, aparecerá el mensaje de error <b>"Seleccione una academia"</b> al
+                                        seleccionar otros botones.
+                                    </li>
+                                    <li>
+                                        Ingresada la información presione el botón <b>"enter"</b>
+                                    </li>
+                                     
+                                </ul>
+                            </li>
+                            <li>
+                                Para ingresar datos iniciales de acta:
+                                <ul>
+                                    <li>
+                                        En los espacios en los que aparezca en ícono <img src="img/Reloj.JPG"> presione para seleccionar hora y minutos.
+                                    </li>
+                                    <li>
+                                        En los espacios en los que se tenga que ingresar números aparecerá el icono <img src="img/numero.png">, presione las 
+                                        flechas, ya sea para aumentar o disminuir el número, o puede ingresarlo desde su teclado. 
+                                    </li>
+
+                                    <li>
+                                       Ingrese desde su teclado en los espacios en los que se le solicite llenar información.
+                                    </li>
+                                  
+                                </ul>
+                            </li>
+                            <li>
+                                Para ingresar información en orden del día:
+                                <ul>
+                                     <li>
+                                       aparecerá el siguiente formato:
+                                     </li>
+                                    <img src="img/formatollenable.png" style="width: 300px;">
+                                    <li>
+                                        Escriba los datos correspondientes en el recuadro
+                                    </li>
+                                      <li>
+                                        Para más personalización puede seleccionar los iconos de la parte superior del recuadro.
+                                    </li>
+                                    <li>
+                                        Si desea cancelar el tecleado de información seleccione el botón <b>"cancelar"</b>.
+                                    </li>
+                                    <li>
+                                        Si desea guardar la información tecleada seleccione el botón <b>"aplicar"</b>.
+                                    </li>
+                                   
+                                </ul>
+                            </li>
+                            <li>
+                                Para acuerdos de reunión:
+                                <ul>
+                                    <li>
+                                    Para agregar un nuevo espacio de registro de acuerdo de reunión presione el botón <b>"Agregar"</b>
+                                    </li>
+                                    <li>
+                                    Para borrar el espacio de registro de acuerdo de reunión presione el ícono <img src="img/iconoborrar.JPG">
+                                    </li>
+                                    <li>
+                                    Para ingresar información en la sección  <b>"Acuerdo"</b> ,al seleccionar el apartado aparecerá un formato
+                                    de rellenado, escriba los datos correspondientes en el recuadro donde aparece el mensaje <b>"click para editar"</b>. 
+                                    </li>
+                                    <li>
+                                        Para más personalización puede seleccionar los iconos de la parte superior del recuadro.
+                                    </li>
+                                    <li>
+                                        Si desea cancelar el tecleado de información seleccione el botón <b>"cancelar"</b>.
+                                    </li>
+                                    <li>
+                                        Si desea guardar la información tecleada seleccione el botón <b>"aplicar"</b>.
+                                    </li>
+
+                                    <li>
+                                        En la sección <b>"responsable"</b> seleccione el texto <b>"click para editar"</b> y aparecerá el
+                                        siguiente recuadro:
+                                    </li>
+                                    <img src="img/cuadroresp.JPG" style="width: 300px;">
+                                    <li>
+                                        Para agregar a un responsable, dé click en la sección "Nómina/Nombre" y elija una de las opciones o
+                                        ingrese los datos con el formato solicidado, después presione el botón
+                                        <i class="fas fa-plus-circle click" aria-hidden="true"></i> o pulse <b>enter</b>.
+                                    </li>
+                                    <li>
+                                        Si se ingresa la información de forma distinta al formato o no se selecciona a ningún responsable y
+                                        se presiona el botón
+                                        <i class="fas fa-plus-circle click" aria-hidden="true"></i> a
+                                        parecerá el mensaje de error
+                                        <b> "Debe de ser en formato Nómina - Nombre" </b>.
+                                    </li>
+                                    <li>
+                                        Si se quiere eliminar a uno de los responsables seleccionados, dé click al icono <i
+                                            class="click fas fa-user-minus" aria-hidden="true"></i>.
+                                    </li>
+
+                                    <li>
+                                        Si se quiere agregar a todos los miembros que están registrados seleccione el botón <b>"todos"</b>.
+                                    </li>
+                                    <li>
+                                        Para guardar a todos los responsables agregados seleccione el botón <b>"aplicar"</b>.
+                                    </li>
+                                    <li>
+                                        Si se desea cancelar toda la elección de responsables, seleccione el botón <b>"cancelar"</b>.
+                                    </li>
+
+                                    <li> En la sección <b>"Fecha de cumplimiento"</b> seleccione el ícono <img src="img/iconocalen.JPG"> y aparecerá el
+                                        siguiente recuadro: <img src="img/calendario.png">
+                                    </li>
+                                    <li>
+                                        Escoja el día y hora deseada seleccionando los números correspondientes.
+                                    </li>
+                                    <li>
+                                        Si desea borrar la fecha seleccionada presione el botón <b>"borrar"</b>.
+                                    </li>
+                                    <li>
+                                        Si desea obtener la fecha actual exacta seleccione el botón <b>"hoy"</b>.
+                                    </li>
+                                    <li>
+                                       Para ingresar la fecha de término de reunión precione el ícono <img src="img/Reloj.JPG"> y seleccione hora y minutos 
+                                       correspodientes.
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                Para la sección Constancia de aprobación:
+                                <ul>
+                                    <li>
+                                       Para agregar información en el apartado "Observaciones" 
+                                    </li>
+                                      <li>
+                                       aparecerá el siguiente formato:
+                                     </li>
+                                    <img src="img/formatollenable.png" style="width: 300px;">
+                                    <li>
+                                        Escriba los datos correspondientes en el recuadro
+                                    </li>
+                                      <li>
+                                        Para más personalización puede seleccionar los iconos de la parte superior del recuadro.
+                                    </li>
+                                    <li>
+                                        Si desea cancelar el tecleado de información seleccione el botón <b>"cancelar"</b>.
+                                    </li>
+                                    <li>
+                                        Si desea guardar la información tecleada seleccione el botón <b>"aplicar"</b>.
+                                    </li>
+                                    
+                                     <li>
+                                    Al seleccionar la opción <b>"Vista previa"</b> no se guardará el documento , solo se mostrará el
+                                    plan de trabajo en formato PDF con la información que se haya ingresado.
+                                </li>
+                                <li>
+                                    Al seleccionar la opción <b>"Generar PDF"</b> se guardará el documento en la base de datos y se
+                                    mostrará el acta en formato PDF con la información que se haya ingresado.
+                                </li> 
+                                </ul>
+                            </li>
+                                    
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <input id="cerrarAyuda" type="button" value="Salir" class="btn btn-secondary">
+                    </div>
+                </div>
+            </div>
+        </div>
+    `);
+        $("#modal").modal();
+
+        $("#cerrarAyuda").click(() => {
+            $("#modal").modal("hide");
+            $(`[class="modal-backdrop show"]`).remove();
+        });
+    });
+
     const miembrosTotal = []
 
     CKEDITOR.replace('orden');
@@ -589,7 +783,7 @@ $(document).ready(() => {
             acuerdos[id].responsables.push(mt);
         });
         filtroM(id);
-        let campo = $(`#R_${(id+1)}`)[0];
+        let campo = $(`#R_${(id + 1)}`)[0];
         let value = `<ul>${$("#agregados").html()}</ul>`;
         campo.innerHTML = value;
         campo.className = campo.className.replace("d-flex justify-content-center align-items-center", "");
@@ -598,7 +792,7 @@ $(document).ready(() => {
 
     $("#aplicarResponsables").click(() => {
         let id = parseInt($("#tituloModalR").html().split("_")[1]) - 1;
-        let campo = $(`#R_${(id+1)}`)[0];
+        let campo = $(`#R_${(id + 1)}`)[0];
         let value = `<ul>${$("#agregados").html()}</ul>`;
         campo.innerHTML = value;
         campo.className = campo.className.replace("d-flex justify-content-center align-items-center", "");
