@@ -65,32 +65,8 @@ GO
 IF OBJECT_ID('SP_InfoAcademiaPlanTrabajo') IS NOT NULL DROP PROC SP_InfoAcademiaPlanTrabajo
 GO
 CREATE PROC SP_InfoAcademiaPlanTrabajo @Clave VARCHAR(255) AS
-	SELECT A.clave_academia, A.nombre AS Academia,
-		C.puesto, D.nombre, COR.nombre AS Coordinador,
-		JC.nombre AS Jefe
-		FROM ACADEMIA AS A
-		LEFT JOIN CARGO AS C
-		ON C.clave_academia = A.clave_academia
-		LEFT JOIN DOCENTE AS D
-		ON D.nomina = C.nomina
-		LEFT JOIN (
-			SELECT * FROM DOCENTE WHERE nivel = 1
-		) AS COR
-		ON COR.nivel = 1
-		LEFT JOIN AFILIADO AS AF
-		ON AF.nomina = D.nomina
-		LEFT JOIN CARRERA AS CA
-		ON CA.clave_carrera = AF.clave_carrera
-		LEFT JOIN (
-			SELECT * FROM AFILIADO WHERE jefe = 1
-		) AS J
-		ON J.clave_carrera = CA.clave_carrera
-		LEFT JOIN (
-			SELECT * FROM DOCENTE
-		) AS JC
-		ON JC.nomina = J.nomina
-		WHERE TRIM(A.clave_academia) LIKE '%'+TRIM(@Clave)+'%'
-			AND C.puesto LIKE '%Presidente%'
+	SELECT * FROM VW_InfoAcademia
+	WHERE TRIM(clave_academia) LIKE '%'+TRIM(@Clave)+'%'
 GO
 
 IF OBJECT_ID('SP_MiembrosAcademia') IS NOT NULL DROP PROC SP_MiembrosAcademia

@@ -1268,7 +1268,7 @@ $(document).ready(() => {
 
     $("input[name='Crear']").click(() => {
         if (seleccionada) {
-            //cargando();
+            cargando();
             if (sessionStorage.getItem("accion").includes("Editar")) {
                 Plan["fechaG"] = planEdit["fechaG"];
                 Plan["fecha"] = planEdit["fecha"];
@@ -1286,8 +1286,7 @@ $(document).ready(() => {
                 .then(t => {
                     cerrarM.load = true;
                     cerrarModal();
-                    console.log(t);
-                    //window.open(t.ruta);
+                    window.open(t.ruta);
                 })
                 .catch(e => {
                     console.log(e);

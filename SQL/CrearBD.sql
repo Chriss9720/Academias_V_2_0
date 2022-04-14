@@ -173,3 +173,21 @@ CREATE TABLE SUBIR (
 	FOREIGN KEY (id_evidencia) REFERENCES EVIDENCIA(id_evidencia)
 )
 GO
+CREATE TABLE EVIDENCIAACTA (
+	id_evidencia INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	localizacion VARCHAR(255) NOT NULL,
+	descripcion VARCHAR(255) DEFAULT '',
+	nomina INT NOT NULL,
+)
+GO
+CREATE TABLE SUBIRACTA (
+	id_subir INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	id_acta INT,
+	id_evidencia INT,
+	no_tarea INT,
+	punto INT,
+	fecha DATETIME DEFAULT NULL,
+	limite BIT DEFAULT 0,
+	FOREIGN KEY (id_acta) REFERENCES ACTA(id_acta),
+	FOREIGN KEY (id_evidencia) REFERENCES EVIDENCIAACTA(id_evidencia)
+)
