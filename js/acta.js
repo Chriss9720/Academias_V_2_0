@@ -201,7 +201,34 @@ $(document).ready(() => {
         });
     });
 
-    const miembrosTotal = []
+    const Acta = {
+        "No:": 1, //Ok
+        "DatosA": { //Ok
+            "Academia": "",
+            "Presidente": "",
+            "Sec": ""
+        },
+        "datosG": {
+            "horaI": "",
+            "horaF": "",
+            "Dia": "",
+            "Mes": "",
+            "Año": "",
+            "Lugar": "",
+            "Orden": "",
+            "Obs": ""
+        },
+        "Acuerdos": [{
+            "Acuerdo": "",
+            "Responsables": [],
+            "Evidencia": "",
+            "Fecha": "",
+            "Tareas": []
+        }],
+        "Docentes": [] //Oc
+    };
+
+    var miembrosTotal = []
 
     CKEDITOR.replace('orden');
 
@@ -436,8 +463,36 @@ $(document).ready(() => {
         `);
     };
 
-    const asistencia = () => {
+    const getMateriasDocente = nomina => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: "php/getMateriasDocente.php",
+                type: "post",
+                data: {
+                    nomina: nomina
+                },
+                dataType: "json",
+                success: s => resolve(s),
+                error: e => reject(e)
+            });
+        });
+    };
+
+    const filtroMaterias = nomina => {
+        let mat = Acta["Docentes"].find(d => d.nomina === nomina);
+        if (mat) {
+            let r = "";
+            for (let i = 0; i < mat['materias'].length; i++) {
+                r += `<li>${mat["materias"][i]["materia"]}</li>`;
+            }
+            return r;
+        }
+        return "";
+    };
+
+    const asistencia = async() => {
         let f = "";
+        $("#asistencia").html("");
         for (let i = 0; i < miembrosTotal.length; i++) {
             f += `
                 <div class="row mb-2">
@@ -446,9 +501,7 @@ $(document).ready(() => {
                     </div>
                     <div class="col-4 border border-dark acuerdo">
                         <ul>
-                            <li>M1</li>
-                            <li>M2</li>
-                            <li>M3</li>
+                            ${filtroMaterias(miembrosTotal[i].nomina)}
                         </ul>
                     </div>
                     <div class="col-4 border border-dark acuerdo">
@@ -605,9 +658,10 @@ $(document).ready(() => {
         });
     };
 
-    const cargarMiembros = data => {
+    const cargarMiembros = (data) => {
         let final = "";
-        data.forEach(d => {
+        miembrosTotal = [];
+        data.forEach((d) => {
             miembrosTotal.push(d);
             final += `<option value="${d.nomina} - ${d.nombre}">`;
         });
@@ -622,7 +676,6 @@ $(document).ready(() => {
             let e = aux.find(a => parseInt(a.nomina) == parseInt(mt.nomina));
             if (!e) final += `<option value="${mt.nomina} - ${mt.nombre}">`;
         });
-        console.log(miembrosTotal);
         $("#busqueda_1_lista").html(final);
         actualizarLista(id);
     };
@@ -707,6 +760,24 @@ $(document).ready(() => {
         }
     });
 
+    const cargarMaterias = m => {
+        return new Promise(async(resolve, reject) => {
+            Acta["Docentes"] = [];
+            for (let i = 0; i < m.length; i++) {
+                await getMateriasDocente(m[i].nomina)
+                    .then(mat => {
+                        Acta["Docentes"].push({
+                            "nombre": m[i].nombre,
+                            "nomina": m[i].nomina,
+                            "materias": mat,
+                            "estado": -1
+                        });
+                    })
+            }
+            resolve();
+        });
+    };
+
     $("#academiaSeleccionada2").keypress(k => {
         if (k.which == 13) {
             let dato = k.target.value.split(" - ");
@@ -742,15 +813,16 @@ $(document).ready(() => {
                                         cerrarModal();
                                     })
                                     .catch(e => {
+                                        console.log(e);
                                         if (e.responseText == "Solicitar Reinicio de sesion") {
                                             cerrarM.load = true;
                                             cerrarModal();
                                             login();
                                         }
-                                        console.log(e);
                                     })
                             })
                             .catch(e => {
+                                console.log(e);
                                 if (e.responseText == "Solicitar Reinicio de sesion") {
                                     cerrarM.load = true;
                                     cerrarModal();
@@ -761,14 +833,24 @@ $(document).ready(() => {
                         datosAcademias(clave.clave_academia)
                             .then(dt => {
                                 $("#NoActa")[0].value = 1;
-                                let datos = [dt['Academia']];
-                                console.log(dt);
+                                let datos = [dt['Academia'], dt['nombre'], dt['Sec']];
+                                Acta["DatosA"]["Academia"] = datos[0];
+                                Acta["DatosA"]["Presidente"] = datos[1];
+                                Acta["DatosA"]["Sec"] = datos[2];
+                                Acta["No"] = 1;
+                                let campos = $('[name="attr"]');
+                                for (let i = 0; i < datos.length; i++) {
+                                    campos[i].value = datos[i];
+                                }
                                 miembrosAcademia(clave.clave_academia)
-                                    .then(s => {
-                                        cargarMiembros(s);
-                                        cerrarM.load = true;
-                                        cerrarModal();
-                                        seleccionada = true;
+                                    .then(m => {
+                                        cargarMaterias(m)
+                                            .then(() => {
+                                                cargarMiembros(m);
+                                                cerrarM.load = true;
+                                                cerrarModal();
+                                                seleccionada = true;
+                                            })
                                     })
                                     .catch(e => {
                                         console.log(e);
@@ -780,12 +862,11 @@ $(document).ready(() => {
                                     })
                             })
                             .catch(e => {
+                                console.log(e);
                                 if (e.responseText == "Solicitar Reinicio de sesion") {
                                     cerrarM.load = true;
                                     cerrarModal();
                                     login();
-                                } else {
-                                    window.location = "/Academias/Panel.html";
                                 }
                             })
                     }
@@ -858,6 +939,17 @@ $(document).ready(() => {
             });
         });
     };
+
+    $('[name="Crear"]').click(evt => {
+        let datos = $('input[name="datosG"]');
+        let keys = ["horaI", "Dia", "Mes", "Año", "Lugar", "horaF"];
+        for (let i = 0; i < keys.length; i++) {
+            Acta["datosG"][keys[i]] = datos[i].value;
+        }
+        Acta["datosG"]["Orden"] = CKEDITOR.instances.orden.getData();
+        Acta["datosG"]["Obs"] = CKEDITOR.instances.obs.getData();
+        console.log(Acta);
+    });
 
     load();
 

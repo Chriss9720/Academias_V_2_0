@@ -17,6 +17,7 @@ CREATE VIEW VW_InfoDocente AS
 GO
 
 IF OBJECT_ID('VW_InfoAcademia') IS NOT NULL DROP VIEW VW_InfoAcademia
+GO
 CREATE VIEW VW_InfoAcademia AS
 	SELECT A.clave_academia, A.nombre AS Academia,
 		C.puesto, D.nombre, COR.nombre AS Coordinador,

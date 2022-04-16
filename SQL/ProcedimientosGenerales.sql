@@ -65,9 +65,19 @@ GO
 IF OBJECT_ID('SP_InfoAcademiaPlanTrabajo') IS NOT NULL DROP PROC SP_InfoAcademiaPlanTrabajo
 GO
 CREATE PROC SP_InfoAcademiaPlanTrabajo @Clave VARCHAR(255) AS
-	SELECT * FROM VW_InfoAcademia
-	WHERE TRIM(clave_academia) LIKE '%'+TRIM(@Clave)+'%'
+	SELECT BASE.*, SEC.nombre AS Sec
+	FROM (
+		SELECT * FROM VW_InfoAcademia
+		WHERE TRIM(clave_academia) LIKE '%'+TRIM(@Clave)+'%' AND puesto LIKE '%P%'
+	) AS BASE
+	LEFT JOIN (
+		SELECT * FROM VW_InfoAcademia
+		WHERE  puesto LIKE '%Secretario%'
+	) AS SEC
+	ON TRIM(SEC.clave_academia) LIKE '%'+TRIM(@Clave)+'%'
 GO
+
+EXEC SP_InfoAcademiaPlanTrabajo 'ACBA06'
 
 IF OBJECT_ID('SP_MiembrosAcademia') IS NOT NULL DROP PROC SP_MiembrosAcademia
 GO
@@ -346,4 +356,36 @@ CREATE PROC SP_GetRutasEvidenciaPlan @idPlan INT AS
 	SELECT localizacion FROM EVIDENCIA WHERE id_evidencia IN (
 		SELECT id_evidencia FROM SUBIR WHERE id_planTrabajo = @idPlan
 	)
+GO
+
+IF OBJECT_ID ('SP_GetMaterias') IS NOT NULL DROP PROC SP_GetMaterias
+GO
+CREATE PROC SP_GetMaterias @Mat INT AS
+	SELECT * FROM MATERIAS WHERE nomina = @Mat
+GO
+
+IF OBJECT_ID ('SP_GetAgenda') IS NOT NULL DROP PROC SP_GetAgenda
+GO
+CREATE PROC SP_GetAgenda @Nomina INT AS
+	DECLARE @Ni INT
+	SELECT @Ni = nivel FROM DOCENTE WHERE nomina = @Nomina
+	IF @NI != 0 AND @NI != 1 BEGIN
+		SELECT AGE.fecha, ACA.nombre
+		FROM DOCENTE AS DOC
+		JOIN CARGO AS CAR
+		ON CAR.nomina = DOC.nomina
+		JOIN ACADEMIA AS ACA
+		ON ACA.clave_academia LIKE CAR.clave_academia
+		JOIN PLANES AS PLS
+		ON PLS.clave_academia LIKE ACA.clave_academia
+		JOIN AGENDA AS AGE
+		ON AGE.id_planTrabajo = PLS.id_planTrabajo
+		WHERE DOC.nomina = @Nomina
+	END
+		SELECT AG.fecha, ACA.nombre
+		FROM AGENDA AS AG
+		JOIN PLANES AS PT
+		ON PT.id_planTrabajo = AG.id_planTrabajo
+		JOIN ACADEMIA AS ACA
+		ON ACA.clave_academia LIKE PT.clave_academia
 GO

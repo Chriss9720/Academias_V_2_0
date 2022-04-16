@@ -2,9 +2,9 @@ $(document).ready(() => {
 
     var misDatos;
     var docentesCoordinador;
+    var agenda;
 
     $("#ayudaPanel").click(() => {
-
         let coorInst = `
             <li>
                 <b>Cambiar coordinador:</b>
@@ -321,10 +321,120 @@ $(document).ready(() => {
 
     };
 
+    const getAgenda = () => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: "php/getAgenda.php",
+                type: "post",
+                dataType: "json",
+                success: s => resolve(s),
+                error: e => reject(e)
+            });
+        });
+    };
+
+    const getFecha = fecha => {
+        fecha = fecha.substring(0, 19);
+        let meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+        let date = fecha.split(" ")[0].split("-");
+        let dia = date[2];
+        let mes = meses[date[1] - 1];
+        let año = date[0];
+        let hora = fecha.split(" ")[1];
+        let fh = hora.split(":");
+        let f = new Date(año, date[1] - 1, dia);
+        f.setHours(fh[0], fh[1], fh[2]);
+        return { dia, mes, año, hora, f };
+    }
+
+    const cargarAgenda = ag => {
+        if (!agenda) agenda = ag;
+        let campo = $("#fechas")[0];
+        campo.innerHTML = "";
+        let hoy = new Date();
+        for (let i = 0; i < agenda.length; i++) {
+            let fecha = getFecha(agenda[i].fecha.date);
+            let academia = agenda[i].nombre;
+            if (hoy < fecha.f) {
+                campo.innerHTML += `
+                    <div class="col-6">
+                        <div name="fecha" class="d-flex click mb-4">
+                            <label name="dia" class="click">${fecha.dia}</label>
+                            <div class="d-flex flex-column ml-2 click border-top border-bottom border-dark">
+                                <label class="p-0 m-0 click">${fecha.mes} ${fecha.año},${fecha.hora}</label>
+                                <label class="p-0 m-0 click">${academia}</label>
+                                <label class="p-0 m-0 click text-muted">Reunión semanal para asuntos de interés.</label>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+    };
+
+    const getDate = f => {
+        let fecha = f.split("T")[0].split("-");;
+        let hora = f.split("T")[1].split(":");
+        let ff = new Date(fecha[0], fecha[1] - 1, fecha[2]);
+        ff.setHours(hora[0], hora[1]);
+        return ff;
+    };
+
+    $("#FiltrarFechas").click(() => {
+        $("#errorG").html(``);
+        let f1 = $("#fechebase_1").val();
+        let f2 = $("#fechebase_2").val();
+        if (f1 < f2) {
+            let campo = $("#fechas")[0];
+            campo.innerHTML = "";
+            f1 = getDate(f1);
+            f2 = getDate(f2);
+            for (let i = 0; i < agenda.length; i++) {
+                let fecha = getFecha(agenda[i].fecha.date);
+                let academia = agenda[i].nombre;
+                if (f1 < fecha.f && fecha.f < f2) {
+                    campo.innerHTML += `
+                        <div class="col-6">
+                            <div name="fecha" class="d-flex click mb-4">
+                                <label name="dia" class="click">${fecha.dia}</label>
+                                <div class="d-flex flex-column ml-2 click border-top border-bottom border-dark">
+                                    <label class="p-0 m-0 click">${fecha.mes} ${fecha.año},${fecha.hora}</label>
+                                    <label class="p-0 m-0 click">${academia}</label>
+                                    <label class="p-0 m-0 click text-muted">Reunión semanal para asuntos de interés.</label>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+        } else if (f1.length > 0 && f2.length > 0) {
+            $("#errorG").html(`
+                <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                    <strong class="h1">La fecha 1, debe de ser menor a la fecha 2</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            `);
+        } else {
+            cargarAgenda();
+            $("#errorG").html(`
+                <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                    <strong class="h1">Seleccione un filtro</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            `);
+        }
+    });
+
     const load = () => {
         cargando();
         getMisDatos()
             .then(t => {
+                getAgenda()
+                    .then(ag => cargarAgenda(ag));
                 cerrarM.load = true;
                 cerrarM.login = true;
                 misDatos = t;
@@ -542,7 +652,7 @@ $(document).ready(() => {
             })
             .catch(async(c) => {
                 $("#datosCoordinador").html(`
-                    <h3>Ocurrió un error, puede que no se tenga esta    lecido a un coordinador</h3>
+                    <h3>Ocurrió un error, puede que no se tenga establecido a un coordinador</h3>
                     ${misDatos['nivel'] == 0 ? await cambiarCoordinador(): ""}
                 `);
                 if (misDatos['nivel'] == 0) {

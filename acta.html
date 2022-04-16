@@ -98,24 +98,38 @@
             </div>
         </div>
         <div class="mt-2 text-input row ml-2 mr-2">
-            <p>En Ciudad Obregón, Sonora, siendo las</p>
-            <input type="time" class="form-control bg-input hora ml-2 mr-2">
-            <p>horas del día</p>
-            <input type="number" class="form-control bg-input hora ml-2 mr-2">
-            <p>de</p>
-            <input type="text" class="form-control bg-input hora ml-2 mr-2">
-            <p>del año</p>
-            <input type="number" class="form-control bg-input hora ml-2 mr-2">
-            <p>reunidos</p>
-            <input type="text" class="form-control bg-input lugar ml-2 mr-2">
-            <p>, los maestros miembros de la academia de</p>
-            <input name="attr" type="text" class="form-control bg-input ancho ml-2 mr-2" disabled>
-            <p>cuya lista se anexa a la presente acta; se inicia la reunión, bajo </p>
-            <p>la presidencia de</p>
-            <input name="attr" type="text" class="form-control bg-input ancho ml-2 mr-2" disabled>
-            <p>, auxiliado en la secretaria por</p>
-            <input name="attr" type="text" class="form-control bg-input ancho ml-2 mr-2" disabled>
-            <p>acuerdo con el siguiente:</p>
+            <div class="form-inline">
+                <p>Hora de inicio</p>
+                <input name="datosG" type="time" class="form-control bg-input ml-2 mr-2">
+            </div>
+            <div class="form-inline">
+                <p>Dia</p>
+                <input name="datosG" type="number" class="form-control bg-input ml-2 mr-2">
+            </div>
+            <div class="form-inline">
+                <p>Mes</p>
+                <input name="datosG" type="text" class="form-control bg-input ml-2 mr-2">
+            </div>
+            <div class="form-inline">
+                <p>Año</p>
+                <input name="datosG" type="number" class="form-control bg-input ml-2 mr-2">
+            </div>
+            <div class="form-inline">
+                <p>Lugar</p>
+                <input name="datosG" type="text" class="form-control bg-input ml-2 mr-2">
+            </div>
+            <div class="form-inline">
+                <p>Academia</p>
+                <input name="attr" type="text" class="form-control bg-input ml-2 mr-2" disabled>
+            </div>
+            <div class="form-inline">
+                <p>Presidente</p>
+                <input name="attr" type="text" class="form-control bg-input ml-2 mr-2" disabled>
+            </div>
+            <div class="form-inline">
+                <p>Secretario</p>
+                <input name="attr" type="text" class="form-control bg-input ml-2 mr-2" disabled>
+            </div>
         </div>
         <div class="mt-2 font-weight-bold text-center h2">Orden del día</div>
         <textarea class="mb-5" name="orden" id="orden" rows="10" cols="80"></textarea>
@@ -200,7 +214,7 @@
             <p class="text-input text-justify">
                 Sin otro asunto que tratar, el presidente da por terminada la reunión, siendo las
             </p>
-            <input type="time" class="form-control bg-input hora ml-2 mr-2">
+            <input name="datosG" type="time" class="form-control bg-input hora ml-2 mr-2">
             <p class="text-input text-justify">
                 horas del mismo día.
             </p>

@@ -13,20 +13,19 @@
     }
 
     try {
-
         $conectar = new Conectar();
         $con = $conectar->conn();
         if ($con) {
-            $call = "{ call dbo.SP_InfoAcademiaPlanTrabajo(?) }";
+            $call = "{ call dbo.SP_GetAgenda(?) }";
             $params = array(
-                array(&$_POST["academia"], SQLSRV_PARAM_IN)
+                array(&$_SESSION["nomina"], SQLSRV_PARAM_IN)
             );
             $stmt = sqlsrv_query($con, $call, $params);
             if ($stmt === false) {
                 if (($errors = sqlsrv_errors()) != null) {
-                    $error = str_replace("[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]", "", $error);
+                    $errors = str_replace("[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]", "", $errors);
                     http_response_code(404);
-                    die(json_encode(array("status"=>404, "msg"=>$error)));
+                    die(json_encode(array("status"=>404, "msg"=>$errors)));
                 }
             }
 
@@ -34,14 +33,10 @@
 
             while( $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC) ) {
                 $datos = array(
-                    "clave_academia"=>utf8_encode($row["clave_academia"]),
-                    "Academia"=>utf8_encode($row["Academia"]),
-                    "puesto"=>utf8_encode($row["puesto"]),
+                    "fecha"=>$row["fecha"],
                     "nombre"=>utf8_encode($row["nombre"]),
-                    "Coordinador"=>utf8_encode($row["Coordinador"]),
-                    "Jefe"=>utf8_encode($row["Jefe"])
                 );
-                $res = $row;
+                array_push($res, $datos);
             }
 
             sqlsrv_free_stmt($stmt);

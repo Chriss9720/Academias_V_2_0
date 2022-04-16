@@ -35,7 +35,6 @@
         $stmt = sqlsrv_query($con, $call, $params);
         if ($stmt === false) {
             if (($errors = sqlsrv_errors()) != null) {
-                $error = print_r($errors[0]['message'], true);
                 $error = str_replace("[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]", "", $error);
                 $error = str_replace("[Microsoft][ODBC Driver 17 for SQL Server]", "", $error);
                 http_response_code(401);
@@ -67,7 +66,6 @@
         $stmt = sqlsrv_query($con, $call, $params);
         if ($stmt === false) {
             if (($errors = sqlsrv_errors()) != null) {
-                $error = print_r($errors[0]['message'], true);
                 $error = str_replace("[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]", "", $error);
                 $error = str_replace("[Microsoft][ODBC Driver 17 for SQL Server]", "", $error);
                 http_response_code(401);
@@ -117,7 +115,6 @@
         $stmt = sqlsrv_query($con, $call, $params);
         if ($stmt === false) {
             if (($errors = sqlsrv_errors()) != null) {
-                $error = print_r($errors[0]['message'], true);
                 $error = str_replace("[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]", "", $error);
                 $error = str_replace("[Microsoft][ODBC Driver 17 for SQL Server]", "", $error);
                 http_response_code(401);
@@ -136,15 +133,14 @@
         $con = $conectar->conn();
         $call = "{call dbo.SP_RegistrarPlan(?,?,?,?)}";
         $params = array(
-            array($academia, SQLSRV_PARAM_IN),
-            array($ruta, SQLSRV_PARAM_IN),
-            array($hoy, SQLSRV_PARAM_IN),
+            array(&$academia, SQLSRV_PARAM_IN),
+            array(&$ruta, SQLSRV_PARAM_IN),
+            array(&$hoy, SQLSRV_PARAM_IN),
             array(&$id, SQLSRV_PARAM_IN)
         );
         $stmt = sqlsrv_query($con, $call, $params);
         if ($stmt === false) {
             if (($errors = sqlsrv_errors()) != null) {
-                $error = print_r($errors[0]['message'], true);
                 $error = str_replace("[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]", "", $error);
                 $error = str_replace("[Microsoft][ODBC Driver 17 for SQL Server]", "", $error);
                 http_response_code(401);
@@ -161,7 +157,7 @@
         $split = explode(' ', $date);
         $fecha = explode('-', $split[0]);
         $hora = $split[1];
-        return $fecha[2]."/".$fecha[1]."/".$fecha[0];
+        return "$fecha[2]/$fecha[1]/$fecha[0] $hora";
     }
 
     function salvarFecha($ruta, $fecha)
@@ -170,7 +166,6 @@
             $fecha = fechaFormat($fecha);
             $conectar = new Conectar();
             $con = $conectar->conn();
-
             $call = "{call dbo.SP_AgendarFecha(?,?)}";
             $params = array(
                 array(&$ruta, SQLSRV_PARAM_IN),
@@ -179,10 +174,9 @@
             $stmt = sqlsrv_query($con, $call, $params);
             if ($stmt === false) {
                 if (($errors = sqlsrv_errors()) != null) {
-                    $error = print_r($errors[0]['message'], true);
-                    $error = str_replace("[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]", "", $error);
+                    $errors = str_replace("[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]", "", $errors);
                     http_response_code(402);
-                    die(json_encode(array("status"=>402, "msg"=>$error)));
+                    die(json_encode(array("status"=>402, "msg"=>$errors)));
                 }
             }
             sqlsrv_free_stmt($stmt);
