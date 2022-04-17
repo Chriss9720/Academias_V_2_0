@@ -129,6 +129,51 @@ $(document).ready(() => {
                                         </ul>
                                     </li>
                                     <li>
+                                    Para validar los datos de una evidencia a entregar:
+                                    <ul>
+                                        <li>
+                                            En el aparatado <b>"evidencia a entregar"</b> , presione el texto <b>"click para editar"</b> , aparecerá el siguiente apartado:
+                                        </li>
+                                        <img src="img/formatollenable.png" style="width: 300px;">
+                                        <li>
+                                            Para hacer válidas las evidencias que se quieran ingresar, asegure de <b> ANOTAR CADA UNA DE ELLAS CON
+                                                PUNTUACIÓN O ENUMERACIÓN </b>, seleccionando los íconos <img src="img/puntos.JPG"> antes de escribirlas. Por ejemplo:
+                                        </li>
+                                        <img src="img/evidencia1.JPG" style="width: 300px;">
+                                        <li>
+                                            En este caso serán reconocidas <b>"Evidencia1punto"</b> y <b>"Evidencia1numero"</b>.
+                                        </li>
+                                        <li>
+                                            Para añadir otra tarea presione una vez el botón <b>enter</b> , se agregará un nuevo punto o número.
+                                        </li>
+                                        <img src="img/evidencia2.JPG" style="width: 300px;">
+                                        <li>
+                                            En este caso serán reconocidas <b>"Evidencia1punto", "Evidencia2punto" y "Evidencia1numero",
+                                                "Evidencia2numero"</b>.
+                                        </li>
+                                        <li>
+                                            En caso de agregarse una evidencia sin puntuación o enumeración como el siguiente ejemplo:
+                                        </li>
+                                        <img src="img/evidencia3.JPG" style="width: 300px;">
+                                        <li>
+                                            No serán reconocidas <b>"Evidencia2punto"</b> ni <b>"Evidencia2numero"</b>.
+                                        </li>
+                                        <li>
+                                            En caso de no agregar ninguna evidencia con puntuación o numeración como el siguiente ejemplo:
+                                        </li>
+                                        <img src="img/evidencia4.JPG" style="width: 300px;">
+                                        <li>
+                                            No serán reconocidas ninguna de las evidencias.
+                                        </li>
+                                        En caso de agregar 2 evidencias en el mismo punto o número como el siguiente ejemplo:
+                                </li>
+                                <img src="img/evidencia5.JPG" style="width: 300px;">
+                                <li>
+                                    Se tomarán las 2 evidencias que están en el mismo punto o número como una sola con los 2 nombres.
+                                </li>
+                                </ul>
+                                </li>
+                                    <li>
                                         Para la opción vista previa:
                                         <ul>
                                             <li>
@@ -265,6 +310,51 @@ $(document).ready(() => {
                                             </li>
                                         </ul>
                                     </li>
+                                    <li>
+                                    Para validar los datos de una evidencia a entregar:
+                                    <ul>
+                                        <li>
+                                            En el aparatado <b>"evidencia a entregar"</b> , presione el texto <b>"click para editar"</b> , aparecerá el siguiente apartado:
+                                        </li>
+                                        <img src="img/formatollenable.png" style="width: 300px;">
+                                        <li>
+                                            Para hacer válidas las evidencias que se quieran ingresar, asegure de <b> ANOTAR CADA UNA DE ELLAS CON
+                                                PUNTUACIÓN O ENUMERACIÓN </b>, seleccionando los íconos <img src="img/puntos.JPG"> antes de escribirlas. Por ejemplo:
+                                        </li>
+                                        <img src="img/evidencia1.JPG" style="width: 300px;">
+                                        <li>
+                                            En este caso serán reconocidas <b>"Evidencia1punto"</b> y <b>"Evidencia1numero"</b>.
+                                        </li>
+                                        <li>
+                                            Para añadir otra tarea presione una vez el botón <b>enter</b> , se agregará un nuevo punto o número.
+                                        </li>
+                                        <img src="img/evidencia2.JPG" style="width: 300px;">
+                                        <li>
+                                            En este caso serán reconocidas <b>"Evidencia1punto", "Evidencia2punto" y "Evidencia1numero",
+                                                "Evidencia2numero"</b>.
+                                        </li>
+                                        <li>
+                                            En caso de agregarse una evidencia sin puntuación o enumeración como el siguiente ejemplo:
+                                        </li>
+                                        <img src="img/evidencia3.JPG" style="width: 300px;">
+                                        <li>
+                                            No serán reconocidas <b>"Evidencia2punto"</b> ni <b>"Evidencia2numero"</b>.
+                                        </li>
+                                        <li>
+                                            En caso de no agregar ninguna evidencia con puntuación o numeración como el siguiente ejemplo:
+                                        </li>
+                                        <img src="img/evidencia4.JPG" style="width: 300px;">
+                                        <li>
+                                            No serán reconocidas ninguna de las evidencias.
+                                        </li>
+                                        En caso de agregar 2 evidencias en el mismo punto o número como el siguiente ejemplo:
+                                </li>
+                                <img src="img/evidencia5.JPG" style="width: 300px;">
+                                <li>
+                                    Se tomarán las 2 evidencias que están en el mismo punto o número como una sola con los 2 nombres.
+                                </li>
+                                </ul>
+                                </li>
                                     <li>
                                         Para la opción vista previa:
                                         <ul>

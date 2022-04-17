@@ -54,3 +54,7 @@ INSERT INTO AFILIADO (clave_carrera, nomina, jefe) VALUES ('LAEM',14032220, 0);
 INSERT INTO AFILIADO (clave_carrera, nomina, jefe) VALUES ('LAEM',14032221, 0);
 INSERT INTO AFILIADO (clave_carrera, nomina, jefe) VALUES ('LAEM',14032222, 0);
 
+
+INSERT INTO DOCENTE ( nomina , nombre , correo , telefono, clave, nivel)
+VALUES
+(14032201,'Jose Luis Beltran','14032201@itesca.edu.mx','6442345654','EIFJG',0)
