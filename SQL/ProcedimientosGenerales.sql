@@ -399,4 +399,71 @@ GO
 CREATE PROC SP_GetDocentesActivos AS
 	SELECT * FROM DOCENTE WHERE baja = 0
 GO
-EXEC SP_GetDocentesActivos
+
+IF OBJECT_ID('SP_CrearAcademia') IS NOT NULL DROP PROC SP_CrearAcademia
+GO
+CREATE PROC SP_CrearAcademia
+	@Clave VARCHAR(255),
+	@Foto VARCHAR(255),
+	@Nombre VARCHAR(255)
+	AS
+	IF EXISTS (SELECT * FROM ACADEMIA WHERE clave_academia LIKE @Clave)
+		RAISERROR(50005, 11, 1)
+	ELSE
+		INSERT INTO ACADEMIA (clave_academia, foto_portada, nombre)
+		VALUES (@Clave, @Foto, @Nombre)
+GO
+
+IF OBJECT_ID('SP_ActualizarPre') IS NOT NULL DROP PROC SP_ActualizarPre
+GO
+CREATE PROC SP_ActualizarPre
+	@Clave VARCHAR(255),
+	@Nomina INT AS
+	UPDATE CARGO
+	SET puesto = 'Docente'
+	WHERE clave_academia LIKE '%'+TRIM(@Clave)+'%' AND puesto LIKE '%Presidente%'
+	IF EXISTS (SELECT * FROM CARGO WHERE nomina = @Nomina AND  clave_academia LIKE '%'+TRIM(@Clave)+'%') BEGIN
+		UPDATE CARGO
+		SET puesto = 'Presidente'
+		WHERE nomina = @Nomina AND  clave_academia LIKE '%'+TRIM(@Clave)+'%'
+	END
+	ELSE BEGIN
+		INSERT INTO CARGO (clave_academia, nomina, puesto)
+		VALUES (@Clave, @Nomina, 'Presidente')
+	END
+GO
+
+IF OBJECT_ID('SP_ActualizarSec') IS NOT NULL DROP PROC SP_ActualizarSec
+GO
+CREATE PROC SP_ActualizarSec
+	@Clave VARCHAR(255),
+	@Nomina INT AS
+	UPDATE CARGO
+	SET puesto = 'Docente'
+	WHERE clave_academia LIKE '%'+TRIM(@Clave)+'%' AND puesto LIKE '%Secretario%'
+	IF EXISTS (SELECT * FROM CARGO WHERE nomina = @Nomina AND  clave_academia LIKE '%'+TRIM(@Clave)+'%') BEGIN
+		UPDATE CARGO
+		SET puesto = 'Secretario'
+		WHERE nomina = @Nomina AND  clave_academia LIKE '%'+TRIM(@Clave)+'%'
+	END
+	ELSE BEGIN
+		INSERT INTO CARGO (clave_academia, nomina, puesto)
+		VALUES (@Clave, @Nomina, 'Secretario')
+	END
+GO
+
+IF OBJECT_ID('SP_RegistrarDocenteAcademia') IS NOT NULL DROP PROC SP_RegistrarDocenteAcademia
+GO
+CREATE PROC SP_RegistrarDocenteAcademia
+	@Clave VARCHAR(255),
+	@Nomina INT AS
+	IF EXISTS (SELECT * FROM CARGO WHERE nomina = @Nomina AND  clave_academia LIKE '%'+TRIM(@Clave)+'%') BEGIN
+		UPDATE CARGO
+		SET activo = 1
+		WHERE nomina = @Nomina AND clave_academia LIKE '%'+TRIM(@Clave)+'%'
+	END
+	ELSE BEGIN
+		INSERT INTO CARGO (clave_academia, nomina, puesto)
+		VALUES (@Clave, @Nomina, 'Docente')
+	END
+GO

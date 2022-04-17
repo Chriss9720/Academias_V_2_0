@@ -407,36 +407,62 @@ $(document).ready(() => {
         });
     };
 
+    const validarPagina = () => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: "php/validarCambio.php",
+                data: {
+                    accion: sessionStorage.getItem('accion'),
+                    afectar: sessionStorage.getItem('afectar')
+                },
+                type: "post",
+                dataType: "json",
+                success: (s) => resolve(s),
+                error: (e) => reject(e)
+            });
+        });
+    };
+
     const load = () => {
         cargando();
         getMisDatos()
             .then(t => {
-                misDatos = t;
-                cerrarM.load = true;
-                cerrarM.login = true;
-                docentesSinCarrera()
-                    .then(t => {
-                        docentes = t;
-                        docentes.forEach(d => d["miembro"] = false);
-                        panelOpciones();
+                validarPagina()
+                    .then(() => {
+                        misDatos = t;
+                        cerrarM.load = true;
+                        cerrarM.login = true;
+                        docentesSinCarrera()
+                            .then(t => {
+                                docentes = t;
+                                docentes.forEach(d => d["miembro"] = false);
+                                panelOpciones();
+                            })
+                            .catch(e => {
+                                if (e.responseText == "Solicitar Reinicio de sesion") {
+                                    cerrarM.load = true;
+                                    cerrarModal();
+                                    login();
+                                } else {
+                                    cerrarModal();
+                                    $("#alerta").html(`
+                                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                            <strong>${e.responseJSON.msg}</strong>
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    `);
+                                }
+                            })
                     })
                     .catch(e => {
                         if (e.responseText == "Solicitar Reinicio de sesion") {
                             cerrarM.load = true;
                             cerrarModal();
                             login();
-                        } else {
-                            cerrarModal();
-                            $("#alerta").html(`
-                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                    <strong>${e.responseJSON.msg}</strong>
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            `);
                         }
-                    })
+                    });
             })
             .catch(e => {
                 if (e.responseText == "Solicitar Reinicio de sesion") {
@@ -1272,10 +1298,11 @@ $(document).ready(() => {
 
     $("#salvarCarrera").click(() => {
         if (sessionStorage.getItem("accion").includes("Crear")) {
+            cargando();
             let data = {
                 nombreC: $("#nombreC")[0],
                 claveC: $("#claveC")[0],
-                foto: "img/IconLog.png",
+                foto: "img/portada.png",
                 jefe: docentes.filter(f => f.seleccionado && f.jefe == 1),
                 miembros: docentes.filter(f => f.seleccionado && f.jefe == 0)
             };
@@ -1286,7 +1313,7 @@ $(document).ready(() => {
             let foto = $("#foto")[0].files[0];
             var formData = new FormData();
             if (foto) {
-                let nombre = `${data["nombreC"]}.${foto["name"].split(".")[foto["name"].split(".").length - 1]}`;
+                let nombre = `${data["claveC"]}.${foto["name"].split(".")[foto["name"].split(".").length - 1]}`;
                 var file = new File([], nombre);
                 formData.append("file", foto);
                 formData.append("name", file);
@@ -1299,6 +1326,8 @@ $(document).ready(() => {
                         data["foto"] = t.path;
                         salvarCarrera(data)
                             .then(cs => {
+                                cerrarM.load = true;
+                                cerrarModal();
                                 reset();
                             })
                             .catch((e) => {

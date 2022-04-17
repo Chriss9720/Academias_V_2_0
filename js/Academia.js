@@ -1,5 +1,237 @@
 $(document).ready(() => {
 
+    $("#ayudaAcademia").click(() => {
+
+        if (sessionStorage.getItem('accion') == "Crear") {
+
+            $("#modales").html(`
+                <div class="modal" id="modal">
+                    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header d-flex justify-content-center h4">
+                                <label>Información de ayuda para el registro de una Academia</label>
+                            </div>
+                            <div class="modal-body">
+                                <ul class="text-justify p-3">
+                                    <li>
+                                        <b>Los datos que son requeridos obligatoriamente:</b>
+                                        <ul>
+                                            <li>Nombre:
+                                                <ul>
+                                                    <li>
+                                                        Puede contener letras, números y espacios.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>Clave:
+                                                <ul>
+                                                    <li>
+                                                        Debe contener al menos 3 cifras.
+                                                    </li>
+                                                    <li>
+                                                        Puede contener letras, números y caracteres especiales.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <b>Los datos que no son obligatorios:</b>
+                                        <ul>
+                                            <li>Foto:
+                                                <ul>
+                                                    <li>
+                                                        Dar click en el icono: <img src="img/IconAgregar.png" style="width: 30px;"> y subir la foto de la academia.
+                                                    </li>
+                                                    <li>
+                                                        Se aceptan todos los formatos de imagen.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>Presidente:
+                                                <ul>
+                                                    <li>
+                                                        Se realiza una busqueda por Nómina - Nombre
+                                                    </li>
+                                                    <li>
+                                                        Para agregar el Presidente a la Academia se presiona la tecla <b>enter</b>.
+                                                    </li>
+                                                    <li>
+                                                        Si se agregó, visualizará su información en el apartado de "Miembros" que se encuentra abajo.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>Secretario:
+                                                <ul>
+                                                    <li>
+                                                        Se realiza una busqueda por Nómina - Nombre
+                                                    </li>
+                                                    <li>
+                                                        Para agregar el Secretario a la Academia se presiona la tecla <b>enter</b>.
+                                                    </li>
+                                                    <li>
+                                                        Si se agregó, visualizará su información en el apartado de "Miembros" que se encuentra abajo.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>Agregar Miembro:
+                                                <ul>
+                                                    <li>
+                                                        Se realiza una busqueda por Nómina - Nombre
+                                                    </li>
+                                                    <li>
+                                                        Para agregar el miembro a la Academia se presiona la tecla <b>enter</b>.
+                                                    </li>
+                                                    <li>
+                                                        Si se agregó, visualizará su información en el apartado de "Miembros" que se encuentra abajo.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>Eliminar Miembro:
+                                                <ul>
+                                                    <li>
+                                                        Se realiza una busqueda por Nómina - Nombre
+                                                    </li>
+                                                    <li>
+                                                        Para eliminar el miembro de la Academia se presiona la tecla <b>enter</b>.
+                                                    </li>
+                                                    <li>
+                                                        Si se eliminó, ya no visualizará su información en el apartado de "Miembros" que se encuentra abajo.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="modal-footer">
+                                <input id="cerrarAyuda" type="button" value="Salir" class="btn btn-secondary">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `);
+        } else {
+            $("#modales").html(`
+                <div class="modal" id="modal">
+                    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header d-flex justify-content-center h4">
+                                <label>Información de ayuda para editar una Academia.</label>
+                            </div>
+                            <div class="modal-body">
+                                <ul class="text-justify p-3">
+                                    <li>
+                                        <b>Selección de Academia:</b>
+                                        <ul>
+                                            <li>Después del panel podrá visualizar un buscador de Academia, mismo que funciona con una búsqueda por clave – nombre. Al momento de dar click en el recuadro usted visualizará las Academias disponibles hasta ese momento, puede seleccionar la
+                                                que desea modificar y dar <b>enter</b>. Una vez hecho lo anterior le aparecerán los datos de la Academia seleccionada.
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <b>Los datos no son modificables:</b>
+                                        <ul>
+                                            <li>Nombre de la Academia
+                                            </li>
+                                            <li>Clave de la Academia
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <b>Los datos que son modificables:</b>
+                                        <ul>
+                                            <li>Foto:
+                                                <ul>
+                                                    <li>
+                                                        Dar click en el icono: <img src="img/IconAgregar.png" style="width: 30px;"> y subir la foto de la Academia.
+                                                    </li>
+                                                    <li>
+                                                        Se aceptan todos los formatos de imagen.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>Presidente:
+                                                <ul>
+                                                    <li>
+                                                        Si ya existe un presidente asignado para la Academia, usted verá su información en ese apartado. Abajo hay un buscador por nómina – nombre, ahí es donde se realizará la búsqueda del nuevo presidente.
+                                                    </li>
+                                                    <li>
+                                                        Para visualizar la información del docente a asignar como presidente se presiona la tecla <b>enter</b>. Una vez comprobado que es la persona que desea asignar como presidente, dar click en el botón “Aplicar.”
+                                                    </li>
+                                                    <li>
+                                                        Si se agregó, visualizará su información en el apartado de "Miembros" que se encuentra abajo.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>Secretario:
+                                                <ul>
+                                                    <li>
+                                                        Se realiza una busqueda por Nómina - Nombre
+                                                    </li>
+                                                    <li>
+                                                        Para agregar el Secretario a la Academia se presiona la tecla <b>enter</b>.
+                                                    </li>
+                                                    <li>
+                                                        Si se agregó, visualizará su información en el apartado de "Miembros" que se encuentra abajo.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>Agregar Miembro:
+                                                <ul>
+                                                    <li>
+                                                        Se realiza una busqueda por Nómina - Nombre
+                                                    </li>
+                                                    <li>
+                                                        Para agregar el miembro a la Academia se presiona la tecla <b>enter</b>.
+                                                    </li>
+                                                    <li>
+                                                        Si se agregó, visualizará su información en el apartado de "Miembros" que se encuentra abajo.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>Eliminar Miembro:
+                                                <ul>
+                                                    <li>
+                                                        Se realiza una busqueda por Nómina - Nombre
+                                                    </li>
+                                                    <li>
+                                                        Para eliminar el miembro a la Academia se presiona la tecla <b>enter</b>.
+                                                    </li>
+                                                    <li>
+                                                        Si se eliminó, ya no visualizará su información en el apartado de "Miembros" que se encuentra abajo.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>Finalizar cambios:
+                                                <ul>
+                                                    <li>
+                                                        Para finalizar todo se da click en el botón “Guardar”, si desea no guardar nada, da click en “Cancelar”. Los botones mencionados se encuentran al final de la página.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="modal-footer">
+                                <input id="cerrarAyuda" type="button" value="Salir" class="btn btn-secondary">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `);
+        }
+
+        $("#modal").modal();
+
+        $("#cerrarAyuda").click(() => {
+            $("#modal").modal("hide");
+            $(`[class="modal-backdrop show"]`).remove();
+        });
+
+    });
+
     let datos = [];
     var docentes = [];
 
@@ -190,28 +422,55 @@ $(document).ready(() => {
         });
     };
 
+    const validarPagina = () => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: "php/validarCambio.php",
+                data: {
+                    accion: sessionStorage.getItem('accion'),
+                    afectar: sessionStorage.getItem('afectar')
+                },
+                type: "post",
+                dataType: "json",
+                success: (s) => resolve(s),
+                error: (e) => reject(e)
+            });
+        });
+    };
+
     const load = () => {
         cargando();
         getMisDatos()
             .then(t => {
-                getDocentes()
-                    .then(getDoc => {
-                        for (let i = 0; i < getDoc.length; i++) {
-                            docentes[i] = getDoc[i];
-                            docentes[i]['pos'] = i;
-                        }
-                        panelOpciopnes();
-                        cerrarM.load = true;
-                        cerrarM.login = true;
-                        cargar(1);
-                        cerrarModal();
+                validarPagina()
+                    .then(() => {
+                        getDocentes()
+                            .then(getDoc => {
+                                for (let i = 0; i < getDoc.length; i++) {
+                                    docentes[i] = getDoc[i];
+                                    docentes[i]['pos'] = i;
+                                }
+                                panelOpciopnes();
+                                cerrarM.load = true;
+                                cerrarM.login = true;
+                                cargar(1);
+                                cerrarModal();
+                            })
+                            .catch(e => {
+                                if (e.responseText == "Solicitar Reinicio de sesion") {
+                                    cerrarM.load = true;
+                                    cerrarModal();
+                                    login();
+                                }
+                            });
                     })
-                    .catch(e => {
-                        console.log(e);
+                    .catch((e) => {
                         if (e.responseText == "Solicitar Reinicio de sesion") {
                             cerrarM.load = true;
                             cerrarModal();
                             login();
+                        } else {
+                            window.location = "/Academias/Panel.html";
                         }
                     });
             })
@@ -636,10 +895,59 @@ $(document).ready(() => {
         })
     };
 
+    const guardarAcademia = academia => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: "php/salvarAcademia.php",
+                data: {
+                    academia: academia
+                },
+                type: "POST",
+                success: s => resolve(s),
+                error: e => reject(e)
+            })
+        });
+    };
+
+    const salvarImg = (file, foto) => {
+        return new Promise((resolve, reject) => {
+            if (foto) {
+                $.ajax({
+                    url: "php/salvarImg.php",
+                    type: "POST",
+                    data: file,
+                    contentType: false,
+                    processData: false,
+                    dataType: "json",
+                    success: (s) => resolve(s),
+                    error: (e) => reject(e),
+                });
+            } else {
+                resolve({ path: "img/portada.png" });
+            }
+        });
+    };
+
+    const reset = () => {
+        docentes.forEach(d => {
+            d.Pre = false;
+            d.Sec = false;
+            d.seleccionado = false;
+        })
+        $("#nombre")[0].value = "";
+        $("#claveA")[0].value = "";
+        $("#nombre")[0].className = $("#nombre")[0].className.replace(" is-valid", "");
+        $("#claveA")[0].className = $("#claveA")[0].className.replace(" is-valid", "")
+        $("#img-portada")[0].src = "img/portada.png";
+        cargar(1);
+        panelOpciopnes();
+    };
+
     $("#SalvarAcademia").click(() => {
         let academia = {
             claveA: $("#claveA")[0],
-            nombre: $("#nombre")[0]
+            nombre: $("#nombre")[0],
+            foto: "img/portada.png",
         };
         let valid = camposRequeridos(academia, ["claveA", "nombre"]);
         valid = validarClave(academia, "claveA") && valid;
@@ -647,7 +955,68 @@ $(document).ready(() => {
         if (!valid) {
             return;
         }
-        console.log(academia);
+        academia.docentes = docentes.filter(d => d.seleccionado);
+        let foto = $("#foto")[0].files[0];
+        var formData = new FormData();
+        if (foto) {
+            let nombre = `${academia["claveA"]}.${foto["name"].split(".")[foto["name"].split(".").length - 1]}`;
+            var file = new File([], nombre);
+            formData.append("file", foto);
+            formData.append("name", file);
+            data["foto"] = formData;
+        }
+        cargando();
+        salvarImg(formData, foto)
+            .then(img => {
+                academia.foto = img.path;
+                guardarAcademia(academia)
+                    .then(t => {
+                        reset();
+                        cerrarM.load = true;
+                        cerrarModal();
+                        $("#alerta").html(`
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <strong>Registro exitoso</strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        `);
+                    })
+                    .catch(e => {
+                        console.log(e);
+                        cerrarM.load = true;
+                        cerrarModal();
+                        if (e.responseText == "Solicitar Reinicio de sesion") {
+                            login();
+                        } else {
+                            $("#alerta").html(`
+                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                    <strong>${e.responseJSON.msg}</strong>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            `);
+                        }
+                    });
+            })
+            .catch(e => {
+                cerrarM.load = true;
+                cerrarModal();
+                if (e.responseText == "Solicitar Reinicio de sesion") {
+                    login();
+                } else {
+                    $("#alerta").html(`
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <strong>${e.responseJSON.msg}</strong>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    `);
+                }
+            });
     });
 
     load();

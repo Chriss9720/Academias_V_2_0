@@ -23,9 +23,10 @@
             $stmt = sqlsrv_query($con, $call, $params);
             if ($stmt === false) {
                 if (($errors = sqlsrv_errors()) != null) {
-                    $errors = str_replace("[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]", "", $errors);
+                    $error = print_r($errors[0]['message'], true);
+                    $error = str_replace("[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]", "", $error);
                     http_response_code(404);
-                    die(json_encode(array("status"=>404, "msg"=>$errors)));
+                    die(json_encode(array("status"=>404, "msg"=>$error)));
                 }
             }
 

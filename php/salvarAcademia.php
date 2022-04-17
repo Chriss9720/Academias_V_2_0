@@ -3,9 +3,24 @@
     require('./validarSession.php');
     require('./activo.php');
 
-    function salvar($jefe, $nomina, $con, $clave)
+    $datos = json_decode(json_encode($_POST['academia']), true);
+    $docentes = [];
+    if (array_key_exists('docentes', $datos)) {
+        $docentes = $datos['docentes'];
+    }
+    $nombre = $datos['nombre'];
+    $clave = $datos['claveA'];
+    $foto = $datos['foto'];
+
+    function salvar($pre, $sec, $nomina, $con, $clave)
     {
-        $call = "{call dbo.SP_Afiliar(?,?,$jefe)}";
+        $sp = "SP_RegistrarDocenteAcademia";
+        if($pre == 1) {
+            $sp = "SP_ActualizarPre";
+        } else if($sec == 1) {
+            $sp = "SP_ActualizarSec";
+        }
+        $call = "{call dbo.$sp(?,?)}";
         $params = array(
             array(&$clave, SQLSRV_PARAM_IN),
             array(&$nomina, SQLSRV_PARAM_IN)
@@ -32,15 +47,10 @@
         die("Solicitar Reinicio de sesion");
     }
 
-    $datos = json_decode(json_encode($_POST['data']), true);
-    $nombre = utf8_decode($datos["nombreC"]);
-    $clave = utf8_decode($datos["claveC"]);
-    $foto = utf8_decode($datos["foto"]);
-
     $conectar = new Conectar();
     $con = $conectar->conn();
 
-    $call = "{call dbo.SP_CrearCarrera(?,?,?)}";
+    $call = "{call dbo.SP_CrearAcademia(?,?,?)}";
     $params = array(
         array(&$clave, SQLSRV_PARAM_IN),
         array(&$foto, SQLSRV_PARAM_IN),
@@ -58,20 +68,18 @@
     sqlsrv_free_stmt($stmt);
     sqlsrv_close($con);
 
-    if (array_key_exists('jefe', $datos)) {
-        $jefe = $datos["jefe"][0];
+    for($i = 0; $i < count($docentes); $i++) {
         $con = $conectar->conn();
-        salvar(1, $jefe["nomina"], $con, $clave);
-    }
-    if (array_key_exists('miembros', $datos)) {
-        $miembros = $datos["miembros"];
-        for($i = 0; $i < count($miembros); $i++) {
-            $con = $conectar->conn();
-            salvar(0, $miembros[$i]["nomina"], $con, $clave);
+        if ($docentes[$i]['Pre'] == 'true') {
+            salvar(true, false, $docentes[$i]['nomina'], $con, $clave);
+        } else if ($docentes[$i]['Sec'] == 'true') {
+            salvar(false, true, $docentes[$i]['nomina'], $con, $clave);
+        }else{
+            salvar(false, false, $docentes[$i]['nomina'], $con, $clave);
         }
     }
 
     http_response_code(200);
-    echo json_encode(array("status"=>"200", "msg"=>"Registro exitosa"));
+    echo json_encode(array("status"=>"200", "msg"=>"Registro exitoso"));
 
 ?>

@@ -13,6 +13,7 @@
         $stmt = sqlsrv_query($con, $call, $params);
         if ($stmt === false) {
             if (($errors = sqlsrv_errors()) != null) {
+                $error = print_r($errors[0]['message'], true);
                 $error = str_replace("[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]", "", $error);
                 http_response_code(400);
                 die(json_encode(array("status"=>402, "msg"=>$error)));
@@ -31,6 +32,7 @@
         $stmt = sqlsrv_query($con, $call, $params);
         if ($stmt === false) {
             if (($errors = sqlsrv_errors()) != null) {
+                $error = print_r($errors[0]['message'], true);
                 $error = str_replace("[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]", "", $error);
                 http_response_code(400);
                 die(json_encode(array("status"=>402, "msg"=>$error)));
@@ -49,6 +51,7 @@
         $stmt = sqlsrv_query($con, $call, $params);
         if ($stmt === false) {
             if (($errors = sqlsrv_errors()) != null) {
+                $error = print_r($errors[0]['message'], true);
                 $error = str_replace("[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]", "", $error);
                 http_response_code(400);
                 die(json_encode(array("status"=>402, "msg"=>$error)));
@@ -67,6 +70,7 @@
         $stmt = sqlsrv_query($con, $call, $params);
         if ($stmt === false) {
             if (($errors = sqlsrv_errors()) != null) {
+                $error = print_r($errors[0]['message'], true);
                 $error = str_replace("[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]", "", $error);
                 http_response_code(400);
                 die(json_encode(array("status"=>402, "msg"=>$error)));
@@ -85,6 +89,7 @@
         $stmt = sqlsrv_query($con, $call, $params);
         if ($stmt === false) {
             if (($errors = sqlsrv_errors()) != null) {
+                $error = print_r($errors[0]['message'], true);
                 $error = str_replace("[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]", "", $error);
                 http_response_code(400);
                 die(json_encode(array("status"=>402, "msg"=>$error)));
