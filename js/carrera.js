@@ -551,7 +551,6 @@ $(document).ready(() => {
         let total = 3 * pagina;
         let inicio = (pagina - 1) * 3;
         contenido.innerHTML = "";
-        console.log(datos.length);
         for (let i = inicio; i < total && i < datos.length; i++) {
             contenido.innerHTML += `
                 <div class="col-4">
@@ -1040,7 +1039,6 @@ $(document).ready(() => {
             docentes.forEach(d => {
                 if (parseInt(d.nomina) == parseInt(nomina)) {
                     d.jefe = 1;
-                    console.log(d);
                     d.seleccionado = true;
                     $("#erroresJefe").html(`
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -1362,7 +1360,6 @@ $(document).ready(() => {
 
             salvarImg(formData, foto)
                 .then((t) => {
-                    console.log(nuevos);
                     actualizarCarrera(miembros, nuevos, t.path)
                         .then(update => {
                             cerrarM.load = true;

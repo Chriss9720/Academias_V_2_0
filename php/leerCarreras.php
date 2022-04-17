@@ -26,6 +26,7 @@
             $stmt = sqlsrv_query($con, $call, $params);
             if ($stmt === false) {
                 if (($errors = sqlsrv_errors()) != null) {
+                    print_r($errors);
                     $error = str_replace("[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]", "", $error);
                     http_response_code(404);
                     die(json_encode(array("status"=>404, "msg"=>$error)));
@@ -41,11 +42,11 @@
                 }
                 $data = array(
                     "clave_carrera"=>utf8_encode($row["clave_carrera"]),
-                    "foto_portada"=>$foto,
+                    "foto_portada"=>utf8_encode($foto),
                     "nombre"=>utf8_encode($row["nombre"]),
-                    "activo"=>utf8_encode($row["Activo"])
+                    "activo"=>$row["Activo"]
                 );
-                array_push($res, $row);
+                array_push($res, $data);
             }
 
             sqlsrv_free_stmt($stmt);

@@ -273,13 +273,15 @@ GO
 
 IF OBJECT_ID('SP_GetCarreras') IS NOT NULL DROP PROC SP_GetCarreras
 GO
-CREATE PROC SP_GetCarreras @Nivel INT, @Nomina VARCHAR(255) AS
-	IF @Nivel = 0 OR @Nivel = 1
+CREATE PROC SP_GetCarreras @Nivel INT, @Nomina INT AS
+	IF @Nivel = 0 OR @Nivel = 1 BEGIN
 		SELECT * FROM CARRERA
-	ELSE
+	END
+	ELSE BEGIN
 		SELECT * FROM CARRERA WHERE clave_carrera IN (
-			SELECT clave_carrera FROM AFILIADO WHERE jefe = 1 AND nomina LIKE @Nomina
+			SELECT clave_carrera FROM AFILIADO WHERE jefe = 1 AND nomina = @Nomina
 		) AND Activo = 1
+	END
 GO
 
 IF OBJECT_ID('SP_BajaCarrera') IS NOT NULL DROP PROC SP_BajaCarrera
