@@ -63,7 +63,7 @@ $(document).ready(() => {
                                     <b>Para seleccionar fechas:</b>
                                     <ul>
                                         <li>
-                                            Al seleccionar el apartado de fecha, aparecerá el siguiente recuadro: 
+                                            Al seleccionar el apartado de fecha, aparecerá el siguiente recuadro:
                                             <br>
                                             <img src="img/calendario.png">
                                         </li>
@@ -78,9 +78,6 @@ $(document).ready(() => {
                                         </li>
                                         <li>
                                             La fecha inicial debe ser menor a la fecha final.
-                                        </li>
-                                        <li>
-                                            Puede seleccionar “Ver juntas pasadas” y ver las reuniones que ya ocurrieron.
                                         </li>
                                     </ul>
                                 </li>

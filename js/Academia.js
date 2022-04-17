@@ -1,6 +1,7 @@
 $(document).ready(() => {
 
     let datos = [];
+    var docentes = [];
 
     var cerrarM = {
         load: false,
@@ -178,13 +179,41 @@ $(document).ready(() => {
 
     };
 
+    const getDocentes = () => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: "php/docentesActivos.php",
+                dataType: "json",
+                success: s => resolve(s),
+                error: e => reject(e)
+            })
+        });
+    };
+
     const load = () => {
         cargando();
         getMisDatos()
             .then(t => {
-                cerrarM.load = true;
-                cerrarM.login = true;
-                cerrarModal();
+                getDocentes()
+                    .then(getDoc => {
+                        for (let i = 0; i < getDoc.length; i++) {
+                            docentes[i] = getDoc[i];
+                            docentes[i]['pos'] = i;
+                        }
+                        panelOpciopnes();
+                        cerrarM.load = true;
+                        cerrarM.login = true;
+                        cargar(1);
+                        cerrarModal();
+                    })
+                    .catch(e => {
+                        console.log(e);
+                        if (e.responseText == "Solicitar Reinicio de sesion") {
+                            cerrarM.load = true;
+                            cerrarModal();
+                            login();
+                        }
+                    });
             })
             .catch(e => {
                 if (e.responseText == "Solicitar Reinicio de sesion") {
@@ -197,11 +226,9 @@ $(document).ready(() => {
             });
     };
 
-    $("#Cerrar").click(() => {
-        cerrar().then(() => window.location = "/Academias").catch(() => window.location = "/Academias");
-    });
+    $("#Cerrar").click(() => cerrar().then(() => window.location = "/Academias").catch(() => window.location = "/Academias"));
 
-    $("#inicio").click(() => (window.location = "/academias/panel.html"));
+    $("#inicio").click(() => window.location = "/academias/panel.html");
 
     const cerrar = () => {
         return new Promise((resolve, reject) => {
@@ -278,14 +305,6 @@ $(document).ready(() => {
 
     };
 
-    for (let i = 0; i < (10 * 3); i++) {
-        datos.push({
-            "foto": "img/IconLog.png",
-            "nomina": "18130122",
-            "nombre": `valor ${(i+1)}`
-        });
-    }
-
     $("#accion")[0].innerHTML = sessionStorage.getItem("accion");
 
     $("#portada").change(file => {
@@ -297,7 +316,18 @@ $(document).ready(() => {
         }
     });
 
+    const puesto = data => {
+        if (data.Pre) {
+            return 'Presidente';
+        } else if (data.Sec) {
+            return 'Secretario';
+        } else {
+            return 'Integrante';
+        }
+    }
+
     const cargar = (pagina) => {
+        datos = docentes.filter(d => d.seleccionado);
         let contenido = $("#contenido")[0];
         let max = Math.ceil(datos.length / 3);
         let total = 3 * pagina;
@@ -310,6 +340,7 @@ $(document).ready(() => {
                         <img src="${datos[i].foto}" class="img-fluid foto-opcional">
                         <label class="text-input">${datos[i].nomina}</label>
                         <label>${datos[i].nombre}</label>
+                        <label>${puesto(datos[i])}</label>
                     </div>
                 </div>
             `;
@@ -317,6 +348,308 @@ $(document).ready(() => {
         pie(pagina, max);
     };
 
-    cargar(1);
+    const panelOpciopnes = () => {
+        if (sessionStorage.getItem("accion").includes("Crear")) {
+            $("#panelO")[0].innerHTML = `
+                <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
+                    <label name="options" class="btn btn-secondary active opciones text-input">
+                        <input type="radio" name="options" id="Pre" autocomplete="off"> Presidente
+                    </label>
+                    <label name="options" class="btn btn-secondary opciones text-input">
+                        <input type="radio" name="options" id="Sec" autocomplete="off"> Secretario
+                    </label>
+                    <label name="options" class="btn btn-secondary opciones text-input">
+                        <input type="radio" name="options" id="AddM" autocomplete="off"> Agregar miembro
+                    </label>
+                    <label name="options" class="btn btn-secondary opciones text-input">
+                        <input type="radio" name="options" id="DelM" autocomplete="off"> Eliminar miembro
+                    </label>
+                </div>
+                <div id="Opciones" class="mt-3 d-flex flex-column justify-content-center align-items-center">
+                </div>
+            `;
+        }
+        accionesMenu();
+    };
+
+    const listaDocentesPre = () => {
+        let lista = '';
+        for (let i = 0; i < docentes.length; i++) {
+            if (!docentes[i].Pre) {
+                lista += `<option value="${docentes[i].nomina} - ${docentes[i].nombre}">`;
+            }
+        }
+        return lista;
+    };
+
+    const accionesPre = () => {
+        $("#Opciones").html(`
+            <div class="form-inline mt-2">
+                <label class="form-label text-input ancho">Busqueda por nomina/nombre</label>
+                <input id="SalvarJefe" type="search" class="form-control text-input bg-input rounded-pill" list="listamodelos">
+                <datalist id="listamodelos">
+                    ${listaDocentesPre()}
+                </datalist>
+            </div>
+            <div id="erroresJefe">
+            </div>
+        `);
+        $("#SalvarJefe").keypress(k => {
+            if (k.which == 13) {
+                let nomina = k.target.value.split(" - ")[0];
+                if (nomina.length > 0) {
+                    $("#erroresJefe").html(``);
+                    $("#SalvarJefe").val("");
+                    let exPre = docentes.filter(d => d.Pre);
+                    if (exPre.length > 0) {
+                        docentes[exPre[0].pos].Sec = false;
+                        docentes[exPre[0].pos].Pre = false;
+                    }
+                    let find = docentes.filter(d => d.nomina === nomina);
+                    if (find.length > 0) {
+                        docentes[find[0].pos].seleccionado = true;
+                        docentes[find[0].pos].Pre = true;
+                        docentes[find[0].pos].Sec = false;
+                        cargar(1);
+                        accionesPre();
+                    } else {
+                        $("#erroresJefe").html(`
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>No se encontro el docente, para mas informacion revise la ayuda</strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        `);
+                    }
+                } else {
+                    $("#erroresJefe").html(`
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>No se encontro el docente, para mas informacion revise la ayuda</strong>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    `);
+                }
+            }
+        });
+    };
+
+    const listaDocentesSec = () => {
+        let lista = '';
+        for (let i = 0; i < docentes.length; i++) {
+            if (!docentes[i].Sec) {
+                lista += `<option value="${docentes[i].nomina} - ${docentes[i].nombre}">`;
+            }
+        }
+        return lista;
+    };
+
+    const accionesSec = () => {
+        $("#Opciones").html(`
+            <div class="form-inline mt-2">
+                <label class="form-label text-input ancho">Busqueda por nomina/nombre</label>
+                <input id="SalvarJefe" type="search" class="form-control text-input bg-input rounded-pill" list="listamodelos">
+                <datalist id="listamodelos">
+                    ${listaDocentesSec()}
+                </datalist>
+            </div>
+            <div id="erroresJefe">
+            </div>
+        `);
+        $("#SalvarJefe").keypress(k => {
+            if (k.which == 13) {
+                let nomina = k.target.value.split(" - ")[0];
+                if (nomina.length > 0) {
+                    $("#erroresJefe").html(``);
+                    $("#SalvarJefe").val("");
+                    let exSec = docentes.filter(d => d.Sec);
+                    if (exSec.length > 0) {
+                        docentes[exSec[0].pos].Sec = false;
+                        docentes[exSec[0].pos].Pre = false;
+                    }
+                    let find = docentes.filter(d => d.nomina === nomina);
+                    if (find.length > 0) {
+                        docentes[find[0].pos].seleccionado = true;
+                        docentes[find[0].pos].Sec = true;
+                        docentes[find[0].pos].Pre = false;
+                        cargar(1);
+                        accionesSec();
+                    } else {
+                        $("#erroresJefe").html(`
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>No se encontro el docente, para mas informacion revise la ayuda</strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        `);
+                    }
+                } else {
+                    $("#erroresJefe").html(`
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>No se encontro el docente, para mas informacion revise la ayuda</strong>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    `);
+                }
+            }
+        });
+    };
+
+    const listaDocentesAddM = () => {
+        let lista = '';
+        for (let i = 0; i < docentes.length; i++) {
+            if (!docentes[i].seleccionado) {
+                lista += `<option value="${docentes[i].nomina} - ${docentes[i].nombre}">`;
+            }
+        }
+        return lista;
+    };
+
+    const accionesAddM = () => {
+        $("#Opciones").html(`
+            <div class="form-inline mt-2">
+                <label class="form-label text-input ancho">Busqueda por nomina/nombre</label>
+                <input id="SalvarJefe" type="search" class="form-control text-input bg-input rounded-pill" list="listamodelos">
+                <datalist id="listamodelos">
+                    ${listaDocentesAddM()}
+                </datalist>
+            </div>
+            <div id="erroresJefe">
+            </div>
+        `);
+        $("#SalvarJefe").keypress(k => {
+            if (k.which == 13) {
+                let nomina = k.target.value.split(" - ")[0];
+                if (nomina.length > 0) {
+                    $("#erroresJefe").html(``);
+                    $("#SalvarJefe").val("");
+                    let find = docentes.filter(d => d.nomina === nomina);
+                    if (find.length > 0) {
+                        docentes[find[0].pos].seleccionado = true;
+                        cargar(1);
+                        accionesAddM();
+                    } else {
+                        $("#erroresJefe").html(`
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>No se encontro el docente, para mas informacion revise la ayuda</strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        `);
+                    }
+                } else {
+                    $("#erroresJefe").html(`
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>No se encontro el docente, para mas informacion revise la ayuda</strong>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    `);
+                }
+            }
+        });
+    };
+
+    const listaDocentesDelM = () => {
+        let lista = '';
+        for (let i = 0; i < docentes.length; i++) {
+            if (docentes[i].seleccionado) {
+                lista += `<option value="${docentes[i].nomina} - ${docentes[i].nombre}">`;
+            }
+        }
+        return lista;
+    };
+
+    const accionesDelM = () => {
+        $("#Opciones").html(`
+            <div class="form-inline mt-2">
+                <label class="form-label text-input ancho">Busqueda por nomina/nombre</label>
+                <input id="SalvarJefe" type="search" class="form-control text-input bg-input rounded-pill" list="listamodelos">
+                <datalist id="listamodelos">
+                    ${listaDocentesDelM()}
+                </datalist>
+            </div>
+            <div id="erroresJefe">
+            </div>
+        `);
+        $("#SalvarJefe").keypress(k => {
+            if (k.which == 13) {
+                let nomina = k.target.value.split(" - ")[0];
+                if (nomina.length > 0) {
+                    $("#erroresJefe").html(``);
+                    $("#SalvarJefe").val("");
+                    let find = docentes.filter(d => d.nomina === nomina);
+                    if (find.length > 0) {
+                        docentes[find[0].pos].seleccionado = false;
+                        docentes[find[0].pos].Pre = false;
+                        docentes[find[0].pos].Sec = false;
+                        accionesDelM();
+                        accionesAddM();
+                        cargar(1);
+                    } else {
+                        $("#erroresJefe").html(`
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>No se encontro el docente, para mas informacion revise la ayuda</strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        `);
+                    }
+                } else {
+                    $("#erroresJefe").html(`
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>No se encontro el docente, para mas informacion revise la ayuda</strong>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    `);
+                }
+            }
+        });
+    };
+
+    const accionesMenu = () => {
+        $("[name='options']").click(e => {
+            switch (e.target.childNodes[1].attributes.id.value) {
+                case "Pre":
+                    accionesPre();
+                    break;
+                case "Sec":
+                    accionesSec();
+                    break;
+                case "AddM":
+                    accionesAddM();
+                    break;
+                case "DelM":
+                    accionesDelM();
+                    break;
+            }
+        })
+    };
+
+    $("#SalvarAcademia").click(() => {
+        let academia = {
+            claveA: $("#claveA")[0],
+            nombre: $("#nombre")[0]
+        };
+        let valid = camposRequeridos(academia, ["claveA", "nombre"]);
+        valid = validarClave(academia, "claveA") && valid;
+        valid = validarClave(academia, "nombre") && valid;
+        if (!valid) {
+            return;
+        }
+        console.log(academia);
+    });
+
+    load();
 
 });

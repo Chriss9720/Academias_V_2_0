@@ -109,6 +109,7 @@ CREATE TABLE CARGO (
 	nomina INT NOT NULL,
 	puesto VARCHAR(255) NOT NULL DEFAULT 'Docente',
 	id_evaluacion INT DEFAULT NULL,
+	activo BIT DEFAULT 1,
 	PRIMARY KEY (clave_academia, nomina),
 	FOREIGN KEY (clave_academia) REFERENCES ACADEMIA(clave_academia),
 	FOREIGN KEY (nomina) REFERENCES DOCENTE(nomina),

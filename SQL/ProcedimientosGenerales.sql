@@ -381,6 +381,7 @@ CREATE PROC SP_GetAgenda @Nomina INT AS
 		JOIN AGENDA AS AGE
 		ON AGE.id_planTrabajo = PLS.id_planTrabajo
 		WHERE DOC.nomina = @Nomina
+		ORDER BY fecha
 	END
 		SELECT AG.fecha, ACA.nombre
 		FROM AGENDA AS AG
@@ -388,4 +389,12 @@ CREATE PROC SP_GetAgenda @Nomina INT AS
 		ON PT.id_planTrabajo = AG.id_planTrabajo
 		JOIN ACADEMIA AS ACA
 		ON ACA.clave_academia LIKE PT.clave_academia
+		ORDER BY fecha
 GO
+
+IF OBJECT_ID ('SP_GetDocentesActivos') IS NOT NULL DROP PROC SP_GetDocentesActivos
+GO
+CREATE PROC SP_GetDocentesActivos AS
+	SELECT * FROM DOCENTE WHERE baja = 0
+GO
+EXEC SP_GetDocentesActivos
