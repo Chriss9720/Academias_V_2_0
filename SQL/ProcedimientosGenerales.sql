@@ -155,7 +155,7 @@ GO
 CREATE PROC SP_EditarDocente @Nivel INT, @Nomina INT AS
 	IF @Nivel = 1 OR @Nivel = 0 BEGIN
 		SELECT * FROM DOCENTE WHERE nivel != 0 AND nivel != 1
-	END
+	ENDg
 	ELSE BEGIN
 		SELECT DISTINCT D.nomina, D.nombre
 		FROM CARGO AS C
@@ -325,12 +325,6 @@ CREATE PROC SP_LigarMateria @Materia VARCHAR(255), @Nomina INT AS
 	INSERT INTO MATERIAS (materia, nomina) VALUES (@Materia, @Nomina)
 GO
 
-IF OBJECT_ID('SP_LeerMaterias') IS NOT NULL DROP PROC SP_LeerMaterias
-GO
-CREATE PROC SP_LeerMaterias @Nomina INT AS
-	SELECT * FROM MATERIAS WHERE nomina LIKE @Nomina
-GO
-
 IF OBJECT_ID ('SP_EvidenciaPlan') IS NOT NULL DROP PROC SP_EvidenciaPlan
 GO
 CREATE PROC SP_EvidenciaPlan @idPlan INT, @nomina INT,
@@ -397,7 +391,7 @@ GO
 IF OBJECT_ID ('SP_GetDocentesActivos') IS NOT NULL DROP PROC SP_GetDocentesActivos
 GO
 CREATE PROC SP_GetDocentesActivos AS
-	SELECT * FROM DOCENTE WHERE baja = 0
+	SELECT * FROM DOCENTE WHERE baja = 0 AND nivel != 0
 GO
 
 IF OBJECT_ID('SP_CrearAcademia') IS NOT NULL DROP PROC SP_CrearAcademia
