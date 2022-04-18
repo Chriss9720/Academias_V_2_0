@@ -1371,7 +1371,6 @@ $(document).ready(() => {
                 Plan["editar"] = 0;
             }
             Plan["preview"] = 0;
-            console.log(Plan);
             getPuntos();
             crearPDF()
                 .then(t => {

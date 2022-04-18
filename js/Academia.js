@@ -232,6 +232,7 @@ $(document).ready(() => {
 
     });
 
+    var misDatos;
     let datos = [];
     var docentes = [];
 
@@ -438,31 +439,131 @@ $(document).ready(() => {
         });
     };
 
+    const getAcademiasEdit = () => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: "php/getAllAcademias.php",
+                dataType: "json",
+                success: s => resolve(s),
+                error: e => reject(e)
+            })
+        });
+    };
+
+    const listaAcademias = acas => {
+        let lista = '';
+        acas.forEach(e => {
+            lista += `<option value='${e.clave_academia} - ${e.nombre}'>`;
+        });
+        return lista;
+    };
+
+    const panelEdit = () => {
+        console.log(misDatos);
+        cerrarM.load = true;
+        cerrarModal();
+
+    };
+
+    const cargarAcademisaEdit = acas => {
+        $("#BusquedasAcademias").html(`
+            <div class="form-inline mx-auto">
+                <label class="form-label text-input mr-2">Busqueda por clave/nombre</label>
+                <input id="posiblesAcademiasEdit" type="search" class="form-control text-input bg-input rounded-pill w-auto" list="listaAcademias">
+                <datalist id="listaAcademias">
+                </datalist>
+            </div>
+        `);
+        removerGuardados($("#listaAcademias")[0]);
+        $("#listaAcademias").html(listaAcademias(acas));
+        $("#posiblesAcademiasEdit").keypress(k => {
+            if (k.which == 13) {
+                cargando();
+                let valor = k.target.value.split(" - ");
+                let clave;
+                let nombre = '';
+                for (let i = 0; i < valor.length; i++) {
+                    if (i > 1) {
+                        nombre += ' - ';
+                    }
+                    if (i == 0) {
+                        clave = valor[i];
+                    } else {
+                        nombre += valor[i];
+                    }
+                }
+                let f = acas.filter(f => f.clave_academia == clave && f.nombre == nombre);
+                if (f.length > 0) {
+                    $("#alerta").html(``);
+                    f = f[0];
+                    $("#img-portada")[0].src = f.foto;
+                    $("#claveA").val(f.clave_academia);
+                    $("#nombre").val(f.nombre);
+                    panelEdit();
+                } else {
+                    cerrarM.load = true;
+                    cerrarModal();
+                    $("#alerta").html(`
+                        <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                            <strong class="h1">No se encontro la academia</strong>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    `);
+                }
+            }
+        });
+    };
+
     const load = () => {
         cargando();
         getMisDatos()
             .then(t => {
+                misDatos = t;
                 validarPagina()
                     .then(() => {
-                        getDocentes()
-                            .then(getDoc => {
-                                for (let i = 0; i < getDoc.length; i++) {
-                                    docentes[i] = getDoc[i];
-                                    docentes[i]['pos'] = i;
-                                }
-                                panelOpciopnes();
-                                cerrarM.load = true;
-                                cerrarM.login = true;
-                                cargar(1);
-                                cerrarModal();
-                            })
-                            .catch(e => {
-                                if (e.responseText == "Solicitar Reinicio de sesion") {
+                        if (sessionStorage.getItem("accion").includes("Crear")) {
+                            $("#BusquedasAcademias").remove();
+                            getDocentes()
+                                .then(getDoc => {
+                                    for (let i = 0; i < getDoc.length; i++) {
+                                        docentes[i] = getDoc[i];
+                                        docentes[i]['pos'] = i;
+                                    }
+                                    panelOpciopnes();
+                                    cerrarM.load = true;
+                                    cerrarM.login = true;
+                                    cargar(1);
+                                    cerrarModal();
+                                })
+                                .catch(e => {
+                                    if (e.responseText == "Solicitar Reinicio de sesion") {
+                                        cerrarM.load = true;
+                                        cerrarModal();
+                                        login();
+                                    }
+                                });
+                        } else {
+                            $("#nombre").attr("disabled", true);
+                            $("#claveA").attr("disabled", true);
+                            getAcademiasEdit()
+                                .then(acas => {
+                                    cargarAcademisaEdit(acas);
                                     cerrarM.load = true;
                                     cerrarModal();
-                                    login();
-                                }
-                            });
+                                })
+                                .catch(e => {
+                                    console.log(e);
+                                    if (e.responseText == "Solicitar Reinicio de sesion") {
+                                        cerrarM.load = true;
+                                        cerrarModal();
+                                        login();
+                                    } else {
+                                        //window.location = "/Academias/Panel.html";
+                                    }
+                                })
+                        }
                     })
                     .catch((e) => {
                         if (e.responseText == "Solicitar Reinicio de sesion") {

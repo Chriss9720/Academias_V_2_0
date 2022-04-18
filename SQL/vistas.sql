@@ -43,3 +43,15 @@ CREATE VIEW VW_InfoAcademia AS
 			SELECT * FROM DOCENTE
 		) AS JC
 		ON JC.nomina = J.nomina
+GO
+
+IF OBJECT_ID('VW_DocentesAcademias') IS NOT NULL DROP VIEW VW_DocentesAcademias
+GO
+CREATE VIEW VW_DocentesAcademias AS
+	SELECT A.clave_academia, CAR.puesto, CAR.activo, DOC.nombre, DOC.nomina, DOC.baja, DOC.nivel
+	FROM ACADEMIA AS A
+	JOIN CARGO AS CAR
+	ON CAR.clave_academia = A.clave_academia
+	JOIN DOCENTE AS DOC
+	ON DOC.nomina = CAR.nomina
+GO

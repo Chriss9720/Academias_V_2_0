@@ -129,6 +129,28 @@
         return $id;
     }
 
+    function actualizarFecha($id, $hoy) {
+        $conectar = new Conectar();
+        $con = $conectar->conn();
+        $call = "{call dbo.SP_HistorialPlan(?,?)}";
+        $params = array(
+            array(&$id, SQLSRV_PARAM_IN),
+            array(&$hoy, SQLSRV_PARAM_IN)
+        );
+        $stmt = sqlsrv_query($con, $call, $params);
+        if ($stmt === false) {
+            if (($errors = sqlsrv_errors()) != null) {
+                $error = print_r($errors[0]['message'], true);
+                $error = str_replace("[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]", "", $error);
+                $error = str_replace("[Microsoft][ODBC Driver 17 for SQL Server]", "", $error);
+                http_response_code(401);
+                die(json_encode(array("status"=>404, "msg"=>utf8_decode($error))));
+            }
+        }
+        sqlsrv_free_stmt($stmt);
+        sqlsrv_close($con);
+    }
+
     function salvarPlan($ruta, $academia, $hoy)
     {
         $id = getIDPLan();
@@ -153,6 +175,7 @@
         }
         sqlsrv_free_stmt($stmt);
         sqlsrv_close($con);
+        actualizarFecha($id, $hoy);
         return $id;
     }
 
@@ -164,7 +187,7 @@
         return "$fecha[2]/$fecha[1]/$fecha[0] $hora";
     }
 
-    function salvarFecha($ruta, $fecha)
+    function salvarFecha($id, $fecha)
     {
         if (strlen($fecha) > 0) {
             $fecha = fechaFormat($fecha);
@@ -172,7 +195,7 @@
             $con = $conectar->conn();
             $call = "{call dbo.SP_AgendarFecha(?,?)}";
             $params = array(
-                array(&$ruta, SQLSRV_PARAM_IN),
+                array(&$id, SQLSRV_PARAM_IN),
                 array(&$fecha, SQLSRV_PARAM_IN)
             );
             $stmt = sqlsrv_query($con, $call, $params);
@@ -194,6 +217,26 @@
         if (!file_exists($ruta)) {
             mkdir($ruta, 0777, true);
         }
+    }
+
+    function delPlan($id) {
+        $conectar = new Conectar();
+        $con = $conectar->conn();
+        $call = "{call dbo.SP_DelPlan(?)}";
+        $params = array(
+            array(&$id, SQLSRV_PARAM_IN)
+        );
+        $stmt = sqlsrv_query($con, $call, $params);
+        if ($stmt === false) {
+            if (($errors = sqlsrv_errors()) != null) {
+                $error = print_r($errors[0]['message'], true);
+                $errors = str_replace("[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]", "", $errors);
+                http_response_code(402);
+                die(json_encode(array("status"=>402, "msg"=>$errors)));
+            }
+        }
+        sqlsrv_free_stmt($stmt);
+        sqlsrv_close($con);
     }
 
     $datos = json_decode(json_encode($_POST['data']), true);
@@ -227,6 +270,7 @@
     $actividad9 = $datos['9'];
     if ($editar == 1) {
         $id = $datos["id"];
+        delPlan($id);
     }
 
     $responsables = [];
@@ -811,11 +855,11 @@
         }
         if ($editar == 0) {
             $id = salvarPlan($ruta, $claveAcademia, $fecha);
-            salvarFecha($ruta, $fecha_1);
-            salvarFecha($ruta, $fecha_2);
-            salvarFecha($ruta, $fecha_3);
-            salvarFecha($ruta, $fecha_4);
         }
+        salvarFecha($id, $fecha_1);
+        salvarFecha($id, $fecha_2);
+        salvarFecha($id, $fecha_3);
+        salvarFecha($id, $fecha_4);
         $json = json_encode(array(
             "1"=>$actividad_1,
             "2"=>$actividad_2,

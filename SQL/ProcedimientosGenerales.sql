@@ -77,8 +77,6 @@ CREATE PROC SP_InfoAcademiaPlanTrabajo @Clave VARCHAR(255) AS
 	ON TRIM(SEC.clave_academia) LIKE '%'+TRIM(@Clave)+'%'
 GO
 
-EXEC SP_InfoAcademiaPlanTrabajo 'ACBA06'
-
 IF OBJECT_ID('SP_MiembrosAcademia') IS NOT NULL DROP PROC SP_MiembrosAcademia
 GO
 CREATE PROC SP_MiembrosAcademia @Clave VARCHAR(255) AS
@@ -118,9 +116,7 @@ GO
 
 IF OBJECT_ID('SP_AgendarFecha') IS NOT NULL DROP PROC SP_AgendarFecha
 GO
-CREATE PROC SP_AgendarFecha @Ruta VARCHAR(255), @Fecha DATETIME AS
-	DECLARE @ID INT
-	SELECT @ID = id_planTrabajo FROM PLANTRABAJO WHERE localizacion LIKE '%'+@Ruta+'.pdf%'
+CREATE PROC SP_AgendarFecha @ID INT, @Fecha DATETIME AS
 	INSERT INTO AGENDA (id_planTrabajo, fecha)
 	VALUES (@ID, @Fecha)
 GO
@@ -155,7 +151,7 @@ GO
 CREATE PROC SP_EditarDocente @Nivel INT, @Nomina INT AS
 	IF @Nivel = 1 OR @Nivel = 0 BEGIN
 		SELECT * FROM DOCENTE WHERE nivel != 0 AND nivel != 1
-	ENDg
+	END
 	ELSE BEGIN
 		SELECT DISTINCT D.nomina, D.nombre
 		FROM CARGO AS C
@@ -460,4 +456,56 @@ CREATE PROC SP_RegistrarDocenteAcademia
 		INSERT INTO CARGO (clave_academia, nomina, puesto)
 		VALUES (@Clave, @Nomina, 'Docente')
 	END
+GO
+
+IF OBJECT_ID('SP_HistorialPlan') IS NOT NULL DROP PROC SP_HistorialPlan
+GO
+CREATE PROC SP_HistorialPlan @ID INT, @Fecha DATETIME AS
+	INSERT INTO HISTORIALPLAN (id_planTrabajo, fecha)
+		VALUES (@ID, @Fecha)
+GO
+
+IF OBJECT_ID('SP_HistorialActa') IS NOT NULL DROP PROC SP_HistorialActa
+GO
+CREATE PROC SP_HistorialActa @ID INT, @Fecha DATETIME AS
+	INSERT INTO HISTORIALACTAS(id_acta, fecha)
+		VALUES (@ID, @Fecha)
+GO
+
+IF OBJECT_ID('SP_DelPlan') IS NOT NULL DROP PROC SP_DelPlan
+GO
+CREATE PROC SP_DelPlan @ID INT AS
+	DELETE FROM AGENDA WHERE id_planTrabajo = @ID
+	DELETE FROM EVIDENCIA WHERE id_evidencia IN (
+		SELECT id_evidencia FROM SUBIR WHERE id_planTrabajo = @ID
+	)
+	DELETE FROM SUBIR WHERE id_planTrabajo = @ID
+GO
+
+IF OBJECT_ID('FUN_ExisteDocenteAcademia') IS NOT NULL DROP FUNCTION FUN_ExisteDocenteAcademia
+GO
+CREATE FUNCTION FUN_ExisteDocenteAcademia (@Nomina INT, @Clave VARCHAR(255))
+	RETURNS VARCHAR(255) AS BEGIN
+		DECLARE @R VARCHAR(255)
+		IF EXISTS(SELECT * FROM VW_DocentesAcademias WHERE nomina = @Nomina AND clave_academia LIKE '%'+@Clave+'%')
+			SELECT @R = puesto FROM VW_DocentesAcademias WHERE nomina = @Nomina AND clave_academia LIKE '%'+@Clave+'%'
+		ELSE
+			SET @R = NULL
+		RETURN @R
+	END
+GO
+
+IF OBJECT_ID('SP_EditAcademia') IS NOT NULL DROP PROC SP_EditAcademia
+GO
+CREATE PROC SP_EditAcademia @Clave VARCHAR(255) AS
+	SELECT D.nomina, D.nombre, D.baja,
+	dbo.FUN_ExisteDocenteAcademia(nomina , @Clave) AS Puesto
+	FROM DOCENTE AS D
+	WHERE baja = 0 AND nivel != 0
+GO
+
+IF OBJECT_ID('SP_AllAcademias') IS NOT NULL DROP PROC SP_AllAcademias
+GO
+CREATE PROC SP_AllAcademias AS
+	SELECT * FROM ACADEMIA
 GO

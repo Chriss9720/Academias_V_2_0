@@ -148,3 +148,9 @@ const seccion3 = (data, key) => {
     }
     data[key].className = data[key].className.replace(" is-invalid", "");
 };
+
+const removerGuardados = campos => {
+    for (let i = 0; i < campos.children.length; i++) {
+        campos.children[0].remove()
+    }
+};

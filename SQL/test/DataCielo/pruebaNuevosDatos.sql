@@ -58,3 +58,11 @@ INSERT INTO AFILIADO (clave_carrera, nomina, jefe) VALUES ('LAEM',14032222, 0);
 INSERT INTO DOCENTE ( nomina , nombre , correo , telefono, clave, nivel)
 VALUES
 (14032201,'Jose Luis Beltran','14032201@itesca.edu.mx','6442345654','EIFJG',0)
+
+INSERT INTO MATERIAS (materia, nomina) VALUES ('Español', 14032218)
+INSERT INTO MATERIAS (materia, nomina) VALUES ('Ingles', 14032216)
+INSERT INTO MATERIAS (materia, nomina) VALUES ('Matematicas', 14032217)
+INSERT INTO MATERIAS (materia, nomina) VALUES ('Ciencias', 14032219)
+INSERT INTO MATERIAS (materia, nomina) VALUES ('Etica', 14032220)
+INSERT INTO MATERIAS (materia, nomina) VALUES ('Valores', 14032221)
+INSERT INTO MATERIAS (materia, nomina) VALUES ('Algebra', 14032222)
