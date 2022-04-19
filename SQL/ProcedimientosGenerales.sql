@@ -414,7 +414,7 @@ CREATE PROC SP_ActualizarPre
 	WHERE clave_academia LIKE '%'+TRIM(@Clave)+'%' AND puesto LIKE '%Presidente%'
 	IF EXISTS (SELECT * FROM CARGO WHERE nomina = @Nomina AND  clave_academia LIKE '%'+TRIM(@Clave)+'%') BEGIN
 		UPDATE CARGO
-		SET puesto = 'Presidente'
+		SET puesto = 'Presidente', activo = 1
 		WHERE nomina = @Nomina AND  clave_academia LIKE '%'+TRIM(@Clave)+'%'
 	END
 	ELSE BEGIN
@@ -433,7 +433,7 @@ CREATE PROC SP_ActualizarSec
 	WHERE clave_academia LIKE '%'+TRIM(@Clave)+'%' AND puesto LIKE '%Secretario%'
 	IF EXISTS (SELECT * FROM CARGO WHERE nomina = @Nomina AND  clave_academia LIKE '%'+TRIM(@Clave)+'%') BEGIN
 		UPDATE CARGO
-		SET puesto = 'Secretario'
+		SET puesto = 'Secretario', activo = 1
 		WHERE nomina = @Nomina AND  clave_academia LIKE '%'+TRIM(@Clave)+'%'
 	END
 	ELSE BEGIN
@@ -449,7 +449,7 @@ CREATE PROC SP_RegistrarDocenteAcademia
 	@Nomina INT AS
 	IF EXISTS (SELECT * FROM CARGO WHERE nomina = @Nomina AND  clave_academia LIKE '%'+TRIM(@Clave)+'%') BEGIN
 		UPDATE CARGO
-		SET activo = 1
+		SET activo = 1, puesto = 'Docente'
 		WHERE nomina = @Nomina AND clave_academia LIKE '%'+TRIM(@Clave)+'%'
 	END
 	ELSE BEGIN
@@ -498,7 +498,7 @@ GO
 IF OBJECT_ID('SP_EditAcademia') IS NOT NULL DROP PROC SP_EditAcademia
 GO
 CREATE PROC SP_EditAcademia @Clave VARCHAR(255) AS
-	SELECT D.nomina, D.nombre, D.baja,
+	SELECT D.nomina, D.nombre, D.baja, D.foto,
 	dbo.FUN_ExisteDocenteAcademia(nomina , @Clave) AS Puesto
 	FROM DOCENTE AS D
 	WHERE baja = 0 AND nivel != 0
@@ -508,4 +508,26 @@ IF OBJECT_ID('SP_AllAcademias') IS NOT NULL DROP PROC SP_AllAcademias
 GO
 CREATE PROC SP_AllAcademias AS
 	SELECT * FROM ACADEMIA
+GO
+
+IF OBJECT_ID('SP_ActualizarAcademia') IS NOT NULL DROP PROC SP_ActualizarAcademia
+GO
+CREATE PROC SP_ActualizarAcademia @Clave VARCHAR(255), @Nomina INT,
+	@Pre BIT, @Sec BIT, @Act BIT AS
+	IF @Act = 1 BEGIN
+		IF @Pre = 1 BEGIN
+			EXEC SP_ActualizarPre @Clave, @nomina
+		END
+		ELSE IF @Sec = 1 BEGIN
+			EXEC SP_ActualizarSec @Clave, @Nomina
+		END
+		ELSE BEGIN
+			EXEC SP_RegistrarDocenteAcademia @Clave, @Nomina
+		END
+	END
+	ELSE BEGIN
+		UPDATE CARGO
+		SET activo = 0, puesto = 'Docente'
+		WHERE clave_academia LIKE '%'+@Clave+'%' AND nomina = @Nomina
+	END
 GO
