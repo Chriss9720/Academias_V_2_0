@@ -110,7 +110,8 @@ GO
 CREATE TABLE EVALUACION (
 	id_evaluacion INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 	localizacion VARCHAR(255) NOT NULL,
-	localizacionJson VARCHAR(255) NOT NULL
+	localizacionJson VARCHAR(255) NOT NULL,
+	periodo VARCHAR(255)
 )
 GO
 CREATE TABLE CARGO (
@@ -130,7 +131,8 @@ CREATE TABLE PLANTRABAJO (
 	fecha DATETIME NOT NULL,
 	subido INT NOT NULL DEFAULT 0,
 	localizacion VARCHAR(255) NOT NULL,
-	localizacionJson VARCHAR(255) NOT NULL
+	localizacionJson VARCHAR(255) NOT NULL,
+	semestre VARCHAR (255)
 )
 GO
 CREATE TABLE PLANES (
@@ -148,7 +150,8 @@ CREATE TABLE ACTA (
 	fecha DATETIME,
 	finalizada BIT DEFAULT 0,
 	liberada BIT DEFAULT 0,
-	localizacionJson VARCHAR(255) NOT NULL
+	localizacionJson VARCHAR(255) NOT NULL,
+	semestre VARCHAR (255)
 )
 GO
 CREATE TABLE ACTAS (

@@ -92,12 +92,13 @@ GO
 IF OBJECT_ID('SP_RegistrarPlan') IS NOT NULL DROP PROC SP_RegistrarPlan
 GO
 CREATE PROC SP_RegistrarPlan @Clave VARCHAR(255), @Ruta VARCHAR(255),
-	@Fecha DATETIME, @ID INT AS
+	@Fecha DATETIME, @ID INT, @Semestre VARCHAR(255) AS
 	UPDATE PLANTRABAJO
 		SET fecha = @Fecha,
 			subido = 1,
 			localizacion =  @Ruta+'.pdf',
-			localizacionJson =  @Ruta+'.json'
+			localizacionJson =  @Ruta+'.json',
+			semestre = @Semestre
 	WHERE id_planTrabajo = @ID
 	INSERT INTO PLANES (id_planTrabajo, clave_academia)
 	VALUES (@ID, @Clave)
@@ -545,12 +546,13 @@ GO
 
 IF OBJECT_ID('SP_RegistrarActa') IS NOT NULL DROP PROC SP_RegistrarActa
 GO
-CREATE PROC SP_RegistrarActa @Clave VARCHAR(255), @Ruta VARCHAR(255), @ID INT, @Fecha DATETIME AS
+CREATE PROC SP_RegistrarActa @Clave VARCHAR(255), @Ruta VARCHAR(255), @ID INT, @Fecha DATETIME, @Semestre VARCHAR(255) AS
 	UPDATE ACTA
 		SET subido = 1,
 			fecha = @Fecha,
 			localizacion =  @Ruta+'.pdf',
-			localizacionJson =  @Ruta+'.json'
+			localizacionJson =  @Ruta+'.json',
+			semestre =  @Semestre
 	WHERE id_acta = @ID
 	INSERT INTO ACTAS(id_acta, clave_academia)
 	VALUES (@ID, @Clave)
@@ -612,4 +614,26 @@ IF OBJECT_ID('SP_GetAvance') IS NOT NULL DROP PROC SP_GetAvance
 GO
 CREATE PROC SP_GetAvance @Id INT, @tarea INT AS
 	SELECT dbo.FUN_ActasTotalesEvidencia(@Id, @tarea) AS T, dbo.FUN_ActasSubidasEvidencia(@Id, @tarea) AS S
+GO
+
+IF OBJECT_ID('SP_EvaluarDocentes') IS NOT NULL DROP PROC SP_EvaluarDocentes
+GO
+CREATE PROC SP_EvaluarDocentes @Nomina INT, @Periodo VARCHAR(255) AS
+	SELECT CAR.clave_academia, ACA.nombre AS Academia, CAR.puesto,
+		EV.id_evaluacion, EV.localizacion, EV.localizacionJson,
+		EV.periodo, DOC.nombre, DOC.nomina, CAE.nombre AS Carrera
+	FROM CARGO AS CAR
+	LEFT JOIN EVALUACION AS EV
+	ON EV.id_evaluacion = CAR.id_evaluacion
+	LEFT JOIN DOCENTE AS DOC
+	ON DOC.nomina = CAR.nomina
+	LEFT JOIN ACADEMIA AS ACA
+	ON ACA.clave_academia = CAR.clave_academia
+	LEFT JOIN AFILIADO AS AFI
+	ON AFI.nomina = DOC.nomina
+	LEFT JOIN CARRERA AS CAE
+	ON CAE.clave_carrera LIKE AFI.clave_carrera AND AFI.Activo = 1
+	WHERE CAR.clave_academia LIKE (
+		SELECT clave_academia FROM CARGO WHERE nomina = @Nomina AND puesto LIKE '%Presidente%'
+	) AND CAR.nomina != @nomina AND CAR.activo = 1 AND (EV.periodo NOT LIKE @Periodo OR EV.periodo IS NULL)
 GO

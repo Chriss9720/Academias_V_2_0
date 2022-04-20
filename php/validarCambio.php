@@ -73,6 +73,14 @@
                             echo json_encode(array("msg" => "Acceso invalido"));
                         }
                         break;
+                    case "Ev. docente":
+                        if (validarPuesto(array("Presidente")) ) {
+                            echo json_encode(array("cambio" => "/Academias/evDocenteXPre.html"));
+                        } else {
+                            http_response_code(401);
+                            echo json_encode(array("msg" => "Acceso invalido"));
+                        }
+                        break;
                     default:
                         http_response_code(400);
                         echo json_encode(array("msg"=>"Caso desconocido (Crear) '$afectar'"));

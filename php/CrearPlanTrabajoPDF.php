@@ -151,17 +151,18 @@
         sqlsrv_close($con);
     }
 
-    function salvarPlan($ruta, $academia, $hoy)
+    function salvarPlan($ruta, $academia, $hoy, $sem)
     {
         $id = getIDPLan();
         $conectar = new Conectar();
         $con = $conectar->conn();
-        $call = "{call dbo.SP_RegistrarPlan(?,?,?,?)}";
+        $call = "{call dbo.SP_RegistrarPlan(?,?,?,?,?)}";
         $params = array(
             array(&$academia, SQLSRV_PARAM_IN),
             array(&$ruta, SQLSRV_PARAM_IN),
             array(&$hoy, SQLSRV_PARAM_IN),
-            array(&$id, SQLSRV_PARAM_IN)
+            array(&$id, SQLSRV_PARAM_IN),
+            array(&$sem, SQLSRV_PARAM_IN)
         );
         $stmt = sqlsrv_query($con, $call, $params);
         if ($stmt === false) {
@@ -854,7 +855,7 @@
             eliminar($temp, "$carpeta/temp");
         }
         if ($editar == 0) {
-            $id = salvarPlan($ruta, $claveAcademia, $fecha);
+            $id = salvarPlan($ruta, $claveAcademia, $fecha, $semestre);
         }
         salvarFecha($id, $fecha_1);
         salvarFecha($id, $fecha_2);

@@ -221,17 +221,18 @@
         return "$fecha[2]/$fecha[1]/$fecha[0] $hora";
     }
 
-    function salvarActa($ruta, $academia, $hoy)
+    function salvarActa($ruta, $academia, $hoy, $sem)
     {
         $id = getIDActa();
         $conectar = new Conectar();
         $con = $conectar->conn();
-        $call = "{call dbo.SP_RegistrarActa(?,?,?,?)}";
+        $call = "{call dbo.SP_RegistrarActa(?,?,?,?,?)}";
         $params = array(
             array(&$academia, SQLSRV_PARAM_IN),
             array(&$ruta, SQLSRV_PARAM_IN),
             array(&$id, SQLSRV_PARAM_IN),
-            array(&$hoy, SQLSRV_PARAM_IN)
+            array(&$hoy, SQLSRV_PARAM_IN),
+            array(&$sem, SQLSRV_PARAM_IN)
         );
         $stmt = sqlsrv_query($con, $call, $params);
         if ($stmt === false) {
@@ -314,6 +315,7 @@
     $Orden = utf8_encode($datosG['Orden']);
     $Obs = utf8_encode($datosG['Obs']);
     $fecha = utf8_encode($datos['fecha']);
+    $Sem = utf8_encode($datos['Sem']);
 
     $firmas = firmas($datos['Docentes']);
     $vp = $datos['vP'];
@@ -491,7 +493,7 @@
         if ($datos['nueva'] == 0) {
             $id = $datos['id'];
         }else {
-            $id = salvarActa($ruta, $Clave, $fecha);
+            $id = salvarActa($ruta, $Clave, $fecha, $Sem);
         }
     }
 
