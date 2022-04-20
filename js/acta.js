@@ -1206,6 +1206,7 @@ $(document).ready(() => {
         }
         Acta["datosG"]["Orden"] = CKEDITOR.instances.orden.getData();
         Acta["datosG"]["Obs"] = CKEDITOR.instances.obs.getData();
+        Acta['vP'] = 0;
         Acta.Acuerdos = acuerdos.filter(f => !f.baja);
         Acta.Acuerdos.forEach(a => {
             a.tareas = [];
@@ -1227,7 +1228,45 @@ $(document).ready(() => {
                 location.reload();
             })
             .catch(e => {
-                console.log(e);
+                if (e.responseText == "Solicitar Reinicio de sesion") {
+                    cerrarM.load = true;
+                    cerrarModal();
+                    login();
+                }
+            })
+    });
+
+    $("input[name='preview']").click(() => {
+        Acta["Sem"] = calcularSemestre();
+        let date = new Date();
+        let datos = $('input[name="datosG"]');
+        let keys = ["horaI", "Dia", "Mes", "Año", "Lugar", "horaF"];
+        for (let i = 0; i < keys.length; i++) {
+            Acta["datosG"][keys[i]] = datos[i].value;
+        }
+        Acta["datosG"]["Orden"] = CKEDITOR.instances.orden.getData();
+        Acta["datosG"]["Obs"] = CKEDITOR.instances.obs.getData();
+        Acta['vP'] = 1;
+        Acta.Acuerdos = acuerdos.filter(f => !f.baja);
+        Acta.Acuerdos.forEach(a => {
+            a.tareas = [];
+            getPuntos(a.acuerdo, a.tareas);
+            if (a.fecha.length > 0) {
+                a.limite = 1;
+            }
+        });
+        Acta["fecha"] = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+        if (sessionStorage.getItem("accion").includes("Crear")) {
+            Acta["fechaG"] = getFecha(date);
+            Acta['nueva'] = 1;
+        } else {
+            Acta['nueva'] = 0;
+        }
+        crearActa(Acta)
+            .then(t => {
+                window.open(t.ruta);
+            })
+            .catch(e => {
                 if (e.responseText == "Solicitar Reinicio de sesion") {
                     cerrarM.load = true;
                     cerrarModal();

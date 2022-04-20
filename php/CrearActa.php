@@ -316,6 +316,7 @@
     $fecha = utf8_encode($datos['fecha']);
 
     $firmas = firmas($datos['Docentes']);
+    $vp = $datos['vP'];
 
     $ant = [];
     $an = "";
@@ -327,12 +328,15 @@
     $Acuerdos = "";
     if (array_key_exists('Acuerdos', $datos)) {
         $Acuerdos = acuerdo($datos['Acuerdos']);
-        for($i = 0; $i < count($datos['Acuerdos']); $i++) {
-            array_push($ant, $datos['Acuerdos'][$i]);
+        if ($vp != 1) {
+            for($i = 0; $i < count($datos['Acuerdos']); $i++) {
+                array_push($ant, $datos['Acuerdos'][$i]);
+            }
         }
     }
-
-    $datos['ant'] = $ant;
+    if ($vp != 1) {
+        $datos['ant'] = $ant;
+    }
 
     $mpdf = new \Mpdf\Mpdf([
         'mode' => 'utf-8',
@@ -469,7 +473,11 @@
     ");
 
     $nombre = utf8_encode($datos['fechaG']);
-    $carpeta = "../Docs/Actas/$Clave";
+    if ($vp != 1) {
+        $carpeta = "../Docs/Actas/$Clave";
+    } else {
+        $carpeta = "../Docs/Actas/$Clave/temp";
+    }
 
     crearCapera("$carpeta");
 
@@ -479,19 +487,23 @@
 
     $mpdf -> Output("$nombreArchivo", 'F');
 
-    if ($datos['nueva'] == 0) {
-        $id = $datos['id'];
-    }else {
-        $id = salvarActa($ruta, $Clave, $fecha);
+    if ($vp != 1) {
+        if ($datos['nueva'] == 0) {
+            $id = $datos['id'];
+        }else {
+            $id = salvarActa($ruta, $Clave, $fecha);
+        }
     }
 
-    if (array_key_exists('Acuerdos', $datos)) {
+    if (array_key_exists('Acuerdos', $datos) && $vp != 1) {
         $sum = count($ant);
         ligar($id, $datos['Acuerdos'], $sum);
     }
-    $datos['id'] = $id;
-    $json = json_encode($datos);
-    $bytes = file_put_contents($nombreJson, $json);
+    if ($vp != 1) {
+        $datos['id'] = $id;
+        $json = json_encode($datos);
+        $bytes = file_put_contents($nombreJson, $json);
+    }
 
     echo json_encode(array('ruta'=>"Acacemias/$ruta.pdf"));
 
