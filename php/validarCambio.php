@@ -96,6 +96,14 @@
                             echo json_encode(array("msg" => "Acceso invalido"));
                         }
                         break;
+                    case "Acta":
+                        if (validarPuesto(array("Presidente", "Secretario")) || $_SESSION["nivel"] == 1) {
+                            echo json_encode(array("cambio" => "/Academias/acta.html"));
+                        } else {
+                            http_response_code(401);
+                            echo json_encode(array("msg" => "Acceso invalido"));
+                        }
+                        break;
                     case "Carrera":
                         if ($_SESSION["jefe"] == 1|| $_SESSION["nivel"] == 1 || $_SESSION["nivel"] == 0) {
                             echo json_encode(array("cambio" => "/Academias/Carrera.html"));

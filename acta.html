@@ -5,6 +5,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!--font awesome-->
@@ -66,11 +67,20 @@
         </div>
         <div class="d-flex justify-content-center align-items-center">
             <div class="form-inline mb-2">
-                <label class="form-label text-input mr-3">Busqueda por nombre/clave</label>
+                <label class="form-label text-input mr-3">Busqueda por clave/nombre</label>
                 <input id="academiaSeleccionada2" type="search" class="form-control text-input bg-input rounded-pill mx-auto" list="listaAcademias">
                 <datalist id="listaAcademias">
                 </datalist>
             </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-center align-items-center" id="buscarActa">
+        <div class="form-inline mb-2">
+            <label class="form-label text-input mr-3">Busqueda del plan</label>
+            <input id="actaSeleccionada" type="search" class="form-control text-input bg-input rounded-pill mx-auto" list="listaDeActas">
+            <datalist id="listaDeActas">
+            </datalist>
         </div>
     </div>
 
@@ -138,51 +148,7 @@
         </div>
 
         <div id="anteriores">
-            <div class="mt-2 font-weight-bold text-center h2">SEGUIMIENTO DE ACUERDOS ANTERIORES</div>
-            <div class="ml-3 mr-3 mt-3 mb-3">
-                <div class="row">
-                    <div class="col-3 bg-input text-center h4 font-weight-bold border border-dark">
-                        <div class="w-100 h-100 d-flex justify-content-center align-items-center">ACUERDO</div>
-                    </div>
-                    <div class="col-3 bg-input text-center h4 font-weight-bold border border-dark">
-                        <div class="w-100 h-100 d-flex justify-content-center align-items-center">RESPONSABLE</div>
-                    </div>
-                    <div class="col-3 bg-input text-center h4 font-weight-bold border border-dark">
-                        <div class="w-100 h-100 d-flex justify-content-center align-items-center">FECHA DE CUMPLIMIENTO
-                        </div>
-                    </div>
-                    <div class="col-3 bg-input text-center h4 font-weight-bold border border-dark">
-                        <div class="w-100 h-100 d-flex justify-content-center align-items-center">AVANCE</div>
-                    </div>
-                    <div class="col-3 bg-input border border-dark acuerdo">
-                        <div class="text-justify">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate, at vel! Repellat ipsa expedita sed sint facere eos, quia aliquid, voluptatem cum ratione ducimus aspernatur quos perspiciatis, totam ea porro? Ducimus ipsum provident, dolore veniam atque
-                            delectus, illum, vero nemo doloremque quae impedit laudantium necessitatibus aliquam libero sunt veritatis. Ut sit dicta provident nihil dolores, expedita voluptatem quasi fugit dolor? Nemo delectus excepturi quae facilis ex
-                            suscipit commodi nisi consequatur ad! Ipsam voluptatum ratione esse consequuntur laboriosam exercitationem laborum modi eos veniam quae facere provident ut, cumque, porro distinctio! Illum, consectetur ad provident maiores
-                            voluptas rerum. Fugit nam in ut!
-                        </div>
-                    </div>
-                    <div class="col-3 bg-input border border-dark acuerdo">
-                        <div class="text-justify">
-                            <ul>
-                                <li>Cielo</li>
-                                <li>Yañez</li>
-                                <li>Cristy</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-3 bg-input border border-dark acuerdo">
-                        <div class="text-justify">
-                            10 Enero, 2022
-                        </div>
-                    </div>
-                    <div class="col-3 bg-input border border-dark acuerdo">
-                        <div class="text-justify">
-                            10%
-                        </div>
-                    </div>
-                </div>
-            </div>
+
         </div>
 
         <div class="mt-2 ml-2 mr-2 font-weight-bold text-center h2">

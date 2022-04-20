@@ -142,9 +142,10 @@ CREATE TABLE PLANES (
 )
 GO
 CREATE TABLE ACTA (
-	id_acta INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	id_acta INT PRIMARY KEY NOT NULL,
 	localizacion VARCHAR(255) NOT NULL,
 	subido INT,
+	fecha DATETIME,
 	finalizada BIT DEFAULT 0,
 	liberada BIT DEFAULT 0,
 	localizacionJson VARCHAR(255) NOT NULL
@@ -205,7 +206,6 @@ CREATE TABLE SUBIRACTA (
 	id_subir INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 	id_acta INT,
 	id_evidencia INT,
-	no_tarea INT,
 	punto INT,
 	fecha DATETIME DEFAULT NULL,
 	limite BIT DEFAULT 0,

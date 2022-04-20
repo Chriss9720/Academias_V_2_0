@@ -907,13 +907,13 @@ $(document).ready(() => {
                             cerrarM.load = true;
                             cerrarModal();
                             $("#alertBusqueda").html(`
-                            <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
-                                <strong class="h1">No se encontro el plan, puede que se alla borrado del servidor</strong>
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        `);
+                                <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                                    <strong class="h1">No se encontro el plan, puede que se alla borrado del servidor</strong>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            `);
                         })
                 } else {
                     $("#alertBusqueda").html(`

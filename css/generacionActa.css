@@ -1,15 +1,19 @@
 .area_IMG {
-    width: 4.cm;
+    height: 1.35cm;
+    width: 4.32cm;
+}
+
+.logo_ITESCA {
+    height: 1.22cm;
+    width: 3.84cm;
+}
+
+.borde_derecho {
+    border-right: 1px solid black;
 }
 
 .area_titulo {
-    width: 13.38cm;
-}
-
-.row {
-    display: flex;
-    flex-wrap: wrap;
-    width: 17.57cm;
+    width: 14.18cm;
 }
 
 .centrar {
@@ -20,123 +24,108 @@
     text-align: center !important;
 }
 
-.logo_ITESCA {
-    height: 1.22cm;
-    width: 3.84cm;
-}
-
-.bordes {
+.borde_tabla {
     border: 1px solid black;
 }
 
-.m-0 {
-    margin: 0px;
+.align-right {
+    text-align: right;
 }
 
-.p-0 {
-    padding: 0px;
-}
-
-.mt-1 {
-    margin-top: 1rem;
-}
-
-.mt-3 {
-    margin-top: 2rem;
-}
-
-.p-1 {
-    padding: .5em;
-}
-
-.borde-derecho {
-    padding: 0px;
-    margin: 0px;
-    border-right: 1px solid black;
+.firma-jefe {
+    width: 5cm;
 }
 
 .justificar {
     text-align: justify;
 }
 
-.align-right {
-    justify-content: right;
+.m {
+    margin-top: .5cm;
+    margin-bottom: .5cm;
 }
 
-.text-padding-1-5 {
-    line-height: 1.5em;
+.bordes {
+    border: 1px solid black;
+    padding: .25cm;
 }
 
-.relleno {
-    background-color: rgb(191, 191, 191);
+.enbacezado {
     font-weight: bold;
+    background-color: rgb(191, 191, 191);
 }
 
-.acuerdo {
-    padding: .5em;
-    width: 27%;
+.acuerdoAnt {
+    width: 6.28cm;
 }
 
-.responsable {
-    padding: .5em;
-    width: 5.93cm;
+.respAnt {
+    width: 6.1cm;
 }
 
-.fecha {
-    padding: .5em;
-    width: 18%;
+.fechaAnt {
+    width: 5cm;
 }
 
 .avance {
-    padding: .5em;
-    width: 10%;
+    width: 2.2cm;
 }
 
-.acuerdo_2 {
-    padding: .5em;
-    width: 40%;
+.acuerdo {
+    width: 9.23cm;
 }
 
-.d-flex {
-    display: flex;
+.resp {
+    width: 6.83cm;
 }
 
-.firmas {
-    width: 40%;
-    font-weight: bold;
-    font-size: 1.2em;
+.fecha {
+    width: 3.21cm;
 }
 
-.text-center {
-    text-align: center;
+.fuente {
+    font-family: "Calibri";
+    font-size: small;
 }
 
-.around {
-    justify-content: space-around;
+.borde_izquierdo {
+    border-left: 1px solid black;
 }
 
-.area_firma {
-    width: 40%;
-    font-weight: bold;
-    font-size: 1.2em;
-    background-color: white;
-    height: 1.75cm;
-}
-
-.w-100 {
-    width: 100%;
-    font-size: 1.5em;
-}
-
-.obs {
-    width: 100%;
-    font-size: 1em;
-}
-
-.border-sup {
+.borde_superior {
     border-top: 1px solid black;
 }
 
-.firma-jefe {
-    width: 35%;
+.firmas {
+    width: 6.3cm;
+}
+
+.separacion {
+    width: 1.5cm;
+}
+
+.firma {
+    height: 3cm;
+}
+
+.bajar {
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    height: 100px;
+}
+
+.borde_inferior {
+    border-bottom: 1px solid black;
+}
+
+.right {
+    display: flex;
+    width: 100%;
+    justify-content: right;
+    align-items: right;
+}
+
+.mF {
+    margin-top: 4rem;
 }

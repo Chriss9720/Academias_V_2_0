@@ -33,7 +33,10 @@ $(document).ready(() => {
             .then(t => {
                 window.location = t.cambio
             })
-            .catch(c => error(c.msg))
+            .catch(c => {
+                console.log(c);
+                error(c.msg);
+            })
     });
 
     const login = ({ nomina, clave }) => {

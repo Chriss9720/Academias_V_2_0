@@ -531,3 +531,85 @@ CREATE PROC SP_ActualizarAcademia @Clave VARCHAR(255), @Nomina INT,
 		WHERE clave_academia LIKE '%'+@Clave+'%' AND nomina = @Nomina
 	END
 GO
+
+IF OBJECT_ID('SP_GetIDActa') IS NOT NULL DROP PROC SP_GetIDActa
+GO
+CREATE PROC SP_GetIDActa @ID INT OUTPUT AS
+	IF (SELECT MAX(id_acta) FROM ACTA) IS NOT NULL
+		SELECT @ID = (MAX(id_acta) + 1) FROM ACTA
+	ELSE
+		SELECT @ID = 1
+	INSERT INTO ACTA (id_acta, subido, localizacion, localizacionJson)
+	VALUES (@ID, 0, '', '')
+GO
+
+IF OBJECT_ID('SP_RegistrarActa') IS NOT NULL DROP PROC SP_RegistrarActa
+GO
+CREATE PROC SP_RegistrarActa @Clave VARCHAR(255), @Ruta VARCHAR(255), @ID INT, @Fecha DATETIME AS
+	UPDATE ACTA
+		SET subido = 1,
+			fecha = @Fecha,
+			localizacion =  @Ruta+'.pdf',
+			localizacionJson =  @Ruta+'.json'
+	WHERE id_acta = @ID
+	INSERT INTO ACTAS(id_acta, clave_academia)
+	VALUES (@ID, @Clave)
+GO
+
+IF OBJECT_ID ('SP_EvidenciaActa') IS NOT NULL DROP PROC SP_EvidenciaActa
+GO
+CREATE PROC SP_EvidenciaActa @idActa INT, @nomina INT,
+	@punto INT, @fecha DATETIME, @Limite BIT, @no_tarea INT AS
+	INSERT INTO EVIDENCIAACTA(localizacion, descripcion, nomina)
+	VALUES (NULL, NULL, @nomina)
+	DECLARE @IDEvidencia INT
+	SELECT @IDEvidencia = @@IDENTITY
+	INSERT INTO SUBIRACTA(id_acta, id_evidencia, punto, fecha, limite, no_tarea)
+	VALUES(@idActa, @IDEvidencia, @punto, @fecha, @Limite, @no_tarea)
+GO
+
+IF OBJECT_ID('SP_EditarActa') IS NOT NULL DROP PROC SP_EditarActa
+GO
+CREATE PROC SP_EditarActa @Clave VARCHAR(255) AS
+	SELECT PT.*
+	FROM ACTA AS PT
+	JOIN ACTAS AS P
+	ON P.id_acta = PT.id_acta
+	JOIN ACADEMIA AS A
+	ON A.clave_academia = P.clave_academia
+	WHERE SUBIDO = 1 AND A.clave_academia LIKE @Clave
+GO
+
+IF OBJECT_ID('FUN_ActasTotalesEvidencia') IS NOT NULL DROP FUNCTION FUN_ActasTotalesEvidencia
+GO
+CREATE FUNCTION FUN_ActasTotalesEvidencia (@Id INT, @No INT)
+	RETURNS INT AS BEGIN
+		DECLARE @R INT
+		SELECT @R = COUNT(*)
+		FROM SUBIRACTA AS SA
+		JOIN EVIDENCIAACTA AS EA
+		ON EA.id_evidencia = SA.id_evidencia
+		WHERE id_acta = @Id AND no_tarea = @No
+		RETURN @R
+	END
+GO
+
+IF OBJECT_ID('FUN_ActasSubidasEvidencia') IS NOT NULL DROP FUNCTION FUN_ActasSubidasEvidencia
+GO
+CREATE FUNCTION FUN_ActasSubidasEvidencia (@Id INT, @No INT)
+	RETURNS INT AS BEGIN
+		DECLARE @R INT
+		SELECT @R = COUNT(*)
+		FROM SUBIRACTA AS SA
+		JOIN EVIDENCIAACTA AS EA
+		ON EA.id_evidencia = SA.id_evidencia
+		WHERE id_acta = @Id AND no_tarea = @No AND EA.localizacion IS NOT NULL
+		RETURN @R
+	END
+GO
+
+IF OBJECT_ID('SP_GetAvance') IS NOT NULL DROP PROC SP_GetAvance
+GO
+CREATE PROC SP_GetAvance @Id INT, @tarea INT AS
+	SELECT dbo.FUN_ActasTotalesEvidencia(@Id, @tarea) AS T, dbo.FUN_ActasSubidasEvidencia(@Id, @tarea) AS S
+GO

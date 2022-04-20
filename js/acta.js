@@ -218,13 +218,7 @@ $(document).ready(() => {
             "Orden": "",
             "Obs": ""
         },
-        "Acuerdos": [{
-            "Acuerdo": "",
-            "Responsables": [],
-            "Evidencia": "",
-            "Fecha": "",
-            "Tareas": []
-        }],
+        "Acuerdos": [],
         "Docentes": [] //Oc
     };
 
@@ -237,6 +231,8 @@ $(document).ready(() => {
     CKEDITOR.replace('ev');
 
     let acuerdos = [];
+
+    let listaActas;
 
     var cerrarM = {
         load: false,
@@ -446,6 +442,7 @@ $(document).ready(() => {
         for (let i = 0; i < academias.length; i++) {
             r += `<option value="${academias[i].clave_academia} - ${academias[i].nombre}">`;
         }
+        removerGuardados($("#listaAcademias")[0]);
         $("#listaAcademias").html(r);
     };
 
@@ -490,10 +487,17 @@ $(document).ready(() => {
         return "";
     };
 
-    const asistencia = async() => {
+    const asist = (nomina, c1, c2, c3) => {
+        $(`#${c1}_${nomina}`).attr('style', 'color:green;');
+        $(`#${c2}_${nomina}`).attr('style', 'color:black;');
+        $(`#${c3}_${nomina}`).attr('style', 'color:black;');
+    };
+
+    const asistencia = () => {
         let f = "";
         $("#asistencia").html("");
         for (let i = 0; i < miembrosTotal.length; i++) {
+
             f += `
                 <div class="row mb-2">
                     <div class="col-4 border border-dark acuerdo">
@@ -506,15 +510,39 @@ $(document).ready(() => {
                     </div>
                     <div class="col-4 border border-dark acuerdo">
                         <div class="d-flex flex-column mt-2 mb-2 justify-content-center align-items-center">
-                            <input type="button" value="Asistio" class="bg-input bg-btn-aplicar hover">
-                            <input type="button" value="No asistio" class="bg-input bg-btn-aplicar mt-2 mb-2 hover">
-                            <input type="button" value="Justificado" class="bg-input bg-btn-aplicar hover">
+                            <input name="asiste" id="AS_${miembrosTotal[i].nomina}" type="button" value="Asistio" class="bg-input bg-btn-aplicar hover">
+                            <input name="falta" type="button" id="NS_${miembrosTotal[i].nomina}" value="No asistio" class="bg-input bg-btn-aplicar mt-2 mb-2 hover">
+                            <input name="justificado" type="button" id="JS_${miembrosTotal[i].nomina}" value="Justificado" class="bg-input bg-btn-aplicar hover">
                         </div>
                     </div>
                 </div>
             `;
         }
         $("#asistencia").html(f);
+        $("[name='asiste']").click(evt => {
+            let nomina = evt.target.attributes.id.value.split("_")[1];
+            asist(nomina, 'AS', 'NS', 'JS');
+            let f = Acta.Docentes.find(f => f.nomina == nomina);
+            if (f) {
+                f.estado = 1;
+            }
+        });
+        $("[name='falta']").click(evt => {
+            let nomina = evt.target.attributes.id.value.split("_")[1];
+            asist(nomina, 'NS', 'AS', 'JS');
+            let f = Acta.Docentes.find(f => f.nomina == nomina);
+            if (f) {
+                f.estado = -1;
+            }
+        });
+        $("[name='justificado']").click(evt => {
+            let nomina = evt.target.attributes.id.value.split("_")[1];
+            asist(nomina, 'JS', 'AS', 'NS');
+            let f = Acta.Docentes.find(f => f.nomina == nomina);
+            if (f) {
+                f.estado = 0;
+            }
+        });
     }
 
     const datosAcademias = clave => {
@@ -547,8 +575,10 @@ $(document).ready(() => {
                                     cerrarM.load = true;
                                     cerrarM.login = true;
                                     cerrarModal();
+                                    removerGuardados($("#listaDeActas")[0]);
                                 } else {
                                     $("#anteriores").html("");
+                                    $("#buscarActa").remove();
                                     cerrarM.load = true;
                                     cerrarM.login = true;
                                     cerrarModal();
@@ -590,9 +620,9 @@ $(document).ready(() => {
     $("#nuevoAcuerdo").click(evt => {
         acuerdos.push({
             baja: false,
-            acuedo: "",
             responsables: [],
-            fecha: ""
+            fecha: "",
+            limite: 0
         });
         let id = acuerdos.length;
         $("#acuerdos")[0].innerHTML += `
@@ -613,19 +643,30 @@ $(document).ready(() => {
                     click para editar
                 </div>
                 <div class="col-2 acuerdo border border-dark">
-                    <input type="datetime-local" class="form-control bg-input mt-2">
+                    <input name="fecha_C" id="F_${id}" type="datetime-local" class="form-control bg-input mt-2">
                 </div>
             </div>
         `;
+        $("[name='fecha_C']").change(evt => {
+            let id = parseInt(evt.target.attributes.id.value.split("_")[1]) - 1;
+            let value = (evt.target.value);
+            acuerdos[id].fecha = value;
+        });
         $("[name='basura']").click(evt => {
             let id = parseInt(evt.target.attributes.id.value.split("_")[1]);
             $(`#padre_${id}`).remove();
             acuerdos[(id - 1)].baja = true;
-            console.log(acuerdos);
         });
         $(`[name="acuerdo"]`).click(evt => {
+            let value;
+            if (evt.target.nodeName != 'DIV') {
+                value = evt.delegateTarget.attributes.id.value;
+            } else {
+                value = evt.target.attributes.id.value;
+            }
+            let id = parseInt(value.split("_")[1]);
             CKEDITOR.instances.ev.setData($(`#A_${id}`).html());
-            $("#tituloModal").html(evt.target.attributes.id.value);
+            $("#tituloModal").html(value);
             $("#editor").modal();
         });
         $(`[name="responsables"]`).click(evt => {
@@ -666,6 +707,7 @@ $(document).ready(() => {
             final += `<option value="${d.nomina} - ${d.nombre}">`;
         });
         asistencia();
+        removerGuardados($("#busqueda_1_lista")[0]);
         $("#busqueda_1_lista").html(final);
     };
 
@@ -770,13 +812,158 @@ $(document).ready(() => {
                             "nombre": m[i].nombre,
                             "nomina": m[i].nomina,
                             "materias": mat,
-                            "estado": -1
+                            "estado": 0
                         });
                     })
             }
             resolve();
         });
     };
+
+    const getActasEdit = clave => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: "php/editarActa.php",
+                data: {
+                    academia: clave
+                },
+                type: "post",
+                dataType: "json",
+                success: s => resolve(s),
+                error: e => reject(e)
+            });
+        });
+    };
+
+    const construirActas = () => {
+        let r = "";
+        for (let i = 0; i < listaActas.length; i++) {
+            r += `<option value="${listaActas[i].id_acta} - ${listaActas[i].fecha.date}">`;
+        }
+        $("#listaDeActas").html(r);
+    };
+
+    const leer = ruta => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: "php/leerActa.php",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    ruta: ruta
+                },
+                success: s => resolve(s),
+                error: e => reject(e)
+            });
+        });
+    };
+
+    const armarAnt = () => {
+        let html = `
+        <div class="mt-2 font-weight-bold text-center h2">SEGUIMIENTO DE ACUERDOS ANTERIORES</div>
+            <div class="ml-3 mr-3 mt-3 mb-3">
+                <div class="row">
+                    <div class="col-3 bg-input text-center h4 font-weight-bold border border-dark">
+                        <div class="w-100 h-100 d-flex justify-content-center align-items-center">ACUERDO</div>
+                    </div>
+                    <div class="col-3 bg-input text-center h4 font-weight-bold border border-dark">
+                        <div class="w-100 h-100 d-flex justify-content-center align-items-center">RESPONSABLE</div>
+                    </div>
+                    <div class="col-3 bg-input text-center h4 font-weight-bold border border-dark">
+                        <div class="w-100 h-100 d-flex justify-content-center align-items-center">FECHA DE CUMPLIMIENTO
+                        </div>
+                    </div>
+                    <div class="col-3 bg-input text-center h4 font-weight-bold border border-dark">
+                        <div class="w-100 h-100 d-flex justify-content-center align-items-center">AVANCE</div>
+                    </div>
+        `;
+        let ant = Acta['ant'];
+        console.log(ant);
+        if (ant) {
+            for (let i = 0; i < ant.length; i++) {
+                let acu = ant[i].acuerdo;
+                let resp = "";
+                if (ant[i].responsables) {
+                    for (let j = 0; j < ant[i].responsables.length; j++) {
+                        let na = ant[i].responsables[j].nombre;
+                        resp = `${resp}<li>${na}</li>`;
+                    }
+                }
+                html = `${html}
+                    <div class="col-3 bg-input border border-dark acuerdo">
+                        <div class="text-justify">
+                            ${acu}
+                        </div>
+                    </div>
+                    <div class="col-3 bg-input border border-dark acuerdo">
+                        <div class="text-justify">
+                            <ul>
+                                ${resp}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-3 bg-input border border-dark acuerdo">
+                        <div class="text-justify">
+                            ${ant[i].fecha.replace("T", " ")}
+                        </div>
+                    </div>
+                    <div class="col-3 bg-input border border-dark acuerdo">
+                        <div class="text-justify">
+                            ${ant[i].Av || 0}%
+                        </div>
+                    </div>
+                `;
+            }
+        }
+        html = `${html}</div></div>`;
+        $("#anteriores").html(html);
+    }
+
+    $("#actaSeleccionada").keypress(k => {
+        if (k.which == 13) {
+            cargando();
+            let acta = listaActas.find(f => f.id_acta == parseInt(k.target.value.split(" - ")[0]));
+            if (acta) {
+                leer(acta.localizacionJson)
+                    .then(t => {
+                        let no = parseInt(t.No) + 1;
+                        Acta['No'] = no;
+                        Acta['id'] = acta.id_acta;
+                        Acta['ant'] = t.ant;
+                        Acta['fechaG'] = t.fechaG;
+                        $("#NoActa")[0].value = no;
+                        armarAnt();
+                        cerrarM.load = true;
+                        cerrarModal();
+                        $("#alertBusqueda").html(``);
+                    })
+                    .catch(e => {
+                        cerrarM.load = true;
+                        cerrarModal();
+                        console.log(e);
+                        $("#alertBusqueda").html(`
+                            <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                                <strong class="h1">No se encontro el acta, puede que se alla borrado del servidor</strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        `);
+                    })
+            } else {
+                cerrarM.load = true;
+                cerrarModal();
+                $("#alertBusqueda").html(`
+                    <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                        <strong class="h1">No se encontro el acta, puede que se alla borrado del servidor</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                `);
+            }
+        }
+    })
 
     $("#academiaSeleccionada2").keypress(k => {
         if (k.which == 13) {
@@ -801,16 +988,41 @@ $(document).ready(() => {
                     $("#alertBusqueda").html(``);
                     cargando();
                     if (sessionStorage.getItem("accion").includes("Editar")) {
-                        miembrosAcademia(clave.clave_academia)
-                            .then(m => {
-                                cargarMiembros(m);
-                                getPlanesEdit(clave.clave_academia)
-                                    .then(t => {
-                                        reset();
-                                        listaPlanes = t;
-                                        construirPlanes();
-                                        cerrarM.load = true;
-                                        cerrarModal();
+                        datosAcademias(clave.clave_academia)
+                            .then(dt => {
+                                let datos = [dt['Academia'], dt['nombre'], dt['Sec']];
+                                Acta["DatosA"]["Clave"] = clave.clave_academia;
+                                Acta["DatosA"]["Academia"] = datos[0];
+                                Acta["DatosA"]["Presidente"] = datos[1];
+                                Acta["DatosA"]["Sec"] = datos[2];
+                                let campos = $('[name="attr"]');
+                                for (let i = 0; i < datos.length; i++) {
+                                    campos[i].value = datos[i];
+                                }
+                                miembrosAcademia(clave.clave_academia)
+                                    .then(m => {
+                                        cargarMaterias(m)
+                                            .then(() => {
+                                                cargarMiembros(m);
+                                                getActasEdit(clave.clave_academia)
+                                                    .then(t => {
+                                                        listaActas = t;
+                                                        construirActas();
+                                                        cerrarM.load = true;
+                                                        cerrarModal();
+                                                    })
+                                                    .catch(e => {
+                                                        console.log(e);
+                                                        if (e.responseText == "Solicitar Reinicio de sesion") {
+                                                            cerrarM.load = true;
+                                                            cerrarModal();
+                                                            login();
+                                                        }
+                                                    })
+                                                cerrarM.load = true;
+                                                cerrarModal();
+                                                seleccionada = true;
+                                            })
                                     })
                                     .catch(e => {
                                         console.log(e);
@@ -834,6 +1046,7 @@ $(document).ready(() => {
                             .then(dt => {
                                 $("#NoActa")[0].value = 1;
                                 let datos = [dt['Academia'], dt['nombre'], dt['Sec']];
+                                Acta["DatosA"]["Clave"] = clave.clave_academia;
                                 Acta["DatosA"]["Academia"] = datos[0];
                                 Acta["DatosA"]["Presidente"] = datos[1];
                                 Acta["DatosA"]["Sec"] = datos[2];
@@ -886,9 +1099,11 @@ $(document).ready(() => {
 
     $("#aplicarEvaluacion").click(evt => {
         let id = $("#tituloModal").html();
+        let pos = parseInt(id.split("_")[1]) - 1;
         let value = CKEDITOR.instances.ev.getData();
         let campo = $(`#${id}`)[0];
         campo.innerHTML = value;
+        acuerdos[pos].acuerdo = value;
         campo.className = campo.className.replace("d-flex justify-content-center align-items-center", "text-justify");
         $("#editor").modal('hide');
     });
@@ -896,7 +1111,9 @@ $(document).ready(() => {
     $("#TodosLosDocentes").click(() => {
         let id = parseInt($("#tituloModalR").html().split("_")[1]) - 1;
         miembrosTotal.forEach(mt => {
-            acuerdos[id].responsables.push(mt);
+            let f = acuerdos[id].responsables.find(f => f.nomina == mt.nomina);
+            if (!f)
+                acuerdos[id].responsables.push(mt);
         });
         filtroM(id);
         let campo = $(`#R_${(id + 1)}`)[0];
@@ -940,7 +1157,48 @@ $(document).ready(() => {
         });
     };
 
+    const getPuntos = (text, tareas) => {
+        if (text) {
+            text = text.replace("<ul>", "").replace("</ul>\n", "");
+            let re = new RegExp('<li>');
+            let lista = text.split(re);
+            for (let j = 0; j < lista.length; j++) {
+                let dato = lista[j];
+                if (dato.includes('</li>')) {
+                    dato = dato.replace('</li>\n', '').replace('</li>', '');
+                    dato = dato.replace("</ol>\n", "").replace("\t", "");
+                    tareas.push(dato);
+                }
+            }
+        }
+    };
+
+    const crearActa = acta => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: "php/CrearActa.php",
+                type: "POST",
+                data: { acta: acta },
+                dataType: "json",
+                success: s => resolve(s),
+                error: e => reject(e)
+            });
+        });
+    };
+
+    const getFecha = date => `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()} ${date.getHours()}-${date.getMinutes()}-${date.getSeconds()} ${Acta["DatosA"]["Academia"]} ${Acta["Sem"]}`;
+
+    const calcularSemestre = () => {
+        let date = new Date();
+        if (date.getMonth() >= 0 && date.getMonth() < 6)
+            return `Ene - May ${date.getFullYear()}`;
+        else
+            return `Ago - Dic ${date.getFullYear()}`;
+    };
+
     $('[name="Crear"]').click(evt => {
+        Acta["Sem"] = calcularSemestre();
+        let date = new Date();
         let datos = $('input[name="datosG"]');
         let keys = ["horaI", "Dia", "Mes", "Año", "Lugar", "horaF"];
         for (let i = 0; i < keys.length; i++) {
@@ -948,7 +1206,34 @@ $(document).ready(() => {
         }
         Acta["datosG"]["Orden"] = CKEDITOR.instances.orden.getData();
         Acta["datosG"]["Obs"] = CKEDITOR.instances.obs.getData();
-        console.log(Acta);
+        Acta.Acuerdos = acuerdos.filter(f => !f.baja);
+        Acta.Acuerdos.forEach(a => {
+            a.tareas = [];
+            getPuntos(a.acuerdo, a.tareas);
+            if (a.fecha.length > 0) {
+                a.limite = 1;
+            }
+        });
+        Acta["fecha"] = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+        if (sessionStorage.getItem("accion").includes("Crear")) {
+            Acta["fechaG"] = getFecha(date);
+            Acta['nueva'] = 1;
+        } else {
+            Acta['nueva'] = 0;
+        }
+        crearActa(Acta)
+            .then(t => {
+                window.open(t.ruta);
+                location.reload();
+            })
+            .catch(e => {
+                console.log(e);
+                if (e.responseText == "Solicitar Reinicio de sesion") {
+                    cerrarM.load = true;
+                    cerrarModal();
+                    login();
+                }
+            })
     });
 
     load();
