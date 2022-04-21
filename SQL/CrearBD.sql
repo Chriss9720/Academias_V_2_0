@@ -210,6 +210,7 @@ CREATE TABLE SUBIRACTA (
 	id_subir INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 	id_acta INT,
 	id_evidencia INT,
+	no_tarea INT,
 	punto INT,
 	fecha DATETIME DEFAULT NULL,
 	limite BIT DEFAULT 0,
