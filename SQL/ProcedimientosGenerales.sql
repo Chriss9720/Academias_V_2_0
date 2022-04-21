@@ -640,7 +640,7 @@ GO
 
 IF OBJECT_ID('SP_SalvarEvaluacion') IS NOT NULL DROP PROC SP_SalvarEvaluacion
 GO
-CREATE PROC SP_SalvarEvaluacion @ruta VARCHAR(255), @Sem VARCHAR(255), 
+CREATE PROC SP_SalvarEvaluacion @ruta VARCHAR(255), @Sem VARCHAR(255),
 	@Aca VARCHAR(255), @Nom INT AS
 	INSERT INTO EVALUACION (localizacion, localizacionJson, periodo)
 		VALUES (@ruta+'.pdf', @ruta+'.json', @Sem)
