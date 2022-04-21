@@ -81,6 +81,22 @@
                             echo json_encode(array("msg" => "Acceso invalido"));
                         }
                         break;
+                    case "Ev. presidente":
+                        if ($_SESSION["nivel"] == 1 ) {
+                            echo json_encode(array("cambio" => "/Academias/evPresidenteXCo.html"));
+                        } else {
+                            http_response_code(401);
+                            echo json_encode(array("msg" => "Acceso invalido"));
+                        }
+                        break;
+                    case "Ev. secretario":
+                        if ($_SESSION["nivel"] == 1 ) {
+                            echo json_encode(array("cambio" => "/Academias/evSecretarioXCo.html"));
+                        } else {
+                            http_response_code(401);
+                            echo json_encode(array("msg" => "Acceso invalido"));
+                        }
+                        break;
                     default:
                         http_response_code(400);
                         echo json_encode(array("msg"=>"Caso desconocido (Crear) '$afectar'"));
@@ -131,6 +147,22 @@
                         case "Ev. docente":
                             if (validarPuesto(array("Presidente")) ) {
                                 echo json_encode(array("cambio" => "/Academias/evDocenteXPre.html"));
+                            } else {
+                                http_response_code(401);
+                                echo json_encode(array("msg" => "Acceso invalido"));
+                            }
+                            break;
+                        case "Ev. presidente":
+                            if ($_SESSION["nivel"] == 1 ) {
+                                echo json_encode(array("cambio" => "/Academias/evPresidenteXCo.html"));
+                            } else {
+                                http_response_code(401);
+                                echo json_encode(array("msg" => "Acceso invalido"));
+                            }
+                            break;
+                        case "Ev. secretario":
+                            if ($_SESSION["nivel"] == 1 ) {
+                                echo json_encode(array("cambio" => "/Academias/evSecretarioXCo.html"));
                             } else {
                                 http_response_code(401);
                                 echo json_encode(array("msg" => "Acceso invalido"));

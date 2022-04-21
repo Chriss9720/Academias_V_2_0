@@ -74,6 +74,8 @@
     $Ev3 = $datos['ev'][2];
     $Ev4 = $datos['ev'][3];
     $Ev5 = $datos['ev'][4];
+    $Ev6 = $datos['ev'][5];
+    $Ev7 = $datos['ev'][6];
     $calf = $datos['calif'];
     $obs = $datos['obs'];
     $pre = $_SESSION["ND"];
@@ -81,10 +83,9 @@
     $c = $datos['c'];
 
     $tachas = [];
-    $t = 0;
-    for ($i = 0; $i < 6; $i++) {
+    for ($i = 0; $i < 8; $i++) {
         for ($j = 0; $j < 5; $j++) {
-            if ($i < 5)
+            if ($i < 7)
                 $tachas[$i][$j] =  tacha($j, $resp[$i]);
             else {
                 if ($j < 3) {
@@ -114,9 +115,9 @@
                         <img src='../img/logo_ITESCA.png' alt='logo itesca' class='logo_ITESCA'>
                     </td>
                     <td class='area_titulo centrar'>
-                        <label class='nombre_documento'><b>EVALUACIÓN AL DOCENTE POR EL PRESIDENTE DE ACADEMIA</b></label>
+                        <label class='nombre_documento'><b>EVALUACIÓN AL PRESIDENTE DE ACADEMIA POR EL COORDINADOR</b></label>
                         <br>
-                        <label class='subtitulo'>F04PSA01.01</label>
+                        <label class='subtitulo'>F02PSA01.01</label>
                     </td>
                 </tr>
             </tbody>
@@ -192,7 +193,7 @@
             <tbody>
                 <tr>
                     <td class='col-1 all-bordes'>
-                        Asistencia en el periodo (%)
+                        Asistencia a reuniones de presidentes de academia
                     </td>
                     <td class='area-cal all-bordes centrar text-size'>
                         ".$tachas[0][0]."
@@ -230,27 +231,22 @@
                     </td>
                     <td class='area-cal all-bordes centrar text-size'>
                         ".$tachas[1][0]."
-                        <div class='bold'>4</div>
                         100%
                     </td>
                     <td class='area-cal all-bordes centrar text-size'>
                         ".$tachas[1][1]."
-                        <div class='bold'>3</div>
                         Entre 80% y 100%
                     </td>
                     <td class='area-cal all-bordes centrar text-size'>
                         ".$tachas[1][2]."
-                        <div class='bold'>2</div>
                         Entre 60% y 40%
                     </td>
                     <td class='area-cal all-bordes centrar text-size'>
                         ".$tachas[1][3]."
-                        <div class='bold'>1</div>
                         Entre 40% y 20%
                     </td>
                     <td class='area-cal all-bordes centrar text-size'>
                         ".$tachas[1][4]."
-                        <div class='bold'>0</div>
                         Menos de 20%
                     </td>
                     <td class='all-bordes'>
@@ -264,27 +260,22 @@
                     </td>
                     <td class='area-cal all-bordes centrar text-size'>
                         ".$tachas[2][0]."
-                        <div class='bold'>4</div>
                         Cuatro o más
                     </td>
                     <td class='area-cal all-bordes centrar text-size'>
                         ".$tachas[2][1]."
-                        <div class='bold'>3</div>
                         Tres veces
                     </td>
                     <td class='area-cal all-bordes centrar text-size'>
                         ".$tachas[2][2]."
-                        <div class='bold'>2</div>
                         Dos veces
                     </td>
                     <td class='area-cal all-bordes centrar text-size'>
                         ".$tachas[2][3]."
-                        <div class='bold'>1</div>
                         Una vez
                     </td>
                     <td class='area-cal all-bordes centrar text-size'>
                         ".$tachas[2][4]."
-                        <div class='bold'>0</div>
                         Ninguna
                     </td>
                     <td class='all-bordes'>
@@ -294,32 +285,27 @@
 
                 <tr>
                     <td class='col-1 all-bordes'>
-                        Entrega oportuna de información de reprobación y bajas.
+                        Cumplimiento en la entrega de plan de trabajo
                     </td>
                     <td class='area-cal all-bordes centrar text-size'>
                         ".$tachas[3][0]."
-                        <div class='bold'>4</div>
                         En tiempo
                     </td>
                     <td class='area-cal all-bordes centrar text-size'>
                         ".$tachas[3][1]."
-                        <div class='bold'>3</div>
-                        4 días de retraso
+                        1 semana de retraso
                     </td>
                     <td class='area-cal all-bordes centrar text-size'>
                         ".$tachas[3][2]."
-                        <div class='bold'>2</div>
-                        8 días de retraso
+                        2 semanas de retraso
                     </td>
                     <td class='area-cal all-bordes centrar text-size'>
                         ".$tachas[3][3]."
-                        <div class='bold'>1</div>
-                        12 días de retraso
+                        3 semanas de retraso
                     </td>
                     <td class='area-cal all-bordes centrar text-size'>
                         ".$tachas[3][4]."
-                        <div class='bold'>0</div>
-                        Más de 12 días de retraso
+                        Más de 3 semanas de retraso
                     </td>
                     <td class='all-bordes'>
                         $Ev4
@@ -328,35 +314,87 @@
 
                 <tr>
                     <td class='col-1 all-bordes'>
-                        Entrega de instrumentaciones didácticas
+                        Entrega oportuna de actas de academia
                     </td>
                     <td class='area-cal all-bordes centrar text-size'>
                         ".$tachas[4][0]."
-                        <div class='bold'>4</div>
                         En tiempo
                     </td>
                     <td class='area-cal all-bordes centrar text-size'>
                         ".$tachas[4][1]."
-                        <div class='bold'>3</div>
                         De 1 a 4 días de retraso
                     </td>
                     <td class='area-cal all-bordes centrar text-size'>
                         ".$tachas[4][2]."
-                        <div class='bold'>2</div>
                         De 5 a 8 días de retraso
                     </td>
                     <td class='area-cal all-bordes centrar text-size'>
                         ".$tachas[4][3]."
-                        <div class='bold'>1</div>
                         De 9 a 12 días de retraso
                     </td>
                     <td class='area-cal all-bordes centrar text-size'>
                         ".$tachas[4][4]."
-                        <div class='bold'>0</div>
                         Mas de 12 días de retraso
                     </td>
                     <td class='all-bordes'>
                         $Ev5
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class='col-1 all-bordes'>
+                        Entrega de instrumentaciones didácticas
+                    </td>
+                    <td class='area-cal all-bordes centrar text-size'>
+                        ".$tachas[5][0]."
+                        >6
+                    </td>
+                    <td class='area-cal all-bordes centrar text-size'>
+                        ".$tachas[5][1]."
+                        5 a 6
+                    </td>
+                    <td class='area-cal all-bordes centrar text-size'>
+                        ".$tachas[5][2]."
+                        3 a 4
+                    </td>
+                    <td class='area-cal all-bordes centrar text-size'>
+                        ".$tachas[5][3]."
+                        1 a 2
+                    </td>
+                    <td class='area-cal all-bordes centrar text-size'>
+                        ".$tachas[5][4]."
+                        <div>0</div>
+                    </td>
+                    <td class='all-bordes'>
+                        $Ev6
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class='col-1 all-bordes'>
+                        Evaluación oportuna a los profesores de su academia
+                    </td>
+                    <td class='area-cal all-bordes centrar text-size'>
+                        ".$tachas[6][0]."
+                        En tiempo
+                    </td>
+                    <td class='area-cal all-bordes centrar text-size'>
+                        ".$tachas[6][1]."
+                        De 1 a 4 días de retraso
+                    </td>
+                    <td class='area-cal all-bordes centrar text-size'>
+                        ".$tachas[6][2]."
+                        De 5 a 8 días de retraso
+                    </td>
+                    <td class='area-cal all-bordes centrar text-size'>
+                        ".$tachas[6][3]."
+                        De 9 a 12 días de retraso
+                    </td>
+                    <td class='area-cal all-bordes centrar text-size'>
+                        Más de 12 días de retraso
+                    </td>
+                    <td class='all-bordes'>
+                        $Ev7
                     </td>
                 </tr>
 
@@ -380,21 +418,21 @@
             <tbody>
                 <tr>
                     <td class='col-1-2 all-bordes'>
-                        Con base en el promedio obtenido, evalúe su recomendación de recontratarlo (aplica para los de asignatura)
+                        Con base en el promedio obtenido, evalúe su recomendación de que continúe en funciones de presidente de academia
                     </td>
                     <td class='col-1-3 all-bordes centrar'>
-                        ".$tachas[5][0]."
-                        <div class='bold'>15 a 20</div>
+                        ".$tachas[7][0]."
+                        <div class='bold'>21 a 28 puntos Sí</div>
                         Sí
                     </td>
                     <td class='col-1-4 all-bordes centrar'>
-                        ".$tachas[5][1]."
-                        <div class='bold'>9 a 14</div>
-                        Condicionado a mejorar el cumplimiento en academias
+                        ".$tachas[7][1]."
+                        <div class='bold'>14 a 21 puntos</div>
+                        Condicionado a mejora
                     </td>
                     <td class='all-bordes centrar'>
-                        ".$tachas[5][2]."
-                        <div class='bold'>9 o menos</div>
+                        ".$tachas[7][2]."
+                        <div class='bold'>< 14 puntos</div>
                         No
                     </td>
                 </tr>
@@ -450,9 +488,9 @@
     $nombre = "$nomina - $periodo";
     $pw = $datos['pw'];
     if ($pw == 0) {
-        $carpeta = "../Docs/EVDocente/$Clave";
+        $carpeta = "../Docs/EVPresidente/$Clave";
     } else {
-        $carpeta = "../Docs/EVDocente/$Clave/temp";
+        $carpeta = "../Docs/EVPresidente/$Clave/temp";
     }
 
     crearCapera("$carpeta");

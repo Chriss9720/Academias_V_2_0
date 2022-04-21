@@ -1,13 +1,12 @@
 $(document).ready(() => {
 
+    let docentes = [];
+    let ActaG = {};
+
     var cerrarM = {
         load: false,
         login: false
     };
-
-    var docentes = [];
-
-    let ActaG = {};
 
     const cerrarModal = () => {
         $("#modal").modal('hide');
@@ -128,7 +127,7 @@ $(document).ready(() => {
         const login2 = ({ nomina, clave }) => {
             return new Promise((resolve, reject) => {
                 $.ajax({
-                    url: "php/logeo.php",
+                    url: "Secretarioslogeo.php",
                     type: "post",
                     data: {
                         nomina: nomina,
@@ -180,10 +179,18 @@ $(document).ready(() => {
 
     };
 
-    const getDocentesEv = () => {
+    const calcularSemestre = () => {
+        let date = new Date();
+        if (date.getMonth() >= 0 && date.getMonth() < 6)
+            return `Ene - May ${date.getFullYear()}`;
+        else
+            return `Ago - Dic ${date.getFullYear()}`;
+    };
+
+    const getPreEv = () => {
         return new Promise((resolve, reject) => {
             $.ajax({
-                url: "php/getDocentesEv.php",
+                url: "php/getSecEv.php",
                 data: {
                     sem: calcularSemestre(),
                     edit: (sessionStorage.getItem('accion').includes('Crear') ? 0 : 1)
@@ -205,22 +212,7 @@ $(document).ready(() => {
         $("#listaDoc").html(r);
     };
 
-    const leerEv = ruta => {
-        return new Promise((resolve, reject) => {
-            $.ajax({
-                url: 'php/leerEv.php',
-                data: {
-                    ruta: ruta
-                },
-                type: "post",
-                dataType: "json",
-                success: s => resolve(s),
-                error: e => reject(e)
-            })
-        });
-    }
-
-    $("#docenteSel").keypress(k => {
+    $("#preSel").keypress(k => {
         if (k.which === 13) {
             let values = (k.target.value.split(" - "));
             if (sessionStorage.getItem("accion").includes('Crear')) {
@@ -263,8 +255,7 @@ $(document).ready(() => {
                             for (let i = 0; i < evs.length; i++) {
                                 evs[i].innerHTML = (ev[i]);
                             }
-                            let radiosName = ["r-1", "r-2", "r-3", "r-4", "r-5", "r-f"];
-                            console.log(radiosName.length, resp.length);
+                            let radiosName = ["r-1", "r-2", "r-3", "r-4", "r-5", "r-6", "r-7", "r-f"];
                             for (let j = 0; j < resp.length; j++) {
                                 let radios = $(`[name="${radiosName[j]}"]`);
                                 let puesto = false;
@@ -306,7 +297,7 @@ $(document).ready(() => {
         cargando();
         getMisDatos()
             .then(t => {
-                getDocentesEv()
+                getPreEv()
                     .then(docs => {
                         let date = new Date();
                         let año = `${date.getFullYear()}`;
@@ -335,7 +326,6 @@ $(document).ready(() => {
                     })
             })
             .catch(e => {
-                console.log(e);
                 if (e.responseText == "Solicitar Reinicio de sesion") {
                     cerrarM.load = true;
                     cerrarModal();
@@ -395,18 +385,27 @@ $(document).ready(() => {
         $("#editor").modal('hide');
     });
 
-    const calcularSemestre = () => {
-        let date = new Date();
-        if (date.getMonth() >= 0 && date.getMonth() < 6)
-            return `Ene - May ${date.getFullYear()}`;
-        else
-            return `Ago - Dic ${date.getFullYear()}`;
-    };
+    load();
+
+    const leerEv = ruta => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: 'php/leerEv.php',
+                data: {
+                    ruta: ruta
+                },
+                type: "post",
+                dataType: "json",
+                success: s => resolve(s),
+                error: e => reject(e)
+            })
+        });
+    }
 
     const creaerEv = () => {
         return new Promise((resolve, reject) => {
             $.ajax({
-                url: 'php/CrearEvDocente.php',
+                url: 'php/CrearEvSec.php',
                 data: {
                     Ev: ActaG
                 },
@@ -427,7 +426,7 @@ $(document).ready(() => {
                 ActaG['c'] = 0;
             }
             ActaG.elaborada = $("#elaborada").val();
-            let radiosName = ["r-1", "r-2", "r-3", "r-4", "r-5", "r-f"];
+            let radiosName = ["r-1", "r-2", "r-3", "r-4", "r-5", "r-6", "r-7", "r-f"];
             let valid = [false, false, false, false, false, false];
             ActaG.resp = [];
             for (let i = 0; i < radiosName.length; i++) {
@@ -504,7 +503,5 @@ $(document).ready(() => {
             `);
         }
     });
-
-    load();
 
 });

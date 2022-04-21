@@ -59,6 +59,10 @@ INSERT INTO DOCENTE ( nomina , nombre , correo , telefono, clave, nivel)
 VALUES
 (14032201,'Jose Luis Beltran','14032201@itesca.edu.mx','6442345654','EIFJG',0)
 
+INSERT INTO DOCENTE ( nomina , nombre , correo , telefono, clave, nivel)
+VALUES
+(14032202,'Anabel Guierrez','14032202@itesca.edu.mx','6444328765','EIFJG',1)
+
 INSERT INTO MATERIAS (materia, nomina) VALUES ('Español', 14032218)
 INSERT INTO MATERIAS (materia, nomina) VALUES ('Ingles', 14032216)
 INSERT INTO MATERIAS (materia, nomina) VALUES ('Matematicas', 14032217)

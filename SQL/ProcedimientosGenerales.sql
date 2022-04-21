@@ -636,6 +636,7 @@ CREATE PROC SP_EvaluarDocentes @Nomina INT, @Periodo VARCHAR(255) AS
 	WHERE CAR.clave_academia LIKE (
 		SELECT clave_academia FROM CARGO WHERE nomina = @Nomina AND puesto LIKE '%Presidente%'
 	) AND CAR.nomina != @nomina AND CAR.activo = 1 AND (EV.periodo NOT LIKE @Periodo OR EV.periodo IS NULL)
+	AND CAR.puesto NOT LIKE '%Secretario%'
 GO
 
 IF OBJECT_ID('SP_SalvarEvaluacion') IS NOT NULL DROP PROC SP_SalvarEvaluacion
@@ -669,5 +670,89 @@ CREATE PROC SP_EditEvaluarDocentes @Nomina INT, @Periodo VARCHAR(255) AS
 	WHERE CAR.clave_academia LIKE (
 		SELECT clave_academia FROM CARGO WHERE nomina = @Nomina AND puesto LIKE '%Presidente%'
 	) AND CAR.nomina != @nomina AND CAR.activo = 1 AND EV.periodo LIKE @Periodo
+	AND EV.localizacion IS NOT NULL AND EV.localizacionJson IS NOT NULL
+GO
+
+IF OBJECT_ID('SP_EvaluarPresidentes') IS NOT NULL DROP PROC SP_EvaluarPresidentes
+GO
+CREATE PROC SP_EvaluarPresidentes @Periodo VARCHAR(255) AS
+	SELECT CAR.clave_academia, ACA.nombre AS Academia, CAR.puesto,
+		EV.id_evaluacion, EV.localizacion, EV.localizacionJson,
+		EV.periodo, DOC.nombre, DOC.nomina, CAE.nombre AS Carrera
+	FROM CARGO AS CAR
+	LEFT JOIN EVALUACION AS EV
+	ON EV.id_evaluacion = CAR.id_evaluacion
+	LEFT JOIN DOCENTE AS DOC
+	ON DOC.nomina = CAR.nomina
+	LEFT JOIN ACADEMIA AS ACA
+	ON ACA.clave_academia = CAR.clave_academia
+	LEFT JOIN AFILIADO AS AFI
+	ON AFI.nomina = DOC.nomina
+	LEFT JOIN CARRERA AS CAE
+	ON CAE.clave_carrera LIKE AFI.clave_carrera AND AFI.Activo = 1
+	WHERE CAR.puesto LIKE '%Presidente%' AND (EV.periodo NOT LIKE @Periodo OR EV.periodo IS NULL)
+GO
+
+IF OBJECT_ID('SP_EditEvaluarPresidentes') IS NOT NULL DROP PROC SP_EditEvaluarPresidentes
+GO
+CREATE PROC SP_EditEvaluarPresidentes @Periodo VARCHAR(255) AS
+	SELECT CAR.clave_academia, ACA.nombre AS Academia, CAR.puesto,
+		EV.id_evaluacion, EV.localizacion, EV.localizacionJson,
+		EV.periodo, DOC.nombre, DOC.nomina, CAE.nombre AS Carrera
+	FROM CARGO AS CAR
+	LEFT JOIN EVALUACION AS EV
+	ON EV.id_evaluacion = CAR.id_evaluacion
+	LEFT JOIN DOCENTE AS DOC
+	ON DOC.nomina = CAR.nomina
+	LEFT JOIN ACADEMIA AS ACA
+	ON ACA.clave_academia = CAR.clave_academia
+	LEFT JOIN AFILIADO AS AFI
+	ON AFI.nomina = DOC.nomina
+	LEFT JOIN CARRERA AS CAE
+	ON CAE.clave_carrera LIKE AFI.clave_carrera AND AFI.Activo = 1
+	WHERE CAR.puesto LIKE '%Presidente%'
+	AND CAR.activo = 1 AND EV.periodo LIKE @Periodo
+	AND EV.localizacion IS NOT NULL AND EV.localizacionJson IS NOT NULL
+GO
+
+IF OBJECT_ID('SP_EvaluarSec') IS NOT NULL DROP PROC SP_EvaluarSec
+GO
+CREATE PROC SP_EvaluarSec @Periodo VARCHAR(255) AS
+	SELECT CAR.clave_academia, ACA.nombre AS Academia, CAR.puesto,
+		EV.id_evaluacion, EV.localizacion, EV.localizacionJson,
+		EV.periodo, DOC.nombre, DOC.nomina, CAE.nombre AS Carrera
+	FROM CARGO AS CAR
+	LEFT JOIN EVALUACION AS EV
+	ON EV.id_evaluacion = CAR.id_evaluacion
+	LEFT JOIN DOCENTE AS DOC
+	ON DOC.nomina = CAR.nomina
+	LEFT JOIN ACADEMIA AS ACA
+	ON ACA.clave_academia = CAR.clave_academia
+	LEFT JOIN AFILIADO AS AFI
+	ON AFI.nomina = DOC.nomina
+	LEFT JOIN CARRERA AS CAE
+	ON CAE.clave_carrera LIKE AFI.clave_carrera AND AFI.Activo = 1
+	WHERE CAR.puesto LIKE '%Secretario%' AND (EV.periodo NOT LIKE @Periodo OR EV.periodo IS NULL)
+GO
+
+IF OBJECT_ID('SP_EditEvaluarSec') IS NOT NULL DROP PROC SP_EditEvaluarSec
+GO
+CREATE PROC SP_EditEvaluarSec @Periodo VARCHAR(255) AS
+	SELECT CAR.clave_academia, ACA.nombre AS Academia, CAR.puesto,
+		EV.id_evaluacion, EV.localizacion, EV.localizacionJson,
+		EV.periodo, DOC.nombre, DOC.nomina, CAE.nombre AS Carrera
+	FROM CARGO AS CAR
+	LEFT JOIN EVALUACION AS EV
+	ON EV.id_evaluacion = CAR.id_evaluacion
+	LEFT JOIN DOCENTE AS DOC
+	ON DOC.nomina = CAR.nomina
+	LEFT JOIN ACADEMIA AS ACA
+	ON ACA.clave_academia = CAR.clave_academia
+	LEFT JOIN AFILIADO AS AFI
+	ON AFI.nomina = DOC.nomina
+	LEFT JOIN CARRERA AS CAE
+	ON CAE.clave_carrera LIKE AFI.clave_carrera AND AFI.Activo = 1
+	WHERE CAR.puesto LIKE '%Secretario%'
+	AND CAR.activo = 1 AND EV.periodo LIKE @Periodo
 	AND EV.localizacion IS NOT NULL AND EV.localizacionJson IS NOT NULL
 GO
