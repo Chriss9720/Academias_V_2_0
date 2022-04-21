@@ -55,3 +55,28 @@ CREATE VIEW VW_DocentesAcademias AS
 	JOIN DOCENTE AS DOC
 	ON DOC.nomina = CAR.nomina
 GO
+
+IF OBJECT_ID('VW_Evaluaciones') IS NOT NULL DROP VIEW VW_Evaluaciones
+GO
+CREATE VIEW VW_Evaluaciones AS
+	SELECT CAR.clave_academia, ACA.nombre AS Academia, CAR.puesto,
+		EV.id_evaluacion, EV.localizacion, EV.localizacionJson,
+		EV.periodo, DOC.nombre, DOC.nomina, CAE.nombre AS Carrera, CAR.Activo, EV.subido
+	FROM CARGO AS CAR
+	LEFT JOIN EVALUACION AS EV
+	ON EV.id_evaluacion = CAR.id_evaluacion
+	LEFT JOIN DOCENTE AS DOC
+	ON DOC.nomina = CAR.nomina
+	LEFT JOIN ACADEMIA AS ACA
+	ON ACA.clave_academia = CAR.clave_academia
+	LEFT JOIN AFILIADO AS AFI
+	ON AFI.nomina = DOC.nomina
+	LEFT JOIN CARRERA AS CAE
+	ON CAE.clave_carrera LIKE AFI.clave_carrera AND AFI.Activo = 1
+GO
+
+IF OBJECT_ID('SP_LiberarActa') IS NOT NULL DROP PROC SP_LiberarActa
+GO
+CREATE PROC SP_LiberarActa AS
+	SELECT * FROM ACTA WHERE finalizada = 1 AND liberada = 0
+GO

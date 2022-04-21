@@ -427,7 +427,7 @@ $(document).ready(() => {
             }
             ActaG.elaborada = $("#elaborada").val();
             let radiosName = ["r-1", "r-2", "r-3", "r-4", "r-5", "r-6", "r-7", "r-f"];
-            let valid = [false, false, false, false, false, false];
+            let valid = [false, false, false, false, false, false, false, false];
             ActaG.resp = [];
             for (let i = 0; i < radiosName.length; i++) {
                 let radios = $(`[name="${radiosName[i]}"]`);

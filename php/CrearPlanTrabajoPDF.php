@@ -49,6 +49,7 @@
     function salvarLigado($id, $nomina, $tarea, $punto, $fecha) {
         $punto = $punto + 1;
         if (strlen($fecha) > 0) {
+            $fecha = fechaFormat($fecha);
             $l = 1;
         } else {
             $l = 0;

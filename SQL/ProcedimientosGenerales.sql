@@ -619,32 +619,19 @@ GO
 IF OBJECT_ID('SP_EvaluarDocentes') IS NOT NULL DROP PROC SP_EvaluarDocentes
 GO
 CREATE PROC SP_EvaluarDocentes @Nomina INT, @Periodo VARCHAR(255) AS
-	SELECT CAR.clave_academia, ACA.nombre AS Academia, CAR.puesto,
-		EV.id_evaluacion, EV.localizacion, EV.localizacionJson,
-		EV.periodo, DOC.nombre, DOC.nomina, CAE.nombre AS Carrera
-	FROM CARGO AS CAR
-	LEFT JOIN EVALUACION AS EV
-	ON EV.id_evaluacion = CAR.id_evaluacion
-	LEFT JOIN DOCENTE AS DOC
-	ON DOC.nomina = CAR.nomina
-	LEFT JOIN ACADEMIA AS ACA
-	ON ACA.clave_academia = CAR.clave_academia
-	LEFT JOIN AFILIADO AS AFI
-	ON AFI.nomina = DOC.nomina
-	LEFT JOIN CARRERA AS CAE
-	ON CAE.clave_carrera LIKE AFI.clave_carrera AND AFI.Activo = 1
-	WHERE CAR.clave_academia LIKE (
+	SELECT * FROM VW_Evaluaciones
+	WHERE clave_academia LIKE (
 		SELECT clave_academia FROM CARGO WHERE nomina = @Nomina AND puesto LIKE '%Presidente%'
-	) AND CAR.nomina != @nomina AND CAR.activo = 1 AND (EV.periodo NOT LIKE @Periodo OR EV.periodo IS NULL)
-	AND CAR.puesto NOT LIKE '%Secretario%'
+	) AND nomina != @nomina AND activo = 1 AND (periodo NOT LIKE @Periodo OR periodo IS NULL)
+	AND puesto NOT LIKE '%Secretario%'
 GO
 
 IF OBJECT_ID('SP_SalvarEvaluacion') IS NOT NULL DROP PROC SP_SalvarEvaluacion
 GO
 CREATE PROC SP_SalvarEvaluacion @ruta VARCHAR(255), @Sem VARCHAR(255),
 	@Aca VARCHAR(255), @Nom INT AS
-	INSERT INTO EVALUACION (localizacion, localizacionJson, periodo)
-		VALUES (@ruta+'.pdf', @ruta+'.json', @Sem)
+	INSERT INTO EVALUACION (localizacion, localizacionJson, periodo, subido)
+		VALUES (@ruta+'.pdf', @ruta+'.json', @Sem, 1)
 	UPDATE CARGO
 		SET id_evaluacion = (SELECT @@IDENTITY)
 		WHERE nomina = @Nom AND clave_academia LIKE '%'+@Aca+'%'
@@ -653,106 +640,119 @@ GO
 IF OBJECT_ID('SP_EditEvaluarDocentes') IS NOT NULL DROP PROC SP_EditEvaluarDocentes
 GO
 CREATE PROC SP_EditEvaluarDocentes @Nomina INT, @Periodo VARCHAR(255) AS
-	SELECT CAR.clave_academia, ACA.nombre AS Academia, CAR.puesto,
-		EV.id_evaluacion, EV.localizacion, EV.localizacionJson,
-		EV.periodo, DOC.nombre, DOC.nomina, CAE.nombre AS Carrera
-	FROM CARGO AS CAR
-	LEFT JOIN EVALUACION AS EV
-	ON EV.id_evaluacion = CAR.id_evaluacion
-	LEFT JOIN DOCENTE AS DOC
-	ON DOC.nomina = CAR.nomina
-	LEFT JOIN ACADEMIA AS ACA
-	ON ACA.clave_academia = CAR.clave_academia
-	LEFT JOIN AFILIADO AS AFI
-	ON AFI.nomina = DOC.nomina
-	LEFT JOIN CARRERA AS CAE
-	ON CAE.clave_carrera LIKE AFI.clave_carrera AND AFI.Activo = 1
-	WHERE CAR.clave_academia LIKE (
+	SELECT * FROM VW_Evaluaciones
+	WHERE clave_academia LIKE (
 		SELECT clave_academia FROM CARGO WHERE nomina = @Nomina AND puesto LIKE '%Presidente%'
-	) AND CAR.nomina != @nomina AND CAR.activo = 1 AND EV.periodo LIKE @Periodo
-	AND EV.localizacion IS NOT NULL AND EV.localizacionJson IS NOT NULL
+	) AND nomina != @nomina AND activo = 1 AND periodo LIKE @Periodo
+	AND localizacion IS NOT NULL AND localizacionJson IS NOT NULL
 GO
 
 IF OBJECT_ID('SP_EvaluarPresidentes') IS NOT NULL DROP PROC SP_EvaluarPresidentes
 GO
 CREATE PROC SP_EvaluarPresidentes @Periodo VARCHAR(255) AS
-	SELECT CAR.clave_academia, ACA.nombre AS Academia, CAR.puesto,
-		EV.id_evaluacion, EV.localizacion, EV.localizacionJson,
-		EV.periodo, DOC.nombre, DOC.nomina, CAE.nombre AS Carrera
-	FROM CARGO AS CAR
-	LEFT JOIN EVALUACION AS EV
-	ON EV.id_evaluacion = CAR.id_evaluacion
-	LEFT JOIN DOCENTE AS DOC
-	ON DOC.nomina = CAR.nomina
-	LEFT JOIN ACADEMIA AS ACA
-	ON ACA.clave_academia = CAR.clave_academia
-	LEFT JOIN AFILIADO AS AFI
-	ON AFI.nomina = DOC.nomina
-	LEFT JOIN CARRERA AS CAE
-	ON CAE.clave_carrera LIKE AFI.clave_carrera AND AFI.Activo = 1
-	WHERE CAR.puesto LIKE '%Presidente%' AND (EV.periodo NOT LIKE @Periodo OR EV.periodo IS NULL)
+	SELECT * FROM VW_Evaluaciones
+	WHERE puesto LIKE '%Presidente%' AND (periodo NOT LIKE @Periodo OR periodo IS NULL)
 GO
 
 IF OBJECT_ID('SP_EditEvaluarPresidentes') IS NOT NULL DROP PROC SP_EditEvaluarPresidentes
 GO
 CREATE PROC SP_EditEvaluarPresidentes @Periodo VARCHAR(255) AS
-	SELECT CAR.clave_academia, ACA.nombre AS Academia, CAR.puesto,
-		EV.id_evaluacion, EV.localizacion, EV.localizacionJson,
-		EV.periodo, DOC.nombre, DOC.nomina, CAE.nombre AS Carrera
-	FROM CARGO AS CAR
-	LEFT JOIN EVALUACION AS EV
-	ON EV.id_evaluacion = CAR.id_evaluacion
-	LEFT JOIN DOCENTE AS DOC
-	ON DOC.nomina = CAR.nomina
-	LEFT JOIN ACADEMIA AS ACA
-	ON ACA.clave_academia = CAR.clave_academia
-	LEFT JOIN AFILIADO AS AFI
-	ON AFI.nomina = DOC.nomina
-	LEFT JOIN CARRERA AS CAE
-	ON CAE.clave_carrera LIKE AFI.clave_carrera AND AFI.Activo = 1
-	WHERE CAR.puesto LIKE '%Presidente%'
-	AND CAR.activo = 1 AND EV.periodo LIKE @Periodo
-	AND EV.localizacion IS NOT NULL AND EV.localizacionJson IS NOT NULL
+	SELECT * FROM VW_Evaluaciones
+	WHERE puesto LIKE '%Presidente%'
+	AND activo = 1 AND periodo LIKE @Periodo
+	AND localizacion IS NOT NULL AND localizacionJson IS NOT NULL
 GO
 
 IF OBJECT_ID('SP_EvaluarSec') IS NOT NULL DROP PROC SP_EvaluarSec
 GO
 CREATE PROC SP_EvaluarSec @Periodo VARCHAR(255) AS
-	SELECT CAR.clave_academia, ACA.nombre AS Academia, CAR.puesto,
-		EV.id_evaluacion, EV.localizacion, EV.localizacionJson,
-		EV.periodo, DOC.nombre, DOC.nomina, CAE.nombre AS Carrera
-	FROM CARGO AS CAR
-	LEFT JOIN EVALUACION AS EV
-	ON EV.id_evaluacion = CAR.id_evaluacion
-	LEFT JOIN DOCENTE AS DOC
-	ON DOC.nomina = CAR.nomina
-	LEFT JOIN ACADEMIA AS ACA
-	ON ACA.clave_academia = CAR.clave_academia
-	LEFT JOIN AFILIADO AS AFI
-	ON AFI.nomina = DOC.nomina
-	LEFT JOIN CARRERA AS CAE
-	ON CAE.clave_carrera LIKE AFI.clave_carrera AND AFI.Activo = 1
-	WHERE CAR.puesto LIKE '%Secretario%' AND (EV.periodo NOT LIKE @Periodo OR EV.periodo IS NULL)
+	SELECT * FROM VW_Evaluaciones
+	WHERE puesto LIKE '%Secretario%' AND (periodo NOT LIKE @Periodo OR periodo IS NULL)
 GO
 
 IF OBJECT_ID('SP_EditEvaluarSec') IS NOT NULL DROP PROC SP_EditEvaluarSec
 GO
 CREATE PROC SP_EditEvaluarSec @Periodo VARCHAR(255) AS
-	SELECT CAR.clave_academia, ACA.nombre AS Academia, CAR.puesto,
-		EV.id_evaluacion, EV.localizacion, EV.localizacionJson,
-		EV.periodo, DOC.nombre, DOC.nomina, CAE.nombre AS Carrera
+	SELECT * FROM VW_Evaluaciones
+	WHERE puesto LIKE '%Secretario%'
+	AND activo = 1 AND periodo LIKE @Periodo
+	AND localizacion IS NOT NULL AND localizacionJson IS NOT NULL
+GO
+
+IF OBJECT_ID('SP_FaltantesEvDoc') IS NOT NULL DROP PROC SP_FaltantesEvDoc
+GO
+CREATE PROC SP_FaltantesEvDoc  @nomina INT AS
+	SELECT * FROM VW_Evaluaciones
+	WHERE id_evaluacion IS NOT NULL AND puesto LIKE '%Docente%'
+	AND subido = 1 AND clave_academia LIKE (
+		SELECT clave_academia FROM CARGO WHERE nomina = @Nomina AND puesto LIKE '%Presidente%'
+	) AND nomina != @nomina AND activo = 1
+GO
+
+IF OBJECT_ID('SP_FaltantesActa') IS NOT NULL DROP PROC SP_FaltantesActa
+GO
+CREATE PROC SP_FaltantesActa @nomina INT AS
+	SELECT *
+	FROM ACTA AS AC
+	JOIN ACTAS AS ACS
+	ON ACS.id_acta = AC.id_acta
+	WHERE ACS.clave_academia LIKE (
+		SELECT clave_academia FROM CARGO WHERE nomina = @Nomina AND puesto LIKE '%Presidente%'
+	) AND finalizada = 0
+GO
+
+IF OBJECT_ID('SP_FaltantesPlan') IS NOT NULL DROP PROC SP_FaltantesPlan
+GO
+CREATE PROC SP_FaltantesPlan @nomina INT AS
+	SELECT *
+	FROM PLANES AS PN
+	JOIN PLANTRABAJO AS PT
+	ON PN.id_planTrabajo = PT.id_planTrabajo
+	WHERE PN.clave_academia LIKE (
+		SELECT clave_academia FROM CARGO WHERE nomina = @Nomina AND puesto LIKE '%Presidente%'
+	) AND subido = 1
+GO
+
+IF OBJECT_ID('SP_FaltantesEvPre') IS NOT NULL DROP PROC SP_FaltantesEvPre
+GO
+CREATE PROC SP_FaltantesEvPre AS
+	SELECT * FROM VW_Evaluaciones
+	WHERE id_evaluacion IS NOT NULL AND puesto LIKE '%Presidente%'
+	AND subido = 1 AND activo = 1
+GO
+
+IF OBJECT_ID('SP_FaltantesEvSec') IS NOT NULL DROP PROC SP_FaltantesEvSec
+GO
+CREATE PROC SP_FaltantesEvSec AS
+	SELECT * FROM VW_Evaluaciones
+	WHERE id_evaluacion IS NOT NULL AND puesto LIKE '%Secretario%'
+	AND subido = 1 AND activo = 1
+GO
+
+IF OBJECT_ID('SP_LiberarPlan') IS NOT NULL DROP PROC SP_LiberarPlan
+GO
+CREATE PROC SP_LiberarPlan AS
+	SELECT *
+	FROM PLANES AS PN
+	JOIN PLANTRABAJO AS PT
+	ON PN.id_planTrabajo = PT.id_planTrabajo
+	WHERE subido = 2
+GO
+
+IF OBJECT_ID('SP_LiberarEva') IS NOT NULL DROP PROC SP_LiberarEva
+GO
+CREATE PROC SP_LiberarEva @Puesto VARCHAR(255) AS
+	SELECT *
 	FROM CARGO AS CAR
-	LEFT JOIN EVALUACION AS EV
-	ON EV.id_evaluacion = CAR.id_evaluacion
-	LEFT JOIN DOCENTE AS DOC
-	ON DOC.nomina = CAR.nomina
-	LEFT JOIN ACADEMIA AS ACA
-	ON ACA.clave_academia = CAR.clave_academia
-	LEFT JOIN AFILIADO AS AFI
-	ON AFI.nomina = DOC.nomina
-	LEFT JOIN CARRERA AS CAE
-	ON CAE.clave_carrera LIKE AFI.clave_carrera AND AFI.Activo = 1
-	WHERE CAR.puesto LIKE '%Secretario%'
-	AND CAR.activo = 1 AND EV.periodo LIKE @Periodo
-	AND EV.localizacion IS NOT NULL AND EV.localizacionJson IS NOT NULL
+	JOIN EVALUACION AS EVA
+	ON EVA.id_evaluacion = CAR.id_evaluacion AND subido = 1
+	WHERE puesto LIKE '%'+@Puesto+'%'
+GO
+
+IF OBJECT_ID('SP_EvidenciaPendiente') IS NOT NULL DROP PROC SP_EvidenciaPendiente
+GO
+CREATE PROC SP_EvidenciaPendiente @Nomina INT AS
+	SELECT *, 'Plan' AS PADRE FROM EVIDENCIA WHERE localizacion IS NULL
+	UNION
+	SELECT *, 'Acta' AS Padre FROM EVIDENCIAACTA WHERE localizacion IS NULL
 GO

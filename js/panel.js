@@ -429,17 +429,18 @@ $(document).ready(() => {
     const load = () => {
         cargando();
         getMisDatos()
-            .then(t => {
+            .then(async(t) => {
                 getAgenda()
                     .then(ag => cargarAgenda(ag));
                 cerrarM.load = true;
                 cerrarM.login = true;
                 misDatos = t;
-                menu();
+                await menu();
                 cargarCoordinador({ u: false });
                 cerrarModal();
             })
             .catch(e => {
+                console.log(e);
                 if (e.responseText == "Solicitar Reinicio de sesion") {
                     cerrarM.load = true;
                     cerrarModal();
@@ -475,9 +476,8 @@ $(document).ready(() => {
         });
     };
 
-    const menu = () => {
+    const menu = async() => {
         puedeVer();
-        puedeDescargar();
         let presidente = isPresidente();
         let secretario = isScretario();
         let jefe = misDatos.jefe;
@@ -486,7 +486,7 @@ $(document).ready(() => {
         puedeCrear({ presidente, secretario, jefe, nivel });
         puedeLiberar({ nivel });
         puedeFinalizar({ presidente, nivel, secretario });
-        subirEvidencia();
+        await subirEvidencia();
         crearAcciones();
     };
 
@@ -518,11 +518,11 @@ $(document).ready(() => {
                         Editar
                     </button>
                     <div class="dropdown-menu bg-menu-principal" aria-labelledby="editar">
-                        ${ jefe == 1 || nivel == 0 ? '<input name="opcionMenu" type="button"  value="Carrera" class="dropdown-item">' : ''}
-                        ${presidente || secretario ||  jefe == 1 || nivel == 0 || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Docente" class="dropdown-item">' : ''}
+                        ${jefe == 1 || nivel == 0 ? '<input name="opcionMenu" type="button"  value="Carrera" class="dropdown-item">' : ''}
+                        ${presidente || secretario || jefe == 1 || nivel == 0 || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Docente" class="dropdown-item">' : ''}
                         ${presidente || secretario || nivel == 0 || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Academia" class="dropdown-item">' : ''}
                         ${presidente || secretario || nivel == 1 || nivel == 0 ? '<input name="opcionMenu" type="button"  value="Plan de trabajo" class="dropdown-item">' : ''}
-                        ${presidente || secretario || nivel == 1 || nivel == 0? '<input name="opcionMenu" type="button"  value="Acta" class="dropdown-item">' : ''}
+                        ${presidente || secretario || nivel == 1 || nivel == 0 ? '<input name="opcionMenu" type="button"  value="Acta" class="dropdown-item">' : ''}
                         ${presidente ? '<input name="opcionMenu" type="button"  value="Ev. docente" class="dropdown-item">' : ''}
                         ${nivel == 1 ? '<input name="opcionMenu" type="button"  value="Ev. presidente" class="dropdown-item">' : ''}
                         ${nivel == 1 ? '<input name="opcionMenu" type="button"  value="Ev. secretario" class="dropdown-item">' : ''}
@@ -543,7 +543,7 @@ $(document).ready(() => {
                     </button>
                     <div class="dropdown-menu bg-menu-principal" aria-labelledby="Crear">
                         ${nivel == 0 || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Carrera" class="dropdown-item">' : ''}
-                        ${presidente || secretario ||  jefe == 1 || nivel == 0 || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Docente" class="dropdown-item">' : ''}
+                        ${presidente || secretario || jefe == 1 || nivel == 0 || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Docente" class="dropdown-item">' : ''}
                         ${nivel == 0 || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Academia" class="dropdown-item">' : ''}
                         ${presidente || secretario || nivel == 1 || nivel == 0 ? '<input name="opcionMenu" type="button"  value="Plan de trabajo" class="dropdown-item">' : ''}
                         ${presidente || secretario || nivel == 1 || nivel == 0 ? '<input name="opcionMenu" type="button"  value="Acta" class="dropdown-item">' : ''}
@@ -558,32 +558,147 @@ $(document).ready(() => {
         }
     };
 
-    const subirEvidencia = () => {
-        $("#subirEvidencia").html(`
-            <button name="areaMenu" class="btn text-menu" type="button" id="Subir">
-                Subir Evidencia
-            </button>
-        `);
+    const getfaltantesEvidencia = () => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: 'php/faltantesEvidencia.php',
+                type: 'POST',
+                dataType: 'json',
+                success: s => resolve(s),
+                error: e => reject(e)
+            })
+        });
+    }
+
+    const subirEvidencia = async() => {
+        await getfaltantesEvidencia()
+            .then(ev => {
+                $("#subirEvidencia").html(`
+                    <div class="d-flex d-inline align-items-center">
+                        <button name="areaMenu" class="btn text-menu" type="button" id="Subir">
+                            Subir Evidencia
+                            <span class="badge badge-danger">${ev.length}</span>
+                        </button>
+                    </div>
+                `);
+            })
+            .catch(e => {
+                $("#subirEvidencia").html(`
+                    <div class="d-flex d-inline align-items-center">
+                        <button name="areaMenu" class="btn text-menu" type="button" id="Subir">
+                            Subir Evidencia
+                            <span class="badge badge-danger">0</span>
+                        </button>
+                    </div>
+                `);
+            });
+
     };
 
-    const puedeDescargar = () => {
-        $("#desMenu").html(`
-            <div class="dropdown">
-                <button name="areaMenu" class="btn text-menu dropdown-toggle" type="button" id="Descargar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Descargar
-                </button>
-                <div class="dropdown-menu bg-menu-principal" aria-labelledby="Descargar">
-                    <input name="opcionMenu" type="button"  value="Plan de trabajo" class="dropdown-item">
-                    <input name="opcionMenu" type="button"  value="Acta" class="dropdown-item">
-                    <input name="opcionMenu" type="button"  value="Ev. docente" class="dropdown-item">
-                    <input name="opcionMenu" type="button"  value="Ev. presidente" class="dropdown-item">
-                    <input name="opcionMenu" type="button"  value="Ev. secretario" class="dropdown-item">
+    const liberarPlan = () => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: 'php/liberarPlanes.php',
+                dataType: "json",
+                type: 'POST',
+                success: s => resolve(s),
+                error: e => reject()
+            });
+        });
+    };
+
+    const getliberarPlan = async() => {
+        let r;
+        await liberarPlan()
+            .then(doc => {
+                r = `
+                    <div class="d-flex d-inline align-items-center">
+                        <input name="opcionMenu" type="button" value="Plan de Trabajo" class="dropdown-item">
+                        <span class="badge badge-danger">${doc.length}</span>
+                    </div>
+                `;
+            }).
+        catch(e => {
+            r = `
+                <div class="d-flex d-inline align-items-center">
+                    <input name="opcionMenu" type="button" value="Plan de Trabajo" class="dropdown-item">
+                    <span class="badge badge-danger">0</span>
                 </div>
-            </div>
-        `);
+            `;
+        })
+        return r;
     };
 
-    const puedeLiberar = ({ nivel }) => {
+    const liberarActa = () => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: 'php/liberarActa.php',
+                dataType: "json",
+                type: 'POST',
+                success: s => resolve(s),
+                error: e => reject()
+            });
+        });
+    };
+
+    const getLiberarActa = async() => {
+        let r;
+        await liberarActa()
+            .then(doc => {
+                r = `
+                    <div class="d-flex d-inline align-items-center">
+                        <input name="opcionMenu" type="button" value="Acta" class="dropdown-item">
+                        <span class="badge badge-danger">${doc.length}</span>
+                    </div>
+                `;
+            }).
+        catch(e => {
+            r = `
+                <div class="d-flex d-inline align-items-center">
+                    <input name="opcionMenu" type="button" value="Acta" class="dropdown-item">
+                    <span class="badge badge-danger">0</span>
+                </div>
+            `;
+        })
+        return r;
+    };
+
+    const liberarEva = puesto => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: 'php/liberarEva.php',
+                data: { puesto: puesto },
+                dataType: "json",
+                type: 'POST',
+                success: s => resolve(s),
+                error: e => reject()
+            });
+        });
+    };
+
+    const getliberarEva = async(puesto) => {
+        let r;
+        await liberarEva(puesto)
+            .then(doc => {
+                r = `
+                    <div class="d-flex d-inline align-items-center">
+                        <input name="opcionMenu" type="button" value="Ev. ${puesto}" class="dropdown-item">
+                        <span class="badge badge-danger">${doc.length}</span>
+                    </div>
+                `;
+            }).
+        catch(e => {
+            r = `
+                <div class="d-flex d-inline align-items-center">
+                    <input name="opcionMenu" type="button" value="Ev. ${puesto}" class="dropdown-item">
+                    <span class="badge badge-danger">0</span>
+                </div>
+            `;
+        })
+        return r;
+    };
+
+    const puedeLiberar = async({ nivel }) => {
         if (nivel == 1 || nivel == 0) {
             $("#liberarMenu").html(`
                 <div class="dropdown">
@@ -591,14 +706,11 @@ $(document).ready(() => {
                         Liberar
                     </button>
                     <div class="dropdown-menu bg-menu-principal" aria-labelledby="editar">
-                        <div class="d-flex d-inline align-items-center">
-                            <input name="opcionMenu" type="button"  value="Plan de trabajo" class="dropdown-item">
-                            <span class="badge badge-danger">4</span>
-                        </div>
-                        <input name="opcionMenu" type="button"  value="Acta" class="dropdown-item">
-                        <input name="opcionMenu" type="button"  value="Ev. docente" class="dropdown-item">
-                        <input name="opcionMenu" type="button"  value="Ev. presidente" class="dropdown-item">
-                        <input name="opcionMenu" type="button"  value="Ev. secretario" class="dropdown-item">
+                        ${await getliberarPlan()}
+                        ${await getLiberarActa()}
+                        ${await getliberarEva('Docente')}
+                        ${await getliberarEva('Presidente')}
+                        ${await getliberarEva('Secretario')}
                     </div>
                 </div>
             `);
@@ -607,19 +719,189 @@ $(document).ready(() => {
         }
     };
 
-    const puedeFinalizar = ({ presidente, nivel, secretario }) => {
-        if (presidente || nivel == 1 || secretario) {
+    const faltanEV = () => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: 'php/evFaltantesDoc.php',
+                type: "POST",
+                dataType: "json",
+                success: s => resolve(s),
+                error: e => reject(e)
+            });
+        })
+    };
+
+    const getFEvDoc = async() => {
+        let r;
+        await faltanEV()
+            .then(doc => {
+                r = `
+                    <div class="d-flex d-inline align-items-center">
+                        <input name="opcionMenu" type="button" value="Ev. Docente" class="dropdown-item">
+                        <span class="badge badge-danger">${doc.length}</span>
+                    </div>
+                `;
+            }).
+        catch(e => {
+            r = `
+                <div class="d-flex d-inline align-items-center">
+                    <input name="opcionMenu" type="button" value="Ev .Docente" class="dropdown-item">
+                    <span class="badge badge-danger">0</span>
+                </div>
+            `;
+        })
+        return r;
+    };
+
+    const faltantesActas = () => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: 'php/faltantesActas.php',
+                type: 'POST',
+                dataType: "json",
+                success: s => resolve(s),
+                error: e => reject(e)
+            });
+        });
+    }
+
+    const getfaltantesActas = async() => {
+        let r;
+        await faltantesActas()
+            .then(act => {
+                r = `
+                    <div class="d-flex d-inline align-items-center">
+                        <input name="opcionMenu" type="button" value="Acta" class="dropdown-item">
+                        <span class="badge badge-danger">${act.length}</span>
+                    </div>
+                `;
+            }).
+        catch(e => {
+            r = `
+                <div class="d-flex d-inline align-items-center">
+                    <input name="opcionMenu" type="button" value="Acta" class="dropdown-item">
+                    <span class="badge badge-danger">0</span>
+                </div>
+            `;
+        })
+        return r;
+    };
+
+    const faltantesPlan = () => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: 'php/faltantesPlanes.php',
+                type: 'POST',
+                dataType: "json",
+                success: s => resolve(s),
+                error: e => reject(e)
+            });
+        });
+    }
+
+    const getfaltantesPlan = async() => {
+        let r;
+        await faltantesPlan()
+            .then(act => {
+                r = `
+                    <div class="d-flex d-inline align-items-center">
+                        <input name="opcionMenu" type="button" value="Plan de Trabajo" class="dropdown-item">
+                        <span class="badge badge-danger">${act.length}</span>
+                    </div>
+                `;
+            }).
+        catch(e => {
+            r = `
+                <div class="d-flex d-inline align-items-center">
+                    <input name="opcionMenu" type="button" value="Plan de Trabajo" class="dropdown-item">
+                    <span class="badge badge-danger">0</span>
+                </div>
+            `;
+        })
+        return r;
+    };
+
+    const faltanEVPre = () => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: 'php/evFaltantesPre.php',
+                type: "POST",
+                dataType: "json",
+                success: s => resolve(s),
+                error: e => reject(e)
+            });
+        })
+    };
+
+    const getFEvPre = async() => {
+        let r;
+        await faltanEVPre()
+            .then(doc => {
+                r = `
+                    <div class="d-flex d-inline align-items-center">
+                        <input name="opcionMenu" type="button" value="Ev. Presidente" class="dropdown-item">
+                        <span class="badge badge-danger">${doc.length}</span>
+                    </div>
+                `;
+            }).
+        catch(e => {
+            r = `
+                <div class="d-flex d-inline align-items-center">
+                    <input name="opcionMenu" type="button" value="Ev. Presidente" class="dropdown-item">
+                    <span class="badge badge-danger">0</span>
+                </div>
+            `;
+        })
+        return r;
+    };
+
+    const faltanEVSec = () => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: 'php/evFaltantesSec.php',
+                type: "POST",
+                dataType: "json",
+                success: s => resolve(s),
+                error: e => reject(e)
+            });
+        })
+    };
+
+    const getFEvSec = async() => {
+        let r;
+        await faltanEVSec()
+            .then(doc => {
+                r = `
+                    <div class="d-flex d-inline align-items-center">
+                        <input name="opcionMenu" type="button" value="Ev. Secretario" class="dropdown-item">
+                        <span class="badge badge-danger">${doc.length}</span>
+                    </div>
+                `;
+            }).
+        catch(e => {
+            r = `
+                <div class="d-flex d-inline align-items-center">
+                    <input name="opcionMenu" type="button" value="Ev. Secretario" class="dropdown-item">
+                    <span class="badge badge-danger">0</span>
+                </div>
+            `;
+        })
+        return r;
+    };
+
+    const puedeFinalizar = async({ presidente, nivel, secretario }) => {
+        if (presidente || nivel == 1) {
             $("#finalizarMenu").html(`
                 <div class="dropdown">
                     <button name="areaMenu" class="btn text-menu dropdown-toggle" type="button" id="Finalizar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Finalizar
                     </button>
                     <div class="dropdown-menu bg-menu-principal" aria-labelledby="Finalizar">
-                        ${presidente ? '<input name="opcionMenu" type="button"  value="Plan de trabajo" class="dropdown-item">': ''}
-                        ${presidente ? '<input name="opcionMenu" type="button"  value="Acta" class="dropdown-item">': ''}
-                        ${presidente ? '<input name="opcionMenu" type="button"  value="Ev. docente" class="dropdown-item">': ''}
-                        ${nivel == 1 ? '<input name="opcionMenu" type="button"  value="Ev. presidente" class="dropdown-item">': ''}
-                        ${presidente ? '<input name="opcionMenu" type="button"  value="Ev. secretario" class="dropdown-item">': ''}
+                        ${presidente || secretario ? await getfaltantesPlan() : ''}
+                        ${presidente || secretario ? await getfaltantesActas() : ''}
+                        ${presidente || secretario ? await getFEvDoc() : ''}
+                        ${nivel == 1 ? await getFEvPre() : ''}
+                        ${nivel == 1  ? await getFEvSec() : ''}
                     </div>
                 </div>
             `);
@@ -650,7 +932,7 @@ $(document).ready(() => {
             .catch(async(c) => {
                 $("#datosCoordinador").html(`
                     <h3>Ocurrió un error, puede que no se tenga establecido a un coordinador</h3>
-                    ${misDatos['nivel'] == 0 ? await cambiarCoordinador(): ""}
+                    ${misDatos['nivel'] == 0 ? await cambiarCoordinador() : ""}
                 `);
                 if (misDatos['nivel'] == 0) {
                     aplicarCoordinador();
@@ -708,7 +990,7 @@ $(document).ready(() => {
                 <img src="img/ver-detalles.png" class="opciones img-fluid click ml-2" title="ver">
             </div>
             ${(misDatos['nivel'] == 0) ? await cambiarCoordinador() : ""}
-            ${alertaCoordinador({u:u})}
+            ${alertaCoordinador({ u: u })}
         `);
     };
 
