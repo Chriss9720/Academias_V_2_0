@@ -892,6 +892,6 @@
         ligarResponsables($id, $json);
     }
 
-    echo json_encode(array('ruta'=>"Acacemias/$ruta.pdf"));
+    echo json_encode(array('ruta'=>"Academias/$ruta.pdf"));
 
 ?>

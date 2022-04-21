@@ -507,6 +507,6 @@
         $bytes = file_put_contents($nombreJson, $json);
     }
 
-    echo json_encode(array('ruta'=>"Acacemias/$ruta.pdf"));
+    echo json_encode(array('ruta'=>"Academias/$ruta.pdf"));
 
 ?>

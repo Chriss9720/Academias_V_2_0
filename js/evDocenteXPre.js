@@ -7,7 +7,7 @@ $(document).ready(() => {
 
     var docentes = [];
 
-    let document = {};
+    let ActaG = {};
 
     const cerrarModal = () => {
         $("#modal").modal('hide');
@@ -210,10 +210,10 @@ $(document).ready(() => {
             let doc = docentes.find(f => f.nomina == values[0] && f.nombre === values[1]);
             if (doc) {
                 $("#alerta").html(``);
-                document.infoDoc = doc;
+                ActaG.infoDoc = doc;
                 let campos = $("[name='info']");
                 let datos = [calcularSemestre(), doc.Academia, doc.Carrera];
-                document.infoDoc.periodo = datos[0];
+                ActaG.infoDoc.periodo = datos[0];
                 for (let i = 0; i < campos.length; i++) {
                     campos[i].value = datos[i];
                 }
@@ -236,6 +236,18 @@ $(document).ready(() => {
             .then(t => {
                 getDocentesEv()
                     .then(docs => {
+                        let date = new Date();
+                        let año = `${date.getFullYear()}`;
+                        let mes = `${date.getMonth() +1}`;
+                        let dia = `${date.getDate()}`;
+                        if (mes.length == 1) {
+                            mes = `0${mes}`;
+                        }
+                        if (dia.length == 1) {
+                            dia = `0${dia}`;
+                        }
+                        console.log(`${año}-${mes}-${dia}`);
+                        $("#elaborada").val(`${año}-${mes}-${dia}`);
                         docentes = docs;
                         armarListaDoc(docs);
                         cerrarM.load = true;
@@ -320,15 +332,33 @@ $(document).ready(() => {
             return `Ago - Dic ${date.getFullYear()}`;
     };
 
+    const creaerEv = () => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: 'php/CrearEvDocente.php',
+                data: {
+                    Ev: ActaG
+                },
+                type: 'post',
+                dataType: "json",
+                success: s => resolve(s),
+                error: e => reject(e)
+            })
+        });
+    }
+
     $("[name='Crear']").click(() => {
-        if (document.infoDoc) {
+        if (ActaG.infoDoc) {
+            ActaG.elaborada = $("#elaborada").val();
             let radiosName = ["r-1", "r-2", "r-3", "r-4", "r-5", "r-f"];
-            let valid = [false, false, false, false, false, false]
+            let valid = [false, false, false, false, false, false];
+            ActaG.resp = [];
             for (let i = 0; i < radiosName.length; i++) {
                 let radios = $(`[name="${radiosName[i]}"]`);
                 for (let j = 0; j < radios.length && !valid[i]; j++) {
                     if (radios[j].checked) {
                         valid[i] = true;
+                        ActaG.resp.push(j);
                     }
                 }
                 for (let j = 0; j < radios.length; j++) {
@@ -351,16 +381,28 @@ $(document).ready(() => {
                 `);
             } else {
                 let ev = $('[name="evaluacion"]');
-                document.ev = [];
+                ActaG.ev = [];
                 for (let i = 0; i < ev.length; i++) {
-                    document.ev.push(ev[i].innerHTML);
+                    ActaG.ev.push(ev[i].innerHTML);
                 }
-                document.obs = CKEDITOR.instances["obs"].getData();
+                ActaG.obs = CKEDITOR.instances["obs"].getData();
                 let calif = $("#calif").val().trim();
                 if (calif.length > 0) {
                     $("#calif")[0].className = $("#calif")[0].className.replace(' is-invalid', '');
                     $("#alerta").html(``);
-                    document.calif = calif;
+                    ActaG.calif = calif;
+                    creaerEv()
+                        .then(ev => {
+                            window.open(ev.ruta);
+                        })
+                        .catch(e => {
+                            console.log(e);
+                            if (e.responseText == "Solicitar Reinicio de sesion") {
+                                cerrarM.load = true;
+                                cerrarModal();
+                                login();
+                            }
+                        })
                 } else {
                     $("#calif")[0].className = `${$("#calif")[0].className} is-invalid`;
                     $("#alerta").html(`
@@ -372,7 +414,6 @@ $(document).ready(() => {
                         </div>
                     `);
                 }
-                console.log(document);
             }
         } else {
             $("#alerta").html(`
