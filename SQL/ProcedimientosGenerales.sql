@@ -648,3 +648,26 @@ CREATE PROC SP_SalvarEvaluacion @ruta VARCHAR(255), @Sem VARCHAR(255),
 		SET id_evaluacion = (SELECT @@IDENTITY)
 		WHERE nomina = @Nom AND clave_academia LIKE '%'+@Aca+'%'
 GO
+
+IF OBJECT_ID('SP_EditEvaluarDocentes') IS NOT NULL DROP PROC SP_EditEvaluarDocentes
+GO
+CREATE PROC SP_EditEvaluarDocentes @Nomina INT, @Periodo VARCHAR(255) AS
+	SELECT CAR.clave_academia, ACA.nombre AS Academia, CAR.puesto,
+		EV.id_evaluacion, EV.localizacion, EV.localizacionJson,
+		EV.periodo, DOC.nombre, DOC.nomina, CAE.nombre AS Carrera
+	FROM CARGO AS CAR
+	LEFT JOIN EVALUACION AS EV
+	ON EV.id_evaluacion = CAR.id_evaluacion
+	LEFT JOIN DOCENTE AS DOC
+	ON DOC.nomina = CAR.nomina
+	LEFT JOIN ACADEMIA AS ACA
+	ON ACA.clave_academia = CAR.clave_academia
+	LEFT JOIN AFILIADO AS AFI
+	ON AFI.nomina = DOC.nomina
+	LEFT JOIN CARRERA AS CAE
+	ON CAE.clave_carrera LIKE AFI.clave_carrera AND AFI.Activo = 1
+	WHERE CAR.clave_academia LIKE (
+		SELECT clave_academia FROM CARGO WHERE nomina = @Nomina AND puesto LIKE '%Presidente%'
+	) AND CAR.nomina != @nomina AND CAR.activo = 1 AND EV.periodo LIKE @Periodo
+	AND EV.localizacion IS NOT NULL AND EV.localizacionJson IS NOT NULL
+GO

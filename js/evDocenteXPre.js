@@ -185,7 +185,8 @@ $(document).ready(() => {
             $.ajax({
                 url: "php/getDocentesEv.php",
                 data: {
-                    sem: calcularSemestre()
+                    sem: calcularSemestre(),
+                    edit: (sessionStorage.getItem('accion').includes('Crear') ? 0 : 1)
                 },
                 type: "POST",
                 dataType: "json",
@@ -204,28 +205,96 @@ $(document).ready(() => {
         $("#listaDoc").html(r);
     };
 
+    const leerEv = ruta => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: 'php/leerEv.php',
+                data: {
+                    ruta: ruta
+                },
+                type: "post",
+                dataType: "json",
+                success: s => resolve(s),
+                error: e => reject(e)
+            })
+        });
+    }
+
     $("#docenteSel").keypress(k => {
         if (k.which === 13) {
             let values = (k.target.value.split(" - "));
-            let doc = docentes.find(f => f.nomina == values[0] && f.nombre === values[1]);
-            if (doc) {
-                $("#alerta").html(``);
-                ActaG.infoDoc = doc;
-                let campos = $("[name='info']");
-                let datos = [calcularSemestre(), doc.Academia, doc.Carrera];
-                ActaG.infoDoc.periodo = datos[0];
-                for (let i = 0; i < campos.length; i++) {
-                    campos[i].value = datos[i];
+            if (sessionStorage.getItem("accion").includes('Crear')) {
+                let doc = docentes.find(f => f.nomina == values[0] && f.nombre === values[1]);
+                if (doc) {
+                    $("#alerta").html(``);
+                    ActaG.infoDoc = doc;
+                    let campos = $("[name='info']");
+                    let datos = [calcularSemestre(), doc.Academia, doc.Carrera];
+                    ActaG.infoDoc.periodo = datos[0];
+                    for (let i = 0; i < campos.length; i++) {
+                        campos[i].value = datos[i];
+                    }
+                } else {
+                    $("#alerta").html(`
+                        <div class="alert h2 text-center alert-danger alert-dismissible fade show" role="alert">
+                            <strong>No se encontro al doente, recuerde que debe de ser en formato Nómina - Nombre</strong>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    `);
                 }
             } else {
-                $("#alerta").html(`
-                    <div class="alert h2 text-center alert-danger alert-dismissible fade show" role="alert">
-                        <strong>No se encontro al doente, recuerde que debe de ser en formato Nómina - Nombre</strong>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                `);
+                let doc = docentes.find(f => f.nomina == values[0] && f.nombre === values[1]);
+                if (doc) {
+                    leerEv(doc.localizacionJson)
+                        .then(json => {
+                            $("#alerta").html(``);
+                            let { infoDoc, resp, ev, obs, calif } = json;
+                            let campos = $("[name='info']");
+                            let datos = [infoDoc.periodo, infoDoc.Academia, infoDoc.Carrera];
+                            for (let i = 0; i < campos.length; i++) {
+                                campos[i].value = datos[i];
+                            }
+                            CKEDITOR.instances["obs"].setData(obs);
+                            $("#calif").val(calif);
+                            let evs = $('[name="evaluacion"]');
+                            for (let i = 0; i < evs.length; i++) {
+                                evs[i].innerHTML = (ev[i]);
+                            }
+                            let radiosName = ["r-1", "r-2", "r-3", "r-4", "r-5", "r-f"];
+                            console.log(radiosName.length, resp.length);
+                            for (let j = 0; j < resp.length; j++) {
+                                let radios = $(`[name="${radiosName[j]}"]`);
+                                let puesto = false;
+                                for (let i = 0; i < radios.length && !puesto; i++) {
+                                    puesto = i == resp[j];
+                                    radios[i].checked = puesto;
+                                }
+                            }
+                            ActaG = json;
+                        })
+                        .catch(e => {
+                            console.log(e);
+                            $("#alerta").html(`
+                                <div class="alert h2 text-center alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>No se encontro el documento, puede que alla sido eliminado del servidor</strong>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            `);
+                        })
+                } else {
+                    $("#alerta").html(`
+                        <div class="alert h2 text-center alert-danger alert-dismissible fade show" role="alert">
+                            <strong>No se encontro al doente, recuerde que debe de ser en formato Nómina - Nombre</strong>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    `);
+                }
             }
         }
     });
@@ -399,6 +468,7 @@ $(document).ready(() => {
                     creaerEv()
                         .then(ev => {
                             window.open(ev.ruta);
+                            location.reload();
                         })
                         .catch(e => {
                             console.log(e);

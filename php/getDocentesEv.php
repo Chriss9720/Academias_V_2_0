@@ -17,7 +17,11 @@
         $conectar = new Conectar();
         $con = $conectar->conn();
         if ($con) {
-            $call = "{ call dbo.SP_EvaluarDocentes(?, ?) }";
+            if ($_POST['edit'] == 0) {
+                $call = "{ call dbo.SP_EvaluarDocentes(?, ?) }";
+            } else {
+                $call = "{ call dbo.SP_EditEvaluarDocentes(?, ?) }";
+            }
             $params = array(
                 array(&$_SESSION["nomina"], SQLSRV_PARAM_IN),
                 array(&$_POST['sem'], SQLSRV_PARAM_IN)
