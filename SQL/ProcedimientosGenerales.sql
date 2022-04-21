@@ -637,3 +637,14 @@ CREATE PROC SP_EvaluarDocentes @Nomina INT, @Periodo VARCHAR(255) AS
 		SELECT clave_academia FROM CARGO WHERE nomina = @Nomina AND puesto LIKE '%Presidente%'
 	) AND CAR.nomina != @nomina AND CAR.activo = 1 AND (EV.periodo NOT LIKE @Periodo OR EV.periodo IS NULL)
 GO
+
+IF OBJECT_ID('SP_SalvarEvaluacion') IS NOT NULL DROP PROC SP_SalvarEvaluacion
+GO
+CREATE PROC SP_SalvarEvaluacion @ruta VARCHAR(255), @Sem VARCHAR(255), 
+	@Aca VARCHAR(255), @Nom INT AS
+	INSERT INTO EVALUACION (localizacion, localizacionJson, periodo)
+		VALUES (@ruta+'.pdf', @ruta+'.json', @Sem)
+	UPDATE CARGO
+		SET id_evaluacion = (SELECT @@IDENTITY)
+		WHERE nomina = @Nom AND clave_academia LIKE '%'+@Aca+'%'
+GO

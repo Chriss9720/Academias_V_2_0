@@ -7,12 +7,12 @@
 
     $session = new Session();
     $Activo = new Activo();
-    //$Activo->validar($session);
+    $Activo->validar($session);
 
-    /*if (!$session->activo()) {
+    if (!$session->activo()) {
         http_response_code(404);
         die("Solicitar Reinicio de sesion");
-    }*/
+    }
 
     function crearCapera($ruta)
     {
@@ -27,6 +27,37 @@
             $r ="<img src='../img/tacha.png' class='tacha'>";
         }
         return $r;
+    }
+
+    function fechaFormat($date)
+    {
+        $fecha = explode('-', $date[0]);
+        return "$fecha[2]/$fecha[1]/$fecha[0]";
+    }
+
+    function salvarEv($ruta, $sem, $aca, $nom)
+    {
+        $conectar = new Conectar();
+        $con = $conectar->conn();
+        $call = "{call dbo.SP_SalvarEvaluacion(?,?,?,?)}";
+        $params = array(
+            array(&$ruta, SQLSRV_PARAM_IN),
+            array(&$sem, SQLSRV_PARAM_IN),
+            array(&$aca, SQLSRV_PARAM_IN),
+            array(&$nom, SQLSRV_PARAM_IN)
+        );
+        $stmt = sqlsrv_query($con, $call, $params);
+        if ($stmt === false) {
+            if (($errors = sqlsrv_errors()) != null) {
+                $error = print_r($errors[0]['message'], true);
+                $error = str_replace("[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]", "", $error);
+                $error = str_replace("[Microsoft][ODBC Driver 17 for SQL Server]", "", $error);
+                http_response_code(401);
+                die(json_encode(array("status"=>404, "msg"=>utf8_decode($error), "met"=>"SP_SalvarEvaluacion")));
+            }
+        }
+        sqlsrv_free_stmt($stmt);
+        sqlsrv_close($con);
     }
 
     $datos = json_decode(json_encode($_POST['Ev']), true);
@@ -47,6 +78,7 @@
     $obs = $datos['obs'];
     $pre = $_SESSION["ND"];
     $resp = $datos['resp'];
+    $c = $datos['c'];
 
     $tachas = [];
     $t = 0;
@@ -413,9 +445,15 @@
 
     ");
 
-    $Clave = "Academia";
-    $nombre = "matricula - periodo";
-    $carpeta = "../Docs/EVDocente/$Clave";
+    $Clave = $info['clave_academia'];
+    $nomina = $info['nomina'];
+    $nombre = "$nomina - $periodo";
+    $pw = $datos['pw'];
+    if ($pw == 0) {
+        $carpeta = "../Docs/EVDocente/$Clave";
+    } else {
+        $carpeta = "../Docs/EVDocente/$Clave/temp";
+    }
 
     crearCapera("$carpeta");
 
@@ -424,6 +462,15 @@
     $nombreJson = "$ruta.json";
 
     $mpdf -> Output("$nombreArchivo", 'F');
+
+    if (intval($c) == 1) {
+        salvarEv($ruta, $periodo, $Clave, $nomina);
+    }
+
+    if ($pw == 0) {
+        $json = json_encode($datos);
+        $bytes = file_put_contents($nombreJson, $json);
+    }
 
     echo json_encode(array('ruta'=>"Academias/$ruta.pdf"));
 

@@ -246,7 +246,6 @@ $(document).ready(() => {
                         if (dia.length == 1) {
                             dia = `0${dia}`;
                         }
-                        console.log(`${año}-${mes}-${dia}`);
                         $("#elaborada").val(`${año}-${mes}-${dia}`);
                         docentes = docs;
                         armarListaDoc(docs);
@@ -270,7 +269,7 @@ $(document).ready(() => {
                     cerrarModal();
                     login();
                 } else {
-                    //cerrar().then(() => window.location = "/Academias").catch(() => window.location = "/Academias");
+                    cerrar().then(() => window.location = "/Academias").catch(() => window.location = "/Academias");
                 }
             });
     };
@@ -349,6 +348,12 @@ $(document).ready(() => {
 
     $("[name='Crear']").click(() => {
         if (ActaG.infoDoc) {
+            ActaG['pw'] = 0;
+            if (sessionStorage.getItem("accion").includes('Crear')) {
+                ActaG['c'] = 1;
+            } else {
+                ActaG['c'] = 0;
+            }
             ActaG.elaborada = $("#elaborada").val();
             let radiosName = ["r-1", "r-2", "r-3", "r-4", "r-5", "r-f"];
             let valid = [false, false, false, false, false, false];
