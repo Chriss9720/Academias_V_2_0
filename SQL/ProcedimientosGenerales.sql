@@ -701,13 +701,29 @@ CREATE PROC SP_FaltantesActa @nomina INT AS
 	) AND finalizada = 0
 GO
 
+IF OBJECT_ID('FUN_UltimaFecha') IS NOT NULL DROP FUNCTION FUN_UltimaFecha
+GO
+CREATE FUNCTION FUN_UltimaFecha (@ID INT)
+	RETURNS DATETIME AS BEGIN
+		DECLARE @F DATETIME
+		SELECT @F = fecha
+		FROM HISTORIALPLAN
+		WHERE id = (
+			SELECT MAX(ID) FROM HISTORIALPLAN WHERE id_planTrabajo = @ID
+		)
+		RETURN @F
+	END
+GO
+
 IF OBJECT_ID('SP_FaltantesPlan') IS NOT NULL DROP PROC SP_FaltantesPlan
 GO
 CREATE PROC SP_FaltantesPlan @nomina INT AS
-	SELECT *
+	SELECT *, dbo.FUN_UltimaFecha(PT.id_planTrabajo) AS LAST
 	FROM PLANES AS PN
 	JOIN PLANTRABAJO AS PT
 	ON PN.id_planTrabajo = PT.id_planTrabajo
+	JOIN ACADEMIA AS ACA
+	ON ACA.clave_academia LIKE PN.clave_academia
 	WHERE PN.clave_academia LIKE (
 		SELECT clave_academia FROM CARGO WHERE nomina = @Nomina AND puesto LIKE '%Presidente%'
 	) AND subido = 1

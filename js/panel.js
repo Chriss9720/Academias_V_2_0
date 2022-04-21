@@ -797,7 +797,7 @@ $(document).ready(() => {
                 error: e => reject(e)
             });
         });
-    }
+    };
 
     const getfaltantesPlan = async() => {
         let r;
