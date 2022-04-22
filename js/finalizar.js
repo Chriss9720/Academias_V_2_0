@@ -355,6 +355,11 @@ $(document).ready(() => {
                 })
                 .catch(e => {
                     console.log(e);
+                    if (e.responseText == "Solicitar Reinicio de sesion") {
+                        cerrarM.load = true;
+                        cerrarModal();
+                        login();
+                    }
                 })
         });
         $('input[name="Reemplazar"]').change(evt => {
@@ -413,6 +418,11 @@ $(document).ready(() => {
                     })
                     .catch(e => {
                         console.log(e);
+                        if (e.responseText == "Solicitar Reinicio de sesion") {
+                            cerrarM.load = true;
+                            cerrarModal();
+                            login();
+                        }
                     });
             } else {
                 finalizarPlan(idFile, c);
@@ -428,6 +438,11 @@ $(document).ready(() => {
             })
             .catch(e => {
                 console.log(e);
+                if (e.responseText == "Solicitar Reinicio de sesion") {
+                    cerrarM.load = true;
+                    cerrarModal();
+                    login();
+                }
             });
     };
 
