@@ -187,6 +187,20 @@
                         echo json_encode(array("msg"=>"Caso desconocido (Finalizar) '$afectar'"));
                 }
                 break;
+            case "Liberar":
+                switch ($afectar) {
+                    case "Plan de Trabajo":
+                    case "Acta":
+                    case 'Ev. Docente':
+                    case "Ev. Presidente":
+                    case "Ev. Secretario":
+                        echo json_encode(array("cambio" => "/Academias/finalizar.html"));
+                        break;
+                    default:
+                        http_response_code(400);
+                        echo json_encode(array("msg"=>"Caso desconocido (Finalizar) '$afectar'"));
+                }
+                break;
             default:
                 http_response_code(400);
                 echo json_encode(array("msg"=>"Caso desconocido 1 '$accion'"));

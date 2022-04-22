@@ -183,21 +183,37 @@ $(document).ready(() => {
 
     const faltantesPlan = () => {
         let php = "";
+        let puesto;
         switch (sessionStorage.getItem("afectar")) {
             case "Plan de Trabajo":
-                php = "faltantesPlanes.php";
+                php = sessionStorage.getItem("accion").includes('Liberar') ? 'liberarPlanes.php' : "faltantesPlanes.php";
                 break;
             case "Acta":
-                php = "faltantesActas.php";
+                php = sessionStorage.getItem("accion").includes('Liberar') ? 'liberarActa.php' : "faltantesActas.php";
                 break;
             case "Ev. Docente":
-                php = "evFaltantesDoc.php";
+                if (sessionStorage.getItem("accion").includes('Liberar')) {
+                    puesto = "Docente";
+                    php = "liberarEva.php";
+                } else {
+                    php = "evFaltantesDoc.php";
+                }
                 break;
             case "Ev. Presidente":
-                php = "evFaltantesPre.php";
+                if (sessionStorage.getItem("accion").includes('Liberar')) {
+                    puesto = "Presidente";
+                    php = "liberarEva.php";
+                } else {
+                    php = "evFaltantesPre.php";
+                }
                 break;
             case "Ev. Secretario":
-                php = "evFaltantesSec.php";
+                if (sessionStorage.getItem("accion").includes('Liberar')) {
+                    puesto = "Secretario";
+                    php = "liberarEva.php";
+                } else {
+                    php = "evFaltantesSec.php";
+                }
                 break;
             default:
                 console.log(sessionStorage.getItem("afectar"));
@@ -205,6 +221,7 @@ $(document).ready(() => {
         return new Promise((resolve, reject) => {
             $.ajax({
                 url: `php/${php}`,
+                data: { puesto: puesto },
                 type: 'POST',
                 dataType: "json",
                 success: s => resolve(s),
@@ -225,6 +242,43 @@ $(document).ready(() => {
         return `<label><span class="h4">${text}:</span>${dato}</label>`;
     };
 
+    const regresar = i => {
+        return sessionStorage.getItem("accion").includes('Liberar') ?
+            `<input name="Regregesar" id='Regregesar_${i}' type="button" value="Regresar" class="btn btn-danger mt-2">` :
+            '';
+    };
+
+    const cancelar = id => {
+        let php = "";
+        switch (sessionStorage.getItem("afectar")) {
+            case "Plan de Trabajo":
+                php = "cancelarPlan.php";
+                break;
+            case "Acta":
+                php = "faltantesActas.php";
+                break;
+            case "Ev. Docente":
+            case "Ev. Presidente":
+            case "Ev. Secretario":
+                php = "cancelarEva.php";
+                break;
+            default:
+                console.log(sessionStorage.getItem("afectar"));
+        }
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: `php/${php}`,
+                data: {
+                    id: id
+                },
+                type: "POST",
+                dataType: 'json',
+                success: s => resolve(s),
+                error: e => reject(e)
+            });
+        });
+    };
+
     const armar = () => {
         let r = "";
         for (let i = 0; i < planesLista.length; i++) {
@@ -243,6 +297,9 @@ $(document).ready(() => {
                         </div>
                     </div>
                     <div class="col-4 d-flex flex-column justify-content-center align-items-center">
+
+                        ${regresar(i)}
+
                         <input name="finalizar" id='finalizar_${i}' type="button" value="Finalizar" class="btn btn-primary mt-2">
 
                         <div class="input-group mt-2">
@@ -268,6 +325,37 @@ $(document).ready(() => {
         $('i[name="descargar"]').click(evt => {
             let id = parseInt(evt.target.offsetParent.parentNode.id);
             window.open(`Academias/${planesLista[id].localizacion}`);
+        });
+        $('input[name="Regregesar"]').click(evt => {
+            let value = evt.target.attributes.id.value;
+            let id = value.split('_')[1];
+            let idFile;
+            switch (sessionStorage.getItem("afectar")) {
+                case "Plan de Trabajo":
+                    idFile = planesLista[id].id_planTrabajo;
+                    break;
+                case "Acta":
+                    c = "Actas";
+                    idFile = planesLista[id].id_acta;
+                    break;
+                case "Ev. Docente":
+                    idFile = planesLista[id].id_evaluacion;
+                    break;
+                case "Ev. Presidente":
+                    idFile = planesLista[id].id_evaluacion;
+                    break;
+                case "Ev. Secretario":
+                    idFile = planesLista[id].id_evaluacion;
+                    break;
+            }
+            cancelar(idFile)
+                .then(r => {
+                    console.log(r);
+                    location.reload();
+                })
+                .catch(e => {
+                    console.log(e);
+                })
         });
         $('input[name="Reemplazar"]').change(evt => {
             let value = evt.target.attributes.id.value;
@@ -335,7 +423,8 @@ $(document).ready(() => {
     const finalizarPlan = (id, c) => {
         finalizar(id, c)
             .then(t => {
-                location.reload()
+                console.log(t);
+                location.reload();
             })
             .catch(e => {
                 console.log(e);
@@ -345,7 +434,7 @@ $(document).ready(() => {
     const finalizar = (id, c) => {
         return new Promise((resolve, reject) => {
             $.ajax({
-                url: 'php/finalizar.php',
+                url: sessionStorage.getItem("accion").includes('Liberar') ? 'php/liberar.php' : 'php/finalizar.php',
                 data: {
                     id: id,
                     case: c

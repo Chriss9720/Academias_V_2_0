@@ -765,7 +765,7 @@ GO
 IF OBJECT_ID('SP_LiberarPlan') IS NOT NULL DROP PROC SP_LiberarPlan
 GO
 CREATE PROC SP_LiberarPlan AS
-	SELECT *
+	SELECT *, dbo.FUN_UltimaFecha(PT.id_planTrabajo) AS LAST
 	FROM PLANES AS PN
 	JOIN PLANTRABAJO AS PT
 	ON PN.id_planTrabajo = PT.id_planTrabajo
@@ -775,10 +775,18 @@ GO
 IF OBJECT_ID('SP_LiberarEva') IS NOT NULL DROP PROC SP_LiberarEva
 GO
 CREATE PROC SP_LiberarEva @Puesto VARCHAR(255) AS
-	SELECT *
+	SELECT CAR.*, EVA.*, ACA.nombre AS Academia, DOC.nombre, CARR.nombre AS Carrera
 	FROM CARGO AS CAR
 	JOIN EVALUACION AS EVA
-	ON EVA.id_evaluacion = CAR.id_evaluacion AND subido = 1
+	ON EVA.id_evaluacion = CAR.id_evaluacion AND subido = 2
+	JOIN ACADEMIA AS ACA
+	ON ACA.clave_academia LIKE CAR.clave_academia
+	JOIN DOCENTE AS DOC
+	ON DOC.nomina = CAR.nomina
+	LEFT JOIN AFILIADO AS AF
+	ON AF.nomina = DOC.nomina
+	LEFT JOIN CARRERA AS CARR
+	ON CARR.clave_carrera LIKE AF.clave_carrera
 	WHERE puesto LIKE '%'+@Puesto+'%'
 GO
 
@@ -811,5 +819,60 @@ GO
 CREATE PROC SP_FinalizarEvDoc @Id INT AS
 	UPDATE EVALUACION
 		SET subido = 2
+	WHERE id_evaluacion = @Id
+GO
+
+IF OBJECT_ID('SP_LiberarActa') IS NOT NULL DROP PROC SP_LiberarActa
+GO
+CREATE PROC SP_LiberarActa AS
+	SELECT *, dbo.FUN_UltimaFechaActa(id_acta) AS LAST
+	FROM ACTA WHERE finalizada = 1 AND liberada = 0
+GO
+
+IF OBJECT_ID('SP_LiberarActas') IS NOT NULL DROP PROC SP_LiberarActas
+GO
+CREATE PROC SP_LiberarActas @Id INT AS
+	UPDATE ACTA
+		SET liberada = 1
+	WHERE id_acta = @Id
+GO
+
+IF OBJECT_ID('SP_LiberarPlanes') IS NOT NULL DROP PROC SP_LiberarPlanes
+GO
+CREATE PROC SP_LiberarPlanes @Id INT AS
+	UPDATE PLANTRABAJO
+		SET subido = 3
+	WHERE id_planTrabajo = @id
+GO
+
+IF OBJECT_ID('SP_LiberarEvDocs') IS NOT NULL DROP PROC SP_LiberarEvDocs
+GO
+CREATE PROC SP_LiberarEvDocs @Id INT AS
+	UPDATE EVALUACION
+		SET subido = 3
+	WHERE id_evaluacion = @Id
+GO
+
+IF OBJECT_ID('SP_CancelarPlan') IS NOT NULL DROP PROC SP_CancelarPlan
+GO
+CREATE PROC SP_CancelarPlan @Id INT AS
+	UPDATE PLANTRABAJO
+		SET subido = 1
+	WHERE id_planTrabajo = @Id
+GO
+
+IF OBJECT_ID('SP_CancelarActa') IS NOT NULL DROP PROC SP_CancelarActa
+GO
+CREATE PROC SP_CancelarActa @Id INT AS
+	UPDATE ACTA
+		SET subido = 1, finalizada = 0, liberada = 0
+	WHERE id_acta = @Id
+GO
+
+IF OBJECT_ID('SP_CancelarEva') IS NOT NULL DROP PROC SP_CancelarEva
+GO
+CREATE PROC SP_CancelarEva @Id INT AS
+	UPDATE EVALUACION
+		SET subido = 1
 	WHERE id_evaluacion = @Id
 GO

@@ -16,9 +16,9 @@
         $conectar = new Conectar();
         $con = $conectar->conn();
         if ($con) {
-            $call = "{ call dbo.SP_LiberarEva(?) }";
+            $call = "{ call dbo.SP_CancelarActa(?) }";
             $params = array(
-                array(&$_POST["puesto"], SQLSRV_PARAM_IN)
+                array(&$_POST['id'], SQLSRV_PARAM_IN)
             );
             $stmt = sqlsrv_query($con, $call, $params);
             if ($stmt === false) {
@@ -30,30 +30,10 @@
                 }
             }
 
-            $res = [];
-
-            while( $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC) ) {
-                $datos = array(
-                    "clave_academia" => utf8_encode($row["clave_academia"]),
-                    "nomina"=>utf8_encode($row["nomina"]),
-                    "puesto" => utf8_encode($row["puesto"]),
-                    "id_evaluacion" => utf8_encode($row["id_evaluacion"]),
-                    "activo" => utf8_encode($row["activo"]),
-                    "Academia" => utf8_encode($row["Academia"]),
-                    "localizacion" => utf8_encode($row["localizacion"]),
-                    "localizacionJson" => utf8_encode($row["localizacionJson"]),
-                    "periodo" => utf8_encode($row["periodo"]),
-                    "subido" => utf8_encode($row["subido"]),
-                    "nombre" => utf8_encode($row["nombre"]),
-                    "Carrera" => utf8_encode($row["Carrera"])
-                );
-                array_push($res, $datos);
-            }
-
             sqlsrv_free_stmt($stmt);
             sqlsrv_close($con);
 
-            echo json_encode($res);
+            die(json_encode(array("status"=>200, "msg"=>"Exito")));
         } else {
             http_response_code(400);
             die(json_encode(array("status"=>400, "msg"=>"Fallo al conectarse")));

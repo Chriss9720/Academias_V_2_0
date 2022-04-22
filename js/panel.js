@@ -602,7 +602,7 @@ $(document).ready(() => {
                 dataType: "json",
                 type: 'POST',
                 success: s => resolve(s),
-                error: e => reject()
+                error: e => reject(e)
             });
         });
     };
