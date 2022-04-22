@@ -176,6 +176,10 @@
             case "Finalizar":
                 switch ($afectar) {
                     case "Plan de Trabajo":
+                    case "Acta":
+                    case 'Ev. Docente':
+                    case "Ev. Presidente":
+                    case "Ev. Secretario":
                         echo json_encode(array("cambio" => "/Academias/finalizar.html"));
                         break;
                     default:

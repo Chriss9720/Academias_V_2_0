@@ -689,17 +689,34 @@ CREATE PROC SP_FaltantesEvDoc  @nomina INT AS
 	) AND nomina != @nomina AND activo = 1
 GO
 
+IF OBJECT_ID('FUN_UltimaFechaActa') IS NOT NULL DROP FUNCTION FUN_UltimaFechaActa
+GO
+CREATE FUNCTION FUN_UltimaFechaActa (@ID INT)
+	RETURNS DATETIME AS BEGIN
+		DECLARE @F DATETIME
+		SELECT @F = fecha
+		FROM HISTORIALACTAS
+		WHERE id = (
+			SELECT MAX(ID) FROM HISTORIALACTAS WHERE id_acta = @ID
+		)
+		RETURN @F
+	END
+GO
+
 IF OBJECT_ID('SP_FaltantesActa') IS NOT NULL DROP PROC SP_FaltantesActa
 GO
 CREATE PROC SP_FaltantesActa @nomina INT AS
-	SELECT *
+	SELECT *, dbo.FUN_UltimaFechaActa(AC.id_acta) AS LAST
 	FROM ACTA AS AC
 	JOIN ACTAS AS ACS
 	ON ACS.id_acta = AC.id_acta
+	JOIN ACADEMIA AS ACA
+	ON ACA.clave_academia LIKE ACS.clave_academia
 	WHERE ACS.clave_academia LIKE (
 		SELECT clave_academia FROM CARGO WHERE nomina = @Nomina AND puesto LIKE '%Presidente%'
 	) AND finalizada = 0
 GO
+
 
 IF OBJECT_ID('FUN_UltimaFecha') IS NOT NULL DROP FUNCTION FUN_UltimaFecha
 GO
@@ -771,4 +788,28 @@ CREATE PROC SP_EvidenciaPendiente @Nomina INT AS
 	SELECT *, 'Plan' AS PADRE FROM EVIDENCIA WHERE localizacion IS NULL
 	UNION
 	SELECT *, 'Acta' AS Padre FROM EVIDENCIAACTA WHERE localizacion IS NULL
+GO
+
+IF OBJECT_ID('SP_FinalizarPlan') IS NOT NULL DROP PROC SP_FinalizarPlan
+GO
+CREATE PROC SP_FinalizarPlan @Id INT AS
+	UPDATE PLANTRABAJO
+		SET subido = 2
+	WHERE id_planTrabajo = @id
+GO
+
+IF OBJECT_ID('SP_FinalizarActas') IS NOT NULL DROP PROC SP_FinalizarActas
+GO
+CREATE PROC SP_FinalizarActas @Id INT AS
+	UPDATE ACTA
+		SET finalizada = 1
+	WHERE id_acta = @Id
+GO
+
+IF OBJECT_ID('SP_FinalizarEvDoc') IS NOT NULL DROP PROC SP_FinalizarEvDoc
+GO
+CREATE PROC SP_FinalizarEvDoc @Id INT AS
+	UPDATE EVALUACION
+		SET subido = 2
+	WHERE id_evaluacion = @Id
 GO

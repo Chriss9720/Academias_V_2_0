@@ -525,10 +525,10 @@ $(document).ready(() => {
             valid = validarCorreo(data, "correo", extension) && valid;
 
             let foto = $("#foto")[0].files[0];
-            var formData = new FormData();
+            let formData = new FormData();
             if (foto) {
                 let nombre = `${data["nominaR"]}.${foto["name"].split(".")[foto["name"].split(".").length - 1]}`;
-                var file = new File([], nombre);
+                let file = new File([], nombre);
                 formData.append("file", foto);
                 formData.append("name", file);
                 data["foto"] = formData;

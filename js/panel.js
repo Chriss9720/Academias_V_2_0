@@ -102,7 +102,6 @@ $(document).ready(() => {
     });
 
     const crearAcciones = () => {
-
         $('[name="areaMenu"]').click(evt => sessionStorage.setItem('accion', evt.target.innerText.replace(" ", "")));
 
         $('[name="opcionMenu"]').click(evt => {
@@ -484,8 +483,8 @@ $(document).ready(() => {
         let nivel = misDatos.nivel;
         puedeEditar({ presidente, secretario, jefe, nivel });
         puedeCrear({ presidente, secretario, jefe, nivel });
-        puedeLiberar({ nivel });
-        puedeFinalizar({ presidente, nivel, secretario });
+        await puedeLiberar({ nivel });
+        await puedeFinalizar({ presidente, nivel, secretario });
         await subirEvidencia();
         crearAcciones();
     };
@@ -583,6 +582,7 @@ $(document).ready(() => {
                 `);
             })
             .catch(e => {
+                console.log(e);
                 $("#subirEvidencia").html(`
                     <div class="d-flex d-inline align-items-center">
                         <button name="areaMenu" class="btn text-menu" type="button" id="Subir">
@@ -619,6 +619,7 @@ $(document).ready(() => {
                 `;
             }).
         catch(e => {
+            console.log(e);
             r = `
                 <div class="d-flex d-inline align-items-center">
                     <input name="opcionMenu" type="button" value="Plan de Trabajo" class="dropdown-item">
@@ -653,6 +654,7 @@ $(document).ready(() => {
                 `;
             }).
         catch(e => {
+            console.log(e);
             r = `
                 <div class="d-flex d-inline align-items-center">
                     <input name="opcionMenu" type="button" value="Acta" class="dropdown-item">
@@ -688,6 +690,7 @@ $(document).ready(() => {
                 `;
             }).
         catch(e => {
+            console.log(e);
             r = `
                 <div class="d-flex d-inline align-items-center">
                     <input name="opcionMenu" type="button" value="Ev. ${puesto}" class="dropdown-item">
@@ -743,6 +746,7 @@ $(document).ready(() => {
                 `;
             }).
         catch(e => {
+            console.log(e);
             r = `
                 <div class="d-flex d-inline align-items-center">
                     <input name="opcionMenu" type="button" value="Ev .Docente" class="dropdown-item">
@@ -777,6 +781,7 @@ $(document).ready(() => {
                 `;
             }).
         catch(e => {
+            console.log(e);
             r = `
                 <div class="d-flex d-inline align-items-center">
                     <input name="opcionMenu" type="button" value="Acta" class="dropdown-item">
@@ -811,6 +816,7 @@ $(document).ready(() => {
                 `;
             }).
         catch(e => {
+            console.log(e);
             r = `
                 <div class="d-flex d-inline align-items-center">
                     <input name="opcionMenu" type="button" value="Plan de Trabajo" class="dropdown-item">
@@ -845,6 +851,7 @@ $(document).ready(() => {
                 `;
             }).
         catch(e => {
+            console.log(e);
             r = `
                 <div class="d-flex d-inline align-items-center">
                     <input name="opcionMenu" type="button" value="Ev. Presidente" class="dropdown-item">
@@ -879,6 +886,7 @@ $(document).ready(() => {
                 `;
             }).
         catch(e => {
+            console.log(e);
             r = `
                 <div class="d-flex d-inline align-items-center">
                     <input name="opcionMenu" type="button" value="Ev. Secretario" class="dropdown-item">
@@ -929,7 +937,8 @@ $(document).ready(() => {
                     aplicarCoordinador();
                 }
             })
-            .catch(async(c) => {
+            .catch(async(e) => {
+                console.log(e);
                 $("#datosCoordinador").html(`
                     <h3>Ocurrió un error, puede que no se tenga establecido a un coordinador</h3>
                     ${misDatos['nivel'] == 0 ? await cambiarCoordinador() : ""}
@@ -954,7 +963,8 @@ $(document).ready(() => {
                     </div>
                     <input id="nuevoCoordinador" type="button" value="Cambiar" class="btn btn-primary mt-2 rounded">
                 `;
-            }).catch(c => {
+            }).catch(e => {
+                console.log(e);
                 $("#datosCoordinador").html(`
                     <h3>Ocurrio un error, puede que no se tenga establecido a un coordinador</h3>
                 `);
@@ -1032,10 +1042,11 @@ $(document).ready(() => {
                         .then(t => {
                             cargarCoordinador({ u: true });
                         })
-                        .catch(c => {
+                        .catch(e => {
+                            console.log(e);
                             $("#alertaCoor").html(`
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <strong>${c}</strong>
+                                <strong>${e}</strong>
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>

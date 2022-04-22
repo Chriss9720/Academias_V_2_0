@@ -488,9 +488,9 @@
     $nombre = "$nomina - $periodo";
     $pw = $datos['pw'];
     if ($pw == 0) {
-        $carpeta = "../Docs/EVPresidente/$Clave";
+        $carpeta = "../Docs/EVSecretario/$Clave";
     } else {
-        $carpeta = "../Docs/EVPresidente/$Clave/temp";
+        $carpeta = "../Docs/EVSecretario/$Clave/temp";
     }
 
     crearCapera("$carpeta");

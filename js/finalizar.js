@@ -182,9 +182,29 @@ $(document).ready(() => {
     };
 
     const faltantesPlan = () => {
+        let php = "";
+        switch (sessionStorage.getItem("afectar")) {
+            case "Plan de Trabajo":
+                php = "faltantesPlanes.php";
+                break;
+            case "Acta":
+                php = "faltantesActas.php";
+                break;
+            case "Ev. Docente":
+                php = "evFaltantesDoc.php";
+                break;
+            case "Ev. Presidente":
+                php = "evFaltantesPre.php";
+                break;
+            case "Ev. Secretario":
+                php = "evFaltantesSec.php";
+                break;
+            default:
+                console.log(sessionStorage.getItem("afectar"));
+        }
         return new Promise((resolve, reject) => {
             $.ajax({
-                url: 'php/faltantesPlanes.php',
+                url: `php/${php}`,
                 type: 'POST',
                 dataType: "json",
                 success: s => resolve(s),
@@ -197,10 +217,18 @@ $(document).ready(() => {
         return date.substring(0, 19);
     };
 
+    const getFe = (fecha, text) => {
+        return `<label><span class="h4">${text}:</span>${fechaCorta(fecha.date)}</label>`;
+    };
+
+    const getDato = (dato, text) => {
+        return `<label><span class="h4">${text}:</span>${dato}</label>`;
+    };
+
     const armar = () => {
         let r = "";
         for (let i = 0; i < planesLista.length; i++) {
-            let { clave_academia, Semestre, nombre, LAST, fecha } = planesLista[i];
+            let { clave_academia, Semestre, nombre, LAST, fecha, periodo, Academia, Carrera } = planesLista[i];
             r += `
                 <div id="${i}" class="border border-dark p-3 bg-menu-principal row rounded rounded-pill mb-3">
                     <div class="col-2 d-flex justify-content-center">
@@ -208,28 +236,141 @@ $(document).ready(() => {
                     </div>
                     <div class="col-6">
                         <div class="d-flex flex-column">
-                            <label><span class="h4">Academia:</span> ${clave_academia} - ${nombre}</label>
-                            <label><span class="h4">Semestre:</span> ${Semestre}</label>
-                            <label><span class="h4">Creado:</span>${fechaCorta(fecha.date)}</label>
-                            <label><span class="h4">Ultima modificacion:</span>${fechaCorta(LAST.date)}</label>
+                            <label><span class="h4">Academia:</span> ${clave_academia} - ${Academia || nombre}</label>
+                            <label><span class="h4">Semestre:</span> ${Semestre || periodo}</label>
+                            ${(fecha) ? getFe(fecha, "Creado"): getDato(nombre, 'Nombre')}
+                            ${(LAST) ? getFe(LAST, "Ultima modificacion"): getDato(Carrera, 'Carrera')}
                         </div>
                     </div>
                     <div class="col-4 d-flex flex-column justify-content-center align-items-center">
-                        <input name="ver" type="button" value="Ver" class="btn btn-secondary mt-2">
-                        <input type="button" value="Finalizar" class="btn btn-primary mt-2">
-                        <div class="custom-file mt-2">
-                            <input type="file" class="custom-file-input" accept="application/pdf" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
-                            <label class="custom-file-label" for="inputGroupFile01">Reemplazar</label>
+                        <input name="finalizar" id='finalizar_${i}' type="button" value="Finalizar" class="btn btn-primary mt-2">
+
+                        <div class="input-group mt-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text click" name="cancelr" id="cancelar_${i}" >Cancelar</span>
+                            </div>
+                            <div class="custom-file">
+                                <input name='Reemplazar' type="file" class="custom-file-input" accept="application/pdf" id="Reemplazar_${i}" aria-describedby="inputGroupFileAddon01">
+                                <label id="Reemplazar_${i}_name" class="custom-file-label" for="Reemplazar">Reemplazar</label>
+                            </div>
+                        </div>
+
+                        <div class="mt-2">
+                            <span>
+                                <i name="descargar" class="fas fa-download click"></i>
+                            </span>
                         </div>
                     </div>
                 </div>
             `;
         }
         $("#area").html(r);
-        $('input[name="ver"]').click(evt => {
+        $('i[name="descargar"]').click(evt => {
             let id = parseInt(evt.target.offsetParent.parentNode.id);
             window.open(`Academias/${planesLista[id].localizacion}`);
+        });
+        $('input[name="Reemplazar"]').change(evt => {
+            let value = evt.target.attributes.id.value;
+            let file = $(`#${value}`)[0].files[0];
+            $(`#${value}_name`).html(file.name);
         })
+        $('span[name="cancelr"]').click(evt => {
+            let value = evt.target.attributes.id.value;
+            let id = value.split('_')[1];
+            $(`#Reemplazar_${id}_name`).html('Reemplazar');
+            if ($(`#Reemplazar_${id}`)[0].files[0])
+                $(`#Reemplazar_${id}`)[0].files[0] = undefined;
+        });
+        $('input[name="finalizar"]').click(evt => {
+            let value = evt.target.attributes.id.value;
+            let id = value.split('_')[1];
+            let file = $(`#Reemplazar_${id}`)[0].files[0];
+            let idFile = -1;
+            let c = "";
+
+            switch (sessionStorage.getItem("afectar")) {
+                case "Plan de Trabajo":
+                    c = "Planes";
+                    idFile = planesLista[id].id_planTrabajo;
+                    break;
+                case "Acta":
+                    c = "Actas";
+                    idFile = planesLista[id].id_acta;
+                    break;
+                case "Ev. Docente":
+                    c = "EVDocente";
+                    idFile = planesLista[id].id_evaluacion;
+                    break;
+                case "Ev. Presidente":
+                    c = "EVPresidente";
+                    idFile = planesLista[id].id_evaluacion;
+                    break;
+                case "Ev. Secretario":
+                    c = "EVSecretario";
+                    idFile = planesLista[id].id_evaluacion;
+                    break;
+            }
+            if (file) {
+                let formData = new FormData();
+                let nombre = new File([], planesLista[id].localizacion);
+                let acade = new File([], planesLista[id].clave_academia);
+                let change = new File([], c);
+                formData.append("file", file);
+                formData.append("name", nombre);
+                formData.append("acade", acade);
+                formData.append("change", change);
+                reemplazar(formData)
+                    .then(r => {
+                        finalizarPlan(idFile, c);
+                    })
+                    .catch(e => {
+                        console.log(e);
+                    });
+            } else {
+                finalizarPlan(idFile, c);
+            }
+        });
+    };
+
+    const finalizarPlan = (id, c) => {
+        finalizar(id, c)
+            .then(t => {
+                location.reload()
+            })
+            .catch(e => {
+                console.log(e);
+            });
+    };
+
+    const finalizar = (id, c) => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: 'php/finalizar.php',
+                data: {
+                    id: id,
+                    case: c
+                },
+                type: 'POST',
+                dataType: "json",
+                success: s => resolve(s),
+                error: e => reject(e)
+            })
+        });
+    };
+
+    const reemplazar = file => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: 'php/reemplazar.php',
+                type: "POST",
+                data: file,
+                contentType: false,
+                processData: false,
+                dataType: "json",
+                success: (s) => resolve(s),
+                error: (e) => reject(e),
+            });
+        });
     };
 
     const load = () => {
@@ -245,6 +386,7 @@ $(document).ready(() => {
                         cerrarModal();
                     })
                     .catch(e => {
+                        console.log(e);
                         if (e.responseText == "Solicitar Reinicio de sesion") {
                             cerrarM.load = true;
                             cerrarModal();
