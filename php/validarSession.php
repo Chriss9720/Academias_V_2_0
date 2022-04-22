@@ -42,7 +42,8 @@
                     "jefe"=>utf8_encode($row["jefe"]),
                     "clave_academia"=>utf8_encode($row["clave_academia"]),
                     "nombre"=>utf8_encode($row["nombre"]),
-                    "puesto"=>utf8_encode($row["puesto"])
+                    "puesto"=>utf8_encode($row["puesto"]),
+                    "Clave"=>utf8_encode($row["clave"])
                 );
                 array_push($res, $dato);
             }
@@ -56,6 +57,7 @@
                 $_SESSION["ND"] = $res[0]["ND"];
                 $_SESSION["correo"] = $res[0]["correo"];
                 $_SESSION["telefono"] = $res[0]["telefono"];
+                $_SESSION["Clave"] = $res[0]["Clave"];
             }
             $jefe = 0;
             $puestos = [];
@@ -101,8 +103,18 @@
                     "nivel"=>utf8_encode($_SESSION['nivel']),
                     "telefono"=>utf8_encode($_SESSION['telefono']),
                     "jefe"=>utf8_encode($_SESSION['jefe']),
-                    "puesto"=>$_SESSION['puesto']
+                    "puesto"=>$_SESSION['puesto'],
+                    'nomina' =>$_SESSION['nomina'],
+                    'clave'=>$_SESSION["Clave"]
                 );
+        }
+
+        public function actualizarDatos($data) {
+            $_SESSION['Clave'] = $data['claveR'];
+            $_SESSION['foto'] = $data['foto'];
+            $_SESSION['ND'] = $data['nombre'];
+            $_SESSION['telefono'] = $data['telefono'];
+            $_SESSION['correo'] = $data['correo'];
         }
 
     }

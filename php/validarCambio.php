@@ -201,6 +201,9 @@
                         echo json_encode(array("msg"=>"Caso desconocido (Finalizar) '$afectar'"));
                 }
                 break;
+            case "editarme":
+                echo json_encode(array("cambio" => "/Academias/Docente.html"));
+                break;
             default:
                 http_response_code(400);
                 echo json_encode(array("msg"=>"Caso desconocido 1 '$accion'"));

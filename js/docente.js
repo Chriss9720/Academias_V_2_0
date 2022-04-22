@@ -1,5 +1,7 @@
 $(document).ready(() => {
 
+    let materiasLista = [];
+
     $("#ayudaDocente").click(() => {
 
         if (sessionStorage.getItem('accion') == "Crear") {
@@ -467,6 +469,7 @@ $(document).ready(() => {
     };
 
     const editar = () => {
+        console.log("EDITAR");
         $("#Edicion").html(`
             <input name="cancelar" value="Cancelar" type="button" class="btn bg-btn-aplicar btn-primary-r">
             ${(misDatos['nivel'] == 0 || misDatos['nivel'] == 1)?'<input id="aplicarBaja" value="Inhabilitar" type="button" class="btn btn-primary-r bg-danger">':''}
@@ -490,8 +493,10 @@ $(document).ready(() => {
                 if (find) {
                     $("#alerta").html(``);
                     componente.value = "";
-                    $("#aplicarBaja")[0].value = parseInt(find.baja) == 0 ? "Inhabilitar" : "Habilitar";
+                    if (misDatos['nivel'] == 0 || misDatos['nivel'] == 1)
+                        $("#aplicarBaja")[0].value = parseInt(find.baja) == 0 ? "Inhabilitar" : "Habilitar";
                     cargar(find);
+                    cargarMaterias(find.nomina);
                 } else {
                     $("#alerta").html(`
                         <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -504,98 +509,7 @@ $(document).ready(() => {
                 }
             }
         });
-        $("#editar").click(() => {
-            cargando();
-            let data = {
-                nombre: $("#nombre")[0],
-                nominaR: $("#nominaR")[0],
-                telefono: $("#telefono")[0],
-                correo: $("#correo")[0],
-                claveR: $("#claveR")[0],
-                foto: "img/IconLog.png",
-            };
-
-            let extension = $("#extension")[0].value;
-
-            let valid = camposRequeridos(data, ["nombre", "nominaR", "claveR"]);
-            valid = validarNombre(data, "nombre") && valid;
-            valid = validarNomina(data, "nominaR") && valid;
-            valid = validarClave(data, "claveR") && valid;
-            valid = validarTelefono(data, "telefono") && valid;
-            valid = validarCorreo(data, "correo", extension) && valid;
-
-            let foto = $("#foto")[0].files[0];
-            let formData = new FormData();
-            if (foto) {
-                let nombre = `${data["nominaR"]}.${foto["name"].split(".")[foto["name"].split(".").length - 1]}`;
-                let file = new File([], nombre);
-                formData.append("file", foto);
-                formData.append("name", file);
-                data["foto"] = formData;
-            }
-
-            if (!valid) {
-                cerrarM.load = true;
-                cerrarModal();
-                return
-            };
-            salvarImg(formData, foto)
-                .then((t) => {
-                    data["foto"] = t.path;
-                    actualizarDocente(data)
-                        .then((r) => {
-                            cargarDocentes();
-                            $("#alerta").html(`
-                                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                    <strong>${r.msg}</strong>
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            `);
-                            editar();
-                            reset();
-                            cerrarM.load = true;
-                            cerrarModal();
-                        })
-                        .catch((e) => {
-                            if (e.responseText == "Solicitar Reinicio de sesion") {
-                                cerrarM.load = true;
-                                cerrarModal();
-                                login();
-                            } else {
-                                $("#alerta").html(`
-                                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                        <strong>${(e.responseJSON) ? e.responseJSON.msg : e.responseText}</strong>
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                `);
-                            }
-                            cerrarM.load = true;
-                            cerrarModal();
-                        });
-                })
-                .catch((e) => {
-                    if (e.responseText == "Solicitar Reinicio de sesion") {
-                        cerrarM.load = true;
-                        cerrarModal();
-                        login();
-                    } else {
-                        $("#alerta").html(`
-                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                <strong>${e.responseJSON.msg}</strong>
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        `);
-                        cerrarM.load = true;
-                        cerrarModal();
-                    }
-                });
-        });
+        accionEditar();
         $("#aplicarBaja").click(evt => {
             cargando();
             let data = { nominaR: $("#nominaR")[0] };
@@ -660,16 +574,220 @@ $(document).ready(() => {
     };
 
     const cargarDocentes = () => {
-        getDocentesEdit().then(t => {
-            docentesEdit = t;
-            editar();
-        }).catch((e) => {
-            if (e.responseText == "Solicitar Reinicio de sesion") {
+        getDocentesEdit()
+            .then(t => {
+                docentesEdit = t;
+                editar();
+            }).catch((e) => {
+                console.log(e);
+                if (e.responseText == "Solicitar Reinicio de sesion") {
+                    cerrarM.load = true;
+                    cerrarModal();
+                    login();
+                }
+            });
+    };
+
+    const actualizarSession = data => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: 'php/actualizarSession.php',
+                data: {
+                    datos: data
+                },
+                datatype: 'json',
+                type: 'post',
+                success: s => resolve(s),
+                error: e => reject(e)
+            });
+        });
+    };
+
+    const accionEditar = () => {
+        $("#editar").click(() => {
+            cargando();
+            let data = {
+                nombre: $("#nombre")[0],
+                nominaR: $("#nominaR")[0],
+                telefono: $("#telefono")[0],
+                correo: $("#correo")[0],
+                claveR: $("#claveR")[0],
+                foto: "img/IconLog.png",
+            };
+
+            let extension = $("#extension")[0].value;
+
+            let valid = camposRequeridos(data, ["nombre", "nominaR", "claveR"]);
+            valid = validarNombre(data, "nombre") && valid;
+            valid = validarNomina(data, "nominaR") && valid;
+            valid = validarClave(data, "claveR") && valid;
+            valid = validarTelefono(data, "telefono") && valid;
+            valid = validarCorreo(data, "correo", extension) && valid;
+
+            let foto = $("#foto")[0].files[0];
+            let formData = new FormData();
+            if (foto) {
+                let nombre = `${data["nominaR"]}.${foto["name"].split(".")[foto["name"].split(".").length - 1]}`;
+                let file = new File([], nombre);
+                formData.append("file", foto);
+                formData.append("name", file);
+                data["foto"] = formData;
+            }
+
+            if (!valid) {
                 cerrarM.load = true;
                 cerrarModal();
-                login();
-            }
+                return
+            };
+            salvarImg(formData, foto)
+                .then((t) => {
+                    data["foto"] = t.path;
+                    actualizarDocente(data)
+                        .then(async(r) => {
+                            cargarDocentes();
+                            $("#alerta").html(`
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <strong>${r.msg}</strong>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            `);
+                            if (sessionStorage.getItem("accion").includes('Editar')) {
+                                editar();
+                                reset();
+                            } else {
+                                await actualizarSession(data)
+                                    .then(t => console.log(t))
+                                    .catch(e => {
+                                        console.log(e);
+                                    })
+                            }
+                            await salvarMat(data.nominaR)
+                                .then(t => console.log(t))
+                                .catch(e => {
+                                    console.log(e);
+                                })
+                            cerrarM.load = true;
+                            cerrarModal();
+                        })
+                        .catch((e) => {
+                            if (e.responseText == "Solicitar Reinicio de sesion") {
+                                cerrarM.load = true;
+                                cerrarModal();
+                                login();
+                            } else {
+                                $("#alerta").html(`
+                                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                        <strong>${(e.responseJSON) ? e.responseJSON.msg : e.responseText}</strong>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                `);
+                            }
+                            cerrarM.load = true;
+                            cerrarModal();
+                        });
+                })
+                .catch((e) => {
+                    if (e.responseText == "Solicitar Reinicio de sesion") {
+                        cerrarM.load = true;
+                        cerrarModal();
+                        login();
+                    } else {
+                        $("#alerta").html(`
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                <strong>${e.responseJSON.msg}</strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        `);
+                        cerrarM.load = true;
+                        cerrarModal();
+                    }
+                });
         });
+    };
+
+    const materias = nomina => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: 'php/getMateriasDocente.php',
+                data: { nomina: nomina },
+                type: 'post',
+                dataType: "json",
+                success: s => resolve(s),
+                error: e => reject(e)
+            })
+        });
+    };
+
+    const armarMaterias = () => {
+        let mat = "";
+        for (let i = 0; i < materiasLista.length; i++) {
+            if (materiasLista[i].activa == 1) {
+                mat += `
+                    <label class="h2 mr-1 ml-1 mb-1">
+                        <span class="badge badge-secondary">${materiasLista[i].m}
+                            <img src='img/tacha.png' class='click' style="height:25px;" name="quitarMat" id="mat_${i}">
+                        </span>
+                    </label>`;
+            }
+        }
+        $("#areaMaterias").html(mat);
+        $('img[name="quitarMat"]').click(evt => {
+            let id = evt.target.attributes.id.value.split("_")[1];
+            materiasLista[id].activa = 0;
+            armarMaterias();
+        });
+    };
+
+    $("#nuevaMat").keypress(k => {
+        if (k.which == 13) {
+            let value = k.target.value.trim();
+            if (value.length > 0) {
+                materiasLista.push({
+                    m: value,
+                    activa: 1
+                });
+                k.target.value = "";
+                armarMaterias();
+            }
+        }
+    });
+
+    const salvarMat = nomina => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: 'php/actualizarMaterias.php',
+                data: {
+                    mat: materiasLista.filter(f => f.activa == 1),
+                    nomina: nomina
+                },
+                type: "Post",
+                dataType: "json",
+                success: s => resolve(s),
+                error: e => reject(e)
+            });
+        });
+    };
+
+    const cargarMaterias = nomina => {
+        materias(nomina)
+            .then(mat => {
+                mat.forEach(m => {
+                    materiasLista.push({
+                        m: m.materia,
+                        activa: 1
+                    });
+                })
+                armarMaterias();
+            })
+            .catch(e => {
+                console.log(e);
+            })
     };
 
     const load = () => {
@@ -679,12 +797,23 @@ $(document).ready(() => {
                 validarPagina()
                     .then((p) => {
                         misDatos = t;
-                        if (sessionStorage.getItem("accion").includes("Editar")) {
+                        if (sessionStorage.getItem("accion").includes("editarme")) {
+                            $("#nominaR").attr("disabled", '');
+                            cargar(misDatos);
                             $("#Creacion").remove();
-                            cargarDocentes();
+                            $("#Edicion").html(`
+                                <input id="editar" type="button" value="Editar" class="btn btn-primary-r">
+                            `);
+                            cargarMaterias(t.nomina);
+                            accionEditar();
                         } else {
-                            $("#soloEdit").remove();
-                            $("#Edicion").remove();
+                            if (sessionStorage.getItem("accion").includes("Editar")) {
+                                $("#Creacion").remove();
+                                cargarDocentes();
+                            } else {
+                                $("#soloEdit").remove();
+                                $("#Edicion").remove();
+                            }
                         }
                         cerrarM.load = true;
                         cerrarM.login = true;
@@ -799,7 +928,8 @@ $(document).ready(() => {
             .then((t) => {
                 data["foto"] = t.path;
                 registrarDocente(data)
-                    .then((r) => {
+                    .then(async(r) => {
+                        await salvarMat(data.nominaR);
                         $("#alerta").html(`
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
                                 <strong>${r.msg}</strong>

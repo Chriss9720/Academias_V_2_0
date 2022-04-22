@@ -154,7 +154,7 @@ CREATE PROC SP_EditarDocente @Nivel INT, @Nomina INT AS
 		SELECT * FROM DOCENTE WHERE nivel != 0 AND nivel != 1
 	END
 	ELSE BEGIN
-		SELECT DISTINCT D.nomina, D.nombre
+		SELECT DISTINCT D.nomina, D.nombre, D.foto, D.correo, D.telefono, D.clave, D.baja
 		FROM CARGO AS C
 		JOIN DOCENTE AS D
 		ON D.nomina = C.nomina
@@ -917,4 +917,17 @@ CREATE PROC SP_EntregarActa @Id INT, @Ruta VARCHAR(255) AS
 	UPDATE EVIDENCIAACTA
 		SET localizacion = @Ruta
 	WHERE id_evidencia = @Id
+GO
+
+IF OBJECT_ID ('SP_ActualizarMaterias') IS NOT NULL DROP PROC SP_ActualizarMaterias
+GO
+CREATE PROC SP_ActualizarMaterias @Nom INT, @Mat VARCHAR(255) AS
+	INSERT INTO MATERIAS (materia, nomina)
+	VALUES (@Mat, @Nom)
+GO
+
+IF OBJECT_ID ('SP_BorrarMaterias') IS NOT NULL DROP PROC SP_BorrarMaterias
+GO
+CREATE PROC SP_BorrarMaterias @Nom INT AS
+	DELETE FROM MATERIAS WHERE nomina = @Nom
 GO

@@ -4,7 +4,7 @@ IF OBJECT_ID('VW_InfoDocente') IS NOT NULL DROP VIEW VW_InfoDocente
 GO
 CREATE VIEW VW_InfoDocente AS
 	SELECT D.nomina, D.nivel, D.foto, D.nombre AS [ND], D.correo, D.telefono, D.baja,
-	C.clave_carrera, C.nombre AS [NC], F.jefe, A.clave_academia, A.nombre, CA.puesto
+	C.clave_carrera, C.nombre AS [NC], F.jefe, A.clave_academia, A.nombre, CA.puesto, D.clave
 	FROM DOCENTE AS D
 	LEFT JOIN AFILIADO AS F
 	ON F.nomina = D.nomina
