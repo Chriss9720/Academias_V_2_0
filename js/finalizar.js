@@ -255,7 +255,7 @@ $(document).ready(() => {
                 php = "cancelarPlan.php";
                 break;
             case "Acta":
-                php = "faltantesActas.php";
+                php = "cancelarActa.php";
                 break;
             case "Ev. Docente":
             case "Ev. Presidente":
