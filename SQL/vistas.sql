@@ -74,9 +74,3 @@ CREATE VIEW VW_Evaluaciones AS
 	LEFT JOIN CARRERA AS CAE
 	ON CAE.clave_carrera LIKE AFI.clave_carrera AND AFI.Activo = 1
 GO
-
-IF OBJECT_ID('SP_LiberarActa') IS NOT NULL DROP PROC SP_LiberarActa
-GO
-CREATE PROC SP_LiberarActa AS
-	SELECT * FROM ACTA WHERE finalizada = 1 AND liberada = 0
-GO

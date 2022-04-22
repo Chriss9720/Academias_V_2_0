@@ -390,7 +390,7 @@ $(document).ready(() => {
     const leerEv = ruta => {
         return new Promise((resolve, reject) => {
             $.ajax({
-                url: 'php/leerEv.php',
+                url: 'php/leerPlan.php',
                 data: {
                     ruta: ruta
                 },

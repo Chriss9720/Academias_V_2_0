@@ -793,10 +793,36 @@ GO
 IF OBJECT_ID('SP_EvidenciaPendiente') IS NOT NULL DROP PROC SP_EvidenciaPendiente
 GO
 CREATE PROC SP_EvidenciaPendiente @Nomina INT AS
-	SELECT *, 'Plan' AS PADRE FROM EVIDENCIA WHERE localizacion IS NULL
+	SELECT EV.*, 'Planes' AS PADRE , S.fecha, S.limite,
+	S.punto, S.no_tarea, PT.localizacionJson, PT.localizacion,
+	A.nombre AS Academia, PT.id_planTrabajo AS ID
+	FROM EVIDENCIA AS EV
+	JOIN SUBIR AS S
+	ON S.id_evidencia = EV.id_evidencia
+	JOIN PLANTRABAJO AS PT
+	ON PT.id_planTrabajo = S.id_planTrabajo
+	JOIN PLANES AS P
+	ON P.id_planTrabajo = PT.id_planTrabajo
+	JOIN ACADEMIA AS A
+	ON A.clave_academia LIKE P.clave_academia
+	WHERE EV.localizacion IS NULL AND nomina = @Nomina
 	UNION
-	SELECT *, 'Acta' AS Padre FROM EVIDENCIAACTA WHERE localizacion IS NULL
+	SELECT EV.*, 'Actas' AS Padre, S.fecha, S.limite,
+	S.punto, S.no_tarea, A.localizacionJson, A.localizacion,
+	ACA.nombre AS Academia, A.id_acta AS ID
+	FROM EVIDENCIAACTA AS EV
+	JOIN SUBIRACTA AS S
+	ON S.id_evidencia = EV.id_evidencia
+	JOIN ACTA AS A
+	ON A.id_acta = S.id_acta
+	JOIN ACTAS AS AT
+	ON AT.id_acta LIKE A.id_acta
+	JOIN ACADEMIA AS ACA
+	ON ACA.clave_academia LIKE AT.clave_academia
+	WHERE EV.localizacion IS NULL  AND nomina = @Nomina
 GO
+
+exec SP_EvidenciaPendiente 14032218
 
 IF OBJECT_ID('SP_FinalizarPlan') IS NOT NULL DROP PROC SP_FinalizarPlan
 GO
@@ -875,4 +901,20 @@ CREATE PROC SP_CancelarEva @Id INT AS
 	UPDATE EVALUACION
 		SET subido = 1
 	WHERE id_evaluacion = @Id
+GO
+
+IF OBJECT_ID('SP_Entregar') IS NOT NULL DROP PROC SP_Entregar
+GO
+CREATE PROC SP_Entregar @Id INT, @Ruta VARCHAR(255) AS
+	UPDATE EVIDENCIA
+		SET localizacion = @Ruta
+	WHERE id_evidencia = @Id
+GO
+
+IF OBJECT_ID('SP_EntregarActa') IS NOT NULL DROP PROC SP_EntregarActa
+GO
+CREATE PROC SP_EntregarActa @Id INT, @Ruta VARCHAR(255) AS
+	UPDATE EVIDENCIAACTA
+		SET localizacion = @Ruta
+	WHERE id_evidencia = @Id
 GO

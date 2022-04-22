@@ -136,9 +136,7 @@ $(document).ready(() => {
             });
         });
 
-        $("#Subir").click(() => {
-            console.log("Subir");
-        });
+        $("#Subir").click(() => window.location = "/Academias/subir.html");
     };
 
     var cerrarM = {
@@ -567,7 +565,7 @@ $(document).ready(() => {
                 error: e => reject(e)
             })
         });
-    }
+    };
 
     const subirEvidencia = async() => {
         await getfaltantesEvidencia()
