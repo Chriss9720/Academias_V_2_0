@@ -253,7 +253,6 @@ $(document).ready(() => {
         })
         $('i[name="descargar"]').click(evt => {
             let id = parseInt(evt.target.offsetParent.parentNode.id);
-            console.log(id);
             window.open(`Academias/${evidencia[id].localizacion}`);
         });
         $('input[name="finalizar"]').click(evt => {

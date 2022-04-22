@@ -512,4 +512,4 @@
 
     echo json_encode(array('ruta'=>"Academias/$ruta.pdf"));
 
-    ?>
+?>

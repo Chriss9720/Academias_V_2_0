@@ -1277,5 +1277,4 @@ $(document).ready(() => {
 
     load();
 
-
 });

@@ -793,36 +793,10 @@ GO
 IF OBJECT_ID('SP_EvidenciaPendiente') IS NOT NULL DROP PROC SP_EvidenciaPendiente
 GO
 CREATE PROC SP_EvidenciaPendiente @Nomina INT AS
-	SELECT EV.*, 'Planes' AS PADRE , S.fecha, S.limite,
-	S.punto, S.no_tarea, PT.localizacionJson, PT.localizacion,
-	A.nombre AS Academia, PT.id_planTrabajo AS ID
-	FROM EVIDENCIA AS EV
-	JOIN SUBIR AS S
-	ON S.id_evidencia = EV.id_evidencia
-	JOIN PLANTRABAJO AS PT
-	ON PT.id_planTrabajo = S.id_planTrabajo
-	JOIN PLANES AS P
-	ON P.id_planTrabajo = PT.id_planTrabajo
-	JOIN ACADEMIA AS A
-	ON A.clave_academia LIKE P.clave_academia
-	WHERE EV.localizacion IS NULL AND nomina = @Nomina
-	UNION
-	SELECT EV.*, 'Actas' AS Padre, S.fecha, S.limite,
-	S.punto, S.no_tarea, A.localizacionJson, A.localizacion,
-	ACA.nombre AS Academia, A.id_acta AS ID
-	FROM EVIDENCIAACTA AS EV
-	JOIN SUBIRACTA AS S
-	ON S.id_evidencia = EV.id_evidencia
-	JOIN ACTA AS A
-	ON A.id_acta = S.id_acta
-	JOIN ACTAS AS AT
-	ON AT.id_acta LIKE A.id_acta
-	JOIN ACADEMIA AS ACA
-	ON ACA.clave_academia LIKE AT.clave_academia
+	SELECT *
+	FROM VW_InfoDocumentos
 	WHERE EV.localizacion IS NULL  AND nomina = @Nomina
 GO
-
-exec SP_EvidenciaPendiente 14032218
 
 IF OBJECT_ID('SP_FinalizarPlan') IS NOT NULL DROP PROC SP_FinalizarPlan
 GO
@@ -930,4 +904,38 @@ IF OBJECT_ID ('SP_BorrarMaterias') IS NOT NULL DROP PROC SP_BorrarMaterias
 GO
 CREATE PROC SP_BorrarMaterias @Nom INT AS
 	DELETE FROM MATERIAS WHERE nomina = @Nom
+GO
+
+IF OBJECT_ID ('SP_GetAllDocentes') IS NOT NULL DROP PROC SP_GetAllDocentes
+GO
+CREATE PROC SP_GetAllDocentes AS
+	SELECT * FROM DOCENTE WHERE nivel != 0 AND baja = 0
+GO
+
+IF OBJECT_ID ('SP_InfoBasicaCarrera') IS NOT NULL DROP PROC SP_InfoBasicaCarrera
+GO
+CREATE PROC SP_InfoBasicaCarrera @Nom INT AS
+	SELECT *
+	FROM VW_InfoCarrera
+	WHERE clave_carrera LIKE (
+		SELECT clave_carrera FROM AFILIADO WHERE nomina = @Nom
+	)
+GO
+
+IF OBJECT_ID ('SP_InfoBasicaAcademia') IS NOT NULL DROP PROC SP_InfoBasicaAcademia
+GO
+CREATE PROC SP_InfoBasicaAcademia @Nom INT AS
+	SELECT *
+	FROM VW_InfoAcademias
+	WHERE clave_academia IN (
+		SELECT clave_academia FROM CARGO WHERE nomina = @Nom
+	)
+GO
+
+IF OBJECT_ID ('SP_InfoBasicaDocumentos') IS NOT NULL DROP PROC SP_InfoBasicaDocumentos
+GO
+CREATE PROC SP_InfoBasicaDocumentos @Nom INT AS
+	SELECT *
+	FROM VW_InfoDocumentos
+	WHERE localizacion IS NOT NULL AND nomina = @Nom
 GO

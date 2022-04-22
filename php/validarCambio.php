@@ -204,6 +204,16 @@
             case "editarme":
                 echo json_encode(array("cambio" => "/Academias/Docente.html"));
                 break;
+            case "Ver":
+                switch ($afectar) {
+                    case "Docente":
+                        echo json_encode(array("cambio" => "/Academias/verDocente.html"));
+                        break;
+                    default:
+                        http_response_code(400);
+                        echo json_encode(array("msg"=>"Caso desconocido (Ver) '$afectar'"));
+                }
+                break;
             default:
                 http_response_code(400);
                 echo json_encode(array("msg"=>"Caso desconocido 1 '$accion'"));
@@ -212,3 +222,5 @@
         http_response_code(405);
         die(json_encode(array("status"=>400, "msg"=>"Ocurrio un error al cargar la informacion")));
     }
+
+?>

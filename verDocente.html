@@ -1,10 +1,11 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!--font awesome-->
@@ -14,15 +15,21 @@
     <link rel="stylesheet" href="css/banner.css">
     <link rel="stylesheet" href="css/formulario.css">
     <link rel="stylesheet" href="css/carrera.css">
+    <link rel="stylesheet" href="css/verDocente.css">
     <title>Academias</title>
 </head>
 
 <body>
 
     <div class="bg-panel-superior">
-        <div class="container d-flex">
-            <div class="w-25">
-                <label class="click iconos-superior">
+        <div class="container-fluid d-flex">
+            <div class="w-50">
+                <a href="https://www.itesca.edu.mx/" target="_blank" class="link">
+                    <label class="marca-awa">
+                        <img src="img/favicon.png" style="width:30px;">ITESCA
+                    </label>
+                </a>
+                <label class="click iconos-superior" id="inicio">
                     <span>
                         <i class="fas fa-home"></i>
                     </span>
@@ -36,7 +43,7 @@
                 </label>
             </div>
             <div class="d-flex justify-content-end w-75">
-                <label class="click iconos-superior ml-3">
+                <label class="click iconos-superior ml-3" id="Cerrar">
                     <span>
                         <i class="fas fa-sign-out-alt"></i>
                     </span>
@@ -64,56 +71,48 @@
         </div>
     </div>
 
-    <div class="container">
-        <div class="ml-3 form-inline">
-            <img src="img/IconLog.png" class="img-fluid foto-opcional">
-            <div class="d-flex flex-column ml-5">
-                <label class="text-dark h2 font-weight-bold">MAT. Anabel Gutiérrez Espinoza</label>
-                <label class="h3 align-self-start">6443678866</label>
-                <label class="h5 align-self-start">agutierrez@e-itesca.edu.mx</label>
+    <div class="container mb-3">
+        <div class="d-flex justify-content-center align-items-center">
+            <div class="form-inline mb-2">
+                <label class="form-label text-input mr-3">Busqueda por nomina/nombre</label>
+                <input id="DocenteSel" type="search" class="form-control text-input bg-input rounded-pill mx-auto" list="listaDocentes">
+                <datalist id="listaDocentes">
+                </datalist>
             </div>
+        </div>
+    </div>
+
+    <div id="alerta" class="container"></div>
+
+    <div class="container">
+        <div class="ml-3 form-inline" id="datosDocentes">
         </div>
     </div>
 
     <div class="container mt-3">
-        <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
-            <label class="btn btn-secondary active opciones text-input">
-            <input type="radio" name="options" id="option1" autocomplete="off"> Carrera
-        </label>
-            <label class="btn btn-secondary opciones text-input">
-            <input type="radio" name="options" id="option2" autocomplete="off"> Academias
-        </label>
-            <label class="btn btn-secondary opciones text-input">
-            <input type="radio" name="options" id="option3" autocomplete="off"> Documentos
-        </label>
-            <label class="btn btn-secondary opciones text-input">
-            <input type="radio" name="options" id="option3" autocomplete="off"> Materias
-        </label>
+        <div class="btn-group btn-group-toggle w-100" data-toggle="buttons" id="menuOpciones">
         </div>
     </div>
 
     <div class="mt-5">
-        <div class="container">
-            <img id="img-portada" src="img/portada.png" class="portada img-fluid">
-            <div class="arriba ml-3 form-inline">
-                <img src="img/IconLog.png" class="img-fluid foto-opcional">
-                <div class="d-flex flex-column">
-                    <label class="text-dark h3 font-weight-bold">Ingeniería en sistemas computacioales</label>
-                    <label class="h5">M.C Cesar Leonel Zazueta Villavicencio</label>
-                </div>
-            </div>
+        <div class="container" id="mostrar">
         </div>
+        <div id="pie"></div>
     </div>
 
-    <!--Ajax-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <div id="modales"></div>
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin=" anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!-- CKEditor -->
+    <script src="//cdn.ckeditor.com/4.17.1/standard/ckeditor.js"></script>
     <!-- My Script -->
+    <script src="js/validaciones.js"></script>
     <script src="js/editarme.js"></script>
+    <script src="js/verDocente.js"></script>
 
 </body>
 

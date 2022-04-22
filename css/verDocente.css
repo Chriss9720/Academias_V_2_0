@@ -1,0 +1,19 @@
+.areaFondo {
+    width: 200px !important;
+    height: 150px !important;
+    background-size: 150px 100px;
+}
+
+.imgRelleno {
+    width: 100px !important;
+    height: 100px !important;
+    border-radius: 50%;
+    margin-top: -50px;
+}
+
+.img-pdf {
+    width: 100px;
+    height: 100px;
+    max-width: 100px;
+    max-height: 100px;
+}

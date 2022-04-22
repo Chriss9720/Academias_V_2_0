@@ -994,9 +994,6 @@ $(document).ready(() => {
             <label class="text-input">${t.nomina || "nomina"}</label>
             <label>${t.nombre || "nombre"}</label>
             <label>${t.correo || "correo"}</label>
-            <div class="d-flex d-inline justify-content-center mb-3">
-                <img src="img/ver-detalles.png" class="opciones img-fluid click ml-2" title="ver">
-            </div>
             ${(misDatos['nivel'] == 0) ? await cambiarCoordinador() : ""}
             ${alertaCoordinador({ u: u })}
         `);
