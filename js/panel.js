@@ -497,11 +497,6 @@ $(document).ready(() => {
                     <input name="opcionMenu" type="button" value="Carrera" class="dropdown-item">
                     <input name="opcionMenu" type="button" value="Docente" class="dropdown-item">
                     <input name="opcionMenu" type="button" value="Academia" class="dropdown-item">
-                    <input name="opcionMenu" type="button" value="Plan de trabajo" class="dropdown-item">
-                    <input name="opcionMenu" type="button" value="Acta" class="dropdown-item">
-                    <input name="opcionMenu" type="button" value="Ev. docente" class="dropdown-item">
-                    <input name="opcionMenu" type="button" value="Ev. presidente" class="dropdown-item">
-                    <input name="opcionMenu" type="button" value="Ev. secretario" class="dropdown-item">
                 </div>
             </div>
         `);

@@ -209,6 +209,9 @@
                     case "Docente":
                         echo json_encode(array("cambio" => "/Academias/verDocente.html"));
                         break;
+                    case "Carrera":
+                        echo json_encode(array("cambio" => "/Academias/verCarrera.html"));
+                        break;
                     default:
                         http_response_code(400);
                         echo json_encode(array("msg"=>"Caso desconocido (Ver) '$afectar'"));

@@ -240,7 +240,7 @@ $(document).ready(() => {
         await cargar(1, misDocs, 'Docs');
         $("[name='descargarPadre']").click(evt => {
             let i = evt.target.id.split("_")[1];
-            window.open(`Academias/${misDocs[i].L2}`)
+            window.open(`Academias/${misDocs[i].L2 || misDocs[i].localizacion}`)
         });
         $("[name='descargarEvi']").click(evt => {
             let i = evt.target.id.split("_")[1];
@@ -300,7 +300,7 @@ $(document).ready(() => {
                 $("#alerta").html(``);
                 $("#datosDocentes").html(`
                     <img src="${find.foto}" class="img-fluid foto-opcional">
-                    <div class="d-flex flex-column ml-5">
+                    <div class="d-flex flex-column align-items-start ml-5">
                         <label class="text-dark h2 font-weight-bold">${find.nombre}</label>
                         <label class="h3 align-self-start">${find.telefono}</label>
                         <label class="h5 align-self-start">${find.correo}</label>
@@ -530,6 +530,20 @@ $(document).ready(() => {
         });
     };
 
+    const getTarea = (t, i) => {
+        if (t) {
+            return `
+                <div>
+                    <label >Entrego: <b>${t}</b></label>
+                    <span>
+                        <i id='Evi_${i}' name="descargarEvi" class="fas fa-download click"></i>
+                    </span>
+                </div>`;
+        } else {
+            return "";
+        }
+    };
+
     const cargar = async(pagina, datos, armando) => {
         let mostrar = 3;
         let contenido = $("#mostrar")[0];
@@ -537,7 +551,6 @@ $(document).ready(() => {
         let total = mostrar * pagina;
         let inicio = (pagina - 1) * mostrar;
         let r = "<div class='row'>";
-        let armarPie = false;
         for (let i = inicio; i < total && i < datos.length; i++) {
             switch (armando) {
                 case "Academias":
@@ -557,30 +570,42 @@ $(document).ready(() => {
                         .catch(e => console.log(e));
                     let desc;
                     let tarea;
-                    if (datos[i].PADRE === 'Actas') {
-                        desc = datos[i].data.Acuerdos[(datos[i].punto) - 1].acuerdo;
-                        tarea = datos[i].data.Acuerdos[(datos[i].punto) - 1].tareas[(datos[i].no_tarea - 1)];
-                    } else {
-                        desc = datos[i].data[datos[i].punto].Acciones;
-                        tarea = datos[i].data[(datos[i].punto)].tareas[(datos[i].no_tarea - 1)];
+                    let sem;
+                    switch (datos[i].PADRE) {
+                        case 'Actas':
+                            desc = datos[i].data.Acuerdos[(datos[i].punto) - 1].acuerdo;
+                            sem = datos[i].data.Sem;
+                            tarea = datos[i].data.Acuerdos[(datos[i].punto) - 1].tareas[(datos[i].no_tarea - 1)];
+                            break;
+                        case "Planes":
+                            sem = datos[i].data.datos.semestre;
+                            desc = datos[i].data[datos[i].punto].Acciones;
+                            tarea = datos[i].data[(datos[i].punto)].tareas[(datos[i].no_tarea - 1)];
+                            break;
+                        case "Evaluacion":
+                            sem = datos[i].data.infoDoc.periodo;
+                            if (datos[i].localizacion.includes('EVPresidente')) {
+                                desc = "Evaluacion de Presidente";
+                            } else if (datos[i].localizacion.includes('EVDocente')) {
+                                desc = "Evaluacion de Docente";
+                            } else {
+                                desc = "Evaluacion de Secretario";
+                            }
+                            break;
                     }
                     r += `
                         <div class="col-4">
                             <div class="d-flex flex-column align-items-center">
                                 <img src="img/pdf.ico" class="img-fluid img-pdf">
+                                <label >Semestre: <b>${sem}</b></label>
                                 <div>
-                                    <label class="text-input">Tipo: <b>${datos[i].PADRE}</b></label>
+                                    <label >Tipo: <b>${datos[i].PADRE}</b></label>
                                     <span>
                                         <i id='Padre_${i}'  name="descargarPadre" class="fas fa-download click"></i>
                                     </span>
                                 </div>
-                                <label class="text-input">Descripcion: <b>${desc}</b></label>
-                                <div>
-                                    <label class="text-input">Entrego: <b>${tarea}</b></label>
-                                    <span>
-                                        <i id='Evi_${i}' name="descargarEvi" class="fas fa-download click"></i>
-                                    </span>
-                                </div>
+                                <label >Descripcion: <b>${desc}</b></label>
+                                ${getTarea(tarea,i)}
                             </div>
                         </div>
                     `;

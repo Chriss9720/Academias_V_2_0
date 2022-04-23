@@ -938,4 +938,32 @@ CREATE PROC SP_InfoBasicaDocumentos @Nom INT AS
 	SELECT *
 	FROM VW_InfoDocumentos
 	WHERE localizacion IS NOT NULL AND nomina = @Nom
+	UNION
+	SELECT id_evaluacion, localizacion, null, nomina,
+	'Evaluacion', NULL, 0, 0 ,0, localizacionJson, null,
+	Academia, 0
+	FROM VW_Evaluaciones
+	WHERE id_evaluacion IS NOT NULL AND localizacion IS NOT NULL AND nomina = @Nom
+GO
+
+IF OBJECT_ID ('SP_InfoBasicaCarreras') IS NOT NULL DROP PROC SP_InfoBasicaCarreras
+GO
+CREATE PROC SP_InfoBasicaCarreras AS
+	SELECT CAR.*, D.foto, D.nombre AS ND
+	FROM CARRERA AS CAR
+	JOIN AFILIADO AS AF
+	ON AF.clave_carrera LIKE CAR.clave_carrera AND AF.Activo = 1
+	JOIN DOCENTE AS D
+	ON D.nomina = AF.nomina AND AF.jefe = 1
+	WHERE CAR.activo = 1
+GO
+
+IF OBJECT_ID ('SP_InfoDocentesCarreraBasica') IS NOT NULL DROP PROC SP_InfoDocentesCarreraBasica
+GO
+CREATE PROC SP_InfoDocentesCarreraBasica @Clave VARCHAR(255) AS
+	SELECT *
+	FROM AFILIADO AS AF
+	JOIN DOCENTE AS D
+	ON D.nomina = AF.nomina AND AF.Activo = 1
+	WHERE AF.clave_carrera LIKE '%'+@Clave+'%' AND AF.jefe != 1
 GO
