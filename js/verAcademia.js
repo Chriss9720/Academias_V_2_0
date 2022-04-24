@@ -269,6 +269,67 @@ $(document).ready(() => {
         });
     };
 
+    const buscador = () => {
+        $("#Buscador").html(`
+            <div class="container mt-3">
+                <div class="d-flex justify-content-center align-items-center">
+                    <div class="form-inline mb-2">
+                        <label class="form-label text-input mr-3">Busqueda por nomina/nombre</label>
+                        <input id="docenteSel" type="search" class="form-control text-input bg-input rounded-pill mx-auto" list="listaDocentes">
+                        <datalist id="listaDocentes">
+                        </datalist>
+                    </div>
+                    <input id="Borrar" value="Borrar" class="btn btn-danger ml-2" type="button">
+                </div>
+            </div>
+        `);
+        removerGuardados($("#listaDocentes")[0]);
+        let r = "";
+        docentes.forEach(d => {
+            r += `<option value="${d.nomina} - ${d.nombre}">`;
+        });
+        $("#listaDocentes").html(r);
+        $("#docenteSel").keypress(k => {
+            if (k.which == 13) {
+                let valor = k.target.value.split(" - ");
+                let clave;
+                let nombre = '';
+                for (let i = 0; i < valor.length; i++) {
+                    if (i > 1) {
+                        nombre += ' - ';
+                    }
+                    if (i == 0) {
+                        clave = valor[i];
+                    } else {
+                        nombre += valor[i];
+                    }
+                }
+                let find = docentes.find(f => f.nomina == clave && f.nombre == nombre);
+                if (find) {
+                    $("#alerta").html(``);
+                    docentes.forEach(d => d.v = d.nomina == clave);
+                } else {
+                    docentes.forEach(d => d.v = true);
+                    $("#alerta").html(`
+                        <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                            <strong class="h1">No se encontro al docente</strong>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    `);
+                }
+                cargarDocentes(1);
+            }
+        });
+        $("#Borrar").click(() => {
+            $("#alerta").html(``);
+            $("#docenteSel").val("");
+            docentes.forEach(d => d.v = true);
+            cargarDocentes(1);
+        });
+    };
+
     const cargarInfoAcademia = async(datos) => {
         $("#infoAcademia").html(`
             <div class="container">
@@ -346,7 +407,11 @@ $(document).ready(() => {
             });
         await getDocntes(datos.clave_academia)
             .then(doc => {
-                docentes = doc;
+                for (let i = 0; i < doc.length; i++) {
+                    docentes.push(doc[i]);
+                    docentes[i].v = true;
+                }
+                buscador();
                 cargarDocentes(1);
             })
             .catch(e => {
@@ -618,20 +683,21 @@ $(document).ready(() => {
     };
 
     const cargarDocentes = pagina => {
+        let data = docentes.filter(d => d.v);
         let planes = $("#docentes")[0];
         let mostrar = 3;
-        let max = Math.ceil(docentes.length / mostrar);
+        let max = Math.ceil(data.length / mostrar);
         let total = mostrar * pagina;
         let inicio = (pagina - 1) * mostrar;
         planes.innerHTML = "";
-        for (let i = inicio; i < total && i < docentes.length; i++) {
+        for (let i = inicio; i < total && i < data.length; i++) {
             planes.innerHTML += `
             <div class="col-4">
                 <div class="d-flex flex-column align-items-center">
-                    <img src="${docentes[i].foto}" class="img-fluid foto-opcional">
-                    <label class="text-input">${docentes[i].nomina}</label>
-                    <label>${docentes[i].nombre}</label>
-                    <label>${docentes[i].correo}</label>
+                    <img src="${data[i].foto}" class="img-fluid foto-opcional">
+                    <label class="text-input">${data[i].nomina}</label>
+                    <label>${data[i].nombre}</label>
+                    <label>${data[i].correo}</label>
                 </div>
             </div>`;
         }
