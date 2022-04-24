@@ -967,3 +967,45 @@ CREATE PROC SP_InfoDocentesCarreraBasica @Clave VARCHAR(255) AS
 	ON D.nomina = AF.nomina AND AF.Activo = 1
 	WHERE AF.clave_carrera LIKE '%'+@Clave+'%' AND AF.jefe != 1
 GO
+
+IF OBJECT_ID ('SP_GetPuestoAcademia') IS NOT NULL DROP PROC SP_GetPuestoAcademia
+GO
+CREATE PROC SP_GetPuestoAcademia @Clave VARCHAR(255), @Puesto VARCHAR(255) AS
+	SELECT D.nomina, D.nombre, D.correo, D.foto
+	FROM CARGO AS C
+	JOIN DOCENTE AS D
+	ON C.nomina = D.nomina
+	WHERE puesto LIKE '%'+@Puesto+'%' AND clave_academia LIKE '%'+@Clave+'%'
+GO
+
+IF OBJECT_ID ('SP_GetActasAcademia') IS NOT NULL DROP PROC SP_GetActasAcademia
+GO
+CREATE PROC SP_GetActasAcademia @Clave VARCHAR(255) AS
+	SELECT A.fecha, A.Semestre, localizacion
+	FROM ACTAS AS AC
+	JOIN ACTA AS A
+	ON AC.id_acta = A.id_acta
+	WHERE clave_academia LIKE '%'+@Clave+'%'
+GO
+
+IF OBJECT_ID ('SP_GetAgendaAcademia') IS NOT NULL DROP PROC SP_GetAgendaAcademia
+GO
+CREATE PROC SP_GetAgendaAcademia @Clave VARCHAR(255) AS
+	SELECT DISTINCT AG.fecha
+	FROM AGENDA AS AG
+	JOIN PLANTRABAJO AS PT
+	ON PT.id_planTrabajo = AG.id_planTrabajo
+	JOIN PLANES AS PS
+	ON PS.id_planTrabajo = PT.id_planTrabajo
+	WHERE PS.clave_academia LIKE '%'+@Clave+'%'
+GO
+
+IF OBJECT_ID ('SP_GetDocentesAcademia') IS NOT NULL DROP PROC SP_GetDocentesAcademia
+GO
+CREATE PROC SP_GetDocentesAcademia @Clave VARCHAR(255) AS
+	SELECT D.nomina, D.foto, D.correo, D.nombre
+	FROM CARGO AS CA
+	JOIN DOCENTE AS D
+	ON D.nomina = CA.nomina
+	WHERE CA.clave_academia LIKE '%'+@Clave+'%' AND activo = 1
+GO

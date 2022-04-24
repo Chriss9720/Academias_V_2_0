@@ -339,7 +339,7 @@ $(document).ready(() => {
         let f = new Date(año, date[1] - 1, dia);
         f.setHours(fh[0], fh[1], fh[2]);
         return { dia, mes, año, hora, f };
-    }
+    };
 
     const cargarAgenda = ag => {
         if (!agenda) agenda = ag;
