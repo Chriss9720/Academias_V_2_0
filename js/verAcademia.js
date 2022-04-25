@@ -402,7 +402,11 @@ $(document).ready(() => {
                 `;
             })
             .catch(e => {
-                console.log(e);
+                if (e.responseText == "Solicitar Reinicio de sesion") {
+                    cerrarM.load = true;
+                    cerrarModal();
+                    login();
+                }
             });
         await getPre(datos.clave_academia, 'Secretario')
             .then(pre => {
@@ -423,7 +427,11 @@ $(document).ready(() => {
                 `;
             })
             .catch(e => {
-                console.log(e);
+                if (e.responseText == "Solicitar Reinicio de sesion") {
+                    cerrarM.load = true;
+                    cerrarModal();
+                    login();
+                }
             });
         await getPlanesAcademia(datos.clave_academia)
             .then(async(planes) => {
@@ -436,17 +444,29 @@ $(document).ready(() => {
                                 .then(json => {
                                     planes[i].datosEv = json;
                                 }).catch(e => {
-                                    console.log(e);
+                                    if (e.responseText == "Solicitar Reinicio de sesion") {
+                                        cerrarM.load = true;
+                                        cerrarModal();
+                                        login();
+                                    }
                                 });
                         }).catch(e => {
-                            console.log(e);
+                            if (e.responseText == "Solicitar Reinicio de sesion") {
+                                cerrarM.load = true;
+                                cerrarModal();
+                                login();
+                            }
                         });
                     planesData.push(planes[i]);
                 }
                 cargarPlanes(1);
             })
             .catch(e => {
-                console.log(e);
+                if (e.responseText == "Solicitar Reinicio de sesion") {
+                    cerrarM.load = true;
+                    cerrarModal();
+                    login();
+                }
             });
         await getActasAcemia(datos.clave_academia)
             .then(async(actas) => {
@@ -460,25 +480,41 @@ $(document).ready(() => {
                                     actas[i].datosEv = json;
                                 })
                                 .catch(e => {
-                                    console.log(e);
+                                    if (e.responseText == "Solicitar Reinicio de sesion") {
+                                        cerrarM.load = true;
+                                        cerrarModal();
+                                        login();
+                                    }
                                 });
                         })
                         .catch(e => {
-                            console.log(e);
+                            if (e.responseText == "Solicitar Reinicio de sesion") {
+                                cerrarM.load = true;
+                                cerrarModal();
+                                login();
+                            }
                         });
                     planesActas.push(actas[i]);
                 }
                 cargarActas(1);
             })
             .catch(e => {
-                console.log(e);
+                if (e.responseText == "Solicitar Reinicio de sesion") {
+                    cerrarM.load = true;
+                    cerrarModal();
+                    login();
+                }
             });
         await getAgenda(datos.clave_academia)
             .then(ag => {
                 cargarAgenda(ag);
             })
             .catch(e => {
-                console.log(e);
+                if (e.responseText == "Solicitar Reinicio de sesion") {
+                    cerrarM.load = true;
+                    cerrarModal();
+                    login();
+                }
             });
         await getDocntes(datos.clave_academia)
             .then(doc => {
@@ -490,7 +526,11 @@ $(document).ready(() => {
                 cargarDocentes(1);
             })
             .catch(e => {
-                console.log(e);
+                if (e.responseText == "Solicitar Reinicio de sesion") {
+                    cerrarM.load = true;
+                    cerrarModal();
+                    login();
+                }
             });
         $("#PS").html(PS);
     };
@@ -546,7 +586,6 @@ $(document).ready(() => {
                         cerrarModal();
                     })
                     .catch(e => {
-                        console.log(e);
                         if (e.responseText == "Solicitar Reinicio de sesion") {
                             cerrarM.load = true;
                             cerrarModal();
@@ -723,11 +762,11 @@ $(document).ready(() => {
         }
         pie(pagina, max, "paginaPlanes");
         $('span[name="Planes"]').click(evt => {
+            cargando();
             $("#pieInfo").html("");
             $("#titulo").html("Informacion del plan de trabajo");
             $("#verDoc").modal();
             let id = evt.target.id.split("_")[1];
-            console.log(planesData[id]);
             let { Semestre, fecha } = planesData[id];
             let { date } = fecha;
             armarPadre(Semestre, date, id);
@@ -737,7 +776,6 @@ $(document).ready(() => {
             });
             let doc = planesData[id].datosEv;
             let ev = planesData[id].ev;
-            console.log(ev);
             let datosE = [];
             for (let i = 0; i < ev.length; i++) {
                 let desc = "";
@@ -759,6 +797,9 @@ $(document).ready(() => {
                 let id = evt.target.id.split("_")[1];
                 window.open(`Academias/${evi[id].datosDoc.L}`);
             });
+            cerrarM.load = true;
+            cerrarM.login = true;
+            cerrarModal();
             $("#verDoc").modal();
         });
     };
@@ -785,6 +826,7 @@ $(document).ready(() => {
         }
         pie(pagina, max, "paginaActas");
         $('span[name="actas"]').click(async(evt) => {
+            cargando();
             $("#pieInfo").html("");
             $("#titulo").html("Informacion del Acta");
             let id = evt.target.id.split("_")[1];
@@ -801,9 +843,9 @@ $(document).ready(() => {
             for (let i = 0; i < ev.length; i++) {
                 let desc = "";
                 let documentoE = "";
-                if (doc.Acuerdos) {
-                    if (doc.Acuerdos[(ev[i].punto - 1)]) desc = doc.Acuerdos[(ev[i].punto - 1)].acuerdo;
-                    if (doc.Acuerdos[(ev[i].punto - 1)]) documentoE = doc.Acuerdos[(ev[i].punto - 1)].tareas[(ev[i].no_tarea - 1)];
+                if (doc.ant) {
+                    if (doc.ant[(ev[i].punto - 1)]) desc = doc.ant[(ev[i].punto - 1)].acuerdo;
+                    if (doc.ant[(ev[i].punto - 1)]) documentoE = doc.ant[(ev[i].punto - 1)].tareas[(ev[i].no_tarea - 1)];
                 }
                 let datosDoc = {
                     "L": ev[i].localizacion,
@@ -818,6 +860,9 @@ $(document).ready(() => {
                 let id = evt.target.id.split("_")[1];
                 window.open(`Academias/${evi[id].datosDoc.L}`);
             });
+            cerrarM.load = true;
+            cerrarM.login = true;
+            cerrarModal();
             $("#verDoc").modal();
         });
     };
