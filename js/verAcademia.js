@@ -13,6 +13,8 @@ $(document).ready(() => {
 
     var docentes = [];
 
+    var evi = [];
+
     const cerrarModal = () => {
         $("#modal").modal('hide');
         $(`[class="modal-backdrop show"]`).remove();
@@ -330,6 +332,47 @@ $(document).ready(() => {
         });
     };
 
+    const leerEv = ruta => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: 'php/leerPlan.php',
+                data: {
+                    ruta: ruta
+                },
+                type: "post",
+                dataType: "json",
+                success: s => resolve(s),
+                error: e => reject(e)
+            })
+        });
+    };
+
+    const getEvideciaActa = id => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: 'php/getEvideciaActa.php',
+                data: { id: id },
+                type: 'POST',
+                dataType: 'json',
+                success: s => resolve(s),
+                error: e => reject(e)
+            });
+        });
+    };
+
+    const getEvideciaPlanes = id => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: 'php/getEvideciaPlanes.php',
+                data: { id: id },
+                type: 'POST',
+                dataType: 'json',
+                success: s => resolve(s),
+                error: e => reject(e)
+            });
+        });
+    };
+
     const cargarInfoAcademia = async(datos) => {
         $("#infoAcademia").html(`
             <div class="container">
@@ -383,16 +426,48 @@ $(document).ready(() => {
                 console.log(e);
             });
         await getPlanesAcademia(datos.clave_academia)
-            .then(planes => {
-                planesData = planes;
+            .then(async(planes) => {
+                planesData = [];
+                for (let i = 0; i < planes.length; i++) {
+                    await getEvideciaPlanes(planes[i].id)
+                        .then(async(ev) => {
+                            planes[i].ev = ev;
+                            await leerEv(planes[i].localizacionJson)
+                                .then(json => {
+                                    planes[i].datosEv = json;
+                                }).catch(e => {
+                                    console.log(e);
+                                });
+                        }).catch(e => {
+                            console.log(e);
+                        });
+                    planesData.push(planes[i]);
+                }
                 cargarPlanes(1);
             })
             .catch(e => {
                 console.log(e);
             });
         await getActasAcemia(datos.clave_academia)
-            .then(actas => {
-                planesActas = actas;
+            .then(async(actas) => {
+                planesActas = [];
+                for (let i = 0; i < actas.length; i++) {
+                    await getEvideciaActa(actas[i].id_acta)
+                        .then(async(ev) => {
+                            actas[i].ev = ev;
+                            await leerEv(actas[i].localizacionJson)
+                                .then(json => {
+                                    actas[i].datosEv = json;
+                                })
+                                .catch(e => {
+                                    console.log(e);
+                                });
+                        })
+                        .catch(e => {
+                            console.log(e);
+                        });
+                    planesActas.push(actas[i]);
+                }
                 cargarActas(1);
             })
             .catch(e => {
@@ -529,7 +604,7 @@ $(document).ready(() => {
     };
 
     const contenido = (name, pagina, i) => `
-        <li class="page-item ${pagina == i ? 'active' :''}">
+        <li class="page-item ${pagina == i ? 'active' : ''}">
             <a name="${name}" class="page-link click bg-input text-input ml-2 form-control text-center">${i}</a>
         </li>`;
 
@@ -571,6 +646,8 @@ $(document).ready(() => {
             if (entro) $("#piePlanes")[0].innerHTML = cuerpo;
         } else if (name == "paginaDocentes") {
             if (entro) $("#pieDocentes")[0].innerHTML = cuerpo;
+        } else if (name == 'paginaInfo') {
+            if (entro) $("#pieInfo")[0].innerHTML = cuerpo;
         } else {
             if (entro) $("#pieActas")[0].innerHTML = cuerpo;
         }
@@ -582,6 +659,8 @@ $(document).ready(() => {
                 cargarActas(evento(evt, max));
             else if (evt.target.attributes.name.value === "paginaDocentes")
                 cargarDocentes(evento(evt, max));
+            else if (evt.target.attributes.name.value === "paginaInfo")
+                cargarEvi(evento(evt, max));
         });
 
         $(`img[name="Inicio${name}"]`).click(evt => {
@@ -591,6 +670,8 @@ $(document).ready(() => {
                 cargarActas(1);
             else if (evt.target.attributes.name.value === "IniciopaginaDocentes")
                 cargarDocentes(1);
+            else if (evt.target.attributes.name.value === "paginaInfo")
+                cargarEvi(1);
         });
 
         $(`img[name="Final${name}"]`).click(evt => {
@@ -600,11 +681,25 @@ $(document).ready(() => {
                 cargarActas(max);
             else if (evt.target.attributes.name.value === "FinalpaginaDocentes")
                 cargarDocentes(max);
+            else if (evt.target.attributes.name.value === "paginaInfo")
+                cargarEvi(max);
         });
 
     };
 
     const getFecha = fecha => fecha.substring(0, 19);
+
+    const armarPadre = (Semestre, date, id) => {
+        $("#docPadre").html(`
+            <h4>Plan de trabajo</h4>
+            <img src="img/pdf.ico">
+            <h5>Semestre: ${Semestre}</h5>
+            <h5>fecha: ${date.substring(0, 19)}</h5>
+            <span class="">
+                <i name="descargarEvi" id="${id}" class="fas fa-download click"></i>
+            </span>
+        `);
+    };
 
     const cargarPlanes = pagina => {
         let planes = $("#planes")[0];
@@ -616,14 +711,56 @@ $(document).ready(() => {
         for (let i = inicio; i < total && i < planesData.length; i++) {
             planes.innerHTML += `
             <div class="col-3">
-                <div name="plan" class="d-flex flex-column justify-content-center align-items-center click">
+                <div name="plan" class="d-flex flex-column justify-content-center align-items-center">
                     <img src="img/pdf.ico" style="height: 100px" class="img-fluid">
                     <label>Semestre:${planesData[i].Semestre}</label>
                     <label>Fecha: ${getFecha(planesData[i].fecha.date)}</label>
+                    <span style="font-size: 2rem;" name="Planes">
+                        <i class="fas fa-eye click" id="Planes_${i}"></i>
+                    </span>
                 </div>
             </div>`;
         }
         pie(pagina, max, "paginaPlanes");
+        $('span[name="Planes"]').click(evt => {
+            $("#pieInfo").html("");
+            $("#titulo").html("Informacion del plan de trabajo");
+            $("#verDoc").modal();
+            let id = evt.target.id.split("_")[1];
+            console.log(planesData[id]);
+            let { Semestre, fecha } = planesData[id];
+            let { date } = fecha;
+            armarPadre(Semestre, date, id);
+            $("i[name='descargarEvi']").click(evt => {
+                let id = evt.target.id;
+                window.open(`Academias/${planesData[id].localizacion}`);
+            });
+            let doc = planesData[id].datosEv;
+            let ev = planesData[id].ev;
+            console.log(ev);
+            let datosE = [];
+            for (let i = 0; i < ev.length; i++) {
+                let desc = "";
+                let documentoE = "";
+                if (ev[i].punto) {
+                    desc = doc[(ev[i].punto)].Acciones;
+                    documentoE = doc[(ev[i].punto)].tareas[(ev[i].no_tarea - 1)];
+                }
+                let datosDoc = {
+                    "L": ev[i].localizacion,
+                    "N": ev[i].nomina,
+                    "D": ev[i].nombre
+                };
+                datosE.push({ desc, documentoE, datosDoc });
+            }
+            evi = datosE;
+            cargarEvi(1);
+            $("i[name='descargarPadre']").click(evt => {
+                let id = evt.target.id.split("_")[1];
+                window.open(`Academias/${evi[id].datosDoc.L}`);
+            });
+            $("#verDoc").modal();
+        });
     };
 
     const cargarActas = pagina => {
@@ -636,14 +773,53 @@ $(document).ready(() => {
         for (let i = inicio; i < total && i < planesActas.length; i++) {
             planes.innerHTML += `
             <div class="col-3">
-                <div class="d-flex flex-column justify-content-center align-items-center click">
+                <div class="d-flex flex-column justify-content-center align-items-center">
                     <img src="img/pdf.ico" style="height: 100px" class="img-fluid">
                     <label>Semestre:${planesActas[i].Semestre}</label>
                     <label>Fecha: ${getFecha(planesActas[i].fecha.date)}</label>
+                    <span style="font-size: 2rem;" name="actas">
+                        <i class="fas fa-eye click" id="actas_${i}"></i>
+                    </span>
                 </div>
             </div>`;
         }
         pie(pagina, max, "paginaActas");
+        $('span[name="actas"]').click(async(evt) => {
+            $("#pieInfo").html("");
+            $("#titulo").html("Informacion del Acta");
+            let id = evt.target.id.split("_")[1];
+            let { Semestre, fecha } = planesActas[id];
+            let { date } = fecha;
+            armarPadre(Semestre, date, id);
+            $("i[name='descargarEvi']").click(evt => {
+                let id = evt.target.id;
+                window.open(`Academias/${planesActas[id].localizacion}`);
+            });
+            let doc = planesActas[id].datosEv;
+            let ev = planesActas[id].ev;
+            let datosE = [];
+            for (let i = 0; i < ev.length; i++) {
+                let desc = "";
+                let documentoE = "";
+                if (doc.Acuerdos) {
+                    if (doc.Acuerdos[(ev[i].punto - 1)]) desc = doc.Acuerdos[(ev[i].punto - 1)].acuerdo;
+                    if (doc.Acuerdos[(ev[i].punto - 1)]) documentoE = doc.Acuerdos[(ev[i].punto - 1)].tareas[(ev[i].no_tarea - 1)];
+                }
+                let datosDoc = {
+                    "L": ev[i].localizacion,
+                    "N": ev[i].nomina,
+                    "D": ev[i].nombre
+                };
+                datosE.push({ desc, documentoE, datosDoc });
+            }
+            evi = datosE;
+            cargarEvi(1);
+            $("i[name='descargarPadre']").click(evt => {
+                let id = evt.target.id.split("_")[1];
+                window.open(`Academias/${evi[id].datosDoc.L}`);
+            });
+            $("#verDoc").modal();
+        });
     };
 
     const getFechaAgenda = fecha => {
@@ -704,9 +880,34 @@ $(document).ready(() => {
         pie(pagina, max, "paginaDocentes");
     };
 
-    $(`div[name="plan"]`).click(evt => {
-        $("#verDoc").modal();
-    });
+    const cargarEvi = pagina => {
+        let data = evi;
+        let planes = $("#verEvidencia")[0];
+        let mostrar = 3;
+        let max = Math.ceil(data.length / mostrar);
+        let total = mostrar * pagina;
+        let inicio = (pagina - 1) * mostrar;
+        planes.innerHTML = "";
+        for (let i = inicio; i < total && i < data.length; i++) {
+            let { desc, documentoE, datosDoc } = data[i];
+            let { N, L, D } = datosDoc;
+            planes.innerHTML += `
+            <div class="col-6">
+                <div class="d-flex flex-column justify-content-center align-items-center">
+                    <img src="img/pdf.ico" class="img-pdf">
+                    <div>
+                        <span>
+                            <i id='Padre_${i}' name="descargarPadre" class="fas fa-download click"></i>
+                        </span>
+                    </div>
+                    <label>Subido por: <b>${N} - ${D}</b></label>
+                    <label>Descripcion: <b>${desc}</b></label>
+                    <label>Entrega: <b>${documentoE}</b></label>
+                </div>
+            </div>`;
+        }
+        pie(pagina, max, "paginaInfo");
+    };
 
     load();
 

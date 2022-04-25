@@ -35,9 +35,11 @@
 
             while( $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC) ) {
                 $data = array(
+                    "id_acta"=>utf8_encode($row["id_acta"]),
                     "fecha"=>$row['fecha'],
                     "localizacion"=>utf8_encode($row["localizacion"]),
-                    "Semestre"=>utf8_encode($row['Semestre'])
+                    "Semestre"=>utf8_encode($row['Semestre']),
+                    "localizacionJson"=>utf8_encode($row['localizacionJson'])
                 );
                 array_push($res, $data);
             }

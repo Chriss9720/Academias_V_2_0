@@ -981,7 +981,7 @@ GO
 IF OBJECT_ID ('SP_GetActasAcademia') IS NOT NULL DROP PROC SP_GetActasAcademia
 GO
 CREATE PROC SP_GetActasAcademia @Clave VARCHAR(255) AS
-	SELECT A.fecha, A.Semestre, localizacion
+	SELECT A.fecha, A.Semestre, localizacion, A.id_acta, A.localizacionJson
 	FROM ACTAS AS AC
 	JOIN ACTA AS A
 	ON AC.id_acta = A.id_acta
@@ -1008,4 +1008,42 @@ CREATE PROC SP_GetDocentesAcademia @Clave VARCHAR(255) AS
 	JOIN DOCENTE AS D
 	ON D.nomina = CA.nomina
 	WHERE CA.clave_academia LIKE '%'+@Clave+'%' AND activo = 1
+GO
+
+IF OBJECT_ID ('SP_GetPlanesAcademia') IS NOT NULL DROP PROC SP_GetPlanesAcademia
+GO
+CREATE PROC SP_GetPlanesAcademia @Clave VARCHAR(255) AS
+	SELECT PT.fecha, PT.localizacion, PT.Semestre, PT.id_planTrabajo, PT.localizacionJson
+	FROM PLANES AS P
+	JOIN PLANTRABAJO AS PT
+	ON PT.id_planTrabajo = P.id_planTrabajo
+	WHERE clave_academia LIKE '%'+@Clave+'%'
+GO
+
+IF OBJECT_ID ('SP_InfoLigadaActa') IS NOT NULL DROP PROC SP_InfoLigadaActa
+GO
+CREATE PROC SP_InfoLigadaActa @Id INT AS
+	SELECT EA.*, D.nombre, SA.no_tarea, SA.punto
+	FROM ACTA AS AC
+	JOIN SUBIRACTA AS SA
+	ON SA.id_acta = AC.id_acta
+	JOIN EVIDENCIAACTA AS EA
+	ON EA.id_evidencia = SA.id_evidencia
+	JOIN DOCENTE AS D
+	ON D.nomina = EA.nomina
+	WHERE AC.id_acta = @ID
+GO
+
+IF OBJECT_ID ('SP_InfoLigadaPlan') IS NOT NULL DROP PROC SP_InfoLigadaPlan
+GO
+CREATE PROC SP_InfoLigadaPlan @Id INT AS
+	SELECT EV.*, D.nombre, SU.no_tarea, SU.punto
+	FROM PLANTRABAJO AS PT
+	JOIN SUBIR AS SU
+	ON SU.id_planTrabajo = PT.id_planTrabajo
+	JOIN EVIDENCIA AS EV
+	ON EV.id_evidencia = SU.id_evidencia
+	JOIN DOCENTE AS D
+	ON D.nomina = EV.nomina
+	WHERE PT.id_planTrabajo = @Id
 GO

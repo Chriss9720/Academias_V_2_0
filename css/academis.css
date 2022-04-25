@@ -18,3 +18,11 @@
     font-weight: bold;
     width: 250px;
 }
+
+.img-pdf {
+    width: 100px;
+}
+
+.borde {
+    border-right: 1px solid black;
+}

@@ -2,10 +2,14 @@
 
     $ruta = $_POST['ruta'];
 
-    $data = file_get_contents($ruta);
+    if (file_exists($ruta)) {
+        $data = file_get_contents($ruta);
 
-    $json = json_decode($data, true);
+        $json = json_decode($data, true);
 
-    echo json_encode($json);
+        echo json_encode($json);
+    } else {
+        echo json_encode(array('error' => 'No existe', "ruta"=>$_POST['ruta']));
+    }
 
 ?>

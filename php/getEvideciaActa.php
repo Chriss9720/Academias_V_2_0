@@ -17,9 +17,9 @@
         $conectar = new Conectar();
         $con = $conectar->conn();
         if ($con) {
-            $call = "{ call dbo.SP_GetPlanesAcademia(?) }";
+            $call = "{ call dbo.SP_InfoLigadaActa(?) }";
             $params = array(
-                array(&$_POST['clave'], SQLSRV_PARAM_IN)
+                array(&$_POST["id"], SQLSRV_PARAM_IN)
             );
             $stmt = sqlsrv_query($con, $call, $params);
             if ($stmt === false) {
@@ -35,11 +35,11 @@
 
             while( $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC) ) {
                 $data = array(
-                    "id"=>$row['id_planTrabajo'],
-                    "fecha"=>$row['fecha'],
                     "localizacion"=>utf8_encode($row["localizacion"]),
-                    "Semestre"=>utf8_encode($row['Semestre']),
-                    "localizacionJson"=>utf8_encode($row['localizacionJson'])
+                    "nomina"=>utf8_encode($row["nomina"]),
+                    "nombre"=>utf8_encode($row["nombre"]),
+                    "no_tarea"=>utf8_encode($row["no_tarea"]),
+                    "punto"=>utf8_encode($row["punto"])
                 );
                 array_push($res, $data);
             }
