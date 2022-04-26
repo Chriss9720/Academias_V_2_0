@@ -207,9 +207,9 @@ $(document).ready(() => {
                 fecha = evidencia[i].data.Acuerdos[(evidencia[i].punto) - 1].fecha;
                 tarea = evidencia[i].data.Acuerdos[(evidencia[i].punto) - 1].tareas[(evidencia[i].no_tarea - 1)];
             } else {
-                desc = evidencia[i].data[evidencia[i].punto].Acciones;
-                tarea = evidencia[i].data[evidencia[i].punto].tareas[(evidencia[i].no_tarea - 1)];
-                fecha = evidencia[i].data[evidencia[i].punto].fecha;
+                desc = evidencia[i].data[evidencia[i].no_tarea].Acciones;
+                tarea = evidencia[i].data[evidencia[i].no_tarea].tareas[(evidencia[i].punto - 1)];
+                fecha = evidencia[i].data[evidencia[i].no_tarea].fecha;
             }
             r += `
                 <div id="${i}" class="border border-dark p-3 bg-menu-principal row rounded rounded-pill mb-3">
