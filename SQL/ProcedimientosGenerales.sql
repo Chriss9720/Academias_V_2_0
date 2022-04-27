@@ -1031,7 +1031,7 @@ CREATE PROC SP_InfoLigadaActa @Id INT AS
 	ON EA.id_evidencia = SA.id_evidencia
 	JOIN DOCENTE AS D
 	ON D.nomina = EA.nomina
-	WHERE AC.id_acta = @ID
+	WHERE AC.id_acta = @ID AND EA.localizacion != NUll
 GO
 
 IF OBJECT_ID ('SP_InfoLigadaPlan') IS NOT NULL DROP PROC SP_InfoLigadaPlan
@@ -1045,5 +1045,5 @@ CREATE PROC SP_InfoLigadaPlan @Id INT AS
 	ON EV.id_evidencia = SU.id_evidencia
 	JOIN DOCENTE AS D
 	ON D.nomina = EV.nomina
-	WHERE PT.id_planTrabajo = @Id
+	WHERE PT.id_planTrabajo = @Id AND EV.localizacion != NULL
 GO
