@@ -1,0 +1,109 @@
+{
+    "No:": "1",
+    "DatosA": {
+        "Academia": "Academia base 6",
+        "Presidente": "Beatriz Pinzon Solano",
+        "Sec": "Karina Perez Estrada",
+        "Clave": "ACBA06"
+    },
+    "datosG": {
+        "horaI": "02:47",
+        "horaF": "",
+        "Dia": "41",
+        "Mes": "",
+        "A\u00f1o": "",
+        "Lugar": "",
+        "Orden": "",
+        "Obs": ""
+    },
+    "Acuerdos": [{
+        "baja": "false",
+        "responsables": [{
+            "nomina": "14032218",
+            "nombre": "Beatriz Pinzon Solano"
+        }],
+        "fecha": "2022-04-14T02:45",
+        "limite": "1",
+        "acuerdo": "<ul>\n\t<li>click para editar<\/li>\n<\/ul>\n",
+        "tareas": [
+            "click para editar"
+        ]
+    }],
+    "Docentes": [{
+            "nombre": "Karina Perez Estrada",
+            "nomina": "14032216",
+            "materias": [{
+                "materia": "Ingles"
+            }],
+            "estado": "0"
+        },
+        {
+            "nombre": "Jose Armando Mendoza",
+            "nomina": "14032217",
+            "materias": [{
+                "materia": "Matematicas"
+            }],
+            "estado": "0"
+        },
+        {
+            "nombre": "Beatriz Pinzon Solano",
+            "nomina": "14032218",
+            "materias": [{
+                "materia": "Espa\u00f1ol"
+            }],
+            "estado": "0"
+        },
+        {
+            "nombre": "Marcela Valencia",
+            "nomina": "14032219",
+            "materias": [{
+                "materia": "Ciencias"
+            }],
+            "estado": "0"
+        },
+        {
+            "nombre": "Ana Maria Orozco",
+            "nomina": "14032220",
+            "materias": [{
+                "materia": "Etica"
+            }],
+            "estado": "0"
+        },
+        {
+            "nombre": "Patricia Fernandez",
+            "nomina": "14032221",
+            "materias": [{
+                "materia": "Valores"
+            }],
+            "estado": "0"
+        },
+        {
+            "nombre": "Jesus Alfredo Gonzales",
+            "nomina": "14032222",
+            "materias": [{
+                "materia": "Algebra"
+            }],
+            "estado": "0"
+        }
+    ],
+    "No": "1",
+    "Sem": "Ene - May 2022",
+    "vP": "0",
+    "fecha": "21\/4\/2022 2:45",
+    "fechaG": "21-4-2022 2-45-19 Academia base 6 Ene - May 2022",
+    "nueva": "1",
+    "ant": [{
+        "baja": "false",
+        "responsables": [{
+            "nomina": "14032218",
+            "nombre": "Beatriz Pinzon Solano"
+        }],
+        "fecha": "2022-04-14T02:45",
+        "limite": "1",
+        "acuerdo": "Texto Extra en la desc:<ul>\n\t<li>click para editar<\/li>\n<\/ul>\n",
+        "tareas": [
+            "click para editar"
+        ]
+    }],
+    "id": 3
+}

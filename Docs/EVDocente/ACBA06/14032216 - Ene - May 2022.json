@@ -1,0 +1,33 @@
+{
+    "infoDoc": {
+        "clave_academia": "ACBA06",
+        "Academia": "Academia base 6",
+        "puesto": "Secretario",
+        "id_evaluacion": "",
+        "localizacionJson": "",
+        "periodo": "Ene - May 2022",
+        "nombre": "Karina Perez Estrada",
+        "nomina": "14032216",
+        "Carrera": "Lic. administraci\u00f3n de empresas"
+    },
+    "pw": "0",
+    "c": "0",
+    "elaborada": "2022-04-21",
+    "resp": [
+        "4",
+        "1",
+        "2",
+        "3",
+        "0",
+        "0"
+    ],
+    "ev": [
+        "<p>Cambio 1<\/p>\n",
+        "<p>Cambio 2<\/p>\n",
+        "<p>Cambio 3<\/p>\n",
+        "<p>Cambio 4<\/p>\n",
+        "<p>Cambio 5<\/p>\n"
+    ],
+    "obs": "",
+    "calif": "213"
+}
