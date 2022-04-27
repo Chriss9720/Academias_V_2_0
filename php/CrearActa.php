@@ -83,11 +83,13 @@
             $nombre = $doc[$i]['nombre'];
             if ($doc[$i]['estado'] != -1) {
                 $mat = "<ul>";
-                for ($j = 0; $j < count($doc[$i]['materias']); $j++) {
-                    $m = $doc[$i]['materias'][$j]['materia'];
-                    $mat = "$mat
-                        <li>$m</li>
-                    ";
+                if (array_key_exists('materias', $doc[$i])) {
+                    for ($j = 0; $j < count($doc[$i]['materias']); $j++) {
+                        $m = $doc[$i]['materias'][$j]['materia'];
+                        $mat = "$mat
+                            <li>$m</li>
+                        ";
+                    }
                 }
                 $mat = "$mat</ul>";
                 $info = "<tr>

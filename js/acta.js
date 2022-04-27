@@ -1197,6 +1197,7 @@ $(document).ready(() => {
     };
 
     $('[name="Crear"]').click(evt => {
+        console.log("Crear");
         Acta["Sem"] = calcularSemestre();
         let date = new Date();
         let datos = $('input[name="datosG"]');
@@ -1228,6 +1229,7 @@ $(document).ready(() => {
                 location.reload();
             })
             .catch(e => {
+                console.log(e);
                 if (e.responseText == "Solicitar Reinicio de sesion") {
                     cerrarM.load = true;
                     cerrarModal();
@@ -1267,6 +1269,7 @@ $(document).ready(() => {
                 window.open(t.ruta);
             })
             .catch(e => {
+                console.log(e);
                 if (e.responseText == "Solicitar Reinicio de sesion") {
                     cerrarM.load = true;
                     cerrarModal();

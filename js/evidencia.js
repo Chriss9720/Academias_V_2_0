@@ -253,7 +253,8 @@ $(document).ready(() => {
         })
         $('i[name="descargar"]').click(evt => {
             let id = parseInt(evt.target.offsetParent.parentNode.id);
-            window.open(`Academias/${evidencia[id].localizacion}`);
+            console.log(evidencia[id]);
+            window.open(`Academias/${evidencia[id].L2}`);
         });
         $('input[name="finalizar"]').click(evt => {
             let value = evt.target.attributes.id.value;
