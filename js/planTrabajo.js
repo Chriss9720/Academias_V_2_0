@@ -858,11 +858,11 @@ $(document).ready(() => {
                 text += `<li>
                     <div class="row">
                         <div class="col-8">
-                            ${responsables[i].nomina} - ${responsables[i].nombre}
+                            ${responsables[j].nomina} - ${responsables[j].nombre}
                         </div>
                         <div class="col-4 align-self-center">
                             <span class="ml-auto">
-                                <i name="remover" id="remover-${responsables[i].nomina}" class="click fas fa-user-minus"></i>
+                                <i name="remover" id="remover-${responsables[j].nomina}" class="click fas fa-user-minus"></i>
                             </span>
                         </div>
                     </div>
@@ -904,6 +904,7 @@ $(document).ready(() => {
                             cerrarM.load = true;
                             cerrarModal();
                         }).catch(e => {
+                            console.log(e);
                             cerrarM.load = true;
                             cerrarModal();
                             $("#alertBusqueda").html(`

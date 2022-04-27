@@ -232,7 +232,7 @@ $(document).ready(() => {
 
     let acuerdos = [];
 
-    let listaActas;
+    let listaActas = [];
 
     var cerrarM = {
         load: false,

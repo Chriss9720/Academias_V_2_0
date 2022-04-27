@@ -513,8 +513,8 @@ $(document).ready(() => {
                         ${jefe == 1 || nivel == 0 ? '<input name="opcionMenu" type="button"  value="Carrera" class="dropdown-item">' : ''}
                         ${presidente || secretario || jefe == 1 || nivel == 0 || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Docente" class="dropdown-item">' : ''}
                         ${presidente || secretario || nivel == 0 || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Academia" class="dropdown-item">' : ''}
-                        ${presidente || secretario || nivel == 1 || nivel == 0 ? '<input name="opcionMenu" type="button"  value="Plan de trabajo" class="dropdown-item">' : ''}
-                        ${presidente || secretario || nivel == 1 || nivel == 0 ? '<input name="opcionMenu" type="button"  value="Acta" class="dropdown-item">' : ''}
+                        ${presidente || secretario || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Plan de trabajo" class="dropdown-item">' : ''}
+                        ${presidente || secretario || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Acta" class="dropdown-item">' : ''}
                         ${presidente ? '<input name="opcionMenu" type="button"  value="Ev. docente" class="dropdown-item">' : ''}
                         ${nivel == 1 ? '<input name="opcionMenu" type="button"  value="Ev. presidente" class="dropdown-item">' : ''}
                         ${nivel == 1 ? '<input name="opcionMenu" type="button"  value="Ev. secretario" class="dropdown-item">' : ''}
@@ -537,8 +537,8 @@ $(document).ready(() => {
                         ${nivel == 0 || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Carrera" class="dropdown-item">' : ''}
                         ${presidente || secretario || jefe == 1 || nivel == 0 || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Docente" class="dropdown-item">' : ''}
                         ${nivel == 0 || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Academia" class="dropdown-item">' : ''}
-                        ${presidente || secretario || nivel == 1 || nivel == 0 ? '<input name="opcionMenu" type="button"  value="Plan de trabajo" class="dropdown-item">' : ''}
-                        ${presidente || secretario || nivel == 1 || nivel == 0 ? '<input name="opcionMenu" type="button"  value="Acta" class="dropdown-item">' : ''}
+                        ${presidente || secretario || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Plan de trabajo" class="dropdown-item">' : ''}
+                        ${presidente || secretario || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Acta" class="dropdown-item">' : ''}
                         ${presidente ? '<input name="opcionMenu" type="button"  value="Ev. docente" class="dropdown-item">' : ''}
                         ${nivel == 1 ? '<input name="opcionMenu" type="button"  value="Ev. presidente" class="dropdown-item">' : ''}
                         ${nivel == 1 ? '<input name="opcionMenu" type="button"  value="Ev. secretario" class="dropdown-item">' : ''}
