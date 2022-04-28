@@ -218,6 +218,7 @@ $(document).ready(() => {
             default:
                 console.log(sessionStorage.getItem("afectar"));
         }
+        console.log(php);
         return new Promise((resolve, reject) => {
             $.ajax({
                 url: `php/${php}`,
@@ -481,6 +482,7 @@ $(document).ready(() => {
         cargando();
         getMisDatos()
             .then(t => {
+                console.log(t);
                 faltantesPlan()
                     .then(planes => {
                         planesLista = planes;

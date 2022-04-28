@@ -38,7 +38,7 @@
                     "Academia"=>utf8_encode($row["Academia"]),
                     "puesto"=>utf8_encode($row["puesto"]),
                     "id_evaluacion"=>utf8_encode($row["id_evaluacion"]),
-                    "localizacionJson"=>utf8_encode($row["localizacionJson"]),
+                    "localizacion"=>utf8_encode($row["localizacion"]),
                     "localizacionJson"=>utf8_encode($row["localizacionJson"]),
                     "periodo"=>utf8_encode($row["periodo"]),
                     "nombre"=>utf8_encode($row["nombre"]),
