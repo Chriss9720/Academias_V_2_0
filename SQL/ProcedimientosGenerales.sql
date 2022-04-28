@@ -795,7 +795,7 @@ GO
 CREATE PROC SP_EvidenciaPendiente @Nomina INT AS
 	SELECT *
 	FROM VW_InfoDocumentos
-	WHERE EV.localizacion IS NULL  AND nomina = @Nomina
+	WHERE localizacion IS NULL  AND nomina = @Nomina
 GO
 
 IF OBJECT_ID('SP_FinalizarPlan') IS NOT NULL DROP PROC SP_FinalizarPlan
