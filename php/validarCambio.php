@@ -137,7 +137,7 @@
                         }
                         break;
                         case "Academia":
-                            if ($_SESSION["nivel"] == 1 || $_SESSION["nivel"] == 0) {
+                            if (validarPuesto(array("Presidente", "Secretario")) || $_SESSION["nivel"] == 1 || $_SESSION["nivel"] == 0) {
                                 echo json_encode(array("cambio" => "/Academias/Academia.html"));
                             } else {
                                 http_response_code(401);
