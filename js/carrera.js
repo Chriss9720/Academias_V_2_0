@@ -439,6 +439,7 @@ $(document).ready(() => {
                                 panelOpciones();
                             })
                             .catch(e => {
+                                console.log(e);
                                 if (e.responseText == "Solicitar Reinicio de sesion") {
                                     cerrarM.load = true;
                                     cerrarModal();
@@ -457,6 +458,7 @@ $(document).ready(() => {
                             })
                     })
                     .catch(e => {
+                        console.log(e);
                         if (e.responseText == "Solicitar Reinicio de sesion") {
                             cerrarM.load = true;
                             cerrarModal();
@@ -465,6 +467,7 @@ $(document).ready(() => {
                     });
             })
             .catch(e => {
+                console.log(e);
                 if (e.responseText == "Solicitar Reinicio de sesion") {
                     cerrarM.load = true;
                     cerrarModal();
@@ -971,6 +974,7 @@ $(document).ready(() => {
                     `;
                     accionesMenu(armado);
                 }).catch(e => {
+                    console.log(e);
                     if (e.responseText == "Solicitar Reinicio de sesion") {
                         cerrarM.load = true;
                         cerrarModal();
@@ -1321,11 +1325,14 @@ $(document).ready(() => {
             }
 
             if (valid) {
+                console.log("SI");
                 salvarImg(formData, foto)
                     .then((t) => {
+                        console.log("SI2");
                         data["foto"] = t.path;
                         salvarCarrera(data)
                             .then(cs => {
+                                console.log(cs);
                                 cerrarM.load = true;
                                 cerrarModal();
                                 reset();
@@ -1424,6 +1431,7 @@ $(document).ready(() => {
                         });
                 })
                 .catch((e) => {
+                    console.log(e);
                     cerrarM.load = true;
                     cerrarModal();
                     if (e.responseText == "Solicitar Reinicio de sesion") {

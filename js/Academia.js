@@ -1228,10 +1228,12 @@ $(document).ready(() => {
         cargando();
         salvarImg(formData, foto)
             .then(img => {
+                console.log(img);
                 academia.foto = img.path;
-                if (sessionStorage.getItem("accion").includes("crear")) {
+                if (sessionStorage.getItem("accion").includes("Crear")) {
                     guardarAcademia(academia)
                         .then(t => {
+                            console.log(t);
                             reset();
                             cerrarM.load = true;
                             cerrarModal();
