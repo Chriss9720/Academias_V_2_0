@@ -303,20 +303,14 @@ $(document).ready(() => {
                         }
                     });
             } else {
-                if (e.responseText == "Solicitar Reinicio de sesion") {
-                    cerrarM.load = true;
-                    cerrarModal();
-                    login();
-                } else {
-                    $(`#error_${id}`).html(`
-                        <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
-                            <strong>Debe de seleccionar un archivo PDF</strong>
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    `);
-                }
+                $(`#error_${id}`).html(`
+                    <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                        <strong>Debe de seleccionar un archivo PDF</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                `);
             }
         });
     };
