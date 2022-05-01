@@ -862,7 +862,6 @@ $(document).ready(() => {
             leerCarreras()
                 .then(data => {
                     carreras = data;
-                    $("#nombreC").attr("disabled", "");
                     $("#claveC").attr("disabled", "");
                     $("#busquedaCarreras").html(`
                         <div class="form-inline mx-auto">
@@ -1293,7 +1292,7 @@ $(document).ready(() => {
                 url: "php/actualizarCarrera.php",
                 dataType: "json",
                 type: "POST",
-                data: { miembros: miembros, nuevos: nuevos, clave: $("#claveC")[0].value, foto: foto },
+                data: { miembros: miembros, nuevos: nuevos, clave: $("#claveC")[0].value, foto: foto, nombre: $("#nombreC").val() },
                 success: s => resolve(s),
                 error: e => reject(e)
             });

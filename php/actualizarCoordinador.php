@@ -26,7 +26,7 @@
             $error = str_replace("[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]", "", $error);
             http_response_code(404);
             echo $error;
-            die(json_encode(array("status"=>404, "msg"=>$error)));
+            die(json_encode(array("status"=>404, "msg"=>utf8_encode($error))));
         }
     }
     sqlsrv_free_stmt($stmt);

@@ -1051,3 +1051,19 @@ CREATE PROC SP_InfoLigadaPlan @Id INT AS
 	ON D.nomina = EV.nomina
 	WHERE PT.id_planTrabajo = @Id AND EV.localizacion IS NOT NULL
 GO
+
+IF OBJECT_ID('SP_ActualizarNombreAcademia') IS NOT NULL DROP PROC SP_ActualizarNombreAcademia
+GO
+CREATE PROC SP_ActualizarNombreAcademia @Clave VARCHAR(255), @nombre VARCHAR(255) AS
+	UPDATE ACADEMIA
+	SET nombre = @nombre
+	WHERE clave_academia LIKE '%'+@Clave+'%'
+GO
+
+IF OBJECT_ID('SP_ActualizarNombreCarrera') IS NOT NULL DROP PROC SP_ActualizarNombreCarrera
+GO
+CREATE PROC SP_ActualizarNombreCarrera @Clave VARCHAR(255), @nombre VARCHAR(255) AS
+	UPDATE CARRERA
+	SET nombre = @nombre
+	where clave_carrera LIKE '%'+@Clave+'%'
+GO

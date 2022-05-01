@@ -334,7 +334,9 @@
         $Acuerdos = acuerdo($datos['Acuerdos']);
         if ($vp != 1) {
             for($i = 0; $i < count($datos['Acuerdos']); $i++) {
-                array_push($ant, $datos['Acuerdos'][$i]);
+                if (array_key_exists('acuerdo', $datos['Acuerdos'][$i])) {
+                    array_push($ant, $datos['Acuerdos'][$i]);
+                }
             }
         }
     }

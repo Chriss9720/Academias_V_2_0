@@ -9,6 +9,27 @@
         $docentes = $datos['docentes'];
     }
     $clave = $datos['claveA'];
+    $nombre = $datos['nombre'];
+
+    function salvarNombre($name, $con, $clave)
+    {
+        $call = "{call dbo.SP_ActualizarNombreAcademia(?,?)}";
+        $params = array(
+            array(&$clave, SQLSRV_PARAM_IN),
+            array(&$name, SQLSRV_PARAM_IN),
+        );
+        $stmt = sqlsrv_query($con, $call, $params);
+        if ($stmt === false) {
+            if (($errors = sqlsrv_errors()) != null) {
+                $error = print_r($errors[0]['message'], true);
+                $error = str_replace("[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]", "", $error);
+                http_response_code(400);
+                die(json_encode(array("status"=>402, "msg"=>utf8_encode($error))));
+            }
+        }
+        sqlsrv_free_stmt($stmt);
+        sqlsrv_close($con);
+    }
 
     function salvar($pre, $sec, $nomina, $con, $clave, $act)
     {
@@ -26,7 +47,7 @@
                 $error = print_r($errors[0]['message'], true);
                 $error = str_replace("[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]", "", $error);
                 http_response_code(400);
-                die(json_encode(array("status"=>402, "msg"=>$error)));
+                die(json_encode(array("status"=>402, "msg"=>utf8_encode($error))));
             }
         }
         sqlsrv_free_stmt($stmt);
@@ -44,6 +65,7 @@
 
     $conectar = new Conectar();
     $con = $conectar->conn();
+    salvarNombre($nombre, $con, $clave);
 
     for($i = 0; $i < count($docentes); $i++) {
         if (array_key_exists('act', $docentes[$i])) {

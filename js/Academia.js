@@ -588,7 +588,6 @@ $(document).ready(() => {
                                     }
                                 });
                         } else {
-                            $("#nombre").attr("disabled", true);
                             $("#claveA").attr("disabled", true);
                             getAcademiasEdit()
                                 .then(acas => {

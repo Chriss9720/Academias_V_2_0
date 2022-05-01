@@ -8,6 +8,8 @@ $(document).ready(() => {
         login: false
     };
 
+    const calf = {};
+
     const cerrarModal = () => {
         $("#modal").modal('hide');
         $(`[class="modal-backdrop show"]`).remove();
@@ -502,6 +504,18 @@ $(document).ready(() => {
                 </div>
             `);
         }
+    });
+
+    $('input[type="radio"]').click(evt => {
+        let puntos = [4, 3, 2, 1, 0];
+        let pos = evt.target.value;
+        let name = evt.target.attributes.name.value;
+        calf[name] = puntos[pos];
+        let total = 0;
+        Object.keys(calf).forEach(k => {
+            if (!k.includes("f")) total += calf[k];
+        });
+        $("#calif").val(total);
     });
 
 });

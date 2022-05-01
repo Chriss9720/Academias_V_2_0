@@ -15,9 +15,9 @@
         if ($stmt === false) {
             if (($errors = sqlsrv_errors()) != null) {
                 $error = print_r($errors[0]['message'], true);
-                $errors = str_replace("[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]", "", $errors);
+                $error = str_replace("[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]", "", $error);
                 http_response_code(402);
-                die(json_encode(array("status"=>402, "msg"=>$errors)));
+                die(json_encode(array("status"=>402, "msg"=>utf8_encode($error))));
             }
         }
         sqlsrv_free_stmt($stmt);
@@ -38,7 +38,7 @@
                 $error = print_r($errors[0]['message'], true);
                 $errors = str_replace("[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]", "", $errors);
                 http_response_code(402);
-                die(json_encode(array("status"=>402, "msg"=>$errors)));
+                die(json_encode(array("status"=>402, "msg"=>utf8_encode($error))));
             }
         }
         sqlsrv_free_stmt($stmt);
