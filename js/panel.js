@@ -510,7 +510,7 @@ $(document).ready(() => {
                         Editar
                     </button>
                     <div class="dropdown-menu bg-menu-principal" aria-labelledby="editar">
-                        ${jefe == 1 || nivel == 0 ? '<input name="opcionMenu" type="button"  value="Carrera" class="dropdown-item">' : ''}
+                        ${jefe == 1 || nivel == 0  || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Carrera" class="dropdown-item">' : ''}
                         ${presidente || secretario || jefe == 1 || nivel == 0 || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Docente" class="dropdown-item">' : ''}
                         ${presidente || secretario || nivel == 0 || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Academia" class="dropdown-item">' : ''}
                         ${presidente || secretario || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Plan de trabajo" class="dropdown-item">' : ''}

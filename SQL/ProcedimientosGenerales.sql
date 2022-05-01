@@ -52,12 +52,16 @@ CREATE PROC SP_DondeCrearPlanAcademia @Nomina INT, @nivel INT AS
 		ON T.clave_academia = A.clave_academia
 	END
 	ELSE BEGIN
-		SELECT A.clave_academia, A.foto_portada, A.nombre, D.foto
+		SELECT A.clave_academia, A.foto_portada, A.nombre, D.foto, T.T
 		FROM ACADEMIA AS A
 		JOIN CARGO AS C
 		ON C.clave_academia = A.clave_academia
 		JOIN DOCENTE AS D
 		ON C.nomina = D.nomina AND D.baja != 1
+		JOIN (
+			SELECT COUNT(*) AS T, C.clave_academia FROM CARGO AS C GROUP BY(clave_academia)
+		) AS T
+		ON T.clave_academia = A.clave_academia
 		WHERE C.puesto LIKE '%Presidente' OR C.puesto IS NULL
 	END
 GO

@@ -1052,6 +1052,7 @@ $(document).ready(() => {
                                     cerrarModal();
                                 }
                             }).catch(e => {
+                                console.log(e);
                                 if (e.responseText == "Solicitar Reinicio de sesion") {
                                     cerrarM.load = true;
                                     cerrarModal();
