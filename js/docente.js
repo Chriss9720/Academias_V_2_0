@@ -644,6 +644,10 @@ $(document).ready(() => {
                     data["foto"] = t.path;
                     actualizarDocente(data)
                         .then(async(r) => {
+                            let mat = materiasLista.filter(f => f.activa == 1);
+                            if (mat.length > 0) {
+                                await salvarMat(data.nominaR, mat);
+                            }
                             cargarDocentes();
                             $("#alerta").html(`
                                 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -663,11 +667,6 @@ $(document).ready(() => {
                                         console.log(e);
                                     })
                             }
-                            await salvarMat(data.nominaR)
-                                .then(t => console.log(t))
-                                .catch(e => {
-                                    console.log(e);
-                                })
                             cerrarM.load = true;
                             cerrarModal();
                         })
@@ -766,7 +765,7 @@ $(document).ready(() => {
                     mat: mat,
                     nomina: nomina
                 },
-                type: "Post",
+                type: "POST",
                 dataType: "json",
                 success: s => resolve(s),
                 error: e => reject(e)
@@ -1001,6 +1000,9 @@ $(document).ready(() => {
         $("#correo")[0].value = "";
         $("#claveR")[0].value = "";
         $("#perfil")[0].src = "img/IconLog.png";
+
+        materiasLista = [];
+        armarMaterias();
 
         $("#nombre")[0].className = $("#nombre")[0].className.replace(" is-valid", "").replace(" is-invalid", "");
         $("#nominaR")[0].className = $("#nombre")[0].className.replace(" is-valid", "").replace(" is-invalid", "");
