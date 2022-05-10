@@ -266,7 +266,6 @@ $(document).ready(() => {
                                 evs[i].innerHTML = (ev[i]);
                             }
                             let radiosName = ["r-1", "r-2", "r-3", "r-4", "r-5", "r-f"];
-                            console.log(radiosName.length, resp.length);
                             for (let j = 0; j < resp.length; j++) {
                                 let radios = $(`[name="${radiosName[j]}"]`);
                                 let puesto = false;
@@ -462,7 +461,8 @@ $(document).ready(() => {
                 let ev = $('[name="evaluacion"]');
                 ActaG.ev = [];
                 for (let i = 0; i < ev.length; i++) {
-                    ActaG.ev.push(ev[i].innerHTML);
+                    let eva = ev[i].innerHTML.trim();
+                    ActaG.ev.push((eva.includes("click para editar") ? "" : eva));
                 }
                 ActaG.obs = CKEDITOR.instances["obs"].getData();
                 let calif = $("#calif").val().trim();

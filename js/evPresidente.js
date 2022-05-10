@@ -461,7 +461,8 @@ $(document).ready(() => {
                 let ev = $('[name="evaluacion"]');
                 ActaG.ev = [];
                 for (let i = 0; i < ev.length; i++) {
-                    ActaG.ev.push(ev[i].innerHTML);
+                    let eva = ev[i].innerHTML.trim();
+                    ActaG.ev.push((eva.includes("click para editar") ? "" : eva));
                 }
                 ActaG.obs = CKEDITOR.instances["obs"].getData();
                 let calif = $("#calif").val().trim();
