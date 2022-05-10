@@ -11,12 +11,13 @@
     $clave = $datos['claveA'];
     $nombre = $datos['nombre'];
 
-    function salvarNombre($name, $con, $clave)
+    function salvarNombreImg($name, $con, $clave, $foto)
     {
-        $call = "{call dbo.SP_ActualizarNombreAcademia(?,?)}";
+        $call = "{call dbo.SP_ActualizarNombreAcademia(?,?,?)}";
         $params = array(
             array(&$clave, SQLSRV_PARAM_IN),
             array(&$name, SQLSRV_PARAM_IN),
+            array(&$foto, SQLSRV_PARAM_IN)
         );
         $stmt = sqlsrv_query($con, $call, $params);
         if ($stmt === false) {
@@ -65,7 +66,7 @@
 
     $conectar = new Conectar();
     $con = $conectar->conn();
-    salvarNombre($nombre, $con, $clave);
+    salvarNombreImg($nombre, $con, $clave, $datos['foto']);
 
     for($i = 0; $i < count($docentes); $i++) {
         if (array_key_exists('act', $docentes[$i])) {

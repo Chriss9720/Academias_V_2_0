@@ -1054,9 +1054,9 @@ GO
 
 IF OBJECT_ID('SP_ActualizarNombreAcademia') IS NOT NULL DROP PROC SP_ActualizarNombreAcademia
 GO
-CREATE PROC SP_ActualizarNombreAcademia @Clave VARCHAR(255), @nombre VARCHAR(255) AS
+CREATE PROC SP_ActualizarNombreAcademia @Clave VARCHAR(255), @nombre VARCHAR(255), @foto VARCHAR(255) AS
 	UPDATE ACADEMIA
-	SET nombre = @nombre
+	SET nombre = @nombre, foto_portada = @foto
 	WHERE clave_academia LIKE '%'+@Clave+'%'
 GO
 

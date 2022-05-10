@@ -1153,6 +1153,7 @@ $(document).ready(() => {
     const salvarImg = (file, foto) => {
         return new Promise((resolve, reject) => {
             if (foto) {
+                console.log("new img");
                 $.ajax({
                     url: "php/salvarImg.php",
                     type: "POST",
@@ -1222,7 +1223,7 @@ $(document).ready(() => {
             var file = new File([], nombre);
             formData.append("file", foto);
             formData.append("name", file);
-            data["foto"] = formData;
+            academia["foto"] = formData;
         }
         cargando();
         salvarImg(formData, foto)
@@ -1284,6 +1285,7 @@ $(document).ready(() => {
                     academia.docentes = docentes;
                     cerrarM.load = true;
                     cerrarModal();
+                    console.log(academia);
                     actualizarAcademia(academia)
                         .then(t => {
                             cerrarM.load = true;
