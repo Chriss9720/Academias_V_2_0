@@ -758,12 +758,12 @@ $(document).ready(() => {
         }
     });
 
-    const salvarMat = nomina => {
+    const salvarMat = (nomina, mat) => {
         return new Promise((resolve, reject) => {
             $.ajax({
                 url: 'php/actualizarMaterias.php',
                 data: {
-                    mat: materiasLista.filter(f => f.activa == 1),
+                    mat: mat,
                     nomina: nomina
                 },
                 type: "Post",
@@ -929,7 +929,10 @@ $(document).ready(() => {
                 data["foto"] = t.path;
                 registrarDocente(data)
                     .then(async(r) => {
-                        await salvarMat(data.nominaR);
+                        let mat = materiasLista.filter(f => f.activa == 1);
+                        if (mat.length > 0) {
+                            await salvarMat(data.nominaR, mat);
+                        }
                         $("#alerta").html(`
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
                                 <strong>${r.msg}</strong>
