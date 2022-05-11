@@ -274,7 +274,7 @@ $(document).ready(() => {
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header d-flex justify-content-center h4">
-                            <label>Se ha cerrado la session por inactividad, por favor ingrese sus credenciales</label>
+                            <label>Se ha cerrado la sesión por inactividad, por favor ingrese sus credenciales</label>
                         </div>
                         <div class="modal-body">
                             <div id="nominaC" class="input-group mb-3 border rounded-pill bg-white">
@@ -500,7 +500,7 @@ $(document).ready(() => {
                 } else {
                     $("#alerta").html(`
                         <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                            <strong>${editar.length != 2 ? 'Búsqueda del formato nómina - nombre' : 'No se encontro el docente'}</strong>
+                            <strong>${editar.length != 2 ? 'Búsqueda del formato nómina - nombre' : 'No se encontró el docente'}</strong>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>

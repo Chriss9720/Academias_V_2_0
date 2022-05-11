@@ -200,7 +200,7 @@ $(document).ready(() => {
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header d-flex justify-content-center h4">
-                            <label>Se ha cerrado la session por inactividad, por favor ingrese sus credenciales</label>
+                            <label>Se ha cerrado la sesión por inactividad, por favor ingrese sus credenciales</label>
                         </div>
                         <div class="modal-body">
                             <div id="nominaC" class="input-group mb-3 border rounded-pill bg-white">
@@ -959,7 +959,7 @@ $(document).ready(() => {
             }).catch(e => {
                 console.log(e);
                 $("#datosCoordinador").html(`
-                    <h3>Ocurrio un error, puede que no se tenga establecido a un coordinador</h3>
+                    <h3>Ocurrió un error, puede que no se tenga establecido a un coordinador</h3>
                 `);
             });
         return x;
@@ -1046,7 +1046,7 @@ $(document).ready(() => {
                 } else {
                     $("#alertaCoor").html(`
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>No se encontro el docente</strong>
+                            <strong>No se encontró el docente</strong>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>

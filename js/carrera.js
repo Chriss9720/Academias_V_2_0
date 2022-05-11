@@ -51,7 +51,7 @@ $(document).ready(() => {
                                             <li>Jefe:
                                                 <ul>
                                                     <li>
-                                                        Se realiza una busqueda por Nómina - Nombre
+                                                        Se realiza una búsqueda por Nómina - Nombre
                                                     </li>
                                                     <li>
                                                         Para agregar el Jefe a la carrera se presiona la tecla <b>enter</b>.
@@ -64,7 +64,7 @@ $(document).ready(() => {
                                             <li>Agregar Miembro:
                                                 <ul>
                                                     <li>
-                                                        Se realiza una busqueda por Nómina - Nombre
+                                                        Se realiza una búsqueda por Nómina - Nombre
                                                     </li>
                                                     <li>
                                                         Para agregar el miembro a la carrera se presiona la tecla <b>enter</b>.
@@ -77,7 +77,7 @@ $(document).ready(() => {
                                             <li>Eliminar Miembro:
                                                 <ul>
                                                     <li>
-                                                        Se realiza una busqueda por Nómina - Nombre
+                                                        Se realiza una búsqueda por Nómina - Nombre
                                                     </li>
                                                     <li>
                                                         Para eliminar el miembro a la carrera se presiona la tecla <b>enter</b>.
@@ -154,7 +154,7 @@ $(document).ready(() => {
                                             <li>Agregar Miembro:
                                                 <ul>
                                                     <li>
-                                                        Se realiza una busqueda por Nómina - Nombre
+                                                        Se realiza una búsqueda por Nómina - Nombre
                                                     </li>
                                                     <li>
                                                         Para agregar el miembro a la carrera se presiona la tecla <b>enter</b>.
@@ -167,7 +167,7 @@ $(document).ready(() => {
                                             <li>Eliminar Miembro:
                                                 <ul>
                                                     <li>
-                                                        Se realiza una busqueda por Nómina - Nombre
+                                                        Se realiza una búsqueda por Nómina - Nombre
                                                     </li>
                                                     <li>
                                                         Para eliminar el miembro a la carrera se presiona la tecla <b>enter</b>.
@@ -281,7 +281,7 @@ $(document).ready(() => {
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header d-flex justify-content-center h4">
-                            <label>Se ha cerrado la session por inactividad, por favor ingrese sus credenciales</label>
+                            <label>Se ha cerrado la sesión por inactividad, por favor ingrese sus credenciales</label>
                         </div>
                         <div class="modal-body">
                             <div id="nominaC" class="input-group mb-3 border rounded-pill bg-white">
@@ -632,7 +632,7 @@ $(document).ready(() => {
     const accionesJefe = () => {
         $("#Opciones").html(`
             <div class="form-inline mt-2">
-                <label class="form-label text-input ancho">Busqueda por nomina/nombre</label>
+                <label class="form-label text-input ancho">Búsqueda por nómina/nombre</label>
                 <input id="SalvarJefe" type="search" class="form-control text-input bg-input rounded-pill" list="listamodelos">
                 <datalist id="listamodelos">
                     ${listaDocentes()}
@@ -666,7 +666,7 @@ $(document).ready(() => {
                     } else {
                         $("#erroresJefe").html(`
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <strong>No se encontro el docente, para mas informacion revise la ayuda</strong>
+                                <strong>No se encontró el docente, para más información revise la ayuda</strong>
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -689,7 +689,7 @@ $(document).ready(() => {
     const accionesAdd = () => {
         $("#Opciones").html(`
             <div class="form-inline mt-2">
-                <label class="form-label text-input ancho">Busqueda por nomina/nombre</label>
+                <label class="form-label text-input ancho">Búsqueda por nómina/nombre</label>
                 <input id="salvarM" type="search" class="form-control text-input bg-input rounded-pill" list="listamodelos">
                 <datalist id="listamodelos">
                     ${listaDocentes()}
@@ -718,7 +718,7 @@ $(document).ready(() => {
                     } else {
                         $("#erroresJefe").html(`
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>No se encontro el docente, para mas informacion revise la ayuda</strong>
+                            <strong>No se encontró el docente, para más información revise la ayuda</strong>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -740,7 +740,7 @@ $(document).ready(() => {
     const accionesDEL = () => {
         $("#Opciones").html(`
             <div class="form-inline mt-2">
-                <label class="form-label text-input ancho">Busqueda por nomina/nombre</label>
+                <label class="form-label text-input ancho">Búsqueda por nómina/nombre</label>
                 <input id="salvarM" type="search" class="form-control text-input bg-input rounded-pill" list="listamodelos">
                 <datalist id="listamodelos">
                     ${listaSeleecionados()}
@@ -764,7 +764,7 @@ $(document).ready(() => {
                     } else {
                         $("#erroresJefe").html(`
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>No se encontro el docente, para mas informacion revise la ayuda</strong>
+                            <strong>No se encontró el docente, para más información revise la ayuda</strong>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -865,7 +865,7 @@ $(document).ready(() => {
                     $("#claveC").attr("disabled", "");
                     $("#busquedaCarreras").html(`
                         <div class="form-inline mx-auto">
-                            <label class="form-label text-input mr-2">Busqueda por clave/nombre</label>
+                            <label class="form-label text-input mr-2">Búsqueda por clave/nombre</label>
                             <input id="posiblesCarrerasEdit" type="search" class="form-control text-input bg-input rounded-pill w-auto" list="listaCarrerasEdit">
                             <datalist id="listaCarrerasEdit">
                                 ${listaCarreras()}
@@ -944,7 +944,7 @@ $(document).ready(() => {
                                     cerrarModal();
                                     $("#alerta").html(`
                                         <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
-                                            <strong class="h1">No se encontro la carrera</strong>
+                                            <strong class="h1">No se encontró la carrera</strong>
                                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
@@ -1018,7 +1018,7 @@ $(document).ready(() => {
                 <input name="DatosJ" type="text" value="${jefe["nombre"]}" class="form-control text-input bg-input rounded-pill" disabled>
             </div>
             <div class="form-inline mt-2">
-                <label class="form-label text-input ancho">Busqueda por nomina/nombre</label>
+                <label class="form-label text-input ancho">Búsqueda por nómina/nombre</label>
                 <input id="salvarM" type="search" class="form-control text-input bg-input rounded-pill" list="listamodelos">
                 <datalist id="listamodelos">
                     ${listaParaJefe()}
@@ -1046,7 +1046,7 @@ $(document).ready(() => {
                     } else {
                         $("#erroresJefe").html(`
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>No se encontro el docente, para mas informacion revise la ayuda</strong>
+                            <strong>No se encontró el docente, para más información revise la ayuda</strong>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -1091,7 +1091,7 @@ $(document).ready(() => {
     const miembrosEdit = () => {
         $("#Opciones").html(`
             <div class="form-inline mt-2">
-                <label class="form-label text-input ancho">Busqueda por nomina/nombre</label>
+                <label class="form-label text-input ancho">Búsqueda por nómina/nombre</label>
                 <input id="salvarM" type="search" class="form-control text-input bg-input rounded-pill" list="listamodelos">
                 <datalist id="listamodelos">
                     ${listaDocentesNoM()}
@@ -1129,7 +1129,7 @@ $(document).ready(() => {
                     } else {
                         $("#erroresJefe").html(`
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <strong>No se encontro el docente, para mas informacion revise la ayuda</strong>
+                                <strong>No se encontró el docente, para más información revise la ayuda</strong>
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -1152,7 +1152,7 @@ $(document).ready(() => {
     const delEdit = () => {
         $("#Opciones").html(`
             <div class="form-inline mt-2">
-                <label class="form-label text-input ancho">Busqueda por nomina/nombre</label>
+                <label class="form-label text-input ancho">Búsqueda por nómina/nombre</label>
                 <input id="salvarM" type="search" class="form-control text-input bg-input rounded-pill" list="listamodelos">
                 <datalist id="listamodelos">
                     ${listaTodosM()}
@@ -1191,7 +1191,7 @@ $(document).ready(() => {
                     } else {
                         $("#erroresJefe").html(`
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <strong>No se encontro el docente, para mas informacion revise la ayuda</strong>
+                                <strong>No se encontró el docente, para más información revise la ayuda</strong>
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -1402,7 +1402,7 @@ $(document).ready(() => {
                             edit = false;
                             $("#alerta").html(`
                                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                    <strong>Actualizacion exitosa</strong>
+                                    <strong>Actualización exitosa</strong>
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                     </button>

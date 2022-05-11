@@ -164,7 +164,7 @@
             }
         }
 
-        echo json_encode(array("msg"=>"Actualizacion exitosa"));
+        echo json_encode(array("msg"=>"Actualización exitosa"));
     }catch (Exception $e) {
         http_response_code(400);
         die(json_encode(array("status"=>400, "msg"=>$e)));

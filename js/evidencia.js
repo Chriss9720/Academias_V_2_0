@@ -63,7 +63,7 @@ $(document).ready(() => {
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header d-flex justify-content-center h4">
-                            <label>Se ha cerrado la session por inactividad, por favor ingrese sus credenciales</label>
+                            <label>Se ha cerrado la sesión por inactividad, por favor ingrese sus credenciales</label>
                         </div>
                         <div class="modal-body">
                             <div id="nominaC" class="input-group mb-3 border rounded-pill bg-white">
@@ -221,7 +221,7 @@ $(document).ready(() => {
                     </div>
                     <div class="col-6">
                         <div class="d-flex flex-column">
-                            <label><span class="h4">Descripcion:</span> ${desc}</label>
+                            <label><span class="h4">Descripción:</span> ${desc}</label>
                             <label><span class="h4">Fecha:</span> ${fecha.replace("T", ' ')}</label>
                             <label><span class="h4">Tarea:</span> ${tarea}</label>
                             <label><span class="h4">Punto:</span> ${evidencia[i].punto} - ${evidencia[i].no_tarea}</label>

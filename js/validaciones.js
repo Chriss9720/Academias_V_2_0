@@ -73,7 +73,7 @@ const validarClave = (data, key) => {
         } else {
             seccion2(data, key);
             let element = $(`div[name="${key}"]`)[0];
-            element.innerHTML = "El minimo son 3 cifras";
+            element.innerHTML = "El mínimo son 3 cifras";
             valor = false;
         }
     }
@@ -112,7 +112,7 @@ const validarCorreo = (data, key, extension) => {
         } else {
             seccion2(data, key);
             let element = $(`div[name="${key}"]`)[0];
-            element.innerHTML = "El correo es invalido";
+            element.innerHTML = "El correo es inválido";
             valor = false;
         }
     } else {

@@ -71,7 +71,7 @@ $(document).ready(() => {
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header d-flex justify-content-center h4">
-                        <label>Se ha cerrado la session por inactividad, por favor ingrese sus credenciales</label>
+                        <label>Se ha cerrado la sesión por inactividad, por favor ingrese sus credenciales</label>
                     </div>
                     <div class="modal-body">
                         <div id="nominaC" class="input-group mb-3 border rounded-pill bg-white">
@@ -276,7 +276,7 @@ $(document).ready(() => {
             <div class="container mt-3">
                 <div class="d-flex justify-content-center align-items-center">
                     <div class="form-inline mb-2">
-                        <label class="form-label text-input mr-3">Busqueda por nomina/nombre</label>
+                        <label class="form-label text-input mr-3">Búsqueda por nomina/nombre</label>
                         <input id="docenteSel" type="search" class="form-control text-input bg-input rounded-pill mx-auto" list="listaDocentes">
                         <datalist id="listaDocentes">
                         </datalist>
@@ -314,7 +314,7 @@ $(document).ready(() => {
                     docentes.forEach(d => d.v = true);
                     $("#alerta").html(`
                         <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
-                            <strong class="h1">No se encontro al docente</strong>
+                            <strong class="h1">No se encontró al docente</strong>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -560,7 +560,7 @@ $(document).ready(() => {
                 $("#infoAcademia").html('');
                 $("#alerta").html(`
                     <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
-                        <strong class="h1">No se encontro la academia</strong>
+                        <strong class="h1">No se encontró la academia</strong>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>

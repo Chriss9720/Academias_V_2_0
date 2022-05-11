@@ -539,7 +539,7 @@ $(document).ready(() => {
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header d-flex justify-content-center h4">
-                            <label>Se ha cerrado la session por inactividad, por favor ingrese sus credenciales</label>
+                            <label>Se ha cerrado la sesión por inactividad, por favor ingrese sus credenciales</label>
                         </div>
                         <div class="modal-body">
                             <div id="nominaC" class="input-group mb-3 border rounded-pill bg-white">
@@ -909,7 +909,7 @@ $(document).ready(() => {
                             cerrarModal();
                             $("#alertBusqueda").html(`
                                 <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
-                                    <strong class="h1">No se encontro el plan, puede que se alla borrado del servidor</strong>
+                                    <strong class="h1">No se encontró el plan, puede que se haya borrado del servidor</strong>
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -919,7 +919,7 @@ $(document).ready(() => {
                 } else {
                     $("#alertBusqueda").html(`
                         <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
-                            <strong class="h1">No se encontro el plan</strong>
+                            <strong class="h1">No se encontró el plan</strong>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -1019,7 +1019,7 @@ $(document).ready(() => {
                 } else {
                     $("#alertBusqueda").html(`
                         <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
-                            <strong class="h1">No se encontro la academia seleccioanda</strong>
+                            <strong class="h1">No se encontró la academia seleccioanda</strong>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>

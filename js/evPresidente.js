@@ -66,7 +66,7 @@ $(document).ready(() => {
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header d-flex justify-content-center h4">
-                            <label>Se ha cerrado la session por inactividad, por favor ingrese sus credenciales</label>
+                            <label>Se ha cerrado la sesión por inactividad, por favor ingrese sus credenciales</label>
                         </div>
                         <div class="modal-body">
                             <div id="nominaC" class="input-group mb-3 border rounded-pill bg-white">
@@ -232,7 +232,7 @@ $(document).ready(() => {
                     ActaG = {};
                     $("#alerta").html(`
                         <div class="alert h2 text-center alert-danger alert-dismissible fade show" role="alert">
-                            <strong>No se encontro al doente, recuerde que debe de ser en formato Nómina - Nombre</strong>
+                            <strong>No se encontró al docente, recuerde que debe de ser en formato Nómina - Nombre</strong>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -273,7 +273,7 @@ $(document).ready(() => {
                             console.log(e);
                             $("#alerta").html(`
                                 <div class="alert h2 text-center alert-danger alert-dismissible fade show" role="alert">
-                                    <strong>No se encontro el documento, puede que alla sido eliminado del servidor</strong>
+                                    <strong>No se encontró el documento, puede que haya sido eliminado del servidor</strong>
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -284,7 +284,7 @@ $(document).ready(() => {
                     ActaG = {};
                     $("#alerta").html(`
                         <div class="alert h2 text-center alert-danger alert-dismissible fade show" role="alert">
-                            <strong>No se encontro al doente, recuerde que debe de ser en formato Nómina - Nombre</strong>
+                            <strong>No se encontró al docente, recuerde que debe de ser en formato Nómina - Nombre</strong>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>

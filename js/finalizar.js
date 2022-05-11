@@ -66,7 +66,7 @@ $(document).ready(() => {
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header d-flex justify-content-center h4">
-                            <label>Se ha cerrado la session por inactividad, por favor ingrese sus credenciales</label>
+                            <label>Se ha cerrado la sesión por inactividad, por favor ingrese sus credenciales</label>
                         </div>
                         <div class="modal-body">
                             <div id="nominaC" class="input-group mb-3 border rounded-pill bg-white">
@@ -294,7 +294,7 @@ $(document).ready(() => {
                             <label><span class="h4">Academia:</span> ${clave_academia} - ${Academia || nombre}</label>
                             <label><span class="h4">Semestre:</span> ${Semestre || periodo}</label>
                             ${(fecha) ? getFe(fecha, "Creado"): getDato(nombre, 'Nombre')}
-                            ${(LAST) ? getFe(LAST, "Ultima modificacion"): getDato(Carrera, 'Carrera')}
+                            ${(LAST) ? getFe(LAST, "Ultima modificación"): getDato(Carrera, 'Carrera')}
                         </div>
                     </div>
                     <div class="col-4 d-flex flex-column justify-content-center align-items-center">

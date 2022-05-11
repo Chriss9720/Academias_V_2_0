@@ -51,7 +51,7 @@ $(document).ready(() => {
                                             <li>Presidente:
                                                 <ul>
                                                     <li>
-                                                        Se realiza una busqueda por Nómina - Nombre
+                                                        Se realiza una búsqueda por Nómina - Nombre
                                                     </li>
                                                     <li>
                                                         Para agregar el Presidente a la Academia se presiona la tecla <b>enter</b>.
@@ -64,7 +64,7 @@ $(document).ready(() => {
                                             <li>Secretario:
                                                 <ul>
                                                     <li>
-                                                        Se realiza una busqueda por Nómina - Nombre
+                                                        Se realiza una búsqueda por Nómina - Nombre
                                                     </li>
                                                     <li>
                                                         Para agregar el Secretario a la Academia se presiona la tecla <b>enter</b>.
@@ -77,7 +77,7 @@ $(document).ready(() => {
                                             <li>Agregar Miembro:
                                                 <ul>
                                                     <li>
-                                                        Se realiza una busqueda por Nómina - Nombre
+                                                        Se realiza una búsqueda por Nómina - Nombre
                                                     </li>
                                                     <li>
                                                         Para agregar el miembro a la Academia se presiona la tecla <b>enter</b>.
@@ -90,7 +90,7 @@ $(document).ready(() => {
                                             <li>Eliminar Miembro:
                                                 <ul>
                                                     <li>
-                                                        Se realiza una busqueda por Nómina - Nombre
+                                                        Se realiza una búsqueda por Nómina - Nombre
                                                     </li>
                                                     <li>
                                                         Para eliminar el miembro de la Academia se presiona la tecla <b>enter</b>.
@@ -167,7 +167,7 @@ $(document).ready(() => {
                                             <li>Secretario:
                                                 <ul>
                                                     <li>
-                                                        Se realiza una busqueda por Nómina - Nombre
+                                                        Se realiza una búsqueda por Nómina - Nombre
                                                     </li>
                                                     <li>
                                                         Para agregar el Secretario a la Academia se presiona la tecla <b>enter</b>.
@@ -180,7 +180,7 @@ $(document).ready(() => {
                                             <li>Agregar Miembro:
                                                 <ul>
                                                     <li>
-                                                        Se realiza una busqueda por Nómina - Nombre
+                                                        Se realiza una búsqueda por Nómina - Nombre
                                                     </li>
                                                     <li>
                                                         Para agregar el miembro a la Academia se presiona la tecla <b>enter</b>.
@@ -193,7 +193,7 @@ $(document).ready(() => {
                                             <li>Eliminar Miembro:
                                                 <ul>
                                                     <li>
-                                                        Se realiza una busqueda por Nómina - Nombre
+                                                        Se realiza una búsqueda por Nómina - Nombre
                                                     </li>
                                                     <li>
                                                         Para eliminar el miembro a la Academia se presiona la tecla <b>enter</b>.
@@ -476,7 +476,7 @@ $(document).ready(() => {
     const cargarAcademisaEdit = acas => {
         $("#BusquedasAcademias").html(`
             <div class="form-inline mx-auto">
-                <label class="form-label text-input mr-2">Busqueda por clave/nombre</label>
+                <label class="form-label text-input mr-2">Búsqueda por clave/nombre</label>
                 <input id="posiblesAcademiasEdit" type="search" class="form-control text-input bg-input rounded-pill w-auto" list="listaAcademias">
                 <datalist id="listaAcademias">
                 </datalist>
@@ -815,7 +815,7 @@ $(document).ready(() => {
         if (sessionStorage.getItem("accion").includes("Crear") || misDatos['nivel'] == 0 || misDatos['nivel'] == 1) {
             return `
                 <div class="form-inline mt-2">
-                    <label class="form-label text-input ancho">Busqueda por nomina/nombre</label>
+                    <label class="form-label text-input ancho">Búsqueda por nómina/nombre</label>
                     <input id="SalvarJefe" type="search" class="form-control text-input bg-input rounded-pill" list="listamodelos">
                     <datalist id="listamodelos">
                     </datalist>
@@ -910,7 +910,7 @@ $(document).ready(() => {
             return `
                 <img name="DatosJ" src="${jefe["foto"]}" class="img-fluid foto-opcional">
                 <div class="form-inline mt-2">
-                    <label class="form-label text-input ancho">Nomina</label>
+                    <label class="form-label text-input ancho">Nómina</label>
                     <input name="DatosJ" type="text" value="${jefe["nomina"]}" class="form-control text-input bg-input rounded-pill" disabled>
                 </div>
                 <div class="form-inline mt-2">
@@ -926,7 +926,7 @@ $(document).ready(() => {
         if (sessionStorage.getItem("accion").includes("Crear") || misDatos['nivel'] == 0 || misDatos['nivel'] == 1) {
             return `
                 <div class="form-inline mt-2">
-                    <label class="form-label text-input ancho">Busqueda por nomina/nombre</label>
+                    <label class="form-label text-input ancho">Búsqueda por nómina/nombre</label>
                     <input id="SalvarJefe" type="search" class="form-control text-input bg-input rounded-pill" list="listamodelos">
                     <datalist id="listamodelos">
                     </datalist>
@@ -977,7 +977,7 @@ $(document).ready(() => {
                     } else {
                         $("#erroresJefe").html(`
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <strong>No se encontro el docente, para mas informacion revise la ayuda</strong>
+                                <strong>No se encontró el docente, para más información revise la ayuda</strong>
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -987,7 +987,7 @@ $(document).ready(() => {
                 } else {
                     $("#erroresJefe").html(`
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>No se encontro el docente, para mas informacion revise la ayuda</strong>
+                            <strong>No se encontró el docente, para más información revise la ayuda</strong>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -1011,7 +1011,7 @@ $(document).ready(() => {
     const accionesAddM = () => {
         $("#Opciones").html(`
             <div class="form-inline mt-2">
-                <label class="form-label text-input ancho">Busqueda por nomina/nombre</label>
+                <label class="form-label text-input ancho">Búsqueda por nómina/nombre</label>
                 <input id="SalvarJefe" type="search" class="form-control text-input bg-input rounded-pill" list="listamodelos">
                 <datalist id="listamodelos">
                 </datalist>
@@ -1035,7 +1035,7 @@ $(document).ready(() => {
                     } else {
                         $("#erroresJefe").html(`
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <strong>No se encontro el docente, para mas informacion revise la ayuda</strong>
+                                <strong>No se encontró el docente, para más información revise la ayuda</strong>
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -1045,7 +1045,7 @@ $(document).ready(() => {
                 } else {
                     $("#erroresJefe").html(`
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>No se encontro el docente, para mas informacion revise la ayuda</strong>
+                            <strong>No se encontró el docente, para más información revise la ayuda</strong>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -1069,7 +1069,7 @@ $(document).ready(() => {
     const accionesDelM = () => {
         $("#Opciones").html(`
             <div class="form-inline mt-2">
-                <label class="form-label text-input ancho">Busqueda por nomina/nombre</label>
+                <label class="form-label text-input ancho">Búsqueda por nómina/nombre</label>
                 <input id="SalvarJefe" type="search" class="form-control text-input bg-input rounded-pill" list="listamodelos">
                 <datalist id="listamodelos">
                 </datalist>
@@ -1096,7 +1096,7 @@ $(document).ready(() => {
                     } else {
                         $("#erroresJefe").html(`
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <strong>No se encontro el docente, para mas informacion revise la ayuda</strong>
+                                <strong>No se encontró el docente, para más información revise la ayuda</strong>
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -1106,7 +1106,7 @@ $(document).ready(() => {
                 } else {
                     $("#erroresJefe").html(`
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>No se encontro el docente, para mas informacion revise la ayuda</strong>
+                            <strong>No se encontró el docente, para más información revise la ayuda</strong>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -1292,7 +1292,7 @@ $(document).ready(() => {
                             cerrarModal();
                             $("#alerta").html(`
                                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                    <strong>Actualizacion exitosa</strong>
+                                    <strong>Actualización exitosa</strong>
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
