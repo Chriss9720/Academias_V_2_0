@@ -11,6 +11,7 @@ $(document).ready(() => {
     let infoAcademias = [];
     let misDocs = [];
     let mat = [];
+    let misDatos;
 
     const cerrarModal = () => {
         $("#modal").modal('hide');
@@ -345,25 +346,27 @@ $(document).ready(() => {
                             login();
                         }
                     });
-                await infoBasica(clave, 'infoBasicaDocs')
-                    .then(info => {
-                        misDocs = info;
-                        if (info && info.length > 0) {
-                            menu += `
-                                <label name="options" class="btn btn-secondary opciones text-input">
-                                    <input type="radio" name="options" id="Documentos" autocomplete="off"> Documentos
-                                </label>
-                            `;
-                        }
-                    })
-                    .catch(e => {
-                        console.log(e);
-                        if (e.responseText == "Solicitar Reinicio de sesion") {
-                            cerrarM.load = true;
-                            cerrarModal();
-                            login();
-                        }
-                    });
+                if (find.nomina == misDatos.nomina || isSuper() || isSecretario() || isPresidente()) {
+                    await infoBasica(clave, 'infoBasicaDocs')
+                        .then(info => {
+                            misDocs = info;
+                            if (info && info.length > 0) {
+                                menu += `
+                                    <label name="options" class="btn btn-secondary opciones text-input">
+                                        <input type="radio" name="options" id="Documentos" autocomplete="off"> Documentos
+                                    </label>
+                                `;
+                            }
+                        })
+                        .catch(e => {
+                            console.log(e);
+                            if (e.responseText == "Solicitar Reinicio de sesion") {
+                                cerrarM.load = true;
+                                cerrarModal();
+                                login();
+                            }
+                        });
+                }
                 await infoBasica(clave, 'getMateriasDocente')
                     .then(info => {
                         mat = info;
@@ -398,12 +401,19 @@ $(document).ready(() => {
             }
 
         }
-    })
+    });
+
+    const isPresidente = () => misDatos.puesto.find(f => f == "Presidente") !== undefined;
+
+    const isSecretario = () => misDatos.puesto.find(f => f == "Secretario") !== undefined;
+
+    const isSuper = () => misDatos.nivel == 0 || misDatos == 1;
 
     const load = () => {
         cargando();
         getMisDatos()
             .then(t => {
+                misDatos = t;
                 allDocentes()
                     .then(AD => {
                         allDoentes = AD;

@@ -5,6 +5,8 @@ $(document).ready(() => {
         login: false
     };
 
+    var misDatos;
+
     var academias = [];
 
     var planesData = [];
@@ -437,26 +439,28 @@ $(document).ready(() => {
             .then(async(planes) => {
                 planesData = [];
                 for (let i = 0; i < planes.length; i++) {
-                    await getEvideciaPlanes(planes[i].id)
-                        .then(async(ev) => {
-                            planes[i].ev = ev;
-                            await leerEv(planes[i].localizacionJson)
-                                .then(json => {
-                                    planes[i].datosEv = json;
-                                }).catch(e => {
-                                    if (e.responseText == "Solicitar Reinicio de sesion") {
-                                        cerrarM.load = true;
-                                        cerrarModal();
-                                        login();
-                                    }
-                                });
-                        }).catch(e => {
-                            if (e.responseText == "Solicitar Reinicio de sesion") {
-                                cerrarM.load = true;
-                                cerrarModal();
-                                login();
-                            }
-                        });
+                    if (isPresidente() || isSecretario() | isSuper()) {
+                        await getEvideciaPlanes(planes[i].id)
+                            .then(async(ev) => {
+                                planes[i].ev = ev;
+                                await leerEv(planes[i].localizacionJson)
+                                    .then(json => {
+                                        planes[i].datosEv = json;
+                                    }).catch(e => {
+                                        if (e.responseText == "Solicitar Reinicio de sesion") {
+                                            cerrarM.load = true;
+                                            cerrarModal();
+                                            login();
+                                        }
+                                    });
+                            }).catch(e => {
+                                if (e.responseText == "Solicitar Reinicio de sesion") {
+                                    cerrarM.load = true;
+                                    cerrarModal();
+                                    login();
+                                }
+                            });
+                    }
                     planesData.push(planes[i]);
                 }
                 cargarPlanes(1);
@@ -472,28 +476,30 @@ $(document).ready(() => {
             .then(async(actas) => {
                 planesActas = [];
                 for (let i = 0; i < actas.length; i++) {
-                    await getEvideciaActa(actas[i].id_acta)
-                        .then(async(ev) => {
-                            actas[i].ev = ev;
-                            await leerEv(actas[i].localizacionJson)
-                                .then(json => {
-                                    actas[i].datosEv = json;
-                                })
-                                .catch(e => {
-                                    if (e.responseText == "Solicitar Reinicio de sesion") {
-                                        cerrarM.load = true;
-                                        cerrarModal();
-                                        login();
-                                    }
-                                });
-                        })
-                        .catch(e => {
-                            if (e.responseText == "Solicitar Reinicio de sesion") {
-                                cerrarM.load = true;
-                                cerrarModal();
-                                login();
-                            }
-                        });
+                    if (isPresidente() || isSecretario() | isSuper()) {
+                        await getEvideciaActa(actas[i].id_acta)
+                            .then(async(ev) => {
+                                actas[i].ev = ev;
+                                await leerEv(actas[i].localizacionJson)
+                                    .then(json => {
+                                        actas[i].datosEv = json;
+                                    })
+                                    .catch(e => {
+                                        if (e.responseText == "Solicitar Reinicio de sesion") {
+                                            cerrarM.load = true;
+                                            cerrarModal();
+                                            login();
+                                        }
+                                    });
+                            })
+                            .catch(e => {
+                                if (e.responseText == "Solicitar Reinicio de sesion") {
+                                    cerrarM.load = true;
+                                    cerrarModal();
+                                    login();
+                                }
+                            });
+                    }
                     planesActas.push(actas[i]);
                 }
                 cargarActas(1);
@@ -534,6 +540,12 @@ $(document).ready(() => {
             });
         $("#PS").html(PS);
     };
+
+    const isPresidente = () => misDatos.puesto.find(f => f == "Presidente") !== undefined;
+
+    const isSecretario = () => misDatos.puesto.find(f => f == "Secretario") !== undefined;
+
+    const isSuper = () => misDatos.nivel == 0 || misDatos == 1;
 
     $("#AcaSel").keypress(async(k) => {
         if (k.which === 13) {
@@ -577,6 +589,7 @@ $(document).ready(() => {
         cargando();
         getMisDatos()
             .then(t => {
+                misDatos = t;
                 getAllAcademiasInfo()
                     .then(aca => {
                         academias = aca;
@@ -586,6 +599,7 @@ $(document).ready(() => {
                         cerrarModal();
                     })
                     .catch(e => {
+                        console.log(e);
                         if (e.responseText == "Solicitar Reinicio de sesion") {
                             cerrarM.load = true;
                             cerrarModal();
@@ -740,6 +754,21 @@ $(document).ready(() => {
         `);
     };
 
+    const opcionP = i => {
+        let html = (isSuper() || isPresidente() || isSecretario() ?
+            `
+                <span style="font-size: 2rem;" name="Planes">
+                    <i class="fas fa-eye click" id="Planes_${i}"></i>
+                </span>
+            ` :
+            `
+                <span style="font-size: 2rem;" name="descargarPadre">
+                    <i class="fas fa-download click" id="Planes_${i}"></i>
+                </span>
+            `);
+        return html;
+    };
+
     const cargarPlanes = pagina => {
         let planes = $("#planes")[0];
         let mostrar = 4;
@@ -754,13 +783,15 @@ $(document).ready(() => {
                     <img src="img/pdf.ico" style="height: 100px" class="img-fluid">
                     <label>Semestre:${planesData[i].Semestre}</label>
                     <label>Fecha: ${getFecha(planesData[i].fecha.date)}</label>
-                    <span style="font-size: 2rem;" name="Planes">
-                        <i class="fas fa-eye click" id="Planes_${i}"></i>
-                    </span>
+                    ${opcionP(i)}
                 </div>
             </div>`;
         }
         pie(pagina, max, "paginaPlanes");
+        $("span[name='descargarPadre']").click(evt => {
+            let id = evt.target.id.split("_")[1];
+            window.open(`Academias/${planesData[id].localizacion}`);
+        });
         $('span[name="Planes"]').click(evt => {
             cargando();
             $("#pieInfo").html("");
@@ -804,6 +835,21 @@ $(document).ready(() => {
         });
     };
 
+    const opcionA = i => {
+        let html = (isSuper() || isPresidente() || isSecretario() ?
+            `
+                <span style="font-size: 2rem;" name="actas">
+                    <i class="fas fa-eye click" id="Planes_${i}"></i>
+                </span>
+            ` :
+            `
+                <span style="font-size: 2rem;" name="descargarPadre">
+                    <i class="fas fa-download click" id="actas_${i}"></i>
+                </span>
+            `);
+        return html;
+    }
+
     const cargarActas = pagina => {
         let planes = $("#actas")[0];
         let mostrar = 4;
@@ -818,13 +864,15 @@ $(document).ready(() => {
                     <img src="img/pdf.ico" style="height: 100px" class="img-fluid">
                     <label>Semestre:${planesActas[i].Semestre}</label>
                     <label>Fecha: ${getFecha(planesActas[i].fecha.date)}</label>
-                    <span style="font-size: 2rem;" name="actas">
-                        <i class="fas fa-eye click" id="actas_${i}"></i>
-                    </span>
+                    ${opcionA(i)}
                 </div>
             </div>`;
         }
         pie(pagina, max, "paginaActas");
+        $("span[name='descargarPadre']").click(evt => {
+            let id = evt.target.id.split("_")[1];
+            window.open(`Academias/${planesActas[id].localizacion}`);
+        });
         $('span[name="actas"]').click(async(evt) => {
             cargando();
             $("#pieInfo").html("");

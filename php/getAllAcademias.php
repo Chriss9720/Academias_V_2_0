@@ -17,8 +17,12 @@
         $conectar = new Conectar();
         $con = $conectar->conn();
         if ($con) {
-            $call = "{ call dbo.SP_AllAcademias }";
-            $stmt = sqlsrv_query($con, $call);
+            $call = "{ call dbo.SP_AllAcademias (?,?)}";
+            $params = array(
+                array(&$_SESSION['nivel'], SQLSRV_PARAM_IN),
+                array(&$_SESSION['nomina'], SQLSRV_PARAM_IN)
+            );
+            $stmt = sqlsrv_query($con, $call, $params);
             if ($stmt === false) {
                 if (($errors = sqlsrv_errors()) != null) {
                     $error = print_r($errors[0]['message'], true);

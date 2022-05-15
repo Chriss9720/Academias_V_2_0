@@ -10,9 +10,10 @@
         if ($con) {
             $json = json_decode(json_encode($_POST), true);
             $call = "{ call dbo.SP_Login(?, ?) }";
+            $clave = utf8_decode($_POST['clave']);
             $params = array(
                 array(&$json["nomina"], SQLSRV_PARAM_IN),
-                array(&$json["clave"], SQLSRV_PARAM_IN)
+                array(&$clave, SQLSRV_PARAM_IN)
             );
             $stmt = sqlsrv_query($con, $call, $params);
             if ($stmt === false) {

@@ -511,8 +511,14 @@ GO
 
 IF OBJECT_ID('SP_AllAcademias') IS NOT NULL DROP PROC SP_AllAcademias
 GO
-CREATE PROC SP_AllAcademias AS
-	SELECT * FROM ACADEMIA
+CREATE PROC SP_AllAcademias @nivel INT, @nomina INT AS
+	IF @nivel = 1 OR @nivel = 0
+		SELECT * FROM ACADEMIA
+	ELSE BEGIN
+		SELECT * FROM ACADEMIA WHERE clave_academia IN (
+			SELECT clave_academia FROM CARGO WHERE nomina = @nomina
+		)
+	END
 GO
 
 IF OBJECT_ID('SP_ActualizarAcademia') IS NOT NULL DROP PROC SP_ActualizarAcademia
@@ -912,8 +918,32 @@ GO
 
 IF OBJECT_ID ('SP_GetAllDocentes') IS NOT NULL DROP PROC SP_GetAllDocentes
 GO
-CREATE PROC SP_GetAllDocentes AS
-	SELECT * FROM DOCENTE WHERE nivel != 0 AND baja = 0
+CREATE PROC SP_GetAllDocentes @nivel INT, @nomina INT AS
+	IF @nivel = 1 OR @nivel = 0
+		SELECT * FROM DOCENTE WHERE nivel != 0 AND baja = 0
+	ELSE BEGIN
+		SELECT DISTINCT *
+		FROM DOCENTE
+		WHERE nomina IN (
+			SELECT nomina
+			FROM CARGO
+			WHERE clave_academia LIKE (
+				SELECT clave_academia
+				FROM CARGO
+				WHERE nomina = @nomina
+			)
+		) OR
+		nomina IN (
+			SELECT nomina
+			FROM AFILIADO
+			WHERE clave_carrera IN (
+				SELECT clave_carrera
+				FROM AFILIADO
+				WHERE nomina = @nomina
+			)
+		)
+		AND nivel != 0
+	END
 GO
 
 IF OBJECT_ID ('SP_InfoBasicaCarrera') IS NOT NULL DROP PROC SP_InfoBasicaCarrera
@@ -952,16 +982,28 @@ GO
 
 IF OBJECT_ID ('SP_InfoBasicaCarreras') IS NOT NULL DROP PROC SP_InfoBasicaCarreras
 GO
-CREATE PROC SP_InfoBasicaCarreras AS
-	SELECT CAR.*, D.foto, D.nombre AS ND
-	FROM CARRERA AS CAR
-	JOIN AFILIADO AS AF
-	ON AF.clave_carrera LIKE CAR.clave_carrera AND AF.Activo = 1
-	JOIN DOCENTE AS D
-	ON D.nomina = AF.nomina AND AF.jefe = 1
-	WHERE CAR.activo = 1
+CREATE PROC SP_InfoBasicaCarreras @nivel INT, @nomina INT AS
+	IF @nivel = 1 OR @nivel = 0 BEGIN
+		SELECT CAR.*, D.foto, D.nombre AS ND
+		FROM CARRERA AS CAR
+		JOIN AFILIADO AS AF
+		ON AF.clave_carrera LIKE CAR.clave_carrera AND AF.Activo = 1
+		JOIN DOCENTE AS D
+		ON D.nomina = AF.nomina AND AF.jefe = 1
+		WHERE CAR.activo = 1
+	END
+		SELECT DISTINCT CA.*, DO.foto, DO.nombre AS ND
+		FROM CARRERA AS CA
+		JOIN AFILIADO AS AF
+		ON AF.clave_carrera = AF.clave_carrera
+		JOIN DOCENTE AS DO
+		ON DO.nomina = AF.nomina AND AF.jefe = 1 AND AF.Activo = 1 AND AF.clave_carrera LIKE CA.clave_carrera
+		WHERE CA.clave_carrera IN (
+			SELECT clave_carrera FROM AFILIADO WHERE nomina = @nomina
+		)
 GO
 
+EXEC SP_InfoBasicaCarreras 6, 18130122
 IF OBJECT_ID ('SP_InfoDocentesCarreraBasica') IS NOT NULL DROP PROC SP_InfoDocentesCarreraBasica
 GO
 CREATE PROC SP_InfoDocentesCarreraBasica @Clave VARCHAR(255) AS

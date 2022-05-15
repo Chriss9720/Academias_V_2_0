@@ -29,7 +29,7 @@ const camposRequeridos = (data, keys) => {
 const validarNombre = (data, key) => {
     let valor = true;
     if (data[key].value.length > 0) {
-        let re = new RegExp('([a-zA-Zñ]+\\s*)+');
+        let re = new RegExp('([a-zA-ZñÑ]+\\s*)+');
         let exec = re.exec(data[key].value);
         if (exec && exec[0] == exec["input"]) {
             seccion1(data, key);

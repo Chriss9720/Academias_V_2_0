@@ -272,8 +272,8 @@ $(document).ready(() => {
         carreras.forEach(d => {
             r += `<option value="${d.clave_carrera} - ${d.nombre}">`;
         });
-        removerGuardados($("#listaCarreras")[0]);
-        $("#listaCarreras").html(r);
+        removerGuardados($("#listaCarrerasVer")[0]);
+        $("#listaCarrerasVer").html(r);
     };
 
     const getDocentesCarrera = clave => {
@@ -350,7 +350,7 @@ $(document).ready(() => {
         });
     };
 
-    $("#CarreraSel").keypress(async(k) => {
+    $("#CarreraSelVer").keypress(async(k) => {
         if (k.which == 13) {
             let valor = k.target.value.split(" - ");
             let clave;
