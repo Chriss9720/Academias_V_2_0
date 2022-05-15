@@ -464,27 +464,27 @@ $(document).ready(() => {
         $("#telefono")[0].value = data.telefono;
         $("#claveR")[0].value = data.clave;
         $("#perfil")[0].src = data.foto;
-
         $("#correo")[0].value = data.correo.replace("@cajeme.tecnm.mx", "").replace("@itesca.edu.mx", "");
     };
 
     const editar = () => {
-        console.log("EDITAR");
         $("#Edicion").html(`
             <input name="cancelar" value="Cancelar" type="button" class="btn bg-btn-aplicar btn-primary-r">
             ${(misDatos['nivel'] == 0 || misDatos['nivel'] == 1)?'<input id="aplicarBaja" value="Inhabilitar" type="button" class="btn btn-primary-r bg-danger">':''}
             <input id="editar" type="button" value="Editar" class="btn btn-primary-r">
         `);
         $("#nominaR").attr("disabled", "");
-        $("#soloEdit").html(`
-            <div class="form-inline mt-1 mx-auto">
-                <label class="form-label text-input mr-3">Búsqueda por nombre/nómina</label>
-                <input id="editarS" type="search" class="form-control text-input bg-input rounded-pill mx-auto" list="listaEdit">
-                <datalist id="listaEdit">
-                    ${docentes()}
-                </datalist>
-            </div>
-        `);
+        if (!sessionStorage.getItem("accion").includes("editarme")) {
+            $("#soloEdit").html(`
+                <div class="form-inline mt-1 mx-auto">
+                    <label class="form-label text-input mr-3">Búsqueda por nombre/nómina</label>
+                    <input id="editarS" type="search" class="form-control text-input bg-input rounded-pill mx-auto" list="listaEdit">
+                    <datalist id="listaEdit"></datalist>
+                </div>
+            `);
+            removerGuardados($("#listaEdit")[0]);
+            $("#listaEdit").html(docentes());
+        }
         $("#editarS").keypress(k => {
             if (k.which == 13) {
                 let componente = $("#editarS")[0];
@@ -647,6 +647,8 @@ $(document).ready(() => {
                             let mat = materiasLista.filter(f => f.activa == 1);
                             if (mat.length > 0) {
                                 await salvarMat(data.nominaR, mat);
+                            } else {
+                                await borrarMaterias(data.nominaR);
                             }
                             cargarDocentes();
                             $("#alerta").html(`
@@ -766,6 +768,19 @@ $(document).ready(() => {
                     nomina: nomina
                 },
                 type: "POST",
+                dataType: "json",
+                success: s => resolve(s),
+                error: e => reject(e)
+            });
+        });
+    };
+
+    const borrarMaterias = nomina => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: 'php/borrarMaterias.php',
+                data: { nomina },
+                type: 'POST',
                 dataType: "json",
                 success: s => resolve(s),
                 error: e => reject(e)

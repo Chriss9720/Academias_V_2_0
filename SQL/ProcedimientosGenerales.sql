@@ -45,7 +45,7 @@ CREATE PROC SP_DondeCrearPlanAcademia @Nomina INT, @nivel INT AS
 		JOIN CARGO AS C
 		ON C.clave_academia = A.clave_academia
 		JOIN DOCENTE AS D
-		ON D.nomina = @Nomina AND C.nomina = @Nomina AND (C.puesto LIKE '%Presidente%' OR C.puesto IS NULL) AND D.baja != 1
+		ON D.nomina = @Nomina AND C.nomina = @Nomina AND ((C.puesto LIKE '%Presidente%' OR C.puesto LIKE '%Secretario%') OR C.puesto IS NULL) AND D.baja != 1
 		JOIN (
 			SELECT COUNT(*) AS T, C.clave_academia FROM CARGO AS C GROUP BY(clave_academia)
 		) AS T
@@ -62,7 +62,7 @@ CREATE PROC SP_DondeCrearPlanAcademia @Nomina INT, @nivel INT AS
 			SELECT COUNT(*) AS T, C.clave_academia FROM CARGO AS C GROUP BY(clave_academia)
 		) AS T
 		ON T.clave_academia = A.clave_academia
-		WHERE C.puesto LIKE '%Presidente' OR C.puesto IS NULL
+		WHERE C.puesto LIKE '%Presidente%' OR C.puesto IS NULL
 	END
 GO
 
@@ -1108,4 +1108,10 @@ CREATE PROC SP_ActualizarNombreCarrera @Clave VARCHAR(255), @nombre VARCHAR(255)
 	UPDATE CARRERA
 	SET nombre = @nombre
 	where clave_carrera LIKE '%'+@Clave+'%'
+GO
+
+IF OBJECT_ID('SP_BorrarMaterias') IS NOT NULL DROP PROC SP_BorrarMaterias
+GO
+CREATE PROC SP_BorrarMaterias @nomina INT AS
+	DELETE FROM MATERIAS WHERE nomina = @nomina
 GO

@@ -785,7 +785,8 @@ $(document).ready(() => {
         for (let i = 0; i < academias.length; i++) {
             r += `<option value="${academias[i].clave_academia} - ${academias[i].nombre}">`;
         }
-        $("#listaAcademias").html(r);
+        removerGuardados($("#listaAcademiasParaPlan")[0]);
+        $("#listaAcademiasParaPlan").html(r);
     };
 
     const construirPlanes = () => {
@@ -793,7 +794,8 @@ $(document).ready(() => {
         for (let i = 0; i < listaPlanes.length; i++) {
             r += `<option value="${listaPlanes[i].id_planTrabajo} - ${listaPlanes[i].fecha.date}">`;
         }
-        $("#listaDePlanes").html(r);
+        removerGuardados($("#listaDePlanesEditar")[0]);
+        $("#listaDePlanesEditar").html(r);
     };
 
     const getPlanesEdit = clave => {
@@ -876,7 +878,7 @@ $(document).ready(() => {
         }
     };
 
-    $("#planSeleccionado").keypress(k => {
+    $("#planSeleccionadoEditar").keypress(k => {
         if (k.which == 13) {
             let dato = k.target.value.split(" - ");
             if (dato.length < 2) {
@@ -930,7 +932,7 @@ $(document).ready(() => {
         }
     });
 
-    $("#academiaSeleccionada").keypress(k => {
+    $("#academiaSeleccionadaPlan").keypress(k => {
         if (k.which == 13) {
             let dato = k.target.value.split(" - ");
             if (dato.length < 2) {
@@ -959,6 +961,7 @@ $(document).ready(() => {
                                 getPlanesEdit(clave.clave_academia)
                                     .then(t => {
                                         reset();
+                                        console.log(t);
                                         listaPlanes = t;
                                         construirPlanes();
                                         cerrarM.load = true;
@@ -1470,7 +1473,7 @@ $(document).ready(() => {
 
     const reset = () => {
         seleccionada = false;
-        $("#planSeleccionado")[0].value = "";
+        $("#planSeleccionadoEditar")[0].value = "";
         $("#nameAcademia")[0].value = "";
         $("#namePresidente")[0].value = "";
         $("#nameSemestre")[0].value = "";
