@@ -839,6 +839,7 @@ $(document).ready(() => {
         let fechas = planEdit.fechas;
         let camposFechas = ["fecha_1", "fecha_2", "fecha_3", "fecha_4"];
         for (let i = 0; i < camposFechas.length; i++) {
+            Plan["fechas"][`fecha_${(i+1)}`] = fechas[camposFechas[i]];
             $(`#${camposFechas[i]}`)[0].value = fechas[camposFechas[i]].replace(" ", "T");
             planEdit[camposFechas[i]] = fechas[camposFechas[i]];
         }
@@ -1368,7 +1369,7 @@ $(document).ready(() => {
                 Plan["fechaG"] = planEdit["fechaG"];
                 Plan["fecha"] = planEdit["fecha"];
                 Plan["editar"] = 1;
-                Plan["id"] = $("#planSeleccionado").val().split(" - ")[0];
+                Plan["id"] = $("#planSeleccionadoEditar").val().split(" - ")[0];
             } else {
                 let date = new Date();
                 Plan["fechaG"] = getFecha(date);

@@ -1301,7 +1301,6 @@ $(document).ready(() => {
 
     $("#salvarCarrera").click(() => {
         if (sessionStorage.getItem("accion").includes("Crear")) {
-            cargando();
             let data = {
                 nombreC: $("#nombreC")[0],
                 claveC: $("#claveC")[0],
@@ -1324,6 +1323,7 @@ $(document).ready(() => {
             }
 
             if (valid) {
+                cargando();
                 console.log("SI");
                 salvarImg(formData, foto)
                     .then((t) => {
@@ -1363,6 +1363,7 @@ $(document).ready(() => {
                         `);
                     })
                     .catch((e) => {
+                        console.log(e);
                         cerrarM.load = true;
                         cerrarModal();
                         if (e.responseText == "Solicitar Reinicio de sesion") {

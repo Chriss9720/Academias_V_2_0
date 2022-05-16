@@ -357,28 +357,67 @@ $(document).ready(() => {
                 error: e => reject(e)
             })
         });
-    }
+    };
+
+    const cargarPediente = () => {
+        cargando();
+        getEvidenciaPendiente()
+            .then(planes => {
+                evidencia = planes;
+                armar();
+                cerrarM.load = true;
+                cerrarM.login = true;
+                cerrarModal();
+            })
+            .catch(e => {
+                console.log(e);
+                if (e.responseText == "Solicitar Reinicio de sesion") {
+                    cerrarM.load = true;
+                    cerrarModal();
+                    login();
+                }
+            });
+    };
+
+    const getEvidenciaSubida = () => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: 'php/SubidaEvidencia.php',
+                type: 'POST',
+                dataType: 'json',
+                success: s => resolve(s),
+                error: e => reject(e)
+            })
+        });
+    };
+
+    const cargarEvidenciaSubida = () => {
+        cargando();
+        getEvidenciaSubida()
+            .then(planes => {
+                evidencia = planes;
+                armar();
+                cerrarM.load = true;
+                cerrarM.login = true;
+                cerrarModal();
+            })
+            .catch(e => {
+                console.log(e);
+                if (e.responseText == "Solicitar Reinicio de sesion") {
+                    cerrarM.load = true;
+                    cerrarModal();
+                    login();
+                }
+            });
+    };
 
     const load = () => {
         cargando();
         getMisDatos()
             .then(t => {
-                getEvidenciaPendiente()
-                    .then(planes => {
-                        evidencia = planes;
-                        armar();
-                        cerrarM.load = true;
-                        cerrarM.login = true;
-                        cerrarModal();
-                    })
-                    .catch(e => {
-                        console.log(e);
-                        if (e.responseText == "Solicitar Reinicio de sesion") {
-                            cerrarM.load = true;
-                            cerrarModal();
-                            login();
-                        }
-                    });
+                cerrarM.load = true;
+                cerrarM.login = true;
+                cerrarModal()
             })
             .catch(e => {
                 if (e.responseText == "Solicitar Reinicio de sesion") {
@@ -419,5 +458,16 @@ $(document).ready(() => {
     };
 
     load();
+
+    $("[name='options']").click(evt => {
+        switch (evt.target.innerText) {
+            case "Pendientes":
+                cargarPediente();
+                break;
+            case "Entregadas":
+                cargarEvidenciaSubida();
+                break;
+        }
+    });
 
 });

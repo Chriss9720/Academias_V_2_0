@@ -8,8 +8,8 @@
     if (array_key_exists('docentes', $datos)) {
         $docentes = $datos['docentes'];
     }
-    $clave = $datos['claveA'];
-    $nombre = $datos['nombre'];
+    $clave = utf8_decode($datos['claveA']);
+    $nombre = utf8_decode($datos['nombre']);
 
     function salvarNombreImg($name, $con, $clave, $foto)
     {

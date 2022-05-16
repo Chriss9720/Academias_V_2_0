@@ -99,7 +99,7 @@
     {
         $ret = "<ul>";
         for ($i = 0; $i < count($responsables); $i++) {
-            $nombre = utf8_encode($responsables[$i]["nombre"]);
+            $nombre = utf8_decode($responsables[$i]["nombre"]);
             $ret .= "<li>$nombre</li>";
         }
         $ret .= "</ul>";
@@ -247,20 +247,20 @@
         $del = true;
         $temp = json_decode(json_encode($_POST['temp']), true);
     }
-    $academia = utf8_encode($datos['datos']['academia']);
+    $academia = utf8_decode($datos['datos']['academia']);
     $preview = $datos['preview'];
     $editar = $datos['editar'];
-    $claveAcademia = utf8_encode($datos['datos']['claveAcademia']);
-    $semestre = utf8_encode($datos['datos']['semestre']);
-    $presidente = utf8_encode($datos['datos']['presidente']);
-    $jefe = utf8_encode($datos['datos']['jefe']);
-    $coordinador = utf8_encode($datos['datos']['coordinador']);
-    $fecha = utf8_encode($datos['fecha']);
+    $claveAcademia = utf8_decode($datos['datos']['claveAcademia']);
+    $semestre = utf8_decode($datos['datos']['semestre']);
+    $presidente = utf8_decode($datos['datos']['presidente']);
+    $jefe = utf8_decode($datos['datos']['jefe']);
+    $coordinador = utf8_decode($datos['datos']['coordinador']);
+    $fecha = utf8_decode($datos['fecha']);
     $fechas = $datos['fechas'];
-    $fecha_1 = utf8_encode($datos['fechas']['fecha_1']);
-    $fecha_2 = utf8_encode($datos['fechas']['fecha_2']);
-    $fecha_3 = utf8_encode($datos['fechas']['fecha_3']);
-    $fecha_4 = utf8_encode($datos['fechas']['fecha_4']);
+    $fecha_1 = utf8_decode($datos['fechas']['fecha_1']);
+    $fecha_2 = utf8_decode($datos['fechas']['fecha_2']);
+    $fecha_3 = utf8_decode($datos['fechas']['fecha_3']);
+    $fecha_4 = utf8_decode($datos['fechas']['fecha_4']);
     $actividad1 = $datos['1'];
     $actividad2 = $datos['2'];
     $actividad3 = $datos['3'];

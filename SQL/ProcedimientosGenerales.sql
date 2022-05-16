@@ -805,7 +805,7 @@ GO
 CREATE PROC SP_EvidenciaPendiente @Nomina INT AS
 	SELECT *
 	FROM VW_InfoDocumentos
-	WHERE localizacion IS NULL  AND nomina = @Nomina
+	WHERE localizacion IS NULL AND nomina = @Nomina AND  PADRE like 'Planes'
 GO
 
 IF OBJECT_ID('SP_FinalizarPlan') IS NOT NULL DROP PROC SP_FinalizarPlan
@@ -1114,4 +1114,12 @@ IF OBJECT_ID('SP_BorrarMaterias') IS NOT NULL DROP PROC SP_BorrarMaterias
 GO
 CREATE PROC SP_BorrarMaterias @nomina INT AS
 	DELETE FROM MATERIAS WHERE nomina = @nomina
+GO
+
+IF OBJECT_ID('SP_EvidenciaSubida') IS NOT NULL DROP PROC SP_EvidenciaSubida
+GO
+CREATE PROC SP_EvidenciaSubida @Nomina INT AS
+	SELECT *
+	FROM VW_InfoDocumentos
+	WHERE localizacion IS NOT NULL AND nomina = @Nomina AND  PADRE like 'Planes'
 GO

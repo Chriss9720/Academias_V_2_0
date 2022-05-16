@@ -125,9 +125,9 @@
 
     $miembros = array();
     $nuevos = array();
-    $clave = utf8_encode($_POST["clave"]);
-    $foto = utf8_encode($_POST["foto"]);
-    $nombre = utf8_encode($_POST["nombre"]);
+    $clave = utf8_decode($_POST["clave"]);
+    $foto = utf8_decode($_POST["foto"]);
+    $nombre = utf8_decode($_POST["nombre"]);
     if (array_key_exists('miembros', json_decode(json_encode($_POST)))) {
         $miembros = $_POST['miembros'];
     }
