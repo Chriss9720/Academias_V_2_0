@@ -1510,7 +1510,6 @@ $(document).ready(() => {
 
     $("[name='desc']").click(evt => {
         let val = evt.target.id.split("_")[1];
-        console.log(Plan);
         CKEDITOR.instances.desc.setData(Plan['desc'][`desc_${val}`]);
         $("#tituloModalDESC").html(`Descripción para la fecha No.${val}`);
         $("#descripcion").modal();

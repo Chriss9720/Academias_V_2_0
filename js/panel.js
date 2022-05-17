@@ -431,7 +431,6 @@ $(document).ready(() => {
             .then(async(t) => {
                 getAgenda()
                     .then(ag => {
-                        console.log(ag);
                         cargarAgenda(ag);
                     });
                 cerrarM.load = true;

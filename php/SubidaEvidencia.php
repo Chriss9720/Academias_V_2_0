@@ -33,6 +33,9 @@
             $res = [];
 
             while( $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC) ) {
+                $row['Academia'] = utf8_encode($row['Academia']);
+                $row['localizacionJson'] = utf8_encode($row['localizacionJson']);
+                $row['L2']  = utf8_encode($row['L2']);
                 array_push($res, $row);
             }
 

@@ -5,6 +5,8 @@ $(document).ready(() => {
         login: false
     };
 
+    var cargar;
+
     var evidencia = [];
 
     const cerrarModal = () => {
@@ -193,6 +195,14 @@ $(document).ready(() => {
         });
     };
 
+    const d1 = () => (cargar) ? `
+        <div class="mt-2">
+            <span>
+                <i name="descargarEvidencia" class="fas fa-download click"></i>
+            </span>
+        </div>
+    ` : "";
+
     const armar = async() => {
         let r = "";
         for (let i = 0; i < evidencia.length; i++) {
@@ -216,8 +226,13 @@ $(document).ready(() => {
                     <div class="col-3"></div>
                     <div class="col-6" id="error_${i}"></div>
                     <div class="col-3"></div>
-                    <div class="col-2 d-flex justify-content-center align-items-center">
+                    <div class="col-2 d-flex justify-content-center align-items-center flex-column">
                         <img class='img-pdf' src="img/pdf.ico">
+                        <div class="mt-2">
+                            <span>
+                                <i name="descargar" class="fas fa-download click"></i>
+                            </span>
+                        </div>
                     </div>
                     <div class="col-6">
                         <div class="d-flex flex-column">
@@ -236,11 +251,8 @@ $(document).ready(() => {
                             <label id="Reemplazar_${i}_name" class="custom-file-label" for="Reemplazar">Entregar</label>
                         </div>
 
-                        <div class="mt-2">
-                            <span>
-                                <i name="descargar" class="fas fa-download click"></i>
-                            </span>
-                        </div>
+                        ${d1()}
+
                     </div>
                 </div>
             `;
@@ -253,8 +265,11 @@ $(document).ready(() => {
         })
         $('i[name="descargar"]').click(evt => {
             let id = parseInt(evt.target.offsetParent.parentNode.id);
-            console.log(evidencia[id]);
             window.open(`Academias/${evidencia[id].L2}`);
+        });
+        $("i[name='descargarEvidencia']").click(evt => {
+            let id = parseInt(evt.target.offsetParent.parentNode.id);
+            window.open(`Academias/${evidencia[id].localizacion}`);
         });
         $('input[name="finalizar"]').click(evt => {
             let value = evt.target.attributes.id.value;
@@ -462,9 +477,11 @@ $(document).ready(() => {
     $("[name='options']").click(evt => {
         switch (evt.target.innerText) {
             case "Pendientes":
+                cargar = false;
                 cargarPediente();
                 break;
             case "Entregadas":
+                cargar = true;
                 cargarEvidenciaSubida();
                 break;
         }
