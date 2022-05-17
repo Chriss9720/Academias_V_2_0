@@ -157,10 +157,11 @@
         $id = getIDPLan();
         $conectar = new Conectar();
         $con = $conectar->conn();
+        $ruta2  = utf8_decode($ruta);
         $call = "{call dbo.SP_RegistrarPlan(?,?,?,?,?)}";
         $params = array(
             array(&$academia, SQLSRV_PARAM_IN),
-            array(&$ruta, SQLSRV_PARAM_IN),
+            array(&$ruta2, SQLSRV_PARAM_IN),
             array(&$hoy, SQLSRV_PARAM_IN),
             array(&$id, SQLSRV_PARAM_IN),
             array(&$sem, SQLSRV_PARAM_IN)
@@ -189,16 +190,17 @@
         return "$fecha[2]/$fecha[1]/$fecha[0] $hora";
     }
 
-    function salvarFecha($id, $fecha)
+    function salvarFecha($id, $fecha, $desc)
     {
         if (strlen($fecha) > 0) {
             $fecha = fechaFormat($fecha);
             $conectar = new Conectar();
             $con = $conectar->conn();
-            $call = "{call dbo.SP_AgendarFecha(?,?)}";
+            $call = "{call dbo.SP_AgendarFecha(?,?,?)}";
             $params = array(
                 array(&$id, SQLSRV_PARAM_IN),
-                array(&$fecha, SQLSRV_PARAM_IN)
+                array(&$fecha, SQLSRV_PARAM_IN),
+                array(&$desc, SQLSRV_PARAM_IN)
             );
             $stmt = sqlsrv_query($con, $call, $params);
             if ($stmt === false) {
@@ -248,6 +250,7 @@
         $temp = json_decode(json_encode($_POST['temp']), true);
     }
     $academia = utf8_decode($datos['datos']['academia']);
+    $academiaN = utf8_encode($academia);
     $preview = $datos['preview'];
     $editar = $datos['editar'];
     $claveAcademia = utf8_decode($datos['datos']['claveAcademia']);
@@ -261,6 +264,10 @@
     $fecha_2 = utf8_decode($datos['fechas']['fecha_2']);
     $fecha_3 = utf8_decode($datos['fechas']['fecha_3']);
     $fecha_4 = utf8_decode($datos['fechas']['fecha_4']);
+    $desc_1 = utf8_decode($datos['desc']['desc_1']);
+    $desc_2 = utf8_decode($datos['desc']['desc_2']);
+    $desc_3 = utf8_decode($datos['desc']['desc_3']);
+    $desc_4 = utf8_decode($datos['desc']['desc_4']);
     $actividad1 = $datos['1'];
     $actividad2 = $datos['2'];
     $actividad3 = $datos['3'];
@@ -441,7 +448,6 @@
         "tareas"=>getTareas($actividad9)
     );
 
-
     $mpdf->WriteHTML("
         <table class='borde_tabla'>
             <tbody>
@@ -450,7 +456,7 @@
                         Nombre de la Academia:
                     </td>
                     <td class='borde_derecho academia_d centrar'>
-                        $academia
+                        $academiaN
                     </td>
                     <td class='borde_derecho semestre fuente negrita fondo_contenido texto_derecha'>
                         Semestre:
@@ -844,10 +850,10 @@
 
     crearCapera("$carpeta");
 
-    $nombre = utf8_encode($datos['fechaG']);
+    $nombre = ($datos['fechaG']);
     $ruta = "$carpeta/$nombre";
-    $nombreArchivo = "$ruta.pdf";
-    $nombreJson = "$ruta.json";
+    $nombreArchivo = utf8_decode("$ruta.pdf");
+    $nombreJson = utf8_decode("$ruta.json");
 
     $mpdf -> Output("$nombreArchivo", 'F');
 
@@ -858,41 +864,48 @@
         if ($editar == 0) {
             $id = salvarPlan($ruta, $claveAcademia, $fecha, $semestre);
         }
-        salvarFecha($id, $fecha_1);
-        salvarFecha($id, $fecha_2);
-        salvarFecha($id, $fecha_3);
-        salvarFecha($id, $fecha_4);
+        salvarFecha($id, $fecha_1, $desc_1);
+        salvarFecha($id, $fecha_2, $desc_2);
+        salvarFecha($id, $fecha_3, $desc_3);
+        salvarFecha($id, $fecha_4, $desc_4);
         $json = json_encode(array(
-            "1"=>$actividad_1,
-            "2"=>$actividad_2,
-            "3"=>$actividad_3,
-            "4"=>$actividad_4,
-            "5"=>$actividad_5,
-            "6"=>$actividad_6,
-            "7"=>$actividad_7,
-            "8"=>$actividad_8,
-            "9"=>$actividad_9,
+            "1"=>($actividad_1),
+            "2"=>($actividad_2),
+            "3"=>($actividad_3),
+            "4"=>($actividad_4),
+            "5"=>($actividad_5),
+            "6"=>($actividad_6),
+            "7"=>($actividad_7),
+            "8"=>($actividad_8),
+            "9"=>($actividad_9),
             "fecha"=>$fecha,
-            "fechaG"=>$nombre,
+            "fechaG"=>utf8_encode($nombre),
             "datos"=>array(
-                "claveAcademia"=> $claveAcademia,
-                "academia"=> $academia,
-                "presidente"=> $presidente,
-                "semestre"=>  $semestre,
-                "jefe"=> $jefe,
-                "coordinador"=> $coordinador
+                "claveAcademia"=> utf8_encode($claveAcademia),
+                "academia"=> utf8_encode($academia),
+                "presidente"=> utf8_encode($presidente),
+                "semestre"=> $semestre,
+                "jefe"=> utf8_encode($jefe),
+                "coordinador"=> utf8_encode($coordinador)
             ),
             "fechas"=>array(
                 "fecha_1"=>$fecha_1,
                 "fecha_2"=>$fecha_2,
                 "fecha_3"=>$fecha_3,
                 "fecha_4"=>$fecha_4
+            ),
+            "desc"=> array(
+                "desc_1"=>$desc_1,
+                "desc_2"=>$desc_2,
+                "desc_3"=>$desc_3,
+                "desc_4"=>$desc_4
             )
         ));
         $bytes = file_put_contents($nombreJson, $json);
         ligarResponsables($id, $json);
     }
 
-    echo json_encode(array('ruta'=>"Academias/$ruta.pdf"));
+    $nombreArchivo = utf8_encode($nombreArchivo);
+    echo json_encode(array('ruta'=>"Academias/$nombreArchivo"));
 
 ?>

@@ -411,6 +411,12 @@ $(document).ready(() => {
             "fecha_3": "",
             "fecha_4": ""
         },
+        "desc": {
+            "desc_1": "",
+            "desc_2": "",
+            "desc_3": "",
+            "desc_4": ""
+        },
         "1": {
             "Acciones": "",
             "Asignaturas": "",
@@ -899,9 +905,11 @@ $(document).ready(() => {
                     leerPlan(datos.localizacionJson)
                         .then(plan => {
                             seleccionada = true;
+                            console.log(plan);
                             Plan["datos"]["claveAcademia"] = plan.datos.claveAcademia;
                             Plan["datos"]["jefe"] = plan.datos.jefe;
                             Plan["datos"]["coordinador"] = plan.datos.coordinador;
+                            Plan['desc'] = plan.desc;
                             planEdit = plan;
                             cargarInfo();
                             cerrarM.load = true;
@@ -961,8 +969,8 @@ $(document).ready(() => {
                                 cargarMiembros(m);
                                 getPlanesEdit(clave.clave_academia)
                                     .then(t => {
-                                        reset();
                                         console.log(t);
+                                        reset();
                                         listaPlanes = t;
                                         construirPlanes();
                                         cerrarM.load = true;
@@ -1011,12 +1019,13 @@ $(document).ready(() => {
                                     })
                             })
                             .catch(e => {
+                                console.log(e);
                                 if (e.responseText == "Solicitar Reinicio de sesion") {
                                     cerrarM.load = true;
                                     cerrarModal();
                                     login();
                                 } else {
-                                    window.location = "/Academias/Panel.html";
+                                    //window.location = "/Academias/Panel.html";
                                 }
                             });
                     }
@@ -1297,6 +1306,7 @@ $(document).ready(() => {
     });
 
     CKEDITOR.replace('ev');
+    CKEDITOR.replace('desc');
 
     $('input[name="fecha"]').change(evt => {
         if (seleccionada) {
@@ -1366,6 +1376,7 @@ $(document).ready(() => {
         if (seleccionada) {
             cargando();
             if (sessionStorage.getItem("accion").includes("Editar")) {
+                console.log(planEdit);
                 Plan["fechaG"] = planEdit["fechaG"];
                 Plan["fecha"] = planEdit["fecha"];
                 Plan["editar"] = 1;
@@ -1383,6 +1394,7 @@ $(document).ready(() => {
                     cerrarM.load = true;
                     cerrarModal();
                     window.open(t.ruta);
+                    //location.reload();
                 })
                 .catch(e => {
                     console.log(e);
@@ -1495,5 +1507,19 @@ $(document).ready(() => {
             $(`#Responsables_${i}`).html("");
         }
     };
+
+    $("[name='desc']").click(evt => {
+        let val = evt.target.id.split("_")[1];
+        console.log(Plan);
+        CKEDITOR.instances.desc.setData(Plan['desc'][`desc_${val}`]);
+        $("#tituloModalDESC").html(`Descripción para la fecha No.${val}`);
+        $("#descripcion").modal();
+    });
+
+    $("#aplicarDesc").click(evt => {
+        let pos = $("#tituloModalDESC").html().split(".")[1];
+        Plan['desc'][`desc_${pos}`] = CKEDITOR.instances.desc.getData();
+        $("#descripcion").modal('hide');
+    });
 
 });

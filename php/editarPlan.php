@@ -52,6 +52,7 @@
             die(json_encode(array("status"=>400, "msg"=>"Fallo al conectarse")));
         }
     }catch (Exception $e) {
+        print_r($e);
         die(json_encode(array("status"=>400, "msg"=>"Datos incorrectos")));
     }
 

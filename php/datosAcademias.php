@@ -42,7 +42,7 @@
                     "Coordinador"=>utf8_encode($row["Coordinador"]),
                     "Jefe"=>utf8_encode($row["Jefe"])
                 );
-                $res = $row;
+                $res = $datos;
             }
 
             sqlsrv_free_stmt($stmt);

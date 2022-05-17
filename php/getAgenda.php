@@ -36,6 +36,7 @@
                 $datos = array(
                     "fecha"=>$row["fecha"],
                     "nombre"=>utf8_encode($row["nombre"]),
+                    "desc" => utf8_encode($row["descripcion"])
                 );
                 array_push($res, $datos);
             }

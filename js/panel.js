@@ -349,6 +349,7 @@ $(document).ready(() => {
         for (let i = 0; i < agenda.length; i++) {
             let fecha = getFecha(agenda[i].fecha.date);
             let academia = agenda[i].nombre;
+            let desc = agenda[i].desc;
             if (hoy < fecha.f) {
                 campo.innerHTML += `
                     <div class="col-6">
@@ -357,7 +358,7 @@ $(document).ready(() => {
                             <div class="d-flex flex-column ml-2 click border-top border-bottom border-dark">
                                 <label class="p-0 m-0 click">${fecha.mes} ${fecha.año},${fecha.hora}</label>
                                 <label class="p-0 m-0 click">${academia}</label>
-                                <label class="p-0 m-0 click text-muted">Reunión semanal para asuntos de interés.</label>
+                                <label class="p-0 m-0 click text-muted">${desc}</label>
                             </div>
                         </div>
                     </div>
@@ -386,6 +387,7 @@ $(document).ready(() => {
             for (let i = 0; i < agenda.length; i++) {
                 let fecha = getFecha(agenda[i].fecha.date);
                 let academia = agenda[i].nombre;
+                let desc = agenda[i].desc;
                 if (f1 < fecha.f && fecha.f < f2) {
                     campo.innerHTML += `
                         <div class="col-6">
@@ -394,7 +396,7 @@ $(document).ready(() => {
                                 <div class="d-flex flex-column ml-2 click border-top border-bottom border-dark">
                                     <label class="p-0 m-0 click">${fecha.mes} ${fecha.año},${fecha.hora}</label>
                                     <label class="p-0 m-0 click">${academia}</label>
-                                    <label class="p-0 m-0 click text-muted">Reunión semanal para asuntos de interés.</label>
+                                    <label class="p-0 m-0 click text-muted">${desc}</label>
                                 </div>
                             </div>
                         </div>
@@ -428,7 +430,10 @@ $(document).ready(() => {
         getMisDatos()
             .then(async(t) => {
                 getAgenda()
-                    .then(ag => cargarAgenda(ag));
+                    .then(ag => {
+                        console.log(ag);
+                        cargarAgenda(ag);
+                    });
                 cerrarM.load = true;
                 cerrarM.login = true;
                 misDatos = t;

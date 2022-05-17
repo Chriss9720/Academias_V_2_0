@@ -128,22 +128,26 @@
             <div class="row">
                 <div class="col-6">
                     <div class="form-inline d-flex justify-content-center">
-                        <label class="ancho justify-content-end">1ra reunión</label>
-                        <input name="fechas" id="fecha_1" type="datetime-local" class="form-control bg-input ml-2 ancho fecha" />
+                        <label class="justify-content-end">1ra reunión</label>
+                        <input name="fechas" id="fecha_1" type="datetime-local" class="form-control bg-input ml-2 ancho" />
+                        <img title="click para agregar una descrpción" name="desc" id="desc_1" src="img/IconAgregar.png" class="ml-2 addNotes click">
                     </div>
                     <div class="form-inline d-flex justify-content-center mt-2">
-                        <label class="ancho justify-content-end">2da reunión</label>
+                        <label class="justify-content-end">2da reunión</label>
                         <input name="fechas" id="fecha_2" type="datetime-local" class="form-control bg-input ml-2 ancho fecha" />
+                        <img title="click para agregar una descrpción" name="desc" id="desc_2" src="img/IconAgregar.png" class="ml-2 addNotes click">
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="form-inline d-flex justify-content-center mt-2">
-                        <label class="ancho justify-content-end">3ra reunión</label>
+                        <label class="justify-content-end">3ra reunión</label>
                         <input name="fechas" id="fecha_3" type="datetime-local" class="form-control bg-input ml-2 ancho fecha" />
+                        <img title="click para agregar una descrpción" name="desc" id="desc_3" src="img/IconAgregar.png" class="ml-2 addNotes click">
                     </div>
                     <div class="form-inline d-flex justify-content-center mt-2">
-                        <label class="ancho justify-content-end">4ta reunión</label>
+                        <label class="justify-content-end">4ta reunión</label>
                         <input name="fechas" id="fecha_4" type="datetime-local" class="form-control bg-input ml-2 ancho fecha" />
+                        <img title="click para agregar una descrpción" name="desc" id="desc_4" src="img/IconAgregar.png" class="ml-2 addNotes click">
                     </div>
                 </div>
             </div>
@@ -424,6 +428,30 @@
                         Cancelar
                     </button>
                     <button type="button" class="btn btn-primary" id="aplicarEvaluacion">
+                        Aplicar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="descripcion" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><span id="tituloModalDESC"></span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <textarea name="desc" id="desc" cols="30" rows="10"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelarDsc">
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn btn-primary" id="aplicarDesc">
                         Aplicar
                     </button>
                 </div>

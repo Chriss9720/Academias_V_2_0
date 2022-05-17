@@ -121,9 +121,9 @@ GO
 
 IF OBJECT_ID('SP_AgendarFecha') IS NOT NULL DROP PROC SP_AgendarFecha
 GO
-CREATE PROC SP_AgendarFecha @ID INT, @Fecha DATETIME AS
-	INSERT INTO AGENDA (id_planTrabajo, fecha)
-	VALUES (@ID, @Fecha)
+CREATE PROC SP_AgendarFecha @ID INT, @Fecha DATETIME, @Desc VARCHAR(255) AS
+	INSERT INTO AGENDA (id_planTrabajo, fecha, descripcion)
+	VALUES (@ID, @Fecha, @Desc)
 GO
 
 IF OBJECT_ID('SP_ActualizarCoordinador') IS NOT NULL DROP PROC SP_ActualizarCoordinador
@@ -367,7 +367,7 @@ CREATE PROC SP_GetAgenda @Nomina INT AS
 	DECLARE @Ni INT
 	SELECT @Ni = nivel FROM DOCENTE WHERE nomina = @Nomina
 	IF @NI != 0 AND @NI != 1 BEGIN
-		SELECT AGE.fecha, ACA.nombre
+		SELECT AGE.fecha, ACA.nombre, AGE.descripcion
 		FROM DOCENTE AS DOC
 		JOIN CARGO AS CAR
 		ON CAR.nomina = DOC.nomina
@@ -380,7 +380,7 @@ CREATE PROC SP_GetAgenda @Nomina INT AS
 		WHERE DOC.nomina = @Nomina
 		ORDER BY fecha
 	END
-		SELECT AG.fecha, ACA.nombre
+		SELECT AG.fecha, ACA.nombre, AG.descripcion
 		FROM AGENDA AS AG
 		JOIN PLANES AS PT
 		ON PT.id_planTrabajo = AG.id_planTrabajo
