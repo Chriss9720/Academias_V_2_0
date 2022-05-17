@@ -43,7 +43,7 @@
                     "foto"=>utf8_encode($row["foto"]),
                     "T"=>utf8_encode($row["T"])
                 );
-                array_push($res, $row);
+                array_push($res, $data);
             }
 
             sqlsrv_free_stmt($stmt);

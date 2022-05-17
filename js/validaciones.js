@@ -47,7 +47,7 @@ const validarNombre = (data, key) => {
 const validarNomina = (data, key) => {
     let valor = true;
     if (data[key].value.length > 0) {
-        let re = new RegExp('\\d{8}');
+        let re = new RegExp('\\d{6}');
         let exec = re.exec(data[key].value);
         if (exec && exec[0] == exec["input"]) {
             seccion1(data, key);
@@ -55,7 +55,7 @@ const validarNomina = (data, key) => {
         } else {
             seccion2(data, key);
             let element = $(`div[name="${key}"]`)[0];
-            element.innerHTML = "La nómina debe de contener 8 digitos";
+            element.innerHTML = "La nómina debe de contener 6 digitos";
             valor = false;
         }
     }
