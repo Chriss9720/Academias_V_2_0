@@ -40,7 +40,8 @@
                     "puesto"=>utf8_encode($row["puesto"]),
                     "nombre"=>utf8_encode($row["nombre"]),
                     "Coordinador"=>utf8_encode($row["Coordinador"]),
-                    "Jefe"=>utf8_encode($row["Jefe"])
+                    "Jefe"=>utf8_encode($row["Jefe"]),
+                    "Sec" =>utf8_encode($row["Sec"])
                 );
                 $res = $datos;
             }

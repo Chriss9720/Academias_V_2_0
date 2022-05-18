@@ -1044,6 +1044,7 @@ $(document).ready(() => {
                     } else {
                         datosAcademias(clave.clave_academia)
                             .then(dt => {
+                                console.log(dt);
                                 $("#NoActa")[0].value = 1;
                                 let datos = [dt['Academia'], dt['nombre'], dt['Sec']];
                                 Acta["DatosA"]["Clave"] = clave.clave_academia;
