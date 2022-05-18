@@ -10,7 +10,7 @@
         for ($i = 0; $i < count($_SESSION["puesto"]); $i++) {
             array_push($a, $_SESSION["puesto"][$i]);
             for ($j = 0; $j < count($arrelo); $j++) {
-                if ($_SESSION["puesto"][$i] == $arrelo[$j]) {
+                if ($_SESSION["puesto"][$i]['puesto'] == $arrelo[$j]) {
                     return true;
                 }
             }
