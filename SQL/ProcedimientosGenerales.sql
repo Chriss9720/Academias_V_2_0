@@ -775,10 +775,12 @@ GO
 IF OBJECT_ID('SP_LiberarPlan') IS NOT NULL DROP PROC SP_LiberarPlan
 GO
 CREATE PROC SP_LiberarPlan AS
-	SELECT *, dbo.FUN_UltimaFecha(PT.id_planTrabajo) AS LAST
+	SELECT PT.*, PN.*, ACA.nombre, dbo.FUN_UltimaFecha(PT.id_planTrabajo) AS LAST
 	FROM PLANES AS PN
 	JOIN PLANTRABAJO AS PT
 	ON PN.id_planTrabajo = PT.id_planTrabajo
+	JOIN ACADEMIA AS ACA
+	ON ACA.clave_academia LIKE PN.clave_academia
 	WHERE subido = 2
 GO
 
