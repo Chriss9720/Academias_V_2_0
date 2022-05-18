@@ -1070,9 +1070,9 @@ $(document).ready(() => {
         });
     };
 
-    const isPresidente = () => misDatos.puesto.find(p => p == "Presidente");
+    const isPresidente = () => misDatos.puesto.find(p => p.puesto == "Presidente");
 
-    const isScretario = () => misDatos.puesto.find(s => s == "Secretario");
+    const isScretario = () => misDatos.puesto.find(s => s.puesto == "Secretario");
 
     load();
 

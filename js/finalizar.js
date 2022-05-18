@@ -218,7 +218,6 @@ $(document).ready(() => {
             default:
                 console.log(sessionStorage.getItem("afectar"));
         }
-        console.log(php);
         return new Promise((resolve, reject) => {
             $.ajax({
                 url: `php/${php}`,
@@ -283,7 +282,7 @@ $(document).ready(() => {
     const armar = () => {
         let r = "";
         for (let i = 0; i < planesLista.length; i++) {
-            let { clave_academia, Semestre, nombre, LAST, fecha, periodo, Academia, Carrera } = planesLista[i];
+            let { clave_academia, semestre, nombre, LAST, fecha, periodo, Academia, Carrera, Semestre } = planesLista[i];
             r += `
                 <div id="${i}" class="border border-dark p-3 bg-menu-principal row rounded rounded-pill mb-3">
                     <div class="col-2 d-flex justify-content-center">
@@ -292,7 +291,7 @@ $(document).ready(() => {
                     <div class="col-6">
                         <div class="d-flex flex-column">
                             <label><span class="h4">Academia:</span> ${clave_academia} - ${Academia || nombre}</label>
-                            <label><span class="h4">Semestre:</span> ${Semestre || periodo}</label>
+                            <label><span class="h4">Semestre:</span> ${semestre || periodo || Semestre}</label>
                             ${(fecha) ? getFe(fecha, "Creado"): getDato(nombre, 'Nombre')}
                             ${(LAST) ? getFe(LAST, "Ultima modificación"): getDato(Carrera, 'Carrera')}
                         </div>
@@ -434,7 +433,6 @@ $(document).ready(() => {
     const finalizarPlan = (id, c) => {
         finalizar(id, c)
             .then(t => {
-                console.log(t);
                 location.reload();
             })
             .catch(e => {
@@ -482,7 +480,6 @@ $(document).ready(() => {
         cargando();
         getMisDatos()
             .then(t => {
-                console.log(t);
                 faltantesPlan()
                     .then(planes => {
                         planesLista = planes;

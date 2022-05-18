@@ -403,9 +403,9 @@ $(document).ready(() => {
         }
     });
 
-    const isPresidente = () => misDatos.puesto.find(f => f == "Presidente") !== undefined;
+    const isPresidente = () => misDatos.puesto.find(f => f.puesto == "Presidente") !== undefined;
 
-    const isSecretario = () => misDatos.puesto.find(f => f == "Secretario") !== undefined;
+    const isSecretario = () => misDatos.puesto.find(f => f.puesto == "Secretario") !== undefined;
 
     const isSuper = () => misDatos.nivel == 0 || misDatos == 1;
 

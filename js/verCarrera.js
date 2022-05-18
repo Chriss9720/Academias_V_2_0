@@ -449,6 +449,7 @@ $(document).ready(() => {
         cargando();
         getMisDatos()
             .then(t => {
+                console.log(t);
                 infoBaiscaCarreras()
                     .then(info => {
                         carreras = info;

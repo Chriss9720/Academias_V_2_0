@@ -1268,7 +1268,9 @@ $(document).ready(() => {
                     error: (e) => reject(e),
                 });
             } else {
-                resolve({ path: "img/portada.png" });
+                let array = $("#img-portada")[0].src.split("/");
+                let max = array.length - 1;
+                resolve({ path: `img/${array[max]}` });
             }
         });
     };
@@ -1292,7 +1294,13 @@ $(document).ready(() => {
                 url: "php/actualizarCarrera.php",
                 dataType: "json",
                 type: "POST",
-                data: { miembros: miembros, nuevos: nuevos, clave: $("#claveC")[0].value, foto: foto, nombre: $("#nombreC").val() },
+                data: {
+                    miembros: miembros,
+                    nuevos: nuevos,
+                    clave: $("#claveC")[0].value,
+                    foto: foto,
+                    nombre: $("#nombreC").val()
+                },
                 success: s => resolve(s),
                 error: e => reject(e)
             });
@@ -1324,7 +1332,6 @@ $(document).ready(() => {
 
             if (valid) {
                 cargando();
-                console.log("SI");
                 salvarImg(formData, foto)
                     .then((t) => {
                         console.log("SI2");
@@ -1398,6 +1405,7 @@ $(document).ready(() => {
                 .then((t) => {
                     actualizarCarrera(miembros, nuevos, t.path)
                         .then(update => {
+                            console.log(t);
                             cerrarM.load = true;
                             cerrarModal();
                             edit = false;

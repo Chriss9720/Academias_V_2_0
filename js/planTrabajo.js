@@ -882,6 +882,10 @@ $(document).ready(() => {
             campo.innerHTML = value;
             campo.className = campo.className.replace("d-flex justify-content-center align-items-center", "");
             Plan[i][`Responsables`] = planEdit[i]["Responsables"];
+            if (planEdit[i]["fecha"].length > 0) {
+                Plan[i]["fecha"] = planEdit[i]["fecha"];
+                $("[name='fecha']")[(i - 1)].value = planEdit[i]["fecha"].replace(" ", "T");
+            }
         }
     };
 
@@ -905,7 +909,6 @@ $(document).ready(() => {
                     leerPlan(datos.localizacionJson)
                         .then(plan => {
                             seleccionada = true;
-                            console.log(plan);
                             Plan["datos"]["claveAcademia"] = plan.datos.claveAcademia;
                             Plan["datos"]["jefe"] = plan.datos.jefe;
                             Plan["datos"]["coordinador"] = plan.datos.coordinador;
@@ -969,7 +972,6 @@ $(document).ready(() => {
                                 cargarMiembros(m);
                                 getPlanesEdit(clave.clave_academia)
                                     .then(t => {
-                                        console.log(t);
                                         reset();
                                         listaPlanes = t;
                                         construirPlanes();
@@ -1311,7 +1313,7 @@ $(document).ready(() => {
     $('input[name="fecha"]').change(evt => {
         if (seleccionada) {
             let act = evt.target.attributes.id.value.split("_");
-            Plan[act[1]][act[0]] = evt.target.value.replace("T", " ");
+            Plan[act[1]]['fecha'] = evt.target.value.replace("T", " ");
         }
     });
 
@@ -1376,7 +1378,6 @@ $(document).ready(() => {
         if (seleccionada) {
             cargando();
             if (sessionStorage.getItem("accion").includes("Editar")) {
-                console.log(planEdit);
                 Plan["fechaG"] = planEdit["fechaG"];
                 Plan["fecha"] = planEdit["fecha"];
                 Plan["editar"] = 1;
@@ -1394,7 +1395,7 @@ $(document).ready(() => {
                     cerrarM.load = true;
                     cerrarModal();
                     window.open(t.ruta);
-                    //location.reload();
+                    location.reload();
                 })
                 .catch(e => {
                     console.log(e);

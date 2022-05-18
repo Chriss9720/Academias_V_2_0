@@ -477,13 +477,13 @@ $(document).ready(() => {
         $("#BusquedasAcademias").html(`
             <div class="form-inline mx-auto">
                 <label class="form-label text-input mr-2">Búsqueda por clave/nombre</label>
-                <input id="posiblesAcademiasEdit" type="search" class="form-control text-input bg-input rounded-pill w-auto" list="listaAcademias">
-                <datalist id="listaAcademias">
+                <input id="posiblesAcademiasEdit" type="search" class="form-control text-input bg-input rounded-pill w-auto" list="listaAcademiasEd">
+                <datalist id="listaAcademiasEd">
                 </datalist>
             </div>
         `);
-        removerGuardados($("#listaAcademias")[0]);
-        $("#listaAcademias").html(listaAcademias(acas));
+        removerGuardados($("#listaAcademiasEd")[0]);
+        $("#listaAcademiasEd").html(listaAcademias(acas));
         $("#posiblesAcademiasEdit").keypress(k => {
             if (k.which == 13) {
                 cargando();
@@ -922,8 +922,10 @@ $(document).ready(() => {
         return '';
     };
 
+    const isPres = () => misDatos.puesto.find(f => f.puesto == "Presidente") != undefined;
+
     const cambiarSec = () => {
-        if (sessionStorage.getItem("accion").includes("Crear") || misDatos['nivel'] == 0 || misDatos['nivel'] == 1) {
+        if (sessionStorage.getItem("accion").includes("Crear") || misDatos['nivel'] == 0 || misDatos['nivel'] == 1 || isPres()) {
             return `
                 <div class="form-inline mt-2">
                     <label class="form-label text-input ancho">Búsqueda por nómina/nombre</label>
@@ -1165,7 +1167,9 @@ $(document).ready(() => {
                     error: (e) => reject(e),
                 });
             } else {
-                resolve({ path: "img/portada.png" });
+                let array = $("#img-portada")[0].src.split("/");
+                let max = array.length - 1;
+                resolve({ path: `img/${array[max]}` });
             }
         });
     };

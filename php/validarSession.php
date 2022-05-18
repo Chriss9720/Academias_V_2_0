@@ -28,6 +28,7 @@
                 }
             }
             $res = [];
+            $puestos = [];
             while( $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC) ) {
                 $dato = array(
                     "nomina"=>utf8_encode($row["nomina"]),
@@ -40,11 +41,15 @@
                     "clave_carrera"=>utf8_encode($row["clave_carrera"]),
                     "NC"=>utf8_encode($row["NC"]),
                     "jefe"=>utf8_encode($row["jefe"]),
-                    "clave_academia"=>utf8_encode($row["clave_academia"]),
                     "nombre"=>utf8_encode($row["nombre"]),
-                    "puesto"=>utf8_encode($row["puesto"]),
                     "Clave"=>utf8_encode($row["clave"])
                 );
+                array_push($puestos,
+                    array(
+                        "puesto"=> utf8_encode($row["puesto"]),
+                        "clave_academia"=>utf8_encode($row["clave_academia"])
+                        )
+                    );
                 array_push($res, $dato);
             }
 
@@ -60,12 +65,10 @@
                 $_SESSION["Clave"] = $res[0]["Clave"];
             }
             $jefe = 0;
-            $puestos = [];
             for ($i = 0; $i < count($res); $i++) {
                 if ($res[$i]["jefe"] == 1) {
                     $jefe = 1;
                 }
-                array_push($puestos, $res[$i]["puesto"]);
             }
             $_SESSION["jefe"] = $jefe;
             $_SESSION["puesto"] = $puestos;

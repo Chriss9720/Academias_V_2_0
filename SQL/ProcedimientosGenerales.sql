@@ -984,7 +984,7 @@ IF OBJECT_ID ('SP_InfoBasicaCarreras') IS NOT NULL DROP PROC SP_InfoBasicaCarrer
 GO
 CREATE PROC SP_InfoBasicaCarreras @nivel INT, @nomina INT AS
 	IF @nivel = 1 OR @nivel = 0 BEGIN
-		SELECT CAR.*, D.foto, D.nombre AS ND
+		SELECT DISTINCT CAR.clave_carrera, CAR.*, D.foto, D.nombre AS ND
 		FROM CARRERA AS CAR
 		JOIN AFILIADO AS AF
 		ON AF.clave_carrera LIKE CAR.clave_carrera AND AF.Activo = 1
@@ -992,6 +992,7 @@ CREATE PROC SP_InfoBasicaCarreras @nivel INT, @nomina INT AS
 		ON D.nomina = AF.nomina AND AF.jefe = 1
 		WHERE CAR.activo = 1
 	END
+	ELSE BEGIN
 		SELECT DISTINCT CA.*, DO.foto, DO.nombre AS ND
 		FROM CARRERA AS CA
 		JOIN AFILIADO AS AF
@@ -1001,6 +1002,7 @@ CREATE PROC SP_InfoBasicaCarreras @nivel INT, @nomina INT AS
 		WHERE CA.clave_carrera IN (
 			SELECT clave_carrera FROM AFILIADO WHERE nomina = @nomina
 		)
+	END
 GO
 
 EXEC SP_InfoBasicaCarreras 6, 18130122

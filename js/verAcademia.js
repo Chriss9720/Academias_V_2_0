@@ -541,9 +541,9 @@ $(document).ready(() => {
         $("#PS").html(PS);
     };
 
-    const isPresidente = () => misDatos.puesto.find(f => f == "Presidente") !== undefined;
+    const isPresidente = () => misDatos.puesto.find(f => f.puesto == "Presidente" && f.clave_academia === $("#AcaSel").val().split(" - ")[0]) !== undefined;
 
-    const isSecretario = () => misDatos.puesto.find(f => f == "Secretario") !== undefined;
+    const isSecretario = () => misDatos.puesto.find(f => f.puesto == "Secretario" && f.clave_academia === $("#AcaSel").val().split(" - ")[0]) !== undefined;
 
     const isSuper = () => misDatos.nivel == 0 || misDatos == 1;
 
