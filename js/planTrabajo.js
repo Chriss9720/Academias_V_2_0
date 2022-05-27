@@ -260,7 +260,7 @@ $(document).ready(() => {
                                             <li>
                                                 En las secciones
                                                 <b>"Acciones específicas para cada actividad",
-                                                    "Asignaturas en las que impacta" y
+                                                    "Asignaturas en las que impactasq" y
                                                     "Evidencia a entregar", </b> seleccione el texto <b>"click para editar"</b> y aparecerá el
                                                 siguiente formato:
                                             </li>
