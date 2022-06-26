@@ -478,9 +478,9 @@ $(document).ready(() => {
     };
 
     const menu = async() => {
-        puedeVer();
         let presidente = isPresidente();
         let secretario = isScretario();
+        puedeVer({ presidente, secretario });
         let jefe = misDatos.jefe;
         let nivel = misDatos.nivel;
         puedeEditar({ presidente, secretario, jefe, nivel });
@@ -491,7 +491,8 @@ $(document).ready(() => {
         crearAcciones();
     };
 
-    const puedeVer = () => {
+    const puedeVer = ({ presidente, secretario }) => {
+        console.log(presidente, secretario)
         $("#verMenu").html(`
             <div class="dropdown">
                 <button name="areaMenu" class="btn text-menu dropdown-toggle" type="button" id="ver" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -501,10 +502,13 @@ $(document).ready(() => {
                     <input name="opcionMenu" type="button" value="Carrera" class="dropdown-item">
                     <input name="opcionMenu" type="button" value="Docente" class="dropdown-item">
                     <input name="opcionMenu" type="button" value="Academia" class="dropdown-item">
+                    ${presidente || secretario ? status() : ""}
                 </div>
             </div>
         `);
     };
+
+    const status = () => `<input name="opcionMenu" type="button" value="Estatus de evidencias" class="dropdown-item">`;
 
     const puedeEditar = ({ presidente, secretario, jefe, nivel }) => {
         if (jefe == 1 || nivel == 1 || nivel == 0 || presidente || secretario) {
@@ -514,17 +518,18 @@ $(document).ready(() => {
                         Editar
                     </button>
                     <div class="dropdown-menu bg-menu-principal" aria-labelledby="editar">
-                        ${jefe == 1 || nivel == 0  || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Carrera" class="dropdown-item">' : ''}
+                        ${jefe == 1 || nivel == 0 || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Carrera" class="dropdown-item">' : ''}
                         ${presidente || secretario || jefe == 1 || nivel == 0 || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Docente" class="dropdown-item">' : ''}
                         ${presidente || secretario || nivel == 0 || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Academia" class="dropdown-item">' : ''}
                         ${presidente || secretario || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Plan de trabajo" class="dropdown-item">' : ''}
-                        ${presidente || secretario || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Acta" class="dropdown-item">' : ''}
+                        
                         ${presidente ? '<input name="opcionMenu" type="button"  value="Ev. docente" class="dropdown-item">' : ''}
                         ${nivel == 1 ? '<input name="opcionMenu" type="button"  value="Ev. presidente" class="dropdown-item">' : ''}
                         ${nivel == 1 ? '<input name="opcionMenu" type="button"  value="Ev. secretario" class="dropdown-item">' : ''}
                     </div>
                 </div>
             `);
+            //${presidente || secretario || nivel == 1 ? '<input name="opcionMenu" type="button"  value="Acta" class="dropdown-item">' : ''}
         } else {
             $("#editarMenu").remove();
         }
@@ -906,7 +911,7 @@ $(document).ready(() => {
                         ${presidente || secretario ? await getfaltantesActas() : ''}
                         ${presidente || secretario ? await getFEvDoc() : ''}
                         ${nivel == 1 ? await getFEvPre() : ''}
-                        ${nivel == 1  ? await getFEvSec() : ''}
+                        ${nivel == 1 ? await getFEvSec() : ''}
                     </div>
                 </div>
             `);

@@ -10,6 +10,7 @@
     <!--font awesome-->
     <script src="https://kit.fontawesome.com/0b3284a19f.js" crossorigin="anonymous"></script>
     <!-- Mi estilo-->
+    <link rel="stylesheet" href="css/formulario.css">
     <link rel="stylesheet" href="css/banner.css">
     <title>Academias</title>
 </head>
@@ -21,29 +22,29 @@
             <div class="w-50">
                 <a href="https://www.itesca.edu.mx/" target="_blank" class="link">
                     <label class="marca-awa">
-                    <img src="img/favicon.png" style="width:30px;">ITESCA
-                </label>
+                        <img src="img/favicon.png" style="width:30px;">ITESCA
+                    </label>
                 </a>
                 <label class="click iconos-superior" id="inicio">
-                <span>
-                    <i class="fas fa-home"></i>
-                </span>
-                Inicio
-            </label>
+                    <span>
+                        <i class="fas fa-home"></i>
+                    </span>
+                    Inicio
+                </label>
                 <label id="Editarme" class="click iconos-superior ml-3">
-                <span>
-                    <i class="fas fa-user"></i>
-                </span>
-                Mi perfil
-            </label>
+                    <span>
+                        <i class="fas fa-user"></i>
+                    </span>
+                    Mi perfil
+                </label>
             </div>
             <div class="d-flex justify-content-end w-75">
                 <label class="click iconos-superior ml-3" id="Cerrar">
-                <span>
-                    <i class="fas fa-sign-out-alt"></i>
-                </span>
-                Cerrar sesión
-            </label>
+                    <span>
+                        <i class="fas fa-sign-out-alt"></i>
+                    </span>
+                    Cerrar sesión
+                </label>
             </div>
         </div>
     </div>
@@ -59,7 +60,7 @@
                         ver
                     </li>
                     <li class="breadcrumb-item active">
-                        <label class="text-menu">Carrera</label>
+                        <label class="text-menu">Estatus de Evidencias</label>
                     </li>
                 </ol>
             </nav>
@@ -67,91 +68,124 @@
     </div>
 
     <div class="container">
-        <div class="row d-flex text-center border border-dark">
+        <div class="row d-flex text-center">
             <!--Encabezados-->
-            <div class="col-10 row">
-                <div class="col-3">
+            <div class="col-10 row font-weight-bold">
+                <div class="col-3 border border-bottom d-flex flex-column align-items-center">
                     Docente
-                </div>
-                <div class="col-3">
-                    <div class="d-flex flex-column">
-                        Tarea 1
-                        <div class="d-flex justify-content-around">
-                            <span>
-                                <i class="fas fa-file"></i>
-                            </span>
-                            <input type="button" value="">
-                            <input type="button" value="">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div class="form-inline mb-2">
+                            <label class="form-label mr-3">Búsqueda por nómina/nombre</label>
+                            <input id="AcaSel" type="search" class="form-control bg-input rounded-pill mx-auto" list="listaAcademias">
+                            <datalist id="listaAcademias">
+                            </datalist>
                         </div>
                     </div>
                 </div>
-                <div class="col-3">
-                    Tarea 2
+                <div class="col-3 border border-bottom d-flex flex-column justify-content-around align-items-center">
+                    <label>Tarea 1</label>
+                    <div>10/05/2022</div>
+                    <div class="d-flex justify-content-around w-100">
+                        <span>
+                            <img src="img/file-circle-check-solid.svg" class="click" width="30" height="30">
+                        </span>
+                        <span>
+                            <img src="img/file-circle-xmark-solid.svg" class="click" width="30" height="30">
+                        </span>
+                        <span>
+                            <img src="img/filter-circle-xmark-solid(1).svg" class="click" width="30" height="30">
+                        </span>
+                    </div>
                 </div>
-                <div class="col-3">
+                <div class="col-3 border border-bottom">
+                    Tarea 2
+                    <div>20/05/2022</div>
+                    <div class="d-flex justify-content-around">
+                        <span>
+                            <img src="img/file-circle-check-solid.svg" width="30" height="30">
+                        </span>
+                        <span>
+                            <img src="img/file-circle-xmark-solid.svg" width="30" height="30">
+                        </span>
+                        <span>
+                            <img src="img/filter-circle-xmark-solid(1).svg" width="30" height="30">
+                        </span>
+                    </div>
+                </div>
+                <div class="col-3 border border-bottom">
                     Tarea 3
+                    <div>30/05/2022</div>
+                    <div class="d-flex justify-content-around">
+                        <span>
+                            <img src="img/file-circle-check-solid.svg" width="30" height="30">
+                        </span>
+                        <span>
+                            <img src="img/file-circle-xmark-solid.svg" width="30" height="30">
+                        </span>
+                        <span>
+                            <img src="img/filter-circle-xmark-solid(1).svg" width="30" height="30">
+                        </span>
+                    </div>
                 </div>
             </div>
             <div class="col-2 row">
-                <div class="col-12">
+                <div class="font-weight-bold col-12 border border-bottom d-flex justify-content-center align-items-center">
                     Porcentajes
                 </div>
             </div>
             <!--Datos-->
             <div class="col-10 row">
-                <div class="col-3">
-                    Docente
+                <div class="col-3 border border-bottom d-flex justify-content-center align-items-center">
+                    Cielo Luz Elena Llamas Servin
                 </div>
                 <div class="col-3">
-                    Tarea 1
+                    09/05/2022 11:00
                 </div>
                 <div class="col-3">
-                    Tarea 2
+                    10/05/2022 15:34
                 </div>
                 <div class="col-3">
-                    Tarea 3
+                    10/05/2022 23:49
                 </div>
             </div>
             <div class="col-2 row">
-                <div class="col-12">
-                    Porcentajes
+                <div class="col-12 border border-bottom">
+                    100%
                 </div>
             </div>
             <div class="col-10 row">
-                <div class="col-3 border border-dark">
-                    Docente
-                </div>
-                <div class="col-3">
-                    Tarea 1
-                </div>
-                <div class="col-3">
-                    Tarea 2
-                </div>
-                <div class="col-3">
-                    Tarea 3
-                </div>
-            </div>
-            <div class="col-2 row">
-                <div class="col-12">
-                    Porcentajes
-                </div>
-            </div>
-            <div class="col-10 row">
-                <div class="col-3">
-                    Docente
-                </div>
-                <div class="col-3">
-                    Tarea 1
-                </div>
-                <div class="col-3">
-                    Tarea 2
+                <div class="col-3 border border-bottom">
+                    Cristyaquelin Domínguez Félix
                 </div>
                 <div class="col-3 bg-danger">
                 </div>
+                <div class="col-3 d-flex align-items-center justify-content-center">
+                    09/05/2022 11:00
+                </div>
+                <div class="col-3 bg-dark">
+                </div>
             </div>
             <div class="col-2 row">
-                <div class="col-12">
-                    Porcentajes
+                <div class="col-12 border border-bottom d-flex justify-content-center align-items-center">
+                    50%
+                </div>
+            </div>
+            <div class="col-10 row">
+                <div class="col-3 border border-bottom">
+                    Christian Emmanuel Yañez Gonzalez
+                </div>
+                <div class="col-3">
+                    09/05/2022 11:00
+                </div>
+                <div class="col-3 bg-dark">
+                </div>
+                <div class="col-3 bg-danger">
+                    01/06/2022
+                </div>
+            </div>
+            <div class="col-2 row">
+                <div class="col-12 border border-bottom">
+                    66.66%
                 </div>
             </div>
         </div>

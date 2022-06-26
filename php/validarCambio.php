@@ -215,6 +215,14 @@
                     case "Academia":
                         echo json_encode(array("cambio" => "/Academias/verAcademia.html"));
                         break;
+                    case "Estatus de evidencias":
+                        if (validarPuesto(array("Presidente", "Secretario"))) {
+                            echo json_encode(array("cambio" => "/Academias/verEntregados.html"));
+                        } else {
+                            http_response_code(401);
+                            echo json_encode(array("msg" => "Acceso invalido"));
+                        }
+                        break;
                     default:
                         http_response_code(400);
                         echo json_encode(array("msg"=>"Caso desconocido (Ver) '$afectar'"));

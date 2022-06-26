@@ -5,6 +5,8 @@ $(document).ready(() => {
         login: false
     };
 
+    let estoy;
+
     let allDoentes = [];
 
     let carreraInfo;
@@ -233,12 +235,10 @@ $(document).ready(() => {
         $("#pie").html("");
     };
 
-    const mostrarAcademia = () => {
-        cargar(1, infoAcademias, 'Academias');
-    };
+    const mostrarAcademia = (pagina) => cargar(pagina, infoAcademias, 'Academias');
 
-    const mostrarDocs = async() => {
-        await cargar(1, misDocs, 'Docs');
+    const mostrarDocs = async(pagina) => {
+        await cargar(pagina, misDocs, 'Docs');
         $("[name='descargarPadre']").click(evt => {
             let i = evt.target.id.split("_")[1];
             window.open(`Academias/${misDocs[i].L2 || misDocs[i].localizacion}`)
@@ -268,10 +268,12 @@ $(document).ready(() => {
                     mostrarCarrera();
                     break;
                 case "Academias":
-                    mostrarAcademia();
+                    estoy = "Academias"
+                    mostrarAcademia(1);
                     break;
                 case "Documentos":
-                    mostrarDocs();
+                    estoy = "Documentos";
+                    mostrarDocs(1);
                     break;
                 case "Materias":
                     mostrarMat();
@@ -521,7 +523,17 @@ $(document).ready(() => {
 
         if (entro) $("#pie")[0].innerHTML = cuerpo
 
-        $(`a[name="pagina"]`).click(evt => cargar(evento(evt, max)));
+        $(`a[name="pagina"]`).click(evt => {
+            console.log(estoy)
+            switch (estoy) {
+                case "Documentos":
+                    mostrarDocs(evento(evt, max));
+                    break;
+                case "Academias":
+                    mostrarAcademia(evento(evt, max));
+                    break;
+            }
+        });
 
     };
 
@@ -557,6 +569,7 @@ $(document).ready(() => {
     const cargar = async(pagina, datos, armando) => {
         let mostrar = 3;
         let contenido = $("#mostrar")[0];
+        console.log(datos)
         let max = Math.ceil(datos.length / mostrar);
         let total = mostrar * pagina;
         let inicio = (pagina - 1) * mostrar;

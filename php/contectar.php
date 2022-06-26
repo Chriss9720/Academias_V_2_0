@@ -12,6 +12,7 @@
                 $conn = sqlsrv_connect($serverName, $connectionInfo);
                 return $conn;
             } catch (Exception $e) {
+                print_r($e);
                 return null;
             }
         }

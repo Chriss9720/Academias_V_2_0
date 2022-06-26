@@ -1127,3 +1127,11 @@ CREATE PROC SP_EvidenciaSubida @Nomina INT AS
 	FROM VW_InfoDocumentos
 	WHERE localizacion IS NOT NULL AND nomina = @Nomina AND  PADRE like 'Planes'
 GO
+
+IF OBJECT_ID('SP_GetLastActa') IS NOT NULL DROP PROC SP_GetLastActa
+GO
+CREATE PROC SP_GetLastActa @ClaveAcademia VARCHAR(255) AS
+	SELECT TOP 1 *
+	FROM ACTAS AS ATS
+	JOIN ACTA AS AC ON AC.id_acta = ATS.id_acta
+	WHERE ATS.clave_academia like @ClaveAcademia AND AC.finalizada = 0

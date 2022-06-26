@@ -338,7 +338,7 @@ $(document).ready(() => {
             }
         });
 
-        $("#logearme").click(async() => {
+        $("#logearme").click(async () => {
             let nomina = getValue("nomina");
             let clave = getValue("clave");
 
@@ -803,7 +803,7 @@ $(document).ready(() => {
     });
 
     const cargarMaterias = m => {
-        return new Promise(async(resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             Acta["Docentes"] = [];
             for (let i = 0; i < m.length; i++) {
                 await getMateriasDocente(m[i].nomina)
@@ -963,9 +963,22 @@ $(document).ready(() => {
                 `);
             }
         }
-    })
+    });
 
-    $("#academiaSeleccionada2").keypress(k => {
+    const getActasAcemia = clave => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: 'php/hay_actas.php',
+                data: { clave: clave },
+                type: 'POSt',
+                dataType: 'json',
+                success: s => resolve(s),
+                error: e => reject(e)
+            });
+        });
+    };
+
+    $("#academiaSeleccionada2").keypress(async (k) => {
         if (k.which == 13) {
             let dato = k.target.value.split(" - ");
             if (dato.length < 2) {
@@ -1040,49 +1053,123 @@ $(document).ready(() => {
                                     cerrarModal();
                                     login();
                                 }
-                            })
+                            });
                     } else {
-                        datosAcademias(clave.clave_academia)
-                            .then(dt => {
-                                console.log(dt);
-                                $("#NoActa")[0].value = 1;
-                                let datos = [dt['Academia'], dt['nombre'], dt['Sec']];
-                                Acta["DatosA"]["Clave"] = clave.clave_academia;
-                                Acta["DatosA"]["Academia"] = datos[0];
-                                Acta["DatosA"]["Presidente"] = datos[1];
-                                Acta["DatosA"]["Sec"] = datos[2];
-                                Acta["No"] = 1;
-                                let campos = $('[name="attr"]');
-                                for (let i = 0; i < datos.length; i++) {
-                                    campos[i].value = datos[i];
-                                }
-                                miembrosAcademia(clave.clave_academia)
-                                    .then(m => {
-                                        cargarMaterias(m)
-                                            .then(() => {
-                                                cargarMiembros(m);
+                        let acta;
+                        await getActasAcemia(clave.clave_academia)
+                            .then(data => acta = data)
+                            .catch(e => console.log(e));
+                        limit = acta.length;
+                        if (limit > 0) {
+                            datosAcademias(clave.clave_academia)
+                                .then(dt => {
+                                    let datos = [dt['Academia'], dt['nombre'], dt['Sec']];
+                                    Acta["DatosA"]["Clave"] = clave.clave_academia;
+                                    Acta["DatosA"]["Academia"] = datos[0];
+                                    Acta["DatosA"]["Presidente"] = datos[1];
+                                    Acta["DatosA"]["Sec"] = datos[2];
+                                    let campos = $('[name="attr"]');
+                                    for (let i = 0; i < datos.length; i++) {
+                                        campos[i].value = datos[i];
+                                    }
+                                    miembrosAcademia(clave.clave_academia)
+                                        .then(m => {
+                                            cargarMaterias(m)
+                                                .then(() => {
+                                                    cargarMiembros(m);
+                                                    leer(acta[limit-1].localizacionJson)
+                                                        .then(t => {
+                                                            let no = parseInt(t.No) + 1;
+                                                            Acta['No'] = no;
+                                                            Acta['id'] = acta.id_acta;
+                                                            Acta['ant'] = t.ant;
+                                                            console.log(acta[0]);
+                                                            console.log(t.ant);
+                                                            Acta['fechaG'] = t.fechaG;
+                                                            $("#NoActa")[0].value = no;
+                                                            armarAnt();
+                                                            cerrarM.load = true;
+                                                            cerrarModal();
+                                                            $("#alertBusqueda").html(``);
+                                                        })
+                                                        .catch(e => {
+                                                            cerrarM.load = true;
+                                                            cerrarModal();
+                                                            console.log(e);
+                                                            $("#alertBusqueda").html(`
+                                                                <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                                                                    <strong class="h1">No se encontró el acta, puede que se haya borrado del servidor</strong>
+                                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                            `);
+                                                        });
+                                                    cerrarM.load = true;
+                                                    cerrarModal();
+                                                    seleccionada = true;
+                                                })
+                                        })
+                                        .catch(e => {
+                                            console.log(e);
+                                            if (e.responseText == "Solicitar Reinicio de sesion") {
                                                 cerrarM.load = true;
                                                 cerrarModal();
-                                                seleccionada = true;
-                                            })
-                                    })
-                                    .catch(e => {
-                                        console.log(e);
-                                        if (e.responseText == "Solicitar Reinicio de sesion") {
-                                            cerrarM.load = true;
-                                            cerrarModal();
-                                            login();
-                                        }
-                                    })
-                            })
-                            .catch(e => {
-                                console.log(e);
-                                if (e.responseText == "Solicitar Reinicio de sesion") {
-                                    cerrarM.load = true;
-                                    cerrarModal();
-                                    login();
-                                }
-                            })
+                                                login();
+                                            }
+                                        })
+                                })
+                                .catch(e => {
+                                    console.log(e);
+                                    if (e.responseText == "Solicitar Reinicio de sesion") {
+                                        cerrarM.load = true;
+                                        cerrarModal();
+                                        login();
+                                    }
+                                });
+                        }
+                        else {
+                            datosAcademias(clave.clave_academia)
+                                .then(dt => {
+                                    $("#NoActa")[0].value = 1;
+                                    let datos = [dt['Academia'], dt['nombre'], dt['Sec']];
+                                    Acta["DatosA"]["Clave"] = clave.clave_academia;
+                                    Acta["DatosA"]["Academia"] = datos[0];
+                                    Acta["DatosA"]["Presidente"] = datos[1];
+                                    Acta["DatosA"]["Sec"] = datos[2];
+                                    Acta["No"] = 1;
+                                    let campos = $('[name="attr"]');
+                                    for (let i = 0; i < datos.length; i++) {
+                                        campos[i].value = datos[i];
+                                    }
+                                    miembrosAcademia(clave.clave_academia)
+                                        .then(m => {
+                                            cargarMaterias(m)
+                                                .then(() => {
+                                                    cargarMiembros(m);
+                                                    cerrarM.load = true;
+                                                    cerrarModal();
+                                                    seleccionada = true;
+                                                })
+                                        })
+                                        .catch(e => {
+                                            console.log(e);
+                                            if (e.responseText == "Solicitar Reinicio de sesion") {
+                                                cerrarM.load = true;
+                                                cerrarModal();
+                                                login();
+                                            }
+                                        })
+                                })
+                                .catch(e => {
+                                    console.log(e);
+                                    if (e.responseText == "Solicitar Reinicio de sesion") {
+                                        cerrarM.load = true;
+                                        cerrarModal();
+                                        login();
+                                    }
+                                });
+                        }
                     }
                 } else {
                     $("#alertBusqueda").html(`
