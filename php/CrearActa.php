@@ -226,12 +226,13 @@
     function salvarActa($ruta, $academia, $hoy, $sem)
     {
         $id = getIDActa();
+        $ruta2  = utf8_decode($ruta);
         $conectar = new Conectar();
         $con = $conectar->conn();
         $call = "{call dbo.SP_RegistrarActa(?,?,?,?,?)}";
         $params = array(
             array(&$academia, SQLSRV_PARAM_IN),
-            array(&$ruta, SQLSRV_PARAM_IN),
+            array(&$ruta2, SQLSRV_PARAM_IN),
             array(&$id, SQLSRV_PARAM_IN),
             array(&$hoy, SQLSRV_PARAM_IN),
             array(&$sem, SQLSRV_PARAM_IN)
@@ -478,7 +479,7 @@
         </div>
     ");
 
-    $nombre = utf8_encode($datos['fechaG']);
+    $nombre = $datos['fechaG'];
     if ($vp != 1) {
         $carpeta = "../Docs/Actas/$Clave";
     } else {
@@ -488,8 +489,8 @@
     crearCapera("$carpeta");
 
     $ruta = "$carpeta/$nombre";
-    $nombreArchivo = "$ruta.pdf";
-    $nombreJson = "$ruta.json";
+    $nombreArchivo = utf8_decode("$ruta.pdf");
+    $nombreJson = utf8_decode("$ruta.json");
 
     $mpdf -> Output("$nombreArchivo", 'F');
 
@@ -511,6 +512,7 @@
         $bytes = file_put_contents($nombreJson, $json);
     }
 
-    echo json_encode(array('ruta'=>"Academias/$ruta.pdf"));
+    $nombreArchivo = utf8_encode($nombreArchivo);
+    echo json_encode(array('ruta'=>"Academias/$nombreArchivo"));
 
 ?>
