@@ -60,12 +60,7 @@
         $id = $acta['id'];
         $act = $acta['ant'];
         for ($i = 0; $i < count($act); $i++) {
-            if (array_key_exists('responsables', $act[$i]) && array_key_exists('tareas', $act[$i])) {
-                $tareas = $act[$i]['tareas'];
-                for($j = 0; $j < count($tareas); $j++) {
-                    $acta['ant'][$i]['Av'] = getAvance($id, $i);
-                }
-            }
+            $acta['ant'][$i]['Av'] = getAvance($id, ($i + 1));
         }
     }
 

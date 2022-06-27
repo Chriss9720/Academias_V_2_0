@@ -878,7 +878,6 @@ $(document).ready(() => {
                     </div>
         `;
         let ant = Acta['ant'];
-        console.log(ant);
         if (ant) {
             for (let i = 0; i < ant.length; i++) {
                 let acu = ant[i].acuerdo;
@@ -1063,6 +1062,7 @@ $(document).ready(() => {
                         if (limit > 0) {
                             datosAcademias(clave.clave_academia)
                                 .then(dt => {
+                                    Acta['nueva'] = 0;
                                     let datos = [dt['Academia'], dt['nombre'], dt['Sec']];
                                     Acta["DatosA"]["Clave"] = clave.clave_academia;
                                     Acta["DatosA"]["Academia"] = datos[0];
@@ -1081,11 +1081,11 @@ $(document).ready(() => {
                                                         .then(t => {
                                                             let no = parseInt(t.No) + 1;
                                                             Acta['No'] = no;
-                                                            Acta['id'] = acta.id_acta;
+                                                            Acta['id'] = acta[limit-1].id_acta;
                                                             Acta['ant'] = t.ant;
-                                                            console.log(acta[0]);
-                                                            console.log(t.ant);
                                                             Acta['fechaG'] = t.fechaG;
+                                                            Acta['fecha'] = t.fecha;
+                                                            Acta["Sem"] = calcularSemestre();
                                                             $("#NoActa")[0].value = no;
                                                             armarAnt();
                                                             cerrarM.load = true;
@@ -1129,6 +1129,7 @@ $(document).ready(() => {
                                 });
                         }
                         else {
+                            Acta['nueva'] = 1;
                             datosAcademias(clave.clave_academia)
                                 .then(dt => {
                                     $("#NoActa")[0].value = 1;
@@ -1138,6 +1139,10 @@ $(document).ready(() => {
                                     Acta["DatosA"]["Presidente"] = datos[1];
                                     Acta["DatosA"]["Sec"] = datos[2];
                                     Acta["No"] = 1;
+                                    let date = new Date();
+                                    Acta["Sem"] = calcularSemestre();
+                                    Acta["fecha"] = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+                                    Acta["fechaG"] = getFecha(date);
                                     let campos = $('[name="attr"]');
                                     for (let i = 0; i < datos.length; i++) {
                                         campos[i].value = datos[i];
@@ -1285,8 +1290,6 @@ $(document).ready(() => {
     };
 
     $('[name="Crear"]').click(evt => {
-        console.log("Crear");
-        Acta["Sem"] = calcularSemestre();
         let date = new Date();
         let datos = $('input[name="datosG"]');
         let keys = ["horaI", "Dia", "Mes", "Año", "Lugar", "horaF"];
@@ -1304,13 +1307,6 @@ $(document).ready(() => {
                 a.limite = 1;
             }
         });
-        Acta["fecha"] = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
-        if (sessionStorage.getItem("accion").includes("Crear")) {
-            Acta["fechaG"] = getFecha(date);
-            Acta['nueva'] = 1;
-        } else {
-            Acta['nueva'] = 0;
-        }
         crearActa(Acta)
             .then(t => {
                 window.open(t.ruta);
@@ -1345,13 +1341,6 @@ $(document).ready(() => {
                 a.limite = 1;
             }
         });
-        Acta["fecha"] = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
-        if (sessionStorage.getItem("accion").includes("Crear")) {
-            Acta["fechaG"] = getFecha(date);
-            Acta['nueva'] = 1;
-        } else {
-            Acta['nueva'] = 0;
-        }
         crearActa(Acta)
             .then(t => {
                 window.open(t.ruta);
