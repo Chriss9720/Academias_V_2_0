@@ -5,6 +5,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!--font awesome-->
@@ -67,65 +68,38 @@
         </div>
     </div>
 
+    <div id="alertBusqueda"></div>
+
     <div class="container">
-        <div class="row d-flex text-center">
+
+        <div class="container mb-3">
+            <div class="d-flex justify-content-center align-items-center">
+                <div class="form-inline mb-2">
+                    <label class="form-label text-input mr-3">Búsqueda por clave/nombre</label>
+                    <input id="AcaSelStatus" type="sarch" class="form-control text-input bg-input rounded-pill mx-auto" list="listaAcaStastus">
+                    <datalist id="listaAcaStastus">
+                    </datalist>
+                </div>
+            </div>
+        </div>
+
+        <div class="row d-flex text-center" id="html">
             <!--Encabezados-->
             <div class="col-10 row font-weight-bold">
                 <div class="col-3 border border-bottom d-flex flex-column align-items-center">
                     Docente
-                    <div class="d-flex justify-content-center align-items-center">
-                        <div class="form-inline mb-2">
-                            <label class="form-label mr-3">Búsqueda por nómina/nombre</label>
-                            <input id="AcaSel" type="search" class="form-control bg-input rounded-pill mx-auto" list="listaAcademias">
-                            <datalist id="listaAcademias">
-                            </datalist>
-                        </div>
-                    </div>
                 </div>
                 <div class="col-3 border border-bottom d-flex flex-column justify-content-around align-items-center">
                     <label>Tarea 1</label>
                     <div>10/05/2022</div>
-                    <div class="d-flex justify-content-around w-100">
-                        <span>
-                            <img src="img/file-circle-check-solid.svg" class="click" width="30" height="30">
-                        </span>
-                        <span>
-                            <img src="img/file-circle-xmark-solid.svg" class="click" width="30" height="30">
-                        </span>
-                        <span>
-                            <img src="img/filter-circle-xmark-solid(1).svg" class="click" width="30" height="30">
-                        </span>
-                    </div>
                 </div>
                 <div class="col-3 border border-bottom">
                     Tarea 2
                     <div>20/05/2022</div>
-                    <div class="d-flex justify-content-around">
-                        <span>
-                            <img src="img/file-circle-check-solid.svg" width="30" height="30">
-                        </span>
-                        <span>
-                            <img src="img/file-circle-xmark-solid.svg" width="30" height="30">
-                        </span>
-                        <span>
-                            <img src="img/filter-circle-xmark-solid(1).svg" width="30" height="30">
-                        </span>
-                    </div>
                 </div>
                 <div class="col-3 border border-bottom">
                     Tarea 3
                     <div>30/05/2022</div>
-                    <div class="d-flex justify-content-around">
-                        <span>
-                            <img src="img/file-circle-check-solid.svg" width="30" height="30">
-                        </span>
-                        <span>
-                            <img src="img/file-circle-xmark-solid.svg" width="30" height="30">
-                        </span>
-                        <span>
-                            <img src="img/filter-circle-xmark-solid(1).svg" width="30" height="30">
-                        </span>
-                    </div>
                 </div>
             </div>
             <div class="col-2 row">
@@ -198,6 +172,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <!-- My Script -->
+    <script src="js/validaciones.js"></script>
+    <script src="js/estatus.js"></script>
+    <script src="js/editarme.js"></script>
 </body>
 
 </html>

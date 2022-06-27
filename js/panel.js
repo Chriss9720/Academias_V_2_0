@@ -478,7 +478,6 @@ $(document).ready(() => {
     };
 
     const menu = async() => {
-        console.log(misDatos);
         let presidente = isPresidente();
         let secretario = isScretario();
         puedeVer({ presidente, secretario });
@@ -574,7 +573,6 @@ $(document).ready(() => {
     const subirEvidencia = async() => {
         await getfaltantesEvidencia()
             .then(ev => {
-                console.log(ev)
                 $("#subirEvidencia").html(`
                     <div class="d-flex d-inline align-items-center">
                         <button name="areaMenu" class="btn text-menu" type="button" id="Subir">

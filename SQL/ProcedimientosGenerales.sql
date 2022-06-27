@@ -1065,3 +1065,14 @@ CREATE PROC SP_GetLastActa @ClaveAcademia VARCHAR(255) AS
 	FROM ACTAS AS ATS
 	JOIN ACTA AS AC ON AC.id_acta = ATS.id_acta
 	WHERE ATS.clave_academia like @ClaveAcademia AND AC.finalizada = 0
+
+IF OBJECT_ID('SP_GetEncabezados') IS NOT NULL DROP PROC SP_GetEncabezados
+GO
+CREATE PROC SP_GetEncabezados @CLAVE VARCHAR(255) AS
+	SELECT DISTINCT SA.no_tarea, SA.punto, SA.fecha, SA.limite, SA.id_acta
+	FROM ACTAS AS ACS
+	JOIN ACTA AS AC
+	ON ACS.id_acta = AC.id_acta
+	JOIN SUBIRACTA AS SA 
+	ON SA.id_acta = AC.id_acta
+	WHERE clave_academia = @CLAVE AND AC.finalizada = 0
