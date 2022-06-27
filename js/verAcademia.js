@@ -681,7 +681,7 @@ $(document).ready(() => {
                 } else if ((pagina + 2) == max) {
                     for (let i = pagina; i <= (pagina + 4); i++) cuerpo += contenido(name, pagina, i);
                 } else {
-                    for (let i = pagina - 3; i < (pagina + 2); i++) cuerpo += contenido(name, pagingita, i);
+                    for (let i = pagina - 3; i < (pagina + 2); i++) cuerpo += contenido(name, pagina, i);
                 }
             } else {
                 for (let i = pagina - 3; i < (pagina + 2); i++) cuerpo += contenido(name, pagina, i);

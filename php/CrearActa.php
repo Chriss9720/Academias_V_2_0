@@ -123,37 +123,39 @@
                     </tr>
         ";
         for($i = 0; $i < count($Acuerdos); $i++) {
-            $acuerdo = "";
-            $resp = "<ul>";
-            $fecha = "";
-            $v1 = False;
-            $v2 = False;
-            $lim = $Acuerdos[$i]['limite'];
-            if (array_key_exists('acuerdo', $Acuerdos[$i])) {
-                $acuerdo = $Acuerdos[$i]['acuerdo'];
-                $v1 = True;
-            }
-            if (array_key_exists('responsables', $Acuerdos[$i])) {
-                for($j = 0; $j < count($Acuerdos[$i]['responsables']); $j++) {
-                    $nom = &$Acuerdos[$i]['responsables'][$j]['nombre'];
-                    $resp = "$resp
-                        <li>$nom</li>
+            if ($Acuerdos[$i]["ant"] == "0") {
+                $acuerdo = "";
+                $resp = "<ul>";
+                $fecha = "";
+                $v1 = False;
+                $v2 = False;
+                $lim = $Acuerdos[$i]['limite'];
+                if (array_key_exists('acuerdo', $Acuerdos[$i])) {
+                    $acuerdo = $Acuerdos[$i]['acuerdo'];
+                    $v1 = True;
+                }
+                if (array_key_exists('responsables', $Acuerdos[$i])) {
+                    for($j = 0; $j < count($Acuerdos[$i]['responsables']); $j++) {
+                        $nom = &$Acuerdos[$i]['responsables'][$j]['nombre'];
+                        $resp = "$resp
+                            <li>$nom</li>
+                        ";
+                    }
+                    $v2 = True;
+                }
+                if ($lim == 1){
+                    $fecha = str_replace('T', ' ', $Acuerdos[$i]['fecha']);
+                }
+                $resp = "$resp</ul>";
+                if ($v1 || $v2) {
+                    $r = "$r
+                        <tr>
+                            <td class='justificar borde_inferior borde_superior borde_derecho borde_izquierdo acuerdo'>$acuerdo</td>
+                            <td class='justificar borde_inferior borde_superior borde_derecho borde_izquierdo resp'>$resp</td>
+                            <td class='borde_inferior borde_superior borde_derecho borde_izquierdo fecha'>$fecha</td>
+                        </tr>
                     ";
                 }
-                $v2 = True;
-            }
-            if ($lim == 1){
-                $fecha = str_replace('T', ' ', $Acuerdos[$i]['fecha']);
-            }
-            $resp = "$resp</ul>";
-            if ($v1 || $v2) {
-                $r = "$r
-                    <tr>
-                        <td class='justificar borde_inferior borde_superior borde_derecho borde_izquierdo acuerdo'>$acuerdo</td>
-                        <td class='justificar borde_inferior borde_superior borde_derecho borde_izquierdo resp'>$resp</td>
-                        <td class='borde_inferior borde_superior borde_derecho borde_izquierdo fecha'>$fecha</td>
-                    </tr>
-                ";
             }
         }
         $r = "
@@ -255,16 +257,18 @@
 
     function ligar($id, $Acuerdos, $sum) {
         for($i = 0; $i < count($Acuerdos); $i++) {
-            if (array_key_exists('tareas', $Acuerdos[$i])) {
-                for($j = 0; $j < count($Acuerdos[$i]['tareas']); $j++) {
-                    $fecha = "";
-                    $lim = $Acuerdos[$i]['limite'];
-                    if ($lim == 1){
-                        $fecha = str_replace('T', ' ', $Acuerdos[$i]['fecha']);
-                    }
-                    for($k = 0; $k < count($Acuerdos[$i]['responsables']); $k++) {
-                        $no = $i + $sum;
-                        salvarLigado($id, $Acuerdos[$i]['responsables'][$k]['nomina'], $j, $fecha, $no);
+            if ($Acuerdos[$i]["ant"] == "0") {
+                if (array_key_exists('tareas', $Acuerdos[$i])) {
+                    for($j = 0; $j < count($Acuerdos[$i]['tareas']); $j++) {
+                        $fecha = "";
+                        $lim = $Acuerdos[$i]['limite'];
+                        if ($lim == 1){
+                            $fecha = str_replace('T', ' ', $Acuerdos[$i]['fecha']);
+                        }
+                        for($k = 0; $k < count($Acuerdos[$i]['responsables']); $k++) {
+                            $no = $i + $sum;
+                            salvarLigado($id, $Acuerdos[$i]['responsables'][$k]['nomina'], $j, $fecha, $no);
+                        }
                     }
                 }
             }
@@ -325,25 +329,24 @@
 
     $ant = [];
     $an = "";
-    if (array_key_exists('ant', $datos)) {
-        $ant = $datos['ant'];
-        $an = acuerdosAnt($ant);
-    }
-
     $Acuerdos = "";
+
     if (array_key_exists('Acuerdos', $datos)) {
         $Acuerdos = acuerdo($datos['Acuerdos']);
         if ($vp != 1) {
             for($i = 0; $i < count($datos['Acuerdos']); $i++) {
                 if (array_key_exists('acuerdo', $datos['Acuerdos'][$i])) {
-                    array_push($ant, $datos['Acuerdos'][$i]);
+                    if ($datos['Acuerdos'][$i]['ant'] == 0 || $datos['Acuerdos'][$i]['ant'] == "0") {
+                        #$datos['Acuerdos'][$i]['ant'] = 1;
+                    } else {
+                        array_push($ant, $datos['Acuerdos'][$i]);
+                    }
                 }
             }
         }
     }
-    if ($vp != 1) {
-        $datos['ant'] = $ant;
-    }
+
+    $an = acuerdosAnt($ant);
 
     $mpdf = new \Mpdf\Mpdf([
         'mode' => 'utf-8',
@@ -504,6 +507,9 @@
 
     if (array_key_exists('Acuerdos', $datos) && $vp != 1) {
         $sum = count($ant);
+        if ($sum == 0) {
+            $sum = 1;
+        }
         ligar($id, $datos['Acuerdos'], $sum);
     }
     if ($vp != 1) {

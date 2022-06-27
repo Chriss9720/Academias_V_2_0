@@ -56,11 +56,12 @@
         return $av * 100;
     }
 
-    if (array_key_exists('ant', $acta)) {
+    if (array_key_exists('Acuerdos', $acta)) {
         $id = $acta['id'];
-        $act = $acta['ant'];
-        for ($i = 0; $i < count($act); $i++) {
-            $acta['ant'][$i]['Av'] = getAvance($id, ($i + 1));
+        $acuerdos = $acta['Acuerdos'];
+        for ($i = 0; $i < count($acuerdos); $i++) {
+            $acta['Acuerdos'][$i]['ant'] = 1;
+            $acta['Acuerdos'][$i]['Av'] = getAvance($id, ($i + 1));
         }
     }
 

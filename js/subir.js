@@ -108,7 +108,7 @@ $(document).ready(() => {
             }
         });
 
-        $("#logearme").click(async() => {
+        $("#logearme").click(async () => {
             let nomina = getValue("nomina");
             let clave = getValue("clave");
 
@@ -203,59 +203,63 @@ $(document).ready(() => {
         </div>
     ` : "";
 
-    const armar = async() => {
+    const armar = async () => {
         let r = "";
         for (let i = 0; i < evidencia.length; i++) {
             await leerEv(evidencia[i].localizacionJson)
                 .then(json => evidencia[i].data = json)
-                .catch(e => console.log(e));
+                .catch(e => {console.log(e)});
             let desc;
             let tarea;
             let fecha;
-            if (evidencia[i].PADRE === 'Actas') {
-                desc = evidencia[i].data.Acuerdos[(evidencia[i].punto) - 1].acuerdo;
-                fecha = evidencia[i].data.Acuerdos[(evidencia[i].punto) - 1].fecha;
-                tarea = evidencia[i].data.Acuerdos[(evidencia[i].punto) - 1].tareas[(evidencia[i].no_tarea - 1)];
-            } else {
-                desc = evidencia[i].data[evidencia[i].no_tarea].Acciones;
-                tarea = evidencia[i].data[evidencia[i].no_tarea].tareas[(evidencia[i].punto - 1)];
-                fecha = evidencia[i].data[evidencia[i].no_tarea].fecha;
+            let punto = evidencia[i].punto - 1;
+            if (evidencia[i].data) {
+                if (evidencia[i].PADRE === 'Actas') {
+                    console.log(evidencia[i])
+                    let no_tarea = evidencia[i].no_tarea - 1;
+                    desc = evidencia[i].data.Acuerdos[no_tarea].acuerdo;
+                    fecha = evidencia[i].data.Acuerdos[no_tarea].fecha;
+                    tarea = evidencia[i].data.Acuerdos[no_tarea].tareas[punto];
+                } else {
+                    desc = evidencia[i].data[evidencia[i].no_tarea].Acciones;
+                    tarea = evidencia[i].data[evidencia[i].no_tarea].tareas[punto];
+                    fecha = evidencia[i].data[evidencia[i].no_tarea].fecha;
+                }
+                r += `
+                    <div id="${i}" class="border border-dark p-3 bg-menu-principal row rounded rounded-pill mb-3">
+                        <div class="col-3"></div>
+                        <div class="col-6" id="error_${i}"></div>
+                        <div class="col-3"></div>
+                        <div class="col-2 d-flex justify-content-center align-items-center flex-column">
+                            <img class='img-pdf' src="img/pdf.ico">
+                            <div class="mt-2">
+                                <span>
+                                    <i name="descargar" class="fas fa-download click"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex flex-column">
+                                <label><span class="h4">Descripción:</span> ${desc}</label>
+                                <label><span class="h4">Fecha:</span> ${fecha.replace("T", ' ')}</label>
+                                <label><span class="h4">Tarea:</span> ${tarea}</label>
+                            </div>
+                        </div>
+                        <div class="col-4 d-flex flex-column justify-content-center align-items-center">
+
+                            <input name="finalizar" id='finalizar_${i}' type="button" value="Entregar" class="btn btn-primary mt-2">
+
+                            <div class="custom-file mt-2">
+                                <input name='Reemplazar' type="file" class="custom-file-input" accept="application/pdf" id="Reemplazar_${i}" aria-describedby="inputGroupFileAddon01">
+                                <label id="Reemplazar_${i}_name" class="custom-file-label" for="Reemplazar">Entregar</label>
+                            </div>
+
+                            ${d1()}
+
+                        </div>
+                    </div>
+                `;
             }
-            r += `
-                <div id="${i}" class="border border-dark p-3 bg-menu-principal row rounded rounded-pill mb-3">
-                    <div class="col-3"></div>
-                    <div class="col-6" id="error_${i}"></div>
-                    <div class="col-3"></div>
-                    <div class="col-2 d-flex justify-content-center align-items-center flex-column">
-                        <img class='img-pdf' src="img/pdf.ico">
-                        <div class="mt-2">
-                            <span>
-                                <i name="descargar" class="fas fa-download click"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="d-flex flex-column">
-                            <label><span class="h4">Descripción:</span> ${desc}</label>
-                            <label><span class="h4">Fecha:</span> ${fecha.replace("T", ' ')}</label>
-                            <label><span class="h4">Tarea:</span> ${tarea}</label>
-                            <label><span class="h4">Punto:</span> ${evidencia[i].punto} - ${evidencia[i].no_tarea}</label>
-                        </div>
-                    </div>
-                    <div class="col-4 d-flex flex-column justify-content-center align-items-center">
-
-                        <input name="finalizar" id='finalizar_${i}' type="button" value="Entregar" class="btn btn-primary mt-2">
-
-                        <div class="custom-file mt-2">
-                            <input name='Reemplazar' type="file" class="custom-file-input" accept="application/pdf" id="Reemplazar_${i}" aria-describedby="inputGroupFileAddon01">
-                            <label id="Reemplazar_${i}_name" class="custom-file-label" for="Reemplazar">Entregar</label>
-                        </div>
-
-                        ${d1()}
-
-                    </div>
-                </div>
-            `;
         }
         $("#area").html(r);
         $('input[name="Reemplazar"]').change(evt => {

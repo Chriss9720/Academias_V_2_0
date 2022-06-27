@@ -877,7 +877,10 @@ $(document).ready(() => {
                         <div class="w-100 h-100 d-flex justify-content-center align-items-center">AVANCE</div>
                     </div>
         `;
-        let ant = Acta['ant'];
+        let ant;
+        if (Acta['Acuerdos']){
+            ant = Acta['Acuerdos'].filter(act => act.ant == 1);
+        }
         if (ant) {
             for (let i = 0; i < ant.length; i++) {
                 let acu = ant[i].acuerdo;
@@ -1086,6 +1089,7 @@ $(document).ready(() => {
                                                             Acta['fechaG'] = t.fechaG;
                                                             Acta['fecha'] = t.fecha;
                                                             Acta["Sem"] = calcularSemestre();
+                                                            Acta['Acuerdos'] = t.Acuerdos;
                                                             $("#NoActa")[0].value = no;
                                                             armarAnt();
                                                             cerrarM.load = true;
@@ -1290,7 +1294,7 @@ $(document).ready(() => {
     };
 
     $('[name="Crear"]').click(evt => {
-        let date = new Date();
+        cargando();
         let datos = $('input[name="datosG"]');
         let keys = ["horaI", "Dia", "Mes", "Año", "Lugar", "horaF"];
         for (let i = 0; i < keys.length; i++) {
@@ -1299,13 +1303,16 @@ $(document).ready(() => {
         Acta["datosG"]["Orden"] = CKEDITOR.instances.orden.getData();
         Acta["datosG"]["Obs"] = CKEDITOR.instances.obs.getData();
         Acta['vP'] = 0;
-        Acta.Acuerdos = acuerdos.filter(f => !f.baja);
-        Acta.Acuerdos.forEach(a => {
+        let acuerdosTemp = acuerdos.filter(f => !f.baja);
+        acuerdosTemp.forEach(a => {
             a.tareas = [];
             getPuntos(a.acuerdo, a.tareas);
             if (a.fecha.length > 0) {
                 a.limite = 1;
             }
+            a.ant = 0;
+            if (!Acta.Acuerdos) Acta.Acuerdos = []
+            Acta.Acuerdos.push(a);
         });
         crearActa(Acta)
             .then(t => {
@@ -1319,7 +1326,7 @@ $(document).ready(() => {
                     cerrarModal();
                     login();
                 }
-            })
+            });
     });
 
     $("input[name='preview']").click(() => {
