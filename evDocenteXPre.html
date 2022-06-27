@@ -1,10 +1,11 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!--font awesome-->
@@ -19,15 +20,20 @@
 <body>
 
     <div class="bg-panel-superior">
-        <div class="container d-flex">
-            <div class="w-25">
-                <label class="click iconos-superior">
+        <div class="container-fluid d-flex">
+            <div class="w-50">
+                <a href="https://www.itesca.edu.mx/" target="_blank" class="link">
+                    <label class="marca-awa">
+                        <img src="img/favicon.png" style="width:30px;">ITESCA
+                    </label>
+                </a>
+                <label class="click iconos-superior" id="inicio">
                     <span>
                         <i class="fas fa-home"></i>
                     </span>
                     Inicio
                 </label>
-                <label class="click iconos-superior ml-3">
+                <label id="Editarme" class="click iconos-superior ml-3">
                     <span>
                         <i class="fas fa-user"></i>
                     </span>
@@ -35,7 +41,7 @@
                 </label>
             </div>
             <div class="d-flex justify-content-end w-75">
-                <label class="click iconos-superior ml-3">
+                <label class="click iconos-superior ml-3" id="Cerrar">
                     <span>
                         <i class="fas fa-sign-out-alt"></i>
                     </span>
@@ -50,7 +56,7 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb sin d-flex align-items-center">
                     <li class="breadcrumb-item">
-                        <a href="#">Inicio</a>
+                        <a href="/Academias/panel.html">Inicio</a>
                     </li>
                     <li id="accion" class="breadcrumb-item"></li>
                     <li class="breadcrumb-item active">
@@ -60,6 +66,13 @@
             </nav>
         </div>
     </div>
+
+    <div class="mb-3 d-flex justify-content-around">
+        <input name="preview" type="button" value="Vista Previa" class="btn btn-secondary btn-lg">
+        <input name="Crear" type="button" value="Generar PDF" class="btn btn-success btn-lg">
+    </div>
+
+    <div id="alerta" class="container"></div>
 
     <div class="container mb-5">
 
@@ -74,26 +87,25 @@
             <div class="mt-2 bg-dark text-input text-white font-weight-bold w-100 text-center">DATOS GENERALES</div>
             <div class="col-3 bg-input text-input border border-dark d-flex justify-content-end align-items-center">Fecha de Elaboración:</div>
             <div class="col-3 text-input border border-dark d-flex justify-content-end align-items-center">
-                <input type="datetime-local" class="form-control text-input">
+                <input type="date" id="elaborada" class="form-control text-input">
             </div>
             <div class="col-3 bg-input text-input border border-dark d-flex justify-content-end align-items-center">Periodo a evaluar:</div>
             <div class="col-3 text-input border border-dark d-flex justify-content-end align-items-center">
-                <select class="form-control text-input">
-                    <option value="1">2</option>
-                    <option value="2">1</option>
-                </select>
+                <input type="text" disabled class="form-control text-input" name="info">
             </div>
             <div class="col-3 bg-input text-input border border-dark d-flex justify-content-end align-items-center">Nombre del profesor</div>
             <div class="col-9 text-input border border-dark d-flex justify-content-end align-items-center">
-                <input type="text" disabled class="form-control text-input">
+                <input id="docenteSel" type="search" class="form-control text-input bg-input mx-auto" list="listaDoc">
+                <datalist id="listaDoc">
+                </datalist>
             </div>
             <div class="col-3 bg-input text-input border border-dark d-flex text-right">Academia de adscripción:</div>
             <div class="col-3 text-input border border-dark d-flex justify-content-end align-items-center">
-                <input type="text" disabled class="form-control text-input">
+                <input type="text" disabled class="form-control text-input" name="info">
             </div>
             <div class="col-3 bg-input text-input border border-dark d-flex text-right">Jefatura a la que pertenece:</div>
             <div class="col-3 text-input border border-dark d-flex justify-content-end align-items-center">
-                <input type="text" disabled class="form-control text-input">
+                <input type="text" disabled class="form-control text-input" name="info">
             </div>
 
             <div class="mt-2 bg-dark text-input text-white font-weight-bold w-100 text-center ">INDICADORES A EVALUAR</div>
@@ -120,40 +132,40 @@
                 <div class="row h-100">
                     <div class="p-2 nivel border border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                            <label class="form-check-label" for="exampleRadios1">
+                            <input class="form-check-input" type="radio" name="r-1" id="r1-1" value="0">
+                            <label class="form-check-label" for="r1-1">
                                 4 reuniones atendidas
                             </label>
                         </div>
                     </div>
                     <div class="p-2 nivel border border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                            <label class="form-check-label" for="exampleRadios1">
+                            <input class="form-check-input" type="radio" name="r-1" id="r1-2" value="1">
+                            <label class="form-check-label" for="r1-2">
                                 3 reuniones atendidas
                             </label>
                         </div>
                     </div>
                     <div class="p-2 nivel border border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                            <label class="form-check-label" for="exampleRadios1">
+                            <input class="form-check-input" type="radio" name="r-1" id="r1-3" value="2">
+                            <label class="form-check-label" for="r1-3">
                                 2 reuniones atendidas
                             </label>
                         </div>
                     </div>
                     <div class="p-2 nivel border border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                            <label class="form-check-label" for="exampleRadios1">
+                            <input class="form-check-input" type="radio" name="r-1" id="r1-4" value="3">
+                            <label class="form-check-label" for="r1-4">
                                 1 reuniones atendidas
                             </label>
                         </div>
                     </div>
                     <div class="p-2 nivel border border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                            <label class="form-check-label" for="exampleRadios1">
+                            <input class="form-check-input" type="radio" name="r-1" id="r1-5" value="4">
+                            <label class="form-check-label" for="r1-5">
                                 0 reuniones atendidas
                             </label>
                         </div>
@@ -173,40 +185,40 @@
                 <div class="row h-100">
                     <div class="p-2 nivel border border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                            <label class="form-check-label" for="exampleRadios1">
+                            <input class="form-check-input" type="radio" name="r-2" id="r2-1" value="0">
+                            <label class="form-check-label" for="r2-1">
                                 100%
                             </label>
                         </div>
                     </div>
                     <div class="p-2 nivel border border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                            <label class="form-check-label" for="exampleRadios1">
+                            <input class="form-check-input" type="radio" name="r-2" id="r2-2" value="1">
+                            <label class="form-check-label" for="r2-2">
                                 Entre 80% y 100%
                             </label>
                         </div>
                     </div>
                     <div class="p-2 nivel border border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                            <label class="form-check-label" for="exampleRadios1">
+                            <input class="form-check-input" type="radio" name="r-2" id="r2-3" value="2">
+                            <label class="form-check-label" for="r2-3">
                                 Entre 60% y 40%
                             </label>
                         </div>
                     </div>
                     <div class="p-2 nivel border border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                            <label class="form-check-label" for="exampleRadios1">
+                            <input class="form-check-input" type="radio" name="r-2" id="r2-4" value="3">
+                            <label class="form-check-label" for="r2-4">
                                 Entre 40% y 20%
                             </label>
                         </div>
                     </div>
                     <div class="p-2 nivel border border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                            <label class="form-check-label" for="exampleRadios1">
+                            <input class="form-check-input" type="radio" name="r-2" id="r2-5" value="4">
+                            <label class="form-check-label" for="r2-5">
                                 Menos de 20%
                             </label>
                         </div>
@@ -226,40 +238,40 @@
                 <div class="row h-100">
                     <div class="p-2 nivel border border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                            <label class="form-check-label" for="exampleRadios1">
+                            <input class="form-check-input" type="radio" name="r-3" id="r3-1" value="0">
+                            <label class="form-check-label" for="r3-1">
                                 Cuatro o más
                             </label>
                         </div>
                     </div>
                     <div class="p-2 nivel border border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                            <label class="form-check-label" for="exampleRadios1">
+                            <input class="form-check-input" type="radio" name="r-3" id="r3-2" value="1">
+                            <label class="form-check-label" for="r3-2">
                                 Tres veces
                             </label>
                         </div>
                     </div>
                     <div class="p-2 nivel border border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                            <label class="form-check-label" for="exampleRadios1">
+                            <input class="form-check-input" type="radio" name="r-3" id="r3-3" value="2">
+                            <label class="form-check-label" for="r3-3">
                                 Dos veces
                             </label>
                         </div>
                     </div>
                     <div class="p-2 nivel border border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                            <label class="form-check-label" for="exampleRadios1">
+                            <input class="form-check-input" type="radio" name="r-3" id="r3-4" value="3">
+                            <label class="form-check-label" for="r3-4">
                                 Una vez
                             </label>
                         </div>
                     </div>
                     <div class="p-2 nivel border border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                            <label class="form-check-label" for="exampleRadios1">
+                            <input class="form-check-input" type="radio" name="r-3" id="r3-5" value="4">
+                            <label class="form-check-label" for="r3-5">
                                 Ninguna
                             </label>
                         </div>
@@ -279,40 +291,40 @@
                 <div class="row h-100">
                     <div class="p-2 nivel border border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                            <label class="form-check-label" for="exampleRadios1">
+                            <input class="form-check-input" type="radio" name="r-4" id="r4-1" value="0">
+                            <label class="form-check-label" for="r4-1">
                                 En tiempo
                             </label>
                         </div>
                     </div>
                     <div class="p-2 nivel border border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                            <label class="form-check-label" for="exampleRadios1">
+                            <input class="form-check-input" type="radio" name="r-4" id="r4-2" value="1">
+                            <label class="form-check-label" for="r4-2">
                                 4 días de retraso
                             </label>
                         </div>
                     </div>
                     <div class="p-2 nivel border border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                            <label class="form-check-label" for="exampleRadios1">
+                            <input class="form-check-input" type="radio" name="r-4" id="r4-3" value="2">
+                            <label class="form-check-label" for="r4-3">
                                 8 días de retraso
                             </label>
                         </div>
                     </div>
                     <div class="p-2 nivel border border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                            <label class="form-check-label" for="exampleRadios1">
+                            <input class="form-check-input" type="radio" name="r-4" id="r4-4" value="3">
+                            <label class="form-check-label" for="r4-4">
                                 12 días de retraso
                             </label>
                         </div>
                     </div>
                     <div class="p-2 nivel border border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                            <label class="form-check-label" for="exampleRadios1">
+                            <input class="form-check-input" type="radio" name="r-4" id="r4-5" value="4">
+                            <label class="form-check-label" for="r4-5">
                                 Más de 12 días de retraso
                             </label>
                         </div>
@@ -332,47 +344,47 @@
                 <div class="row h-100">
                     <div class="p-2 nivel border border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                            <label class="form-check-label" for="exampleRadios1">
+                            <input class="form-check-input" type="radio" name="r-5" id="r5-1" value="0">
+                            <label class="form-check-label" for="r5-1">
                                 En tiempo
                             </label>
                         </div>
                     </div>
                     <div class="p-2 nivel border border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                            <label class="form-check-label" for="exampleRadios1">
+                            <input class="form-check-input" type="radio" name="r-5" id="r5-2" value="1">
+                            <label class="form-check-label" for="r5-2">
                                 De 1 a 4 días de retraso
                             </label>
                         </div>
                     </div>
                     <div class="p-2 nivel border border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                            <label class="form-check-label" for="exampleRadios1">
+                            <input class="form-check-input" type="radio" name="r-5" id="r5-3" value="2">
+                            <label class="form-check-label" for="r5-3">
                                 De 5 a 8 días de retraso
                             </label>
                         </div>
                     </div>
                     <div class="p-2 nivel border border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                            <label class="form-check-label" for="exampleRadios1">
+                            <input class="form-check-input" type="radio" name="r-5" id="r5-4" value="3">
+                            <label class="form-check-label" for="r5-4">
                                 De 9 a 12 días de retraso
                             </label>
                         </div>
                     </div>
                     <div class="p-2 nivel border border-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                            <label class="form-check-label" for="exampleRadios1">
+                            <input class="form-check-input" type="radio" name="r-5" id="r5-5" value="4">
+                            <label class="form-check-label" for="r5-5">
                                 Más de 12 días de retraso
                             </label>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-4 border border-dark click text-justify" name="evaluacion" id="4">
+            <div class="col-4 border border-dark click text-justify" name="evaluacion" id="5">
                 click para editar
             </div>
         </div>
@@ -382,7 +394,7 @@
                 Calificación final de Indicadores:
             </div>
             <div class="col-2 border border-dark">
-                <input type="text" class="bg-input text-input form-control">
+                <input value="0" type="text" id="calif" disabled class="bg-input text-input form-control">
             </div>
 
             <div class="col-3 border border-dark text-justify">
@@ -390,24 +402,24 @@
             </div>
             <div class="col-3 border border-dark">
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                    <label class="form-check-label" for="exampleRadios1">
+                    <input class="form-check-input" type="radio" name="r-f" id="rf-1" value="0">
+                    <label class="form-check-label" for="rf-1">
                         15 a 20 puntos<br>Sí
                     </label>
                 </div>
             </div>
             <div class="col-3 border border-dark">
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                    <label class="form-check-label" for="exampleRadios1">
+                    <input class="form-check-input" type="radio" name="r-f" id="rf-2" value="1">
+                    <label class="form-check-label" for="rf-2">
                         9 a 14 puntos<br>Condicionado a mejorar el cumplimiento en academias
                     </label>
                 </div>
             </div>
             <div class="col-3 border border-dark">
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                    <label class="form-check-label" for="exampleRadios1">
+                    <input class="form-check-input" type="radio" name="r-f" id="rf-3" value="2">
+                    <label class="form-check-label" for="rf-3">
                         9 o menos<br>Sí
                     </label>
                 </div>
@@ -442,17 +454,24 @@
         </div>
     </div>
 
-    <!--Ajax-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <div class="mb-3 d-flex justify-content-around">
+        <input name="preview" type="button" value="Vista Previa" class="btn btn-secondary btn-lg">
+        <input name="Crear" type="button" value="Generar PDF" class="btn btn-success btn-lg">
+    </div>
+
+    <div id="modales"></div>
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin=" anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <!-- CKEditor -->
     <script src="//cdn.ckeditor.com/4.17.1/standard/ckeditor.js"></script>
     <!-- My Script -->
+    <script src="js/validaciones.js"></script>
     <script src="js/evDocenteXPre.js"></script>
+    <script src="js/editarme.js"></script>
 
 </body>
 

@@ -144,5 +144,12 @@
 }
 
 .firma {
-    height: 1.36cm;
+    height: 3cm;
+}
+
+.bajar {
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    height: 100px;
 }

@@ -7,3 +7,24 @@
 .arriba {
     margin-top: -75px;
 }
+
+.btn-primary-c {
+    background-color: green;
+    color: white;
+    border-radius: 0.6rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    width: 250px;
+}
+
+.portada {
+    margin-top: -15px;
+    width: 100%;
+    height: 230px;
+}
+
+.add {
+    margin-top: -30px;
+    width: 2.5rem;
+    cursor: pointer;
+}

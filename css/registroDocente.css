@@ -10,3 +10,16 @@
     height: 250px !important;
     border-radius: 50%;
 }
+
+.col-10 {
+    margin-bottom: 1.5rem;
+}
+
+.btn-primary-r {
+    background-color: green;
+    color: white;
+    border-radius: 0.6rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    width: 250px;
+}

@@ -1,0 +1,25 @@
+Administrador
+14032201, EIFJG
+
+Coordinador
+14032202, EIFJG
+
+Presidente
+14032205, ROTEV
+
+Docente
+14032213, EGDVN
+
+--PARA CONTABILIDAD---
+
+PRESIDENTE
+11111111, CCC
+
+SECRETAD
+22222222, CCC
+
+DOCENTE
+18130122, ÑñÑ
+
+----------------------------------------------
+14032218, FFFFF

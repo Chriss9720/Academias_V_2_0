@@ -1,0 +1,131 @@
+.area_IMG {
+    height: 1.35cm;
+    width: 4.32cm;
+}
+
+.logo_ITESCA {
+    height: 1.22cm;
+    width: 3.84cm;
+}
+
+.borde_derecho {
+    border-right: 1px solid black;
+}
+
+.area_titulo {
+    width: 14.18cm;
+}
+
+.centrar {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-direction: column !important;
+    text-align: center !important;
+}
+
+.borde_tabla {
+    border: 1px solid black;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.firma-jefe {
+    width: 5cm;
+}
+
+.justificar {
+    text-align: justify;
+}
+
+.m {
+    margin-top: .5cm;
+    margin-bottom: .5cm;
+}
+
+.bordes {
+    border: 1px solid black;
+    padding: .25cm;
+}
+
+.enbacezado {
+    font-weight: bold;
+    background-color: rgb(191, 191, 191);
+}
+
+.acuerdoAnt {
+    width: 6.28cm;
+}
+
+.respAnt {
+    width: 6.1cm;
+}
+
+.fechaAnt {
+    width: 5cm;
+}
+
+.avance {
+    width: 2.2cm;
+}
+
+.acuerdo {
+    width: 9.23cm;
+}
+
+.resp {
+    width: 6.83cm;
+}
+
+.fecha {
+    width: 3.21cm;
+}
+
+.fuente {
+    font-family: "Calibri";
+    font-size: small;
+}
+
+.borde_izquierdo {
+    border-left: 1px solid black;
+}
+
+.borde_superior {
+    border-top: 1px solid black;
+}
+
+.firmas {
+    width: 6.3cm;
+}
+
+.separacion {
+    width: 1.5cm;
+}
+
+.firma {
+    height: 3cm;
+}
+
+.bajar {
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    height: 100px;
+}
+
+.borde_inferior {
+    border-bottom: 1px solid black;
+}
+
+.right {
+    display: flex;
+    width: 100%;
+    justify-content: right;
+    align-items: right;
+}
+
+.mF {
+    margin-top: 4rem;
+}

@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!--font awesome-->
+    <script src="https://kit.fontawesome.com/0b3284a19f.js" crossorigin="anonymous"></script>
+    <!-- Mi estilo-->
+    <link rel="stylesheet" href="css/formulario.css">
+    <link rel="stylesheet" href="css/banner.css">
+    <title>Academias</title>
+</head>
+
+<body>
+
+    <div class="bg-panel-superior">
+        <div class="container-fluid d-flex">
+            <div class="w-50">
+                <a href="https://www.itesca.edu.mx/" target="_blank" class="link">
+                    <label class="marca-awa">
+                        <img src="img/favicon.png" style="width:30px;">ITESCA
+                    </label>
+                </a>
+                <label class="click iconos-superior" id="inicio">
+                    <span>
+                        <i class="fas fa-home"></i>
+                    </span>
+                    Inicio
+                </label>
+                <label id="Editarme" class="click iconos-superior ml-3">
+                    <span>
+                        <i class="fas fa-user"></i>
+                    </span>
+                    Mi perfil
+                </label>
+            </div>
+            <div class="d-flex justify-content-end w-75">
+                <label class="click iconos-superior ml-3" id="Cerrar">
+                    <span>
+                        <i class="fas fa-sign-out-alt"></i>
+                    </span>
+                    Cerrar sesión
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-menu-principal">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb sin d-flex align-items-center">
+                    <li class="breadcrumb-item">
+                        <a href="/Academias/panel.html">Inicio</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        ver
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <label class="text-menu">Estatus de Evidencias</label>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row d-flex text-center">
+            <!--Encabezados-->
+            <div class="col-10 row font-weight-bold">
+                <div class="col-3 border border-bottom d-flex flex-column align-items-center">
+                    Docente
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div class="form-inline mb-2">
+                            <label class="form-label mr-3">Búsqueda por nómina/nombre</label>
+                            <input id="AcaSel" type="search" class="form-control bg-input rounded-pill mx-auto" list="listaAcademias">
+                            <datalist id="listaAcademias">
+                            </datalist>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3 border border-bottom d-flex flex-column justify-content-around align-items-center">
+                    <label>Tarea 1</label>
+                    <div>10/05/2022</div>
+                    <div class="d-flex justify-content-around w-100">
+                        <span>
+                            <img src="img/file-circle-check-solid.svg" class="click" width="30" height="30">
+                        </span>
+                        <span>
+                            <img src="img/file-circle-xmark-solid.svg" class="click" width="30" height="30">
+                        </span>
+                        <span>
+                            <img src="img/filter-circle-xmark-solid(1).svg" class="click" width="30" height="30">
+                        </span>
+                    </div>
+                </div>
+                <div class="col-3 border border-bottom">
+                    Tarea 2
+                    <div>20/05/2022</div>
+                    <div class="d-flex justify-content-around">
+                        <span>
+                            <img src="img/file-circle-check-solid.svg" width="30" height="30">
+                        </span>
+                        <span>
+                            <img src="img/file-circle-xmark-solid.svg" width="30" height="30">
+                        </span>
+                        <span>
+                            <img src="img/filter-circle-xmark-solid(1).svg" width="30" height="30">
+                        </span>
+                    </div>
+                </div>
+                <div class="col-3 border border-bottom">
+                    Tarea 3
+                    <div>30/05/2022</div>
+                    <div class="d-flex justify-content-around">
+                        <span>
+                            <img src="img/file-circle-check-solid.svg" width="30" height="30">
+                        </span>
+                        <span>
+                            <img src="img/file-circle-xmark-solid.svg" width="30" height="30">
+                        </span>
+                        <span>
+                            <img src="img/filter-circle-xmark-solid(1).svg" width="30" height="30">
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2 row">
+                <div class="font-weight-bold col-12 border border-bottom d-flex justify-content-center align-items-center">
+                    Porcentajes
+                </div>
+            </div>
+            <!--Datos-->
+            <div class="col-10 row">
+                <div class="col-3 border border-bottom d-flex justify-content-center align-items-center">
+                    Cielo Luz Elena Llamas Servin
+                </div>
+                <div class="col-3">
+                    09/05/2022 11:00
+                </div>
+                <div class="col-3">
+                    10/05/2022 15:34
+                </div>
+                <div class="col-3">
+                    10/05/2022 23:49
+                </div>
+            </div>
+            <div class="col-2 row">
+                <div class="col-12 border border-bottom">
+                    100%
+                </div>
+            </div>
+            <div class="col-10 row">
+                <div class="col-3 border border-bottom">
+                    Cristyaquelin Domínguez Félix
+                </div>
+                <div class="col-3 bg-danger">
+                </div>
+                <div class="col-3 d-flex align-items-center justify-content-center">
+                    09/05/2022 11:00
+                </div>
+                <div class="col-3 bg-dark">
+                </div>
+            </div>
+            <div class="col-2 row">
+                <div class="col-12 border border-bottom d-flex justify-content-center align-items-center">
+                    50%
+                </div>
+            </div>
+            <div class="col-10 row">
+                <div class="col-3 border border-bottom">
+                    Christian Emmanuel Yañez Gonzalez
+                </div>
+                <div class="col-3">
+                    09/05/2022 11:00
+                </div>
+                <div class="col-3 bg-dark">
+                </div>
+                <div class="col-3 bg-danger">
+                    01/06/2022
+                </div>
+            </div>
+            <div class="col-2 row">
+                <div class="col-12 border border-bottom">
+                    66.66%
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin=" anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!-- My Script -->
+</body>
+
+</html>

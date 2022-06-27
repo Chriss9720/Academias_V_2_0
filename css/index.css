@@ -26,3 +26,8 @@
 .click {
     cursor: pointer;
 }
+
+.error {
+    margin-bottom: 2rem !important;
+    border-color: red !important;
+}

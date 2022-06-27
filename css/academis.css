@@ -9,3 +9,20 @@
     width: 2.5rem;
     cursor: pointer;
 }
+
+.btn-primary-c {
+    background-color: green;
+    color: white;
+    border-radius: 0.6rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    width: 250px;
+}
+
+.img-pdf {
+    width: 100px;
+}
+
+.borde {
+    border-right: 1px solid black;
+}

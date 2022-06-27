@@ -1,0 +1,131 @@
+.borde_tabla {
+    border: 1px solid black;
+}
+
+.area_IMG {
+    height: 1.35cm;
+    width: 4.32cm;
+}
+
+.borde_derecho {
+    border-right: 1px solid black;
+}
+
+.borde_izquierdo {
+    border-left: 1px solid black;
+}
+
+.borde_superior {
+    border-top: 1px solid black;
+}
+
+.borde_inferior {
+    border-bottom: 1px solid black;
+}
+
+.logo_ITESCA {
+    height: 1.22cm;
+    width: 3.84cm;
+}
+
+.area_titulo {
+    width: 14.18cm;
+}
+
+.centrar {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-direction: column !important;
+    text-align: center !important;
+}
+
+.enbacezado {
+    font-weight: bold;
+    background-color: rgb(217, 217, 217);
+}
+
+.enbacezado-s {
+    background-color: rgb(217, 217, 217);
+}
+
+.col-1 {
+    width: 4.63cm;
+}
+
+.area-f {
+    width: 4.06cm;
+}
+
+.periodo {
+    width: 4.86cm;
+}
+
+.area-p {
+    width: 5cm;
+}
+
+.all-bordes {
+    border: 1px solid black;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.subir {
+    margin-top: -5px;
+}
+
+.col-r {
+    width: 9.81cm;
+}
+
+.area-cal {
+    width: 1.96cm;
+}
+
+.text-size {
+    font-size: 12px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.area-calif {
+    width: 14cm;
+}
+
+.text-right {
+    text-align: right;
+    padding-right: 10px;
+}
+
+.col-1-2 {
+    width: 6.24cm;
+}
+
+.col-1-3 {
+    width: 2.89cm;
+}
+
+.col1-4 {
+    width: 4.5cm;
+}
+
+.separacion {
+    width: 1.5cm;
+}
+
+.firmas {
+    width: 10cm;
+}
+
+.firma {
+    height: 3cm;
+}
+
+.tacha {
+    width: .5cm;
+}

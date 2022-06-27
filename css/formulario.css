@@ -13,6 +13,7 @@
 .foto-opcional {
     width: 150px !important;
     border-radius: 50%;
+    height: 150px !important
 }
 
 .ancho {
@@ -25,6 +26,10 @@
     font-size: 1.5rem;
     font-weight: bold;
     width: 250px;
+}
+
+.bg-btn-aplicar:hover {
+    color: white !important;
 }
 
 .flecha {
