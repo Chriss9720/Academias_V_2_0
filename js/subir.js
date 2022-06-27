@@ -215,7 +215,6 @@ $(document).ready(() => {
             let punto = evidencia[i].punto - 1;
             if (evidencia[i].data) {
                 if (evidencia[i].PADRE === 'Actas') {
-                    console.log(evidencia[i])
                     let no_tarea = evidencia[i].no_tarea - 1;
                     desc = evidencia[i].data.Acuerdos[no_tarea].acuerdo;
                     fecha = evidencia[i].data.Acuerdos[no_tarea].fecha;
